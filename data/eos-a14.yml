@@ -1,0 +1,40 @@
+include:
+  - project: 'e/os/releases'
+    ref: master
+    file: '/templates/.gitlab-ci.yml'
+
+update-manifest-a14:
+  extends: .update-manifest
+
+check-version:
+  extends: .check-version
+
+trigger-build-a14-community-batch-1:
+  extends: .trigger-build-community
+  variables:
+    DEVICES: "FP3 Mi439 Mi8917 Mi8937 TP1803 Z01R a52q a52sxq a71 a72q a73xq akari akatsuki akita alioth apollon aura aurora axolotl barbet beckham berlin berlna bluejay blueline bonito borneo caprip cebu cheetah cheryl chiron cmi coral crosshatch davinci devon dipper discovery dre dubai dumpling earth enchilada equuleus fajita felix flame g710n g710ulm gemini grus gta4l gta4lwifi gtowifi gts4lv gts4lvwifi guacamole guam guamp hawao haydn heart hotdog husky ingot instantnoodle instantnoodlep"
+    BUILD_BRANCH: "a14"
+
+trigger-build-a14-community-batch-2:
+  extends: .trigger-build-community
+  variables:
+    DEVICES: "joan judyln judyp judypn kane kebab kiev kirin lake lemonades lisa lmi luigi lynx m52xq marlin martini mata mermaid messi miatoll munch nairo nash natrium nio oriole oscar panther payton pdx203 pdx206 pdx214 pdx215 pdx234 perseus pioneer polaris pro1 pro1x pstar pyxis raven redfin renoir rhode sailfish salami sargo shark socrates sweet umi ursa vela voyager xpeng xz2c zippo"
+    BUILD_BRANCH: "a14"
+
+trigger-build-a14-community-dogfooding:
+  extends: .trigger-build-community
+  variables:
+    DEVICES: "FP4 mimir otter sapphire tangorpro tetris avicii beryllium bramble cheeseburger guacamoleb gta4xlwifi hotdogb lemonade lemonadep river rtwo sagit sunfish troika"
+    BUILD_BRANCH: "a14"
+
+trigger-build-a14-community-dogfooding-2:
+  extends: .trigger-build-community
+  variables:
+    DEVICES: "billie evert mars ocean onclite r8s racer x1s y2s z3s"
+    BUILD_BRANCH: "a14"
+
+trigger-build-a14-official:
+  extends: .trigger-build-official
+  variables:
+    DEVICES: "FP4 mimir otter sapphire tangorpro tetris"
+    BUILD_BRANCH: "a14"

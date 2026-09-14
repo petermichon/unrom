@@ -1,0 +1,650 @@
+[
+   {
+      "codename": "RMX2020",
+      "brand": "Realme",
+      "name": "C3 / Narzo 10A",
+      "specs": {
+         "battery": 5000,
+         "camera": "12Mpx 2Mpx + 5Mpx,12Mpx 2Mpx 2Mpx + 5Mpx",
+         "cpu": "Mediatek Helio G70",
+         "display": "IPS 6.50\" 720p",
+         "ram": "3/4GB LPDDR4X"
+      },
+      "supported_bases": [
+         {
+            "name": "thirteen",
+            "xda_thread": "https://forum.xda-developers.com/t/rom-unofficial-stable-13-rmx2020-pixysos-v6-3-1-aosp-2023-22-06.4607721/",
+            "supported_edition": [
+               "gapps"
+            ]
+         }
+      ]
+   },
+   {
+      "codename": "Spacewar",
+      "brand": "Nothing",
+      "name": "Phone (1)",
+      "fastboot": true,
+      "specs": {
+         "battery": 4500,
+         "camera": "50Mpx 50Mpx + 16Mpx",
+         "cpu": "Snapdragon 778G+ 5G",
+         "display": "OLED 6.55\" 1080p",
+         "ram": "8/12GB LPDDR5X"
+      },
+      "supported_bases": [
+         {
+            "name": "fourteen",
+            "xda_thread": "https://xdaforums.com/t/pixysos-v7-1-2-beta-5-1-for-nothing-phone-1-android-14.4637640/",
+            "supported_edition": [
+               "gapps"
+            ]
+         },
+         {
+            "name": "thirteen",
+            "xda_thread": "https://forum.xda-developers.com/t/pixysos-v6-0-beta-1-for-nothing-phone-1-android-13.4511025/",
+            "supported_edition": [
+               "gapps"
+            ]
+         }
+      ]
+   },
+   {
+      "codename": "X00TD",
+      "brand": "Asus",
+      "name": "Zenfone Max Pro M1",
+      "specs": {
+         "battery": 5000,
+         "camera": "13Mpx 5Mpx + 5Mpx",
+         "cpu": "Snapdragon 636",
+         "display": "IPS 5.99\" 1080p",
+         "ram": "3/4GB LPDDR4X"
+      },
+      "supported_bases": [
+         {
+            "name": "thirteen",
+            "xda_thread": "",
+            "supported_edition": [
+               "gapps"
+            ]
+         },
+         {
+            "name": "twelve",
+            "xda_thread": "",
+            "supported_edition": [
+               "vanilla",
+               "gapps"
+            ]
+         },
+         {
+            "name": "eleven",
+            "xda_thread": "",
+            "supported_edition": [
+               "vanilla",
+               "gapps"
+            ]
+         }
+      ]
+   },
+   {
+      "codename": "avicii",
+      "brand": "OnePlus",
+      "name": "Nord",
+      "specs": {
+         "battery": 4115,
+         "camera": "48Mpx 8Mpx 5Mpx 2Mpx + 32Mpx 8Mpx",
+         "cpu": "Snapdragon 765G",
+         "display": "IPS 6.44\" 1080p",
+         "ram": "6/8/12GB LPDDR4X"
+      },
+      "supported_bases": [
+         {
+            "name": "thirteen",
+            "xda_thread": "",
+            "supported_edition": [
+               "gapps"
+            ]
+         },
+         {
+            "name": "twelve",
+            "xda_thread": "https://forum.xda-developers.com/t/rom-pixysos-v5-0-for-oneplus-nord-avicii-android-12-beta.4354451/",
+            "supported_edition": [
+               "vanilla",
+               "gapps"
+            ]
+         },
+         {
+            "name": "eleven",
+            "xda_thread": "https://forum.xda-developers.com/t/rom-android-10-avicii-pixysos-aosp-2020-09-15-test-build-stable.4151127/",
+            "supported_edition": [
+               "vanilla",
+               "gapps"
+            ]
+         }
+      ]
+   },
+   {
+      "codename": "begonia",
+      "brand": "Xiaomi",
+      "name": "Redmi Note 8 Pro",
+      "specs": {
+         "battery": 4500,
+         "camera": "64Mpx 8Mpx 2Mpx 2Mpx + 20Mpx",
+         "cpu": "Mediatek Helio G90T",
+         "display": "IPS 6.53\" 1080p",
+         "ram": "6/8GB LPDDR4X"
+      },
+      "supported_bases": [
+         {
+            "name": "eleven",
+            "xda_thread": "https://forum.xda-developers.com/t/rom-cfw-11-0-pixysos-v4-0-3-begonia-begoniain-official-stable.4184249/",
+            "supported_edition": [
+               "vanilla",
+               "gapps"
+            ]
+         }
+      ]
+   },
+   {
+      "codename": "beryllium",
+      "brand": "Xiaomi",
+      "name": "Poco F1",
+      "specs": {
+         "battery": 4000,
+         "camera": "12Mpx 5Mpx + 20Mpx",
+         "cpu": "Snapdragon 845",
+         "display": "IPS 6.18\" 1080p",
+         "ram": "6/8GB LPDDR4X"
+      },
+      "supported_bases": [
+         {
+            "name": "thirteen",
+            "xda_thread": "",
+            "supported_edition": [
+               "gapps"
+            ]
+         }
+      ]
+   },
+   {
+      "codename": "coral",
+      "brand": "Google",
+      "name": "Pixel 4 XL",
+      "fastboot": true,
+      "specs": {
+         "battery": 3700,
+         "camera": "12.2Mpx 16Mpx + 8Mpx",
+         "cpu": "Snapdragon 855",
+         "display": "AMOLED 6.3\" 1440p",
+         "ram": "6GB LPDDR4X"
+      },
+      "supported_bases": [
+         {
+            "name": "fourteen",
+            "xda_thread": "https://xdaforums.com/t/pixysos-v7-1-2-beta-4-for-pixel-4-xl-android-14-motion-sense.4639899/",
+            "supported_edition": [
+               "gapps"
+            ]
+         },
+         {
+            "name": "thirteen",
+            "xda_thread": "https://forum.xda-developers.com/t/official-pixysos-v6-3-3-for-pixel-4-xl-coral-android-13-qpr3.4618523/",
+            "supported_edition": [
+               "gapps"
+            ]
+         }
+      ]
+   },
+   {
+      "codename": "davinci",
+      "brand": "Xiaomi",
+      "name": "Mi 9T/Redmi K20",
+      "specs": {
+         "battery": 4000,
+         "camera": "48Mpx + 8Mpx + 13Mpx + 20Mpx",
+         "cpu": "Snapdragon 730",
+         "display": "AMOLED 6.39\" 1080p",
+         "ram": "6/8GB"
+      },
+      "supported_bases": [
+         {
+            "name": "eleven",
+            "supported_edition": [
+               "vanilla",
+               "gapps"
+            ]
+         }
+      ]
+   },
+   {
+      "codename": "flame",
+      "brand": "Google",
+      "name": "Pixel 4",
+      "fastboot": true,
+      "specs": {
+         "battery": 2800,
+         "camera": "12.2Mpx 16Mpx + 8Mpx",
+         "cpu": "Snapdragon 855",
+         "display": "AMOLED 5.7\" 1080p",
+         "ram": "6GB LPDDR4X"
+      },
+      "supported_bases": [
+         {
+            "name": "fourteen",
+            "xda_thread": "https://xdaforums.com/t/pixysos-v7-1-2-beta-3-for-pixel-4-flame-android-14-qpr1-motion-sense.4651194/",
+            "supported_edition": [
+               "gapps"
+            ]
+         },
+         {
+            "name": "thirteen",
+            "xda_thread": "https://forum.xda-developers.com/t/official-pixysos-v6-3-3-for-pixel-4-xl-coral-android-13-qpr3.4618523/",
+            "supported_edition": [
+               "gapps"
+            ]
+         }
+      ]
+   },
+   {
+      "codename": "ginkgo",
+      "brand": "Xiaomi",
+      "name": "Redmi Note 8",
+      "specs": {
+         "battery": 4000,
+         "camera": "48Mpx 8Mpx 2Mpx 2Mpx + 13Mpx",
+         "cpu": "Snapdragon 665",
+         "display": "IPS 6.3\" 1080p",
+         "ram": "4/6GB LPDDR4X"
+      },
+      "supported_bases": [
+         {
+            "name": "eleven",
+            "xda_thread": "https://forum.xda-developers.com/t/rom-eleven-pixysos-official-2020-11-28.4196021/",
+            "supported_edition": [
+               "vanilla",
+               "gapps"
+            ]
+         }
+      ]
+   },
+   {
+      "codename": "lavender",
+      "brand": "Xiaomi",
+      "name": "Redmi Note 7",
+      "specs": {
+         "battery": 4000,
+         "camera": "48Mpx 5Mpx + 13Mpx",
+         "cpu": "Snapdragon 660",
+         "display": "IPS 6.3\" 1080p",
+         "ram": "4/6GB LPDDR4X"
+      },
+      "supported_bases": [
+         {
+            "name": "twelve",
+            "xda_thread": "https://forum.xda-developers.com/t/pixysos-lavender-official.4458555/",
+            "supported_edition": [
+               "vanilla",
+               "gapps"
+            ]
+         },
+         {
+            "name": "eleven",
+            "xda_thread": "https://forum.xda-developers.com/t/rom-11-0-official-lavender-pixysos-v4-0-5.4110949/",
+            "supported_edition": [
+               "vanilla",
+               "gapps"
+            ]
+         }
+      ]
+   },
+   {
+      "codename": "miatoll",
+      "brand": "Xiaomi",
+      "name": "POCO M2 Pro/Redmi Note 9S/9 Pro/9 Pro Max/10 Lite",
+      "specs": {
+         "battery": 5020,
+         "camera": "48/64Mpx 8Mpx 5Mpx 2Mpx + 16/32Mpx",
+         "cpu": "Qualcomm Snapdragon 720G",
+         "display": "IPS 6.67 \" 1080p",
+         "ram": "4/6/8GB LPDDR4X"
+      },
+      "supported_bases": [
+         {
+            "name": "thirteen",
+            "xda_thread": "",
+            "supported_edition": [
+               "gapps"
+            ]
+         }
+      ]
+   },
+   {
+      "codename": "mido",
+      "brand": "Xiaomi",
+      "name": "Redmi Note 4",
+      "specs": {
+         "battery": 4100,
+         "camera": "13Mpx + 5Mpx",
+         "cpu": "Snapdragon 625",
+         "display": "IPS 5.5\" 1080p",
+         "ram": "2/3/4GB LPDDR3"
+      },
+      "supported_bases": [
+         {
+            "name": "thirteen",
+            "xda_thread": "https://forum.xda-developers.com/t/rom-official-stable-12-1-mido-pixysos-v5-1-2-aosp-2022-06-04.4453669/",
+            "supported_edition": [
+               "gapps"
+            ]
+         },
+         {
+            "name": "twelve",
+            "xda_thread": "https://forum.xda-developers.com/t/rom-official-stable-12-1-mido-pixysos-v5-1-2-aosp-2022-06-04.4453669/",
+            "supported_edition": [
+               "vanilla",
+               "gapps"
+            ]
+         }
+      ]
+   },
+   {
+      "codename": "onclite",
+      "brand": "Xiaomi",
+      "name": "Redmi 7",
+      "specs": {
+         "battery": 4000,
+         "camera": "12Mpx + 2Mpx",
+         "cpu": "Snapdragon 632",
+         "display": "IPS 6.26\" 720p",
+         "ram": "2/3GB"
+      },
+      "supported_bases": [
+         {
+            "name": "twelve",
+            "xda_thread": "https://forum.xda-developers.com/t/rom-official-pixysos-v5-0-2-android-12-14-02-2022.4402513",
+            "supported_edition": [
+               "vanilla",
+               "gapps"
+            ]
+         },
+         {
+            "name": "eleven",
+            "xda_thread": "https://forum.xda-developers.com/t/rom-official-eol-pixysos-v4-0-11-android-11-21-09-2021.4194237/",
+            "supported_edition": [
+               "vanilla",
+               "gapps"
+            ]
+         }
+      ]
+   },
+   {
+      "codename": "phoenix",
+      "brand": "Xiaomi",
+      "name": "Redmi K30/Poco X2",
+      "specs": {
+         "battery": 4500,
+         "camera": "64Mpx 8Mpx 2Mpx 2Mpx + 20Mpx 2Mpx",
+         "cpu": "Snapdragon 730G",
+         "display": "IPS 6.67\" 1080p",
+         "ram": "6/8GB LPDDR4X"
+      },
+      "supported_bases": [
+         {
+            "name": "eleven",
+            "status": "deprecated",
+            "xda_thread": "https://forum.xda-developers.com/t/rom-rom-11-0-official-pixysos-phoenix-poco-x2-redmi-k30.4110111/",
+            "supported_edition": [
+               "vanilla",
+               "gapps"
+            ]
+         }
+      ]
+   },
+   {
+      "codename": "raphael",
+      "brand": "Xiaomi",
+      "name": "Mi 9T Pro/Redmi K20 Pro",
+      "specs": {
+         "battery": 4000,
+         "camera": "48Mpx + 8Mpx + 13Mpx + 20Mpx",
+         "cpu": "Snapdragon 855",
+         "display": "AMOLED 6.39\" 1080p",
+         "ram": "6/8GB"
+      },
+      "supported_bases": [
+         {
+            "name": "twelve",
+            "xda_thread": "",
+            "supported_edition": [
+               "vanilla",
+               "gapps"
+            ]
+         }
+      ]
+   },
+   {
+      "codename": "sakura",
+      "brand": "Xiaomi",
+      "name": "Redmi 6 Pro",
+      "specs": {
+         "battery": 4000,
+         "camera": "12Mpx + 5Mpx",
+         "cpu": "Snapdragon 625",
+         "display": "IPS 5.84\" 1080p",
+         "ram": "3/4GB LPDDR4X"
+      },
+      "supported_bases": [
+         {
+            "name": "eleven",
+            "xda_thread": "https://forum.xda-developers.com/t/rom-11-official-4-9-pixysos-v4-0-2-sakura-15-11-2020.4190559/",
+            "supported_edition": [
+               "vanilla",
+               "gapps"
+            ]
+         }
+      ]
+   },
+   {
+      "codename": "sanders",
+      "brand": "Motorola",
+      "name": "Moto G5 (S) Plus",
+      "specs": {
+         "battery": 3000,
+         "camera": "13Mpx + 8Mpx",
+         "cpu": "Snapdragon 625",
+         "display": "IPS 5.5\" 1080p",
+         "ram": "3/4GB"
+      },
+      "supported_bases": [
+         {
+            "name": "eleven",
+            "xda_thread": "https://forum.xda-developers.com/t/rom-11-official-pixysos-v4-0-8-sanders-12-06-2021.4193947/",
+            "supported_edition": [
+               "vanilla"
+            ]
+         }
+      ]
+   },
+   {
+      "codename": "surya",
+      "brand": "Xiaomi",
+      "name": "Poco X3",
+      "specs": {
+         "battery": 6000,
+         "camera": "64Mpx 13Mpx 2Mpx 2Mpx + 20Mpx",
+         "cpu": "Snapdragon 732G",
+         "display": "IPS 6.67\" 1080p",
+         "ram": "6/8GB LPDDR4X"
+      },
+      "supported_bases": [
+         {
+            "name": "eleven",
+            "xda_thread": "https://forum.xda-developers.com/t/rom-11-official-pixysos-v4-0-2-karna-surya-16-10-2020.4177269/",
+            "supported_edition": [
+               "vanilla",
+               "gapps"
+            ]
+         }
+      ]
+   },
+   {
+      "codename": "sweet",
+      "brand": "Xiaomi",
+      "name": "Redmi Note 10 Pro",
+      "specs": {
+         "battery": 5020,
+         "camera": "13Mpx + 8Mpx + 5Mpx + 2Mpx",
+         "cpu": "Snapdragon 732G",
+         "display": "sAMOLED 6,67\" 1080p",
+         "ram": "8GB LPDDR4X"
+      },
+      "supported_bases": [
+         {
+            "name": "thirteen",
+            "xda_thread": "",
+            "supported_edition": [
+               "gapps"
+            ]
+         },
+         {
+            "name": "eleven",
+            "xda_thread": "https://forum.xda-developers.com/t/pixysos-android-11-rom-official.4279017",
+            "supported_edition": [
+               "gapps"
+            ]
+         }
+      ]
+   },
+   {
+      "codename": "tulip",
+      "brand": "Xiaomi",
+      "name": "Redmi Note 6 Pro",
+      "specs": {
+         "battery": 4000,
+         "camera": "12Mpx 5Mpx + 20Mpx 2Mpx",
+         "cpu": "Snapdragon 636",
+         "display": "IPS 6.26\" 1080p",
+         "ram": "3/4/6GB LPDDR4X"
+      },
+      "supported_bases": [
+         {
+            "name": "eleven",
+            "xda_thread": "https://forum.xda-developers.com/t/official-pixysos-4-0-3-android-11-20210112.4184933/",
+            "supported_edition": [
+               "vanilla",
+               "gapps"
+            ]
+         }
+      ]
+   },
+   {
+      "codename": "vayu",
+      "brand": "Xiaomi",
+      "name": "Poco X3 Pro",
+      "specs": {
+         "battery": 5160,
+         "camera": "48Mpx 8Mpx 2Mpx 2Mpx + 20Mpx",
+         "cpu": "Snapdragon 860",
+         "display": "IPS 6.67\" 1080p",
+         "ram": "6/8GB LPDDR4X"
+      },
+      "supported_bases": [
+         {
+            "name": "twelve",
+            "xda_thread": "https://forum.xda-developers.com/t/rom-12-1-unofficial-pixysos-v5-1-3-vayu-bhima.4465071",
+            "supported_edition": [
+               "gapps"
+            ]
+         }
+      ]
+   },
+   {
+      "codename": "violet",
+      "brand": "Xiaomi",
+      "name": "Redmi Note 7 Pro",
+      "specs": {
+         "battery": 4000,
+         "camera": "48Mpx 5Mpx + 13Mpx",
+         "cpu": "Snapdragon 675",
+         "display": "IPS 6.3\" 1080p",
+         "ram": "4/6GB LPDDR4X"
+      },
+      "supported_bases": [
+         {
+            "name": "thirteen",
+            "xda_thread": "",
+            "supported_edition": [
+               "gapps"
+            ]
+         },
+         {
+            "name": "eleven",
+            "xda_thread": "https://forum.xda-developers.com/t/r-pixysos-4-0-2-violet-stable.4175247",
+            "supported_edition": [
+               "vanilla",
+               "gapps"
+            ]
+         }
+      ]
+   },
+   {
+      "codename": "whyred",
+      "brand": "Xiaomi",
+      "name": "Redmi Note 5 Pro",
+      "specs": {
+         "battery": 4000,
+         "camera": "12Mpx + 5Mpx + 20Mpx",
+         "cpu": "Snapdragon 636",
+         "display": "IPS 5.99\" 1080p",
+         "ram": "4/6GB"
+      },
+      "supported_bases": [
+         {
+            "name": "thirteen",
+            "xda_thread": "",
+            "supported_edition": [
+               "gapps"
+            ]
+         },
+         {
+            "name": "twelve",
+            "xda_thread": "https://forum.xda-developers.com/t/rom-twelve-pixys-os-v5-0-for-whyred.4386893",
+            "supported_edition": [
+               "vanilla",
+               "gapps"
+            ]
+         },
+         {
+            "name": "eleven",
+            "xda_thread": "https://forum.xda-developers.com/t/official-eleven-pixys-os-for-whyred-07-08-2021.4071239/",
+            "supported_edition": [
+               "vanilla",
+               "gapps"
+            ]
+         }
+      ]
+   },
+   {
+      "codename": "z2_plus",
+      "brand": "Lenovo",
+      "name": "Zuk Z2 Plus",
+      "specs": {
+         "battery": 3500,
+         "camera": "13Mpx + 8Mpx",
+         "cpu": "Snapdragon 820",
+         "display": "IPS 5.0\" 1080p",
+         "ram": "3/4GB"
+      },
+      "supported_bases": [
+         {
+            "name": "eleven",
+            "status": "deprecated",
+            "xda_thread": "https://forum.xda-developers.com/t/pixysos-v4-0-5-official-r-android-11-0-for-zuk-z2-plus.4167355/",
+            "supported_edition": [
+               "vanilla",
+               "gapps"
+            ]
+         }
+      ]
+   }
+]

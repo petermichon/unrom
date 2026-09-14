@@ -1,0 +1,22 @@
+include:
+  - project: 'e/os/releases'
+    ref: master
+    file: '/templates/.gitlab-ci.yml'
+
+update-manifest-t:
+  extends: .update-manifest
+
+check-version:
+  extends: .check-version
+
+trigger-build-t-community:
+  extends: .trigger-build-community
+  variables:
+    DEVICES: "DRG G PL2 X00TD bardock bardockpro beyond0lte beyond1lte beyond2lte beyondx chef crownlte d1 d2s d2x deadpool f62 gauguin gta4xl h830 h850 h870 h872 h910 h918 h990 lancelot liber ls997 merlinx nabu nx563j nx606j nx609j nx611j nx619j nx651j nx659j parker rosemary rs988 sake star2lte starlte surya tissot two us996 us996d us997 vayu violet vs995 wade xmsirius z2_plus"
+    BUILD_BRANCH: "v1-t"
+
+trigger-build-t-official:
+  extends: .trigger-build-official
+  variables:
+    DEVICES: "redfin two"
+    BUILD_BRANCH: "v1-t"

@@ -1,0 +1,145 @@
+import { useState, type ReactNode } from "react";
+import {
+  type ColumnDef,
+  type ColumnFiltersState,
+  type SortingState,
+  type VisibilityState,
+  flexRender,
+  getCoreRowModel,
+  getFacetedRowModel,
+  getFacetedUniqueValues,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  useReactTable,
+  type Table as TanStackTable,
+} from "@tanstack/react-table";
+import { cn } from "cn";
+import { SearchX } from "lucide-react";
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { DataTablePagination } from "@/components/data-table/data-table-pagination";
+
+interface Props<TData, TValue> {
+  columns: ColumnDef<TData, TValue>[];
+  data: TData[];
+  toolbar?: (table: TanStackTable<TData>) => ReactNode;
+  columnClassName?: (columnId: string) => string | undefined;
+  tableClassName?: string;
+  initialState?: {
+    columnVisibility?: VisibilityState;
+    sorting?: SortingState;
+  };
+}
+
+export function DataTable<TData, TValue>({
+  columns,
+  data,
+  toolbar,
+  columnClassName,
+  tableClassName,
+  initialState,
+}: Props<TData, TValue>) {
+  const [sorting, setSorting] = useState<SortingState>(
+    initialState?.sorting ?? []
+  );
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(
+    initialState?.columnVisibility ?? {}
+  );
+
+  const table = useReactTable({
+    data,
+    columns,
+    state: { sorting, columnFilters, columnVisibility },
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
+    onColumnVisibilityChange: setColumnVisibility,
+    getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFacetedRowModel: getFacetedRowModel(),
+    getFacetedUniqueValues: getFacetedUniqueValues(),
+  });
+
+  return (
+    <div className="flex flex-col gap-4">
+      {toolbar?.(table)}
+
+      <div className="overflow-x-auto rounded-xl border border-border/60">
+        <Table className={tableClassName}>
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <TableHead
+                    key={header.id}
+                    className={columnClassName?.(header.column.id)}
+                  >
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </TableHead>
+                ))}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows.length ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow key={row.id}>
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell
+                      key={cell.id}
+                      className={cn("py-3", columnClassName?.(cell.column.id))}
+                    >
+                      {flexRender(
+                        cell.column.columnDef.cell,
+                        cell.getContext()
+                      )}
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={columns.length} className="h-48">
+                  <Empty className="border-0">
+                    <EmptyHeader>
+                      <EmptyMedia variant="icon">
+                        <SearchX />
+                      </EmptyMedia>
+                      <EmptyTitle>No results</EmptyTitle>
+                      <EmptyDescription>
+                        Try adjusting your search or filters.
+                      </EmptyDescription>
+                    </EmptyHeader>
+                  </Empty>
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
+
+      <DataTablePagination table={table} />
+    </div>
+  );
+}

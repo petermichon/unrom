@@ -1,0 +1,40 @@
+include:
+  - project: 'e/os/releases'
+    ref: master
+    file: '/templates/.gitlab-ci.yml'
+
+update-manifest-a15:
+  extends: .update-manifest
+
+check-version:
+  extends: .check-version
+
+trigger-build-a15-community-batch-1:
+  extends: .trigger-build-community
+  variables:
+    DEVICES: "FP3 FP4 FP5 FP6 Mi439 Mi8917 Mi8937 Pong Spacewar TP1803 Z01R a21s a52q a52sxq a71 a72q a73xq akari akatsuki akershus akita alioth apollon aston aura aurora axolotl bangkk barbet bathena beckham benz berlin berlna beyond0lte beyond1lte beyond2lte beyondx bluejay blueline bonito borneo bronco caiman capri caprip casuarina caymanslm cebu cheryl chiron cmi comet coral crosshatch cupid d1 d1x d2s d2x davinci denver devon dipper discovery diting dre dubai dumpling earth emerald enchilada eqs equuleus erhai f62 felix flame fogo"
+    BUILD_BRANCH: "a15"
+
+trigger-build-a15-community-batch-2:
+  extends: .trigger-build-community
+  variables:
+    DEVICES: "fogos g710n g710ulm gauguin gemini ginkgo grus gta4l gta4lwifi gta4xl gtowifi gts4lv gts4lvwifi gts7l gts7lwifi guacamole guam guamp gunnar hawao haydn heart hotdog husky ingot instantnoodle instantnoodlep joan judyln judyp judypn kane kebab kiev kirin komodo l01k lake larry laurel_sprout lemonades lisa lmi luigi lynx m52xq marble marlin martini mata mayfly mermaid messi miami miatoll milanf mondrian munch nairo nash natrium nio nuwa nx563j nx606j nx619j nx659j oriole oscar oscaro panther payton pdx203 pdx206 pdx214 pdx215 pdx225 pdx234 pdx235"
+    BUILD_BRANCH: "a15"
+
+trigger-build-a15-community-batch-3:
+  extends: .trigger-build-community
+  variables:
+    DEVICES: "pdx237 perseus pioneer polaris pro1 pro1x pstar pyxis r8q raven redfin renoir rhode rhodep rosemary sailfish sake salami sargo shark shiba socrates style3lm surya sweet tangorpro thor thyme tokay tucana tundra umi unicorn ursa vayu vela violet voyager waffle xpeng xz2c zeus zippo zirconia zizhan"
+    BUILD_BRANCH: "a15"
+
+trigger-build-a15-community-dogfooding:
+  extends: .trigger-build-community
+  variables:
+    DEVICES: "beryllium bramble cheeseburger cheetah fajita gta4xlwifi guacamoleb hotdogb lemonade lemonadep river rtwo sagit sunfish troika"
+    BUILD_BRANCH: "a15"
+
+trigger-build-a15-official:
+  extends: .trigger-build-official
+  variables:
+    DEVICES: "FP3 FP5 FP6 GS290 emerald panther shiba star2lte starlte zirconia"
+    BUILD_BRANCH: "a15"

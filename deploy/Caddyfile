@@ -1,0 +1,26 @@
+# unrom — static SSG site served by Caddy.
+#
+# Build output: `web/build/client` (see `npm run build` at the repo root).
+# Adjust `root` to wherever the build is deployed on the host.
+
+unrom.com {
+	root * /srv/unrom/web/build/client
+
+	# Transport compression for HTML/CSS/JS/JSON (browsers decode transparently).
+	encode zstd gzip
+
+	# Clean URLs: resolve /devices to the prerendered devices/index.html,
+	# then fall back to the SPA shell for unknown client-side routes.
+	try_files {path} {path}/ /__spa-fallback.html
+	file_server
+
+	# Content-hashed assets never change; cache them hard.
+	# HTML is left to ETag/Last-Modified revalidation so deploys propagate.
+	@assets path /assets/*
+	header @assets Cache-Control "public, max-age=31536000, immutable"
+}
+
+# Optional: redirect the www host to the canonical apex.
+www.unrom.com {
+	redir https://unrom.com{uri} permanent
+}

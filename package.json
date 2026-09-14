@@ -1,0 +1,30 @@
+{
+  "name": "unrom",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "workspaces": [
+    "web",
+    "server",
+    "contract"
+  ],
+  "scripts": {
+    "dev": "concurrently -n web,api -c blue,green npm:dev:web npm:dev:api",
+    "dev:web": "npm run dev --workspace web",
+    "dev:api": "npm run dev --workspace server",
+    "build": "npm run build --workspace web",
+    "preview": "npm run preview --workspace web",
+    "check": "npm run typecheck --workspace web && npm run check --workspace server && npm run check --workspace contract",
+    "ingest": "npm run ingest --workspace server",
+    "build:data": "npm run build:data --workspace server",
+    "api": "npm run start --workspace server"
+  },
+  "allowScripts": {
+    "esbuild": true
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.5"
+  }
+}

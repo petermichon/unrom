@@ -1,0 +1,1108 @@
+{
+     "devices": [
+          {
+               "name": "Zenfone 9",
+               "codename": "davinci",
+               "manufacturer": "Asus",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "Androbots",
+                         "link": "https://forum.xda-developers.com/m/androbots.6227858/",
+                         "country": "US"
+                    },
+                    {
+                         "name": "ggpew2",
+                         "link": "https://forum.xda-developers.com/m/ggpew2.8433517/",
+                         "country": "US"
+                    }
+               ],
+               "xda_thread": "https://forum.xda-developers.com/t/paranoid-android-topaz-alpha-1-asus-zenfone-9.4557631/"
+          },
+          {
+               "name": "Pixel 6",
+               "codename": "oriole",
+               "manufacturer": "Google",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "sirhc",
+                         "link": "https://forum.xda-developers.com/m/sirhc.4678203/",
+                         "country": "US"
+                    }
+               ],
+               "xda_thread": "https://forum.xda-developers.com/t/paranoid-android-topaz-beta-1-google-pixel-6.4506075/"
+          },
+          {
+               "name": "Pixel 6a",
+               "codename": "bluejay",
+               "manufacturer": "Google",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "sirhc",
+                         "link": "https://forum.xda-developers.com/m/sirhc.4678203/",
+                         "country": "US"
+                    }
+               ],
+               "xda_thread": "https://forum.xda-developers.com/t/paranoid-android-topaz-beta-1-google-pixel-6a.4506793/"
+          },
+          {
+               "name": "Pixel 7a",
+               "codename": "lynx",
+               "manufacturer": "Google",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "V3NK4135H",
+                         "link": "https://forum.xda-developers.com/m/v3nk4135h.10601815/",
+                         "country": "IN"
+                    }
+               ],
+               "xda_thread": "https://forum.xda-developers.com/t/paranoid-android-topaz-beta-1-pixel-7a.4590601/"
+          },
+          {
+               "name": "Pixel 6 Pro",
+               "codename": "raven",
+               "manufacturer": "Google",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "sirhc",
+                         "link": "https://forum.xda-developers.com/m/sirhc.4678203/",
+                         "country": "US"
+                    }
+               ],
+               "xda_thread": "https://forum.xda-developers.com/t/paranoid-android-topaz-beta-1-google-pixel-6-pro.4506077/"
+          },
+          {
+               "name": "Pixel 7",
+               "codename": "panther",
+               "manufacturer": "Google",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "sirhc",
+                         "link": "https://forum.xda-developers.com/m/sirhc.4678203/",
+                         "country": "US"
+                    }
+               ],
+               "xda_thread": "https://forum.xda-developers.com/t/paranoid-android-topaz-beta-1-google-pixel-7.4520781/"
+          },
+          {
+               "name": "Pixel 7 Pro",
+               "codename": "cheetah",
+               "manufacturer": "Google",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "sirhc",
+                         "link": "https://forum.xda-developers.com/m/sirhc.4678203/",
+                         "country": "US"
+                    }
+               ],
+               "xda_thread": "https://forum.xda-developers.com/t/paranoid-android-topaz-beta-1-google-pixel-7-pro.4520783/"
+          },
+          {
+               "name": "Edge 30",
+               "codename": "dubai",
+               "manufacturer": "Motorola",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "kunmun36",
+                         "link": "https://forum.xda-developers.com/m/kunmun36.12667599/",
+                         "country": "IN"
+                    },
+                    {
+                         "name": "srinandek",
+                         "link": "https://forum.xda-developers.com/m/qwertyuiop-2004.8948125/",
+                         "country": "IN"
+                    }
+               ],
+               "xda_thread": "https://xdaforums.com/t/paranoid-android-uvite-motorola-edge-30.4680646/"
+          },
+          {
+               "name": "phone (1)",
+               "codename": "phone1",
+               "manufacturer": "Nothing",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "xboxfanj",
+                         "link": "https://forum.xda-developers.com/m/xboxfanj.4003363/",
+                         "country": "US"
+                    },
+                    {
+                         "name": "33bca",
+                         "link": "https://forum.xda-developers.com/m/33bca.5296790/",
+                         "country": "CH"
+                    },
+                    {
+                         "name": "gotenksIN",
+                         "link": "https://forum.xda-developers.com/m/omkartheandroid.5252623/",
+                         "country": "IN"
+                    }
+               ],
+               "xda_thread": "https://xdaforums.com/t/paranoid-android-uvite-nothing-phone-1.4648478/"
+          },
+          {
+               "name": "phone (2)",
+               "codename": "phone2",
+               "manufacturer": "Nothing",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "kunmun36",
+                         "link": "https://forum.xda-developers.com/m/kunmun36.12667599/",
+                         "country": "IN"
+                    },
+                    {
+                         "name": "gotenksIN",
+                         "link": "https://forum.xda-developers.com/m/omkartheandroid.5252623/",
+                         "country": "IN"
+                    }
+               ],
+               "xda_thread": "https://xdaforums.com/t/paranoid-android-uvite-nothing-phone-2.4657416/"
+          },
+          {
+               "name": "5",
+               "codename": "oneplus5",
+               "manufacturer": "OnePlus",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "eneskaya",
+                         "link": "https://forum.xda-developers.com/m/enesykaya.11130693",
+                         "country": "TR"
+                    },
+                    {
+                         "name": "marcomarinho",
+                         "link": "https://forum.xda-developers.com/m/marcomarinho.4811442/",
+                         "country": "PT"
+                    }
+               ],
+               "xda_thread": "https://forum.xda-developers.com/t/paranoid-android-topaz-1-oneplus-5-5t.4443517/"
+          },
+          {
+               "name": "5T",
+               "codename": "oneplus5t",
+               "manufacturer": "OnePlus",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "eneskaya",
+                         "link": "https://forum.xda-developers.com/m/enesykaya.11130693",
+                         "country": "TR"
+                    },
+                    {
+                         "name": "herna",
+                         "link": "https://forum.xda-developers.com/m/herna.2225255/",
+                         "country": "ES"
+                    }
+               ],
+               "xda_thread": "https://forum.xda-developers.com/t/paranoid-android-topaz-1-oneplus-5-5t.4443517/"
+          },
+          {
+               "name": "7T",
+               "codename": "oneplus7t",
+               "manufacturer": "OnePlus",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "timo_capa",
+                         "link": "https://forum.xda-developers.com/m/timo_capa.6294411/",
+                         "country": "DE"
+                    }
+               ],
+               "xda_thread": "https://forum.xda-developers.com/t/paranoid-android-topaz-1-oneplus-7.4556699/"
+          },
+          {
+               "name": "7T Pro",
+               "codename": "oneplus7tpro",
+               "manufacturer": "OnePlus",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "timo_capa",
+                         "link": "https://forum.xda-developers.com/m/timo_capa.6294411/",
+                         "country": "DE"
+                    }
+               ],
+               "xda_thread": "https://forum.xda-developers.com/t/paranoid-android-topaz-1-oneplus-7.4556699/"
+          },
+          {
+               "name": "7",
+               "codename": "oneplus7",
+               "manufacturer": "OnePlus",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "timo_capa",
+                         "link": "https://forum.xda-developers.com/m/timo_capa.6294411/",
+                         "country": "DE"
+                    }
+               ],
+               "xda_thread": "https://forum.xda-developers.com/t/paranoid-android-topaz-1-oneplus-7.4556699/"
+          },
+          {
+               "name": "7 Pro",
+               "codename": "oneplus7pro",
+               "manufacturer": "OnePlus",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "timo_capa",
+                         "link": "https://forum.xda-developers.com/m/timo_capa.6294411/",
+                         "country": "DE"
+                    }
+               ],
+               "xda_thread": "https://forum.xda-developers.com/t/paranoid-android-topaz-1-oneplus-7.4556699/"
+          },
+          {
+               "name": "8",
+               "codename": "oneplus8",
+               "manufacturer": "OnePlus",
+               "active": true,
+               "maintainers": [
+                    {
+                    "name": "33bca",
+                    "link": "https://forum.xda-developers.com/m/33bca.5296790/",
+                    "country": "CH"
+                    }
+               ],
+               "xda_thread": "https://forum.xda-developers.com/t/paranoid-android-sapphire-alpha-3-oneplus-8-t-pro-9r.4368039/"
+          },
+          {
+               "name": "8T",
+               "codename": "oneplus8t",
+               "manufacturer": "OnePlus",
+               "active": true,
+               "maintainers": [
+                    {
+                    "name": "33bca",
+                    "link": "https://forum.xda-developers.com/m/33bca.5296790/",
+                    "country": "CH"
+                    }
+               ],
+               "xda_thread": "https://forum.xda-developers.com/t/paranoid-android-sapphire-alpha-3-oneplus-8-t-pro-9r.4368039/"
+          },
+          {
+               "name": "8 Pro",
+               "codename": "oneplus8pro",
+               "manufacturer": "OnePlus",
+               "active": true,
+               "maintainers": [
+                    {
+                    "name": "33bca",
+                    "link": "https://forum.xda-developers.com/m/33bca.5296790/",
+                    "country": "CH"
+                    }
+               ],
+               "xda_thread": "https://forum.xda-developers.com/t/paranoid-android-sapphire-alpha-3-oneplus-8-t-pro-9r.4368039/"
+          },
+          {
+               "name": "9 / 9 Pro",
+               "codename": "oneplus9",
+               "manufacturer": "OnePlus",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "vishalcj17",
+                         "link": "https://forum.xda-developers.com/m/vishalcj17.9720197/",
+                         "country": "IN"
+                    }
+               ],
+               "xda_thread": "https://xdaforums.com/t/paranoid-android-uvite-beta-1-oneplus-9-series.4506887/"
+          },
+          {
+               "name": "9R",
+               "codename": "oneplus9r",
+               "manufacturer": "OnePlus",
+               "active": true,
+               "maintainers": [
+                    {
+                    "name": "33bca",
+                    "link": "https://forum.xda-developers.com/m/33bca.5296790/",
+                    "country": "CH"
+                    }
+               ],
+               "xda_thread": "https://forum.xda-developers.com/t/paranoid-android-sapphire-alpha-3-oneplus-8-t-pro-9r.4368039/"
+          },
+          {
+               "name": "F1",
+               "codename": "beryllium",
+               "manufacturer": "POCO",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "REIGNZ3",
+                         "link": "https://forum.xda-developers.com/m/reignz3.6549853/",
+                         "country": "IN"
+                    }
+               ],
+               "xda_thread": "https://forum.xda-developers.com/t/paranoid-android-topaz-beta-1-poco-f1.4541311/"
+          },
+          {
+               "name": "F2 Pro",
+               "codename": "lmi",
+               "manufacturer": "POCO",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "mickaelmendes50",
+                         "link": "https://forum.xda-developers.com/m/mickaelmendes50.7258823/",
+                         "country": "BR"
+                    }
+               ],
+               "xda_thread": "https://xdaforums.com/t/rom-official-paranoid-android-uvite-beta-poco-f2-pro-redmi-k30-pro-redmi-k30-pro-zoom-edition-lmi-lmipro.4649261/"
+          },
+          {
+               "name": "F3",
+               "codename": "alioth",
+               "manufacturer": "POCO",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "mickaelmendes50",
+                         "link": "https://forum.xda-developers.com/m/mickaelmendes50.7258823/",
+                         "country": "BR"
+                    }
+               ],
+               "xda_thread": "https://xdaforums.com/t/rom-official-paranoid-android-topaz-uvite-poco-f3-redmi-k40-mi-11x-alioth-aliothin.4649526/"
+          },
+          {
+               "name": "F4",
+               "codename": "munch",
+               "manufacturer": "POCO",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "mickaelmendes50",
+                         "link": "https://forum.xda-developers.com/m/mickaelmendes50.7258823/",
+                         "country": "BR"
+                    }
+               ],
+               "xda_thread": "https://xdaforums.com/t/rom-official-paranoid-android-uvite-poco-f4-redmi-k40s-munch.4649531/"
+          },
+          {
+               "name": "M2 Pro",
+               "codename": "miatoll",
+               "manufacturer": "POCO",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "BladeRunnerA2C",
+                         "link": "https://forum.xda-developers.com/m/bladerunnera2c.9156096/",
+                         "country": "BD"
+                    }
+               ],
+               "xda_thread": "https://forum.xda-developers.com/t/paranoid-android-topaz-1-miatoll.4555519/"
+          },
+          {
+               "name": "M3",
+               "codename": "juice",
+               "manufacturer": "POCO",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "ShelbyHell",
+                         "link": "https://forum.xda-developers.com/m/shelbyhell.12536597/",
+                         "country": "RU"
+                    }
+               ],
+               "xda_thread": "https://forum.xda-developers.com/t/paranoid-android-topaz-beta-1-poco-m3.4578313/"
+          },
+          {
+               "name": "M6 Pro",
+               "codename": "sky",
+               "manufacturer": "POCO",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "redducc",
+                         "link": "https://xdaforums.com/m/redducc.11452247/",
+                         "country": "IN"
+                    }
+               ],
+               "xda_thread": null
+          },
+          {
+               "name": "X2",
+               "codename": "phoenix",
+               "manufacturer": "POCO",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "malvigagan",
+                         "link": "https://forum.xda-developers.com/m/malvigagan.8323550/",
+                         "country": "IN"
+                    }
+               ],
+               "xda_thread": "https://forum.xda-developers.com/t/paranoid-android-topaz-1-redmi-k30-poco-x2.4508181/"
+          },
+          {
+               "name": "X3 / X3 NFC",
+               "codename": "surya",
+               "manufacturer": "POCO",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "chrisw444",
+                         "link": "https://forum.xda-developers.com/m/chrisw444.11220339/",
+                         "country": "BR"
+                    }
+               ],
+               "xda_thread": "https://forum.xda-developers.com/t/paranoid-android-topaz-stable-1-poco-x3-x3-nfc-karna-surya.4605809/"
+          },
+          {
+               "name": "X3 Pro",
+               "codename": "vayu",
+               "manufacturer": "POCO",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "raghavt20",
+                         "link": "https://forum.xda-developers.com/m/raghavt20.11102031/",
+                         "country": "IN"
+                    }
+               ],
+               "xda_thread": "https://forum.xda-developers.com/t/rom-official-paranoid-android-topaz-1-poco-x3-pro-bhima-vayu.4585859/"
+          },
+          {
+               "name": "GT2",
+               "codename": "porsche",
+               "manufacturer": "realme",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "kunmun36",
+                         "link": "https://xdaforums.com/m/kunmun36.12667599/",
+                         "country": "IN"
+                    },
+                    {
+                         "name": "xyz_sourav",
+                         "link": "https://xdaforums.com/m/xyz_sourav.11956971/",
+                         "country": "IN"
+                    }
+               ],
+               "xda_thread": "https://xdaforums.com/t/paranoid-android-uvite-realme-gt-2.4616375/"
+          },
+          {
+               "name": "GT Neo2 5G",
+               "codename": "bitra",
+               "manufacturer": "realme",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "TheMalachite",
+                         "link": "https://forum.xda-developers.com/m/themalachite.9609718/",
+                         "country": "FR"
+                    }
+               ],
+               "xda_thread": "https://forum.xda-developers.com/t/paranoid-android-topaz-beta-1-realme-gt-neo2-5g.4542395/"
+          },
+          {
+               "name": "X50 Pro 5G Play",
+               "codename": "bladerunner_48m",
+               "manufacturer": "realme",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "TheMalachite",
+                         "link": "https://forum.xda-developers.com/m/themalachite.9609718/",
+                         "country": "FR"
+                    }
+               ],
+               "xda_thread": "https://forum.xda-developers.com/t/paranoid-android-topaz-beta-1-realme-x50-pro-5g.4542397/"
+          },
+          {
+               "name": "X50 Pro 5G",
+               "codename": "bladerunner",
+               "manufacturer": "realme",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "TheMalachite",
+                         "link": "https://forum.xda-developers.com/m/themalachite.9609718/",
+                         "country": "FR"
+                    }
+               ],
+               "xda_thread": "https://forum.xda-developers.com/t/paranoid-android-topaz-beta-1-realme-x50-pro-5g.4542397/"
+          },
+          {
+               "name": "7A",
+               "codename": "mi439",
+               "manufacturer": "Redmi",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "jprimero15",
+                         "link": "https://forum.xda-developers.com/m/jprimero15.6561802/",
+                         "country": "PH"
+                    }
+               ],
+               "xda_thread": "https://forum.xda-developers.com/t/rom-official-paranoid-android-topaz-stable-redmi-7a-8-8a-8a-dual-mi439.4578293/"
+          },
+          {
+               "name": "7A (4.19)",
+               "codename": "mi439_419",
+               "manufacturer": "Redmi",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "jprimero15",
+                         "link": "https://forum.xda-developers.com/m/jprimero15.6561802/",
+                         "country": "PH"
+                    }
+               ],
+               "xda_thread": "https://xdaforums.com/t/rom-official-4-19-kernel-paranoid-android-uvite-redmi-7a-8-8a-8a-dual-mi439_419.4656885/"
+          },
+          {
+               "name": "8",
+               "codename": "mi439",
+               "manufacturer": "Redmi",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "jprimero15",
+                         "link": "https://forum.xda-developers.com/m/jprimero15.6561802/",
+                         "country": "PH"
+                    }
+               ],
+               "xda_thread": "https://forum.xda-developers.com/t/rom-official-paranoid-android-topaz-stable-redmi-7a-8-8a-8a-dual-mi439.4578293/"
+          },
+          {
+               "name": "8 (4.19)",
+               "codename": "mi439_419",
+               "manufacturer": "Redmi",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "jprimero15",
+                         "link": "https://forum.xda-developers.com/m/jprimero15.6561802/",
+                         "country": "PH"
+                    }
+               ],
+               "xda_thread": "https://xdaforums.com/t/rom-official-4-19-kernel-paranoid-android-uvite-redmi-7a-8-8a-8a-dual-mi439_419.4656885/"
+          },
+          {
+               "name": "8A",
+               "codename": "mi439",
+               "manufacturer": "Redmi",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "jprimero15",
+                         "link": "https://forum.xda-developers.com/m/jprimero15.6561802/",
+                         "country": "PH"
+                    }
+               ],
+               "xda_thread": "https://forum.xda-developers.com/t/rom-official-paranoid-android-topaz-stable-redmi-7a-8-8a-8a-dual-mi439.4578293/"
+          },
+          {
+               "name": "8A (4.19)",
+               "codename": "mi439_419",
+               "manufacturer": "Redmi",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "jprimero15",
+                         "link": "https://forum.xda-developers.com/m/jprimero15.6561802/",
+                         "country": "PH"
+                    }
+               ],
+               "xda_thread": "https://xdaforums.com/t/rom-official-4-19-kernel-paranoid-android-uvite-redmi-7a-8-8a-8a-dual-mi439_419.4656885/"
+          },
+          {
+               "name": "8A Dual",
+               "codename": "mi439",
+               "manufacturer": "Redmi",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "jprimero15",
+                         "link": "https://forum.xda-developers.com/m/jprimero15.6561802/",
+                         "country": "PH"
+                    }
+               ],
+               "xda_thread": "https://forum.xda-developers.com/t/rom-official-paranoid-android-topaz-stable-redmi-7a-8-8a-8a-dual-mi439.4578293/"
+          },
+          {
+               "name": "8A Dual (4.19)",
+               "codename": "mi439_419",
+               "manufacturer": "Redmi",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "jprimero15",
+                         "link": "https://forum.xda-developers.com/m/jprimero15.6561802/",
+                         "country": "PH"
+                    }
+               ],
+               "xda_thread": "https://xdaforums.com/t/rom-official-4-19-kernel-paranoid-android-uvite-redmi-7a-8-8a-8a-dual-mi439_419.4656885/"
+          },
+          {
+               "name": "9T",
+               "codename": "juice",
+               "manufacturer": "Redmi",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "ShelbyHell",
+                         "link": "https://forum.xda-developers.com/m/shelbyhell.12536597/",
+                         "country": "RU"
+                    }
+               ],
+               "xda_thread": "https://forum.xda-developers.com/t/paranoid-android-topaz-beta-1-redmi-9t.4578317/"
+          },
+          {
+               "name": "12 5G",
+               "codename": "sky",
+               "manufacturer": "Redmi",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "redducc",
+                         "link": "https://xdaforums.com/m/redducc.11452247/",
+                         "country": "IN"
+                    }
+               ],
+               "xda_thread": null
+          },
+          {
+               "name": "F5",
+               "codename": "marble",
+               "manufacturer": "POCO",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "adithya2306",
+                         "link": "https://xdaforums.com/m/adithya2306.6560166/",
+                         "country": "IN"
+                    },
+                    {
+                         "name": "gotenksIN",
+                         "link": "https://forum.xda-developers.com/m/omkartheandroid.5252623/",
+                         "country": "IN"
+                    }
+               ],
+               "xda_thread": "https://xdaforums.com/t/rom-13-paranoid-android-topaz-stable-1-poco-f5-redmi-note-12-turbo-marble.4635595/"
+          },
+          {
+               "name": "K30",
+               "codename": "phoenix",
+               "manufacturer": "Redmi",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "malvigagan",
+                         "link": "https://forum.xda-developers.com/m/malvigagan.8323550/",
+                         "country": "IN"
+                    }
+               ],
+               "xda_thread": "https://forum.xda-developers.com/t/paranoid-android-topaz-1-redmi-k30-poco-x2.4508181/"
+          },
+          {
+               "name": "K30 Pro",
+               "codename": "lmi",
+               "manufacturer": "Redmi",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "mickaelmendes50",
+                         "link": "https://forum.xda-developers.com/m/mickaelmendes50.7258823/",
+                         "country": "BR"
+                    }
+               ],
+               "xda_thread": "https://xdaforums.com/t/rom-official-paranoid-android-uvite-beta-poco-f2-pro-redmi-k30-pro-redmi-k30-pro-zoom-edition-lmi-lmipro.4649261/"
+          },
+          {
+               "name": "K30 Pro Zoom Edition",
+               "codename": "lmi",
+               "manufacturer": "Redmi",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "mickaelmendes50",
+                         "link": "https://forum.xda-developers.com/m/mickaelmendes50.7258823/",
+                         "country": "BR"
+                    }
+               ],
+               "xda_thread": "https://xdaforums.com/t/rom-official-paranoid-android-uvite-beta-poco-f2-pro-redmi-k30-pro-redmi-k30-pro-zoom-edition-lmi-lmipro.4649261/"
+          },
+          {
+               "name": "K40",
+               "codename": "alioth",
+               "manufacturer": "Redmi",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "mickaelmendes50",
+                         "link": "https://forum.xda-developers.com/m/mickaelmendes50.7258823/",
+                         "country": "BR"
+                    }
+               ],
+               "xda_thread": "https://xdaforums.com/t/rom-official-paranoid-android-topaz-uvite-poco-f3-redmi-k40-mi-11x-alioth-aliothin.4649526/"
+          },
+          {
+               "name": "K40S",
+               "codename": "munch",
+               "manufacturer": "Redmi",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "mickaelmendes50",
+                         "link": "https://forum.xda-developers.com/m/mickaelmendes50.7258823/",
+                         "country": "BR"
+                    }
+               ],
+               "xda_thread": "https://xdaforums.com/t/rom-official-paranoid-android-uvite-poco-f4-redmi-k40s-munch.4649531/"
+          },
+          {
+               "name": "Note 9 Pro Global",
+               "codename": "miatoll",
+               "manufacturer": "Redmi",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "BladeRunnerA2C",
+                         "link": "https://forum.xda-developers.com/m/bladerunnera2c.9156096/",
+                         "country": "BD"
+                    }
+               ],
+               "xda_thread": "https://forum.xda-developers.com/t/paranoid-android-topaz-1-miatoll.4555519/"
+          },
+          {
+               "name": "Note 9 Pro IN",
+               "codename": "miatoll",
+               "manufacturer": "Redmi",
+               "maintainers": [
+                    {
+                         "name": "BladeRunnerA2C",
+                         "link": "https://forum.xda-developers.com/m/bladerunnera2c.9156096/",
+                         "country": "BD"
+                    }
+               ],
+               "xda_thread": "https://forum.xda-developers.com/t/paranoid-android-topaz-1-miatoll.4555519/"
+          },
+          {
+               "name": "Note 9 Pro Max",
+               "codename": "miatoll",
+               "manufacturer": "Redmi",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "BladeRunnerA2C",
+                         "link": "https://forum.xda-developers.com/m/bladerunnera2c.9156096/",
+                         "country": "BD"
+                    }
+               ],
+               "xda_thread": "https://forum.xda-developers.com/t/paranoid-android-topaz-1-miatoll.4555519/"
+          },
+          {
+               "name": "Note 9S",
+               "codename": "miatoll",
+               "manufacturer": "Redmi",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "BladeRunnerA2C",
+                         "link": "https://forum.xda-developers.com/m/bladerunnera2c.9156096/",
+                         "country": "BD"
+                    }
+               ],
+               "xda_thread": "https://forum.xda-developers.com/t/paranoid-android-topaz-1-miatoll.4555519/"
+          },
+          {
+               "name": "Note 10",
+               "codename": "sunny",
+               "manufacturer": "Redmi",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "cyberknight777",
+                         "link": "https://xdaforums.com/m/cyberknight777.11696787/",
+                         "country": "AU"
+                    },
+                    {
+                         "name": "blur1103",
+                         "link": "https://xdaforums.com/m/blur1103.11813747/",
+                         "country": "PH"
+                    }
+               ],
+               "xda_thread": "https://xdaforums.com/t/paranoid-android-uvite-beta-1-redmi-note-10.4590321/"
+          },
+          {
+               "name": "Note 10 Lite",
+               "codename": "miatoll",
+               "manufacturer": "Redmi",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "BladeRunnerA2C",
+                         "link": "https://forum.xda-developers.com/m/bladerunnera2c.9156096/",
+                         "country": "BD"
+                    }
+               ],
+               "xda_thread": "https://forum.xda-developers.com/t/paranoid-android-topaz-1-miatoll.4555519/"
+          },
+          {
+               "name": "Note 11 / Note 11 NFC",
+               "codename": "spes",
+               "manufacturer": "Redmi",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "chrisw444",
+                         "link": "https://forum.xda-developers.com/m/chrisw444.11220339/",
+                         "country": "BR"
+                    }
+               ],
+               "xda_thread": "https://forum.xda-developers.com/t/paranoid-android-topaz-beta-1-redmi-note-11-11-nfc.4544771/"
+          },
+          {
+               "name": "Note 12 Turbo",
+               "codename": "marble",
+               "manufacturer": "Redmi",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "adithya2306",
+                         "link": "https://xdaforums.com/m/adithya2306.6560166/",
+                         "country": "IN"
+                    },
+                    {
+                         "name": "gotenksIN",
+                         "link": "https://forum.xda-developers.com/m/omkartheandroid.5252623/",
+                         "country": "IN"
+                    }
+               ],
+               "xda_thread": "https://xdaforums.com/t/rom-13-paranoid-android-topaz-stable-1-poco-f5-redmi-note-12-turbo-marble.4635595/"
+          },
+          {
+               "name": "12X",
+               "codename": "psyche",
+               "manufacturer": "Xiaomi",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "mickaelmendes50",
+                         "link": "https://forum.xda-developers.com/m/mickaelmendes50.7258823/",
+                         "country": "BR"
+                    }
+               ],
+               "xda_thread": "https://xdaforums.com/t/rom-official-paranoid-android-topaz-beta-xiaomi-12x-psyche.4649265/"
+          },
+          {
+               "name": "13",
+               "codename": "fuxi",
+               "manufacturer": "Xiaomi",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "33bca",
+                         "link": "https://forum.xda-developers.com/m/33bca.5296790/",
+                         "country": "CH"
+                    }
+               ],
+               "xda_thread": "https://xdaforums.com/t/paranoid-android-uvite-xiaomi-13.4630549/"
+          },
+          {
+               "name": "13 Pro",
+               "codename": "nuwa",
+               "manufacturer": "Xiaomi",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "33bca",
+                         "link": "https://forum.xda-developers.com/m/33bca.5296790/",
+                         "country": "CH"
+                    }
+               ],
+               "xda_thread": "https://xdaforums.com/t/paranoid-android-uvite-xiaomi-13-pro.4648715/"
+          },
+          {
+               "name": "13 Ultra",
+               "codename": "ishtar",
+               "manufacturer": "Xiaomi",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "33bca",
+                         "link": "https://forum.xda-developers.com/m/33bca.5296790/",
+                         "country": "CH"
+                    }
+               ],
+               "xda_thread": "https://xdaforums.com/t/paranoid-android-uvite-xiaomi-13-ultra.4674033/"
+          },
+          {
+               "name": "Mi 8",
+               "codename": "dipper",
+               "manufacturer": "Xiaomi",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "rtx4d",
+                         "link": "https://forum.xda-developers.com/m/rtx4d.6400169/",
+                         "country": "RU"
+                    }
+               ],
+               "xda_thread": "https://forum.xda-developers.com/t/paranoid-android-sapphire-alpha-2-mi-8.4396061/"
+          },
+          {
+               "name": "Mi 8 Explorer Edition",
+               "codename": "ursa",
+               "manufacturer": "Xiaomi",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "rtx4d",
+                         "link": "https://forum.xda-developers.com/m/rtx4d.6400169/",
+                         "country": "RU"
+                    }
+               ],
+               "xda_thread": "https://forum.xda-developers.com/t/paranoid-android-sapphire-alpha-1-xiaomi-mi-8-pro-explorer-edition.4407105/"
+          },
+          {
+               "name": "Mi 8 Pro",
+               "codename": "equuleus",
+               "manufacturer": "Xiaomi",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "rtx4d",
+                         "link": "https://forum.xda-developers.com/m/rtx4d.6400169/",
+                         "country": "RU"
+                    }
+               ],
+               "xda_thread": "https://forum.xda-developers.com/t/paranoid-android-sapphire-alpha-1-xiaomi-mi-8-pro-explorer-edition.4407105/"
+          },
+          {
+               "name": "Mi 10",
+               "codename": "umi",
+               "manufacturer": "Xiaomi",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "ChaptSand",
+                         "link": "https://forum.xda-developers.com/m/chaptsand.10891663/",
+                         "country": "CN"
+                    }
+               ],
+               "xda_thread": "https://forum.xda-developers.com/t/paranoid-android-sapphire-alpha-2-xiaomi-mi-10.4370977/"
+          },
+          {
+               "name": "Mi 10T / Mi 10T Pro",
+               "codename": "apollo",
+               "manufacturer": "Xiaomi",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "mahajant99",
+                         "link": "https://xdaforums.com/m/mahajant99.9505787/",
+                         "country": "IN"
+                    }
+               ],
+               "xda_thread": "https://xdaforums.com/t/paranoid-android-uvite-beta-1-xiaomi-mi-10t-10t-pro.4651322/"
+          },
+          {
+               "name": "Mi 11X",
+               "codename": "alioth",
+               "manufacturer": "Xiaomi",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "mickaelmendes50",
+                         "link": "https://forum.xda-developers.com/m/mickaelmendes50.7258823/",
+                         "country": "BR"
+                    }
+               ],
+               "xda_thread": "https://xdaforums.com/t/rom-official-paranoid-android-topaz-uvite-poco-f3-redmi-k40-mi-11x-alioth-aliothin.4649526/"
+          },
+          {
+               "name": "Mi 11 LE",
+               "codename": "lisa",
+               "manufacturer": "Xiaomi",
+               "active": false,
+               "maintainers": [
+                    {
+                         "name": "adithya2306",
+                         "link": "https://xdaforums.com/m/adithya2306.6560166/",
+                         "country": "IN"
+                    }
+               ],
+               "xda_thread": "https://forum.xda-developers.com/t/paranoid-android-topaz-1-xiaomi-11-lite-ne-5g-mi-11-le-lisa.4579973/"
+          },
+          {
+               "name": "11 Lite NE",
+               "codename": "lisa",
+               "manufacturer": "Xiaomi",
+               "active": false,
+               "maintainers": [
+                    {
+                         "name": "adithya2306",
+                         "link": "https://xdaforums.com/m/adithya2306.6560166/",
+                         "country": "IN"
+                    }
+               ],
+               "xda_thread": "https://forum.xda-developers.com/t/paranoid-android-topaz-1-xiaomi-11-lite-ne-5g-mi-11-le-lisa.4579973/"
+          },
+          {
+               "name": "Mi Mix 2S",
+               "codename": "polaris",
+               "manufacturer": "Xiaomi",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "rtx4d",
+                         "link": "https://forum.xda-developers.com/m/rtx4d.6400169/",
+                         "country": "RU"
+                    }
+               ],
+               "xda_thread": "https://forum.xda-developers.com/t/paranoid-android-sapphire-alpha-2-mi-mix-2s.4396059/"
+          },
+          {
+               "name": "Mi Mix 3",
+               "codename": "perseus",
+               "manufacturer": "Xiaomi",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "rtx4d",
+                         "link": "https://forum.xda-developers.com/m/rtx4d.6400169/",
+                         "country": "RU"
+                    }
+               ],
+               "xda_thread": "https://forum.xda-developers.com/t/paranoid-android-sapphire-alpha-2-mi-mix-3.4400743/"
+          },
+          {
+               "name": "QRD SM72xx",
+               "codename": "lito",
+               "manufacturer": "Qualcomm",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "EdwardWu",
+                         "link": "https://xdaforums.com/m/edwardwu6688.9280256/",
+                         "country": "TW"
+                    }
+               ],
+               "xda_thread": ""
+          },
+          {
+               "name": "QRD SM8350",
+               "codename": "lahaina",
+               "manufacturer": "Qualcomm",
+               "active": true,
+               "maintainers": [
+                    {
+                         "name": "EdwardWu",
+                         "link": "https://xdaforums.com/m/edwardwu6688.9280256/",
+                         "country": "TW"
+                    }
+               ],
+               "xda_thread": ""
+          }
+     ]
+}

@@ -1,0 +1,540 @@
+[
+   {
+      "brand": "Asus",
+      "codename": "I001D",
+      "name": "ROG 2",
+      "supported_versions": [
+         {
+            "maintainer_name": "StudioKeys, Jackeagle",
+            "support_thread": "https://t.me/ROGBliss"
+         }
+      ]
+   },
+   {
+      "brand": "Asus",
+      "codename": "obiwan",
+      "name": "ROG 3",
+      "supported_versions": [
+         {
+            "maintainer_name": "Jackeagle",
+            "support_thread": "https://t.me/ROGBliss"
+         }
+      ]
+   },
+   {
+      "brand": "Asus",
+      "codename": "Z01R",
+      "name": "Zenfone 5Z",
+      "supported_versions": [
+         {
+            "maintainer_name": "Aryan Arora",
+            "support_thread": "https://t.me/+UntwCSZ3Yw4CW35F"
+         }
+      ]
+   },
+   {
+      "brand": "Asus",
+      "codename": "I01WD",
+      "name": "Zenfone 6",
+      "supported_versions": [
+         {
+            "maintainer_name": "Jackeagle",
+            "support_thread": "https://t.me/Team_Bliss_Community"
+         }
+      ]
+   },
+   {
+      "brand": "Asus",
+      "codename": "X01BD",
+      "name": "Zenfone Max Pro M2",
+      "supported_versions": [
+         {
+            "maintainer_name": "tioburla",
+            "support_thread": "https://t.me/Team_Bliss_Community"
+         }
+      ]
+   },
+   {
+      "brand": "Asus",
+      "codename": "X00TD",
+      "name": "Zenfone Max Pro M1",
+      "supported_versions": [
+         {
+            "maintainer_name": " ATANYTHING ",
+            "support_thread": "https://t.me/mst_roms_X00T"
+         }
+      ]
+   },
+   {
+      "brand": "Asus",
+      "codename": "AI2202",
+      "name": "Zenfone 9",
+      "supported_versions": [
+         {
+            "maintainer_name": "Jackeagle",
+            "support_thread": "https://t.me/Team_Bliss_Community"
+         }
+      ]
+   },
+   {
+      "brand": "Google",
+      "codename": "sargo",
+      "name": "Pixel 3A",
+      "supported_versions": [
+         {
+            "maintainer_name": "stebomurkn420",
+            "support_thread": "https://t.me/Team_Bliss_Community"
+         }
+      ]
+   },
+   {
+      "brand": "Google",
+      "codename": "bonito",
+      "name": "Pixel 3A XL",
+      "supported_versions": [
+         {
+            "maintainer_name": "stebomurkn420",
+            "support_thread": "https://t.me/Team_Bliss_Community"
+         }
+      ]
+   },
+   {
+      "brand": "Google",
+      "codename": "coral",
+      "name": "Pixel 4 XL",
+      "supported_versions": [
+         {
+            "maintainer_name": "stebomurkn420",
+            "support_thread": "https://t.me/Team_Bliss_Community"
+         }
+      ]
+   },
+   {
+      "brand": "Google",
+      "codename": "sunfish",
+      "name": "Pixel 4A",
+      "supported_versions": [
+         {
+            "maintainer_name": "Jackeagle",
+            "support_thread": "https://t.me/Team_Bliss_Community"
+         }
+      ]
+   },
+   {
+      "brand": "Google",
+      "codename": "redfin",
+      "name": "Pixel 5",
+      "supported_versions": [
+         {
+            "maintainer_name": "stebomurkn420",
+            "support_thread": "https://t.me/Team_Bliss_Community"
+         }
+      ]
+   },
+   {
+      "brand": "Google",
+      "codename": "barbet",
+      "name": "Pixel 5a",
+      "supported_versions": [
+         {
+            "maintainer_name": "Jackeagle",
+            "support_thread": "https://t.me/Team_Bliss_Community"
+         }
+      ]
+   },
+   {
+      "brand": "Google",
+      "codename": "oriole",
+      "name": "Pixel 6",
+      "supported_versions": [
+         {
+            "maintainer_name": "stebomurkn420",
+            "support_thread": "https://t.me/Team_Bliss_Community"
+         }
+      ]
+   },
+   {
+      "brand": "Google",
+      "codename": "raven",
+      "name": "Pixel 6 Pro",
+      "supported_versions": [
+         {
+            "maintainer_name": "stebomurkn420",
+            "support_thread": "https://t.me/Team_Bliss_Community"
+         }
+      ]
+   },
+   {
+      "brand": "Google",
+      "codename": "bluejay",
+      "name": "Pixel 6a",
+      "supported_versions": [
+         {
+            "maintainer_name": "stebomurkn420",
+            "support_thread": "https://t.me/Team_Bliss_Community"
+         }
+      ]
+   },
+   {
+      "brand": "OnePlus",
+      "codename": "oneplus3",
+      "name": "3/3T",
+      "supported_versions": [
+         {
+            "maintainer_name": "aquariusjr10",
+            "support_thread": "https://t.me/Team_Bliss_Community"
+         }
+      ]
+   },
+   {
+      "brand": "OnePlus",
+      "codename": "enchilada",
+      "name": "6",
+      "supported_versions": [
+         {
+            "maintainer_name": "srgrusso",
+            "support_thread": "https://t.me/Team_Bliss_Community"
+         }
+      ]
+   },
+   {
+      "brand": "OnePlus",
+      "codename": "fajita",
+      "name": "6T",
+      "supported_versions": [
+         {
+            "maintainer_name": "srgrusso",
+            "support_thread": "https://forum.xda-developers.com/t/rom-official-a12-gapps-blissroms-16-x-fajita.4510773/"
+         }
+      ]
+   },
+   {
+      "brand": "OnePlus",
+      "codename": "guacamole",
+      "name": "7 Pro",
+      "supported_versions": [
+         {
+            "maintainer_name": "srgrusso",
+            "support_thread": "https://forum.xda-developers.com/t/rom-official-a13-gapps-blissroms-16-x-guacamole.4509881/"
+         }
+      ]
+   },
+   {
+      "brand": "OnePlus",
+      "codename": "hotdogb",
+      "name": "7T",
+      "supported_versions": [
+         {
+            "maintainer_name": "Czarsuperstar",
+            "support_thread": "https://t.me/Team_Bliss_Community"
+         }
+      ]
+   },
+   {
+      "brand": "OnePlus",
+      "codename": "kebab",
+      "name": "8T/9R",
+      "supported_versions": [
+         {
+            "maintainer_name": "EvilVenom",
+            "support_thread": "https://t.me/Team_Bliss_Community"
+         }
+      ]
+   },
+   {
+      "brand": "Oneplus",
+      "codename": "instantnoodlep",
+      "name": "8 Pro",
+      "supported_versions": [
+         {
+            "maintainer_name": "Freesoul00",
+            "support_thread": "https://t.me/freesoulsgroup"
+         }
+      ]
+   },
+   {
+      "brand": "OnePlus",
+      "codename": "lemonadep",
+      "name": "9 Pro",
+      "supported_versions": [
+         {
+            "maintainer_name": "srgrusso",
+            "support_thread": "https://forum.xda-developers.com/t/rom-official-a13-gapps-oneplus-cam-blissroms-16-x-lemonadep.4509505/"
+         }
+      ]
+   },   {
+      "brand": "OnePlus",
+      "codename": "avicii",
+      "name": "Nord",
+      "supported_versions": [
+         {
+            "maintainer_name": "Keertesh",
+            "support_thread": "https://t.me/blissnord"
+         }
+      ]
+   },
+   {
+      "brand": "Realme",
+      "codename": "RMX1921",
+      "name": "XT",
+      "supported_versions": [
+         {
+            "maintainer_name": "ayanm09",
+            "support_thread": "https://t.me/RealmeXTofficial"
+         }
+      ]
+   },
+   {
+      "brand": "Samsung",
+      "codename": "crownlte",
+      "name": "Galaxy Note 9",
+      "supported_versions": [
+         {
+            "maintainer_name": "garett_09",
+            "support_thread": "https://t.me/Team_Bliss_Community"
+         }
+      ]
+   },
+   {
+      "brand": "Samsung",
+      "codename": "starlte",
+      "name": "Galaxy S9",
+      "supported_versions": [
+         {
+            "maintainer_name": "garett_09",
+            "support_thread": "https://t.me/Team_Bliss_Community"
+         }
+      ]
+   },
+   {
+      "brand": "Samsung",
+      "codename": "star2lte",
+      "name": "Galaxy S9+",
+      "supported_versions": [
+         {
+            "maintainer_name": "garett_09",
+            "support_thread": "https://t.me/Team_Bliss_Community"
+         }
+      ]
+   },
+   {
+      "brand": "Xiaomi",
+      "codename": "apollo",
+      "name": "Mi 10T",
+      "supported_versions": [
+         {
+            "maintainer_name": "adeveloper79",
+            "support_thread": "https://t.me/Team_Bliss_Community"
+         }
+      ]
+   },
+   {
+      "brand": "Xiaomi",
+      "codename": "pyxis",
+      "name": "Mi 9 Lite | Mi CC9 | Mi CC9 Meitu Edition",
+      "supported_versions": [
+         {
+            "maintainer_name": "Naassom Dourado",
+            "support_thread": "https://t.me/romhubnd"
+         }
+      ]
+   },
+   {
+      "brand": "Xiaomi",
+      "codename": "laurel_sprout",
+      "name": "Mi A3",
+      "supported_versions": [
+         {
+            "maintainer_name": "Magicxavi",
+            "support_thread": "https://t.me/syberia_laurel_sprout"
+         }
+      ]
+   },
+   {
+      "brand": "Xiaomi",
+      "codename": "chime",
+      "name": "POCO M3 / Redmi 9T / Redmi 9 Power / Redmi Note 9 4G",
+      "supported_versions": [
+         {
+            "maintainer_name": "Ayan",
+            "support_thread": "https://t.me/ayanot69"
+         }
+      ]
+   },
+   {
+      "brand": "Xiaomi",
+      "codename": "beryllium",
+      "name": "Poco F1",
+      "supported_versions": [
+         {
+            "maintainer_name": "EvilVenom",
+            "support_thread": "https://t.me/Team_Bliss_Community"
+         }
+      ]
+   },
+   {
+      "brand": "Xiaomi",
+      "codename": "lmi",
+      "name": "Poco F2 Pro",
+      "supported_versions": [
+         {
+            "maintainer_name": "Macka76",
+            "support_thread": "https://t.me/mackabuilds"
+         }
+      ]
+   },
+   {
+      "brand": "Xiaomi",
+      "codename": "alioth",
+      "name": "Poco F3 / Redmi K40 / Mi 11X",
+      "supported_versions": [
+         {
+            "maintainer_name": "Dark_Phoenix",
+            "support_thread": "https://t.me/spsalioth"
+         }
+      ]
+   },
+   {
+      "brand": "Xiaomi",
+      "codename": "phoenix",
+      "name": "Poco X2 / Redmi K30",
+      "supported_versions": [
+         {
+            "maintainer_name": "Shripal17",
+            "support_thread": "https://t.me/Unofficial_X2"
+         }
+      ]
+   },
+   {
+      "brand": "Xiaomi",
+      "codename": "vayu",
+      "name": "Poco X3 Pro",
+      "supported_versions": [
+         {
+            "maintainer_name": "Alisson Grizotti",
+            "support_thread": "https://t.me/BagualChat"
+         }
+      ]
+   },
+   {
+      "brand": "Xiaomi",
+      "codename": "raphael",
+      "name": "Redmi K20 Pro / Mi 9T Pro",
+      "supported_versions": [
+         {
+            "maintainer_name": "taran107",
+            "support_thread": "https://t.me/Team_Bliss_Community"
+         }
+      ]
+   },
+   {
+      "brand": "Xiaomi",
+      "codename": "mojito",
+      "name": "Redmi Note 10",
+      "supported_versions": [
+         {
+            "maintainer_name": "Royal_King_0",
+            "support_thread": "https://t.me/Team_Bliss_Community"
+         }
+      ]
+   },
+   {
+      "brand": "Xiaomi",
+      "codename": "sweet",
+      "name": "Redmi Note 10 Pro/Max",
+      "supported_versions": [
+         {
+            "maintainer_name": "ραναи-ρα∂αмαтα",
+            "support_thread": "https://t.me/pavanbuilds"
+         }
+      ]
+   },
+   {
+      "brand": "Xiaomi",
+      "codename": "kenzo",
+      "name": "Redmi Note 3",
+      "supported_versions": [
+         {
+            "maintainer_name": "Magicxavi",
+            "support_thread": "https://t.me/Team_Bliss_Community"
+         }
+      ]
+   },
+   {
+      "brand": "Xiaomi",
+      "codename": "violet",
+      "name": "Redmi Note 7 Pro",
+      "supported_versions": [
+         {
+            "maintainer_name": "Jash Vakharia (brucetech)",
+            "support_thread": "https://t.me/Team_Bliss_Community"
+         }
+      ]
+   },
+   {
+      "brand": "Xiaomi",
+      "codename": "lavender",
+      "name": "Redmi Note 7/7S",
+      "supported_versions": [
+         {
+            "maintainer_name": "sohamsen",
+            "support_thread": "https://t.me/Team_Bliss_Community"
+         }
+      ]
+   },
+   {
+      "brand": "Xiaomi",
+      "codename": "ginkgo",
+      "name": "Redmi Note 8 / 8T",
+      "supported_versions": [
+         {
+            "maintainer_name": "reza",
+            "support_thread": "https://t.me/Team_Bliss_Community"
+         }
+      ]
+   },
+   {
+      "brand": "Xiaomi",
+      "codename": "miatoll",
+      "name": "Redmi Note 9S/9 Pro/Pro Max/POCO M2 Pro",
+      "supported_versions": [
+         {
+            "maintainer_name": "SwapnilVicky",
+            "support_thread": "https://t.me/LOS_Miatoll"
+         }
+      ]
+   },
+   {
+      "brand": "Xiaomi",
+      "codename": "haydn",
+      "name": " Xiaomi Redmi K40 Pro / Redmi K40 Pro+ / Mi 11X Pro / Mi 11i",
+      "supported_versions": [
+         {
+            "maintainer_name": "AyanC1",
+            "support_thread": "https://t.me/Team_Bliss_Community"
+         }
+      ]
+   },
+   {
+      "brand": "Xiaomi",
+      "codename": "vince",
+      "name": "Redmi Note 5",
+      "supported_versions": [
+         {
+            "maintainer_name": "GamingGhost",
+            "support_thread": "https://t.me/BlissRomsVince"
+         }
+      ]
+   },
+   {
+      "brand": "Xiaomi",
+      "codename": "begonia",
+      "name": "Redmi Note 8 Pro",
+      "supported_versions": [
+         {
+            "maintainer_name": "overlang",
+            "support_thread": "https://t.me/Team_Bliss_Community"
+         }
+      ]
+   }
+]

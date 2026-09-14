@@ -1,0 +1,16 @@
+include:
+  - project: 'e/os/releases'
+    ref: master
+    file: '/templates/.gitlab-ci.yml'
+
+update-manifest-s:
+  extends: .update-manifest
+
+check-version:
+  extends: .check-version
+
+trigger-build-s-official:
+  extends: .trigger-build-official
+  variables:
+    DEVICES: "dreamlte dream2lte GS290 herolte hero2lte one"
+    BUILD_BRANCH: "v1-s"

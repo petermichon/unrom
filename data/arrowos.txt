@@ -1,0 +1,53 @@
+#
+# Official devices list
+#
+# This will be parsed by our configs platform for initial setup
+# and configuration with jenkins.
+#
+# Format:
+# <device codename> <buildtype> <chipset>
+#
+# F.A.Q:
+# <device codename>  -  Official device codename used all over
+#                        the platform.
+#
+# <buildtype>        -  The default stable buildtype.
+#
+# <chipset>          -  Specify your device chipset. This will be used
+#                       to assign the device to its appropriate jenkins node.
+#
+# Explicit declaration for nodes (Just in case)
+# $ - node1
+# @ - node 2
+# ! - node 3
+# ^ - node 4
+#
+# Example:
+# ! z2_plus userdebug msm8996
+# This will put z2_plus on node3 even if we mention msm8996 to be on different node.
+# REMEMBER: <chipset> can be the platform family chipset or exact device chipset as
+# it is only used for assigning similar devices to a similar nodes and nothing else.
+#
+
+! apollo userdebug sm8250
+! beryllium userdebug sdm845
+! davinci userdebug sm6150
+! dubai userdebug sm8350
+! elish userdebug sm8250
+! G userdebug msm8953
+! ginkgo userdebug sm6125
+! jasmine_sprout userdebug sdm660
+! lavender userdebug sdm660
+! lisa userdebug sm8350
+! munch userdebug sm8250
+! nabu userdebug sm8150
+! opkona userdebug sm8250
+! RMX1851 userdebug sdm710
+! RMX2020 userdebug mt6768
+! salaa userdebug mt6785
+! Spacewar userdebug sm8350
+! tulip userdebug sdm660
+! vayu userdebug sm8150
+! violet userdebug sm6150
+! X00TD userdebug sdm660
+! Z01R userdebug sdm845

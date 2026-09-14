@@ -1,0 +1,44 @@
+{
+  "name": "unrom-web",
+  "type": "module",
+  "version": "0.0.1",
+  "private": true,
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "dev": "react-router dev",
+    "build": "react-router build",
+    "preview": "vite preview --outDir build/client",
+    "typecheck": "react-router typegen && tsc"
+  },
+  "dependencies": {
+    "@base-ui/react": "^1.8.0",
+    "@fontsource-variable/roboto": "^5.3.0",
+    "@fontsource-variable/roboto-mono": "^5.3.0",
+    "@react-router/node": "^8",
+    "@tanstack/react-table": "^8.21.3",
+    "@unrom/contract": "*",
+    "class-variance-authority": "^0.7.1",
+    "cmdk": "^1.1.1",
+    "cn": "^0.3.0",
+    "isbot": "^5",
+    "lucide-react": "^1.45.0",
+    "next-themes": "^0.4.6",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "react-router": "^8",
+    "shadcn": "^4.21.0",
+    "tw-animate-css": "^1.4.0"
+  },
+  "devDependencies": {
+    "@react-router/dev": "^8",
+    "@tailwindcss/vite": "^4.2.2",
+    "@types/node": "^24",
+    "@types/react": "~19.3.0",
+    "@types/react-dom": "~19.3.0",
+    "tailwindcss": "^4.2.2",
+    "typescript": "~6.0.0",
+    "vite": "^8.0.3"
+  }
+}

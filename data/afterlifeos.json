@@ -1,0 +1,494 @@
+{
+    "devices": [
+        {
+            "name": "Asus Zenfone Max Pro M1",
+            "codename": "X00TD",
+            "brand": "Asus",
+            "maintainer": "EunjiX",
+            "github_username": "Tiktodz",
+            "image_url": "https://vitormattos.github.io/poc-lineageos-cellphone-list-statics//images/devices/X00TD.png",
+            "pling_id": "2162279",
+            "status": "Active"
+        },
+        {
+            "name": "Asus Zenfone Max Pro M2",
+            "codename": "X01BD",
+            "brand": "Asus",
+            "maintainer": "EunjiX",
+            "github_username": "Tiktodz",
+            "image_url": "https://i.ibb.co.com/pBmWK5SG/00d90384a092e318c4bcd6ce5f5c2a73-removebg-preview.png",
+            "pling_id": "2351020",
+            "status": "Active"
+        },
+        {
+            "name": "Pixel 8",
+            "codename": "shiba",
+            "brand": "Google",
+            "maintainer": "Iverz",
+            "github_username": "asterixiverz",
+            "image_url": "https://wiki.lineageos.org/images/devices/shiba.png",
+            "pling_id": "2330204",
+            "status": "Active"
+        },
+        {
+            "name": "Pixel 8 Pro",
+            "codename": "husky",
+            "brand": "Google",
+            "maintainer": "Iverz",
+            "github_username": "asterixiverz",
+            "image_url": "https://wiki.lineageos.org/images/devices/husky.png",
+            "pling_id": "2328722",
+            "status": "Active"
+        },
+        {
+            "name": "Pixel 8a",
+            "codename": "akita",
+            "brand": "Google",
+            "maintainer": "Iverz",
+            "github_username": "asterixiverz",
+            "image_url": "https://wiki.lineageos.org/images/devices/akita.png",
+            "pling_id": "2330261",
+            "status": "Active"
+        },
+        {
+            "name": "Itel RS4",
+            "codename": "S666LN",
+            "brand": "Itel",
+            "maintainer": "KimelaZPrjkt",
+            "github_username": "KimelaZX",
+            "image_url": "https://i.ibb.co.com/Dg49G8TS/1000192577-removebg-preview.png",
+            "pling_id": "2240006",
+            "status": "Active"
+        },
+        {
+            "name": "Moto G73 5G",
+            "codename": "devonf",
+            "brand": "Motorola",
+            "maintainer": "user@linux",
+            "github_username": "kjdev16",
+            "image_url": "https://i.ibb.co.com/GfHynsyQ/1000192579-removebg-preview.png",
+            "pling_id": "2336768",
+            "status": "Active"
+        },
+        {
+            "name": "POCO F5",
+            "codename": "marble",
+            "brand": "Xiaomi",
+            "maintainer": "MAULSxSMG",
+            "github_username": "Maulanariaddy",
+            "image_url": "https://i.ibb.co.com/kgLptHNc/1000192581-removebg-preview.png",
+            "pling_id": "2218801",
+            "status": "Active"
+        },
+        {
+            "name": "POCO F7",
+            "codename": "onyx",
+            "brand": "Xiaomi",
+            "maintainer": "franlop77",
+            "github_username": "chuspita",
+            "image_url": "https://i.ibb.co.com/Ndgdqj28/db59999836d4ed20489fe9a3c9ce9189.png",
+            "pling_id": "2329496",
+            "status": "Active"
+        },
+        {
+            "name": "Realme 5 Pro",
+            "codename": "RMX1971",
+            "brand": "Realme",
+            "maintainer": "Bava7325",
+            "github_username": "kaderbava",
+            "image_url": "https://i.ibb.co.com/HTWF9qB8/1000192614-removebg-preview.png",
+            "pling_id": "2162284",
+            "status": "Active"
+        },
+        {
+            "name": "Realme 6 Pro",
+            "codename": "RMX2061",
+            "brand": "Realme",
+            "maintainer": "AminFauzi",
+            "github_username": "aminfauzi",
+            "image_url": "https://i.ibb.co.com/PGv5zHjw/1000192616-removebg-preview.png",
+            "pling_id": "2336208",
+            "status": "Active"
+        },
+        {
+            "name": "Redmi 5 Plus",
+            "codename": "vince",
+            "brand": "Xiaomi",
+            "maintainer": "RenzAlt",
+            "github_username": "imren0x",
+            "image_url": "https://i.ibb.co.com/rGKdMNWB/pms-1543765940-08298261-600x600-85.png",
+            "pling_id": "2162217",
+            "status": "Active"
+        },
+        {
+            "name": "Redmi S2/Y2",
+            "codename": "ysl",
+            "brand": "Xiaomi",
+            "maintainer": "RenzAlt",
+            "github_username": "imren0x",
+            "image_url": "https://i.ibb.co.com/9Hh54q72/1000230702-removebg-preview.png",
+            "pling_id": "2162218",
+            "status": "Active"
+        },
+        {
+            "name": "Redmi Note 9 Pro",
+            "codename": "joyeuse",
+            "brand": "Xiaomi",
+            "maintainer": "Cursed",
+            "github_username": "anulalat",
+            "image_url": "https://i.ibb.co.com/LzHVkkxD/pms-1595328229-66393201-600x600-85.png",
+            "pling_id": "2162276",
+            "status": "Active"
+        },
+        {
+            "name": "Galaxy A51",
+            "codename": "a51",
+            "brand": "Samsung",
+            "maintainer": "PARBINDAR7",
+            "github_username": "FelcoX",
+            "image_url": "https://i.ibb.co.com/V1XgWVc/1000192621-removebg-preview.png",
+            "pling_id": "2338859",
+            "status": "Active"
+        },
+        {
+            "name": "Galaxy M21",
+            "codename": "m21",
+            "brand": "Samsung",
+            "maintainer": "PARBINDAR7",
+            "github_username": "FelcoX",
+            "image_url": "https://i.ibb.co.com/21R2jBHx/1000192625-removebg-preview.png",
+            "pling_id": "2339075",
+            "status": "Active"
+        },
+        {
+            "name": "Galaxy M31",
+            "codename": "m31",
+            "brand": "Samsung",
+            "maintainer": "PARBINDAR7",
+            "github_username": "FelcoX",
+            "image_url": "https://i.ibb.co.com/ns9VYQV9/1000192627-removebg-preview.png",
+            "pling_id": "2338632",
+            "status": "Active"
+        },
+        {
+            "name": "Galaxy S10+",
+            "codename": "beyond2lte",
+            "brand": "Samsung",
+            "maintainer": "Iverz",
+            "github_username": "asterixiverz",
+            "image_url": "https://i.ibb.co.com/G30NWfxK/beyond2lte-removebg-preview.png",
+            "pling_id": "2351117",
+            "status": "Active"
+        },
+        {
+            "name": "POCO F3",
+            "codename": "alioth",
+            "brand": "Xiaomi",
+            "maintainer": "OnettBoots&Yaseakun",
+            "github_username": "skenakun",
+            "image_url": "https://i.ibb.co.com/JjR2BX2X/669d86c5-e3b8-e90b-70db-5addb2b9d329-890a4b7db7a5bec14be21049fc656fee.png",
+            "pling_id": "2162280",
+            "status": "Active"
+        },
+        {
+            "name": "POCO F4",
+            "codename": "munch",
+            "brand": "Xiaomi",
+            "maintainer": "Kenskuyy",
+            "github_username": "kenaidi01",
+            "image_url": "https://i.ibb.co.com/Ng2YB3zC/pms-1655810010-28138527.png",
+            "pling_id": "2162220",
+            "status": "Active"
+        },
+        {
+            "name": "POCO F6 / Redmi Turbo 3",
+            "codename": "peridot",
+            "brand": "Xiaomi",
+            "maintainer": "ramshell688",
+            "github_username": "ramshell688",
+            "image_url": "https://i.ibb.co.com/zW96MVrw/1000192590-removebg-preview.png",
+            "pling_id": "2218300",
+            "status": "Active"
+        },
+        {
+            "name": "POCO X3 NFC",
+            "codename": "surya",
+            "brand": "Xiaomi",
+            "maintainer": "Skyy丨アラタ",
+            "github_username": "HinohArata",
+            "image_url": "https://i.ibb.co.com/jP6hdQXH/pms-1602671103-00774506-600x600-85.png",
+            "pling_id": "2162213",
+            "status": "Active"
+        },
+        {
+            "name": "POCO F7 Pro",
+            "codename": "zorn",
+            "brand": "Xiaomi",
+            "maintainer": "SMGReborn",
+            "github_username": "vherawidatama",
+            "image_url": "https://i.ibb.co.com/5JHL5Gf/7e4946161a115c142b9a4880b1551778.png",
+            "pling_id": "2324143",
+            "status": "Active"
+        },
+        {
+            "name": "POCO X4 Pro",
+            "codename": "veux",
+            "brand": "Xiaomi",
+            "maintainer": "MrTopiA",
+            "github_username": "MrTopia",
+            "image_url": "https://i.ibb.co.com/YTZC6Krm/redmi-note-11-pro-5g-removebg-preview.png",
+            "pling_id": "2162236",
+            "status": "Active"
+        },
+        {
+            "name": "POCO X5 Pro",
+            "codename": "redwood",
+            "brand": "Xiaomi",
+            "maintainer": "Thereache",
+            "github_username": "Thereache",
+            "image_url": "https://i.ibb.co.com/354jLHSy/e6e8a8b8d8ca5e9cf464de88c36f5bfd.png",
+            "pling_id": "2339661",
+            "status": "Active"
+        },
+        {
+            "name": "POCO X7 Pro",
+            "codename": "rodin",
+            "brand": "Xiaomi",
+            "maintainer": "Nazephyrus",
+            "github_username": "naden01",
+            "image_url": "https://i.ibb.co.com/397vdCfM/0ebf8f7e88545795e4d331457d81f610.png",
+            "pling_id": "2330339",
+            "status": "Active"
+        },
+        {
+            "name": "Redmi 12 5G / POCO M6 Pro 5G",
+            "codename": "sky",
+            "brand": "Xiaomi",
+            "maintainer": "kAiF",
+            "github_username": "askthekaif",
+            "image_url": "https://i.ibb.co.com/B5t2dQL0/redmi12-5-G-jadeblack-1-png.png",
+            "pling_id": "2338803",
+            "status": "Inactive"
+        },
+        {
+            "name": "Redmi 9",
+            "codename": "lancelot",
+            "brand": "Xiaomi",
+            "maintainer": "doissM",
+            "github_username": "mk7x7",
+            "image_url": "https://i.ibb.co.com/PvDtCByj/pms-1605596493-88735853-600x600-85.png",
+            "pling_id": "2338664",
+            "status": "Active"
+        },
+        {
+            "name": "Redmi 9a",
+            "codename": "blossom",
+            "brand": "Xiaomi",
+            "maintainer": "Jayed",
+            "github_username": "Jayedkhan800",
+            "image_url": "https://i.ibb.co.com/DHgDbdfS/1000192596-removebg-preview.png",
+            "pling_id": "2328789",
+            "status": "Active"
+        },
+        {
+            "name": "Redmi K20 Pro / Mi 9T Pro",
+            "codename": "raphael",
+            "brand": "Xiaomi",
+            "maintainer": "Muhammad Al-Arabi",
+            "github_username": "MohammadAlArabi",
+            "image_url": "https://i.ibb.co.com/7JJYdHqQ/1000192598-removebg-preview.png",
+            "pling_id": "2162225",
+            "status": "Active"
+        },
+        {
+            "name": "Redmi K50i / POCO X4 GT / Redmi Note 11T Pro / Pro+",
+            "codename": "xaga",
+            "brand": "Xiaomi",
+            "maintainer": "ExWhyZed9",
+            "github_username": "ExWhyZed9",
+            "image_url": "https://i.ibb.co.com/Y7MDYszx/pms-1635414285-13045403.png",
+            "pling_id": "2162282",
+            "status": "Active"
+        },
+        {
+            "name": "Redmi Note 10 Pro",
+            "codename": "sweet",
+            "brand": "Xiaomi",
+            "maintainer": "Djampt",
+            "github_username": "unsatifsed27",
+            "image_url": "https://i.ibb.co.com/84881L3z/1000192601-removebg-preview.png",
+            "pling_id": "2162289",
+            "status": "Active"
+        },
+        {
+            "name": "Redmi Note 12 Pro 4G",
+            "codename": "sweet_k6a",
+            "brand": "Xiaomi",
+            "maintainer": "ℝ𝕖𝕧𝕖𝕣𝕤𝕖𝕕ℝ𝕦𝕝𝕖𝕣༆𖣘",
+            "github_username": "DarkKiller28",
+            "image_url": "https://i.ibb.co.com/8LvGRdyh/7ddd2173c244f629e5da047d7a248729.png",
+            "pling_id": "2162252",
+            "status": "Active"
+        },
+        {
+            "name": "Redmi Note 13 Pro 5G/POCO X6 5G",
+            "codename": "garnet",
+            "brand": "Xiaomi",
+            "maintainer": "HEYDR",
+            "github_username": "zylhdrXP",
+            "image_url": "https://i.ibb.co.com/W4sG1SCs/4c186975ff7d6203d15ae9db1ba7171c.png",
+            "pling_id": "2207678",
+            "status": "Active"
+        },
+        {
+            "name": "Redmi Note 14 4G",
+            "codename": "tanzanite",
+            "brand": "Xiaomi",
+            "maintainer": "noticesa&Yaseakun",
+            "github_username": "skenakun",
+            "image_url": "https://i.ibb.co.com/8DjF7TQr/cf0d39869c3e13c5d081d57167e44161.png",
+            "pling_id": "2328790",
+            "status": "Active"
+        },
+        {
+            "name": "Mi 11X Pro / Mi 11i / Redmi K40 Pro+",
+            "codename": "haydn",
+            "brand": "Xiaomi",
+            "maintainer": "Hexdare",
+            "github_username": "Hexdare",
+            "image_url": "https://i.ibb.co.com/bR8ckqTP/aj-Zlb08206.png",
+            "pling_id": "2339816",
+            "status": "Active"
+        },
+        {
+            "name": "Redmi Note 8",
+            "codename": "ginkgo",
+            "brand": "Xiaomi",
+            "maintainer": "Hirokixd",
+            "github_username": "Wrdn28",
+            "image_url": "https://i.ibb.co.com/h1d8ct2j/pms-1571195553-98565360-600x600-85.png",
+            "pling_id": "2161804",
+            "status": "Active"
+        },
+        {
+            "name": "Redmi Note 9",
+            "codename": "merlinx",
+            "brand": "Xiaomi",
+            "maintainer": "doissM",
+            "github_username": "mk7x7",
+            "image_url": "https://i.ibb.co.com/Qj7H6KZX/pms-1602331842-91747159-600x600-85.png",
+            "pling_id": "2162285",
+            "status": "Active"
+        },
+        {
+            "name": "Mi A2 Lite",
+            "codename": "daisy",
+            "brand": "Xiaomi",
+            "maintainer": "FARHAN_MUH_TASIM",
+            "github_username": "Gtajisan",
+            "image_url": "https://i.ibb.co.com/GfSSRSr0/Mia2litegold.webp",
+            "pling_id": "2340151",
+            "status": "Active"
+        },
+        {
+            "name": "Redmi 6 Pro",
+            "codename": "sakura",
+            "brand": "Xiaomi",
+            "maintainer": "FARHAN_MUH_TASIM",
+            "github_username": "Gtajisan",
+            "image_url": "https://i.ibb.co.com/21CtN7RL/pms-1535513470-12839107-400x400-85.png",
+            "pling_id": "2340159",
+            "status": "Active"
+        },
+        {
+            "name": "Redmi 13C / Poco C65",
+            "codename": "gale",
+            "brand": "Xiaomi",
+            "maintainer": "vannxavero",
+            "github_username": "vannkyle",
+            "image_url": "https://i.ibb.co.com/PGw5b2Tk/4b514d93ffacb3f166411fd704873678.png",
+            "pling_id": "2350998",
+            "status": "Active"
+        },
+        {
+            "name": "Redmi 11 Prime / POCO M5",
+            "codename": "rock",
+            "brand": "Xiaomi",
+            "maintainer": "picasso09",
+            "github_username": "picasso09",
+            "image_url": "https://i.ibb.co.com/ch9Bw2FQ/3fc12b6bd0514ccaf6916b5f2fdd4743.png",
+            "pling_id": "2350996",
+            "status": "Active"
+        },
+        {
+            "name": "POCO X6 Pro",
+            "codename": "duchamp",
+            "brand": "Xiaomi",
+            "maintainer": "luxured",
+            "github_username": "snapboss",
+            "image_url": "https://i.ibb.co.com/C5zb59Jp/poco-x6-pro-removebg-preview.png",
+            "pling_id": "2351438",
+            "status": "Active"
+        },
+        {
+            "name": "Realme GT 2 Pro",
+            "codename": "ferrari",
+            "brand": "Realme",
+            "maintainer": "asmodeus_oos",
+            "github_username": "asmodeus-oos",
+            "image_url": "https://i.ibb.co.com/wrK2j9Lg/realme-gt-2-pro-removebg-preview.png",
+            "pling_id": "2354063",
+            "status": "Active"
+        },
+        {
+            "name": "Redmi Note 10S / POCO M5s",
+            "codename": "rosemary",
+            "brand": "Xiaomi",
+            "maintainer": "Mnskkyy",
+            "github_username": "Mnskkyy",
+            "image_url": "https://i.ibb.co.com/4RGwpg2z/rosemary.png",
+            "pling_id": "2162286",
+            "status": "Active"
+        },
+        {
+            "name": "Redmi Note 11T 5G / 11S 5G / POCO M4 Pro 5G",
+            "codename": "everpal",
+            "brand": "Xiaomi",
+            "maintainer": "GokuSudoku",
+            "github_username": "himanshuksr0007",
+            "image_url": "https://i.ibb.co.com/MD54vMXP/xiaomi-redmi-note-11t-5g-removebg-preview.png",
+            "pling_id": "2356334",
+            "status": "Active"
+        },
+        {
+            "name": "Tecno Pova 5 Pro 5G",
+            "codename": "LH8n",
+            "brand": "Tecno",
+            "maintainer": "Nazephyrus",
+            "github_username": "naden01",
+            "image_url": "https://i.ibb.co.com/VpSM5mHj/tecno-tecno-pova-5-pro-removebg-preview.png",
+            "pling_id": "2356327",
+            "status": "Active"
+        },
+        {
+            "name": "Xiaomi Pad 6",
+            "codename": "pipa",
+            "brand": "Xiaomi",
+            "maintainer": "MufasaXz",
+            "github_username": "MufasaXz",
+            "image_url": "https://i.ibb.co.com/TxQxTHHc/xiaomi-xiaomi-redmi-pad-6-removebg-preview.png",
+            "pling_id": "2356826",
+            "status": "Active"
+        },
+        {
+            "name": "Motorola Moto G34/45 5G",
+            "codename": "fogos",
+            "brand": "Motorola",
+            "maintainer": "fawzydede",
+            "github_username": "fawzydede",
+            "image_url": "https://wiki.lineageos.org/images/devices/fogos.png",
+            "pling_id": "2358041",
+            "status": "Active"
+        }
+    ]
+}

@@ -1,0 +1,32 @@
+{
+  "name": "unrom-server",
+  "private": true,
+  "type": "module",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "ingest": "node --disable-warning=ExperimentalWarning src/ingest/fetch-all.ts",
+    "normalize": "node --disable-warning=ExperimentalWarning src/build/normalize.ts",
+    "build:db": "node --disable-warning=ExperimentalWarning src/build/build-db.ts",
+    "export:json": "node --disable-warning=ExperimentalWarning src/build/export-json.ts",
+    "build:data": "npm run normalize && npm run build:db && npm run export:json",
+    "start": "node --disable-warning=ExperimentalWarning src/api/server.ts",
+    "dev": "node --disable-warning=ExperimentalWarning --watch src/api/server.ts",
+    "check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@hono/node-server": "^2.1.1",
+    "@unrom/contract": "*",
+    "better-sqlite3": "^13.0.3",
+    "drizzle-orm": "^0.45.2",
+    "hono": "^4.13.7",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^9.6.0",
+    "@types/node": "^24",
+    "typescript": "~6.0.0"
+  }
+}
