@@ -23,6 +23,10 @@ const COLUMN_WIDTHS: Record<string, string> = {
 };
 const columnClassName = (id: string) => COLUMN_WIDTHS[id];
 
+// Long ROM device lists are truncated to keep the table scannable; the full
+// list lives on the ROM detail page.
+const DEVICE_PREVIEW = 6;
+
 interface Props {
   roms: RomDetail[];
 }
@@ -65,7 +69,7 @@ export default function RomsTable({ roms }: Props) {
         sortingFn: (a, b) => bySortKey(a.original.name, b.original.name),
         cell: ({ row }) => (
           <Link
-            to={`/rom/${row.original.id}`}
+            to={`/roms/${row.original.id}`}
             className="font-medium hover:underline"
           >
             {row.original.name}
@@ -76,18 +80,30 @@ export default function RomsTable({ roms }: Props) {
         id: "devices",
         header: "Supported devices",
         enableSorting: false,
-        cell: ({ row }) => (
-          <div className="flex flex-wrap gap-1.5">
-            {row.original.devices.map((device) => (
-              <ChipLink
-                key={device.codename}
-                to={`/device/${device.codename}`}
-              >
-                {device.name ?? device.codename}
-              </ChipLink>
-            ))}
-          </div>
-        ),
+        cell: ({ row }) => {
+          const preview = row.original.devices.slice(0, DEVICE_PREVIEW);
+          const hidden = row.original.devices.length - preview.length;
+          return (
+            <div className="flex flex-wrap gap-1.5">
+              {preview.map((device) => (
+                <ChipLink
+                  key={device.codename}
+                  to={`/devices/${device.codename}`}
+                >
+                  {device.name ?? device.codename}
+                </ChipLink>
+              ))}
+              {hidden > 0 && (
+                <ChipLink
+                  to={`/roms/${row.original.id}`}
+                  className="text-muted-foreground"
+                >
+                  +{hidden} more
+                </ChipLink>
+              )}
+            </div>
+          );
+        },
       },
       {
         id: "brands",

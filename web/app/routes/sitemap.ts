@@ -9,8 +9,8 @@ export async function loader() {
     "/devices",
     "/roms",
     "/data",
-    ...devices.map((device) => `/device/${device.codename}`),
-    ...roms.map((rom) => `/rom/${rom.id}`),
+    ...devices.map((device) => `/devices/${device.codename}`),
+    ...roms.map((rom) => `/roms/${rom.id}`),
   ];
 
   const urls = paths

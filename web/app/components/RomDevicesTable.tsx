@@ -61,7 +61,7 @@ export default function RomDevicesTable({ devices }: Props) {
         cell: ({ row }) => (
           <div className="flex flex-col items-start">
             <Link
-              to={`/device/${row.original.codename}`}
+              to={`/devices/${row.original.codename}`}
               className="font-medium hover:underline"
             >
               {row.original.name ?? row.original.codename}

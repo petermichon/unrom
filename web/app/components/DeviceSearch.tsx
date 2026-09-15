@@ -37,7 +37,7 @@ export default function DeviceSearch({ devices }: Props) {
               value={`${device.name ?? ""} ${device.codename} ${
                 device.brand ?? ""
               }`}
-              onSelect={() => navigate(`/device/${device.codename}`)}
+              onSelect={() => navigate(`/devices/${device.codename}`)}
               className="gap-3"
             >
               <span className="flex min-w-0 flex-1 flex-col">

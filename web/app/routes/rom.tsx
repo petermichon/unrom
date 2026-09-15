@@ -18,7 +18,7 @@ export const meta: Route.MetaFunction = ({ loaderData }) => {
   return [
     { title: `${rom.name} — unrom` },
     { name: "description", content: `Every device supported by ${rom.name}.` },
-    canonical(`/rom/${rom.id}`),
+    canonical(`/roms/${rom.id}`),
     {
       "script:ld+json": {
         "@context": "https://schema.org",
@@ -28,7 +28,7 @@ export const meta: Route.MetaFunction = ({ loaderData }) => {
         operatingSystem: rom.androidBases
           .map((base) => `Android ${base}`)
           .join(", "),
-        url: `${SITE_URL}/rom/${rom.id}`,
+        url: `${SITE_URL}/roms/${rom.id}`,
       },
     },
   ];

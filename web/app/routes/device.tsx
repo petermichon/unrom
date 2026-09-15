@@ -22,13 +22,13 @@ export const meta: Route.MetaFunction = ({ loaderData }) => {
       name: "description",
       content: `Custom ROMs and operating systems that support the ${name} (${device.codename}).`,
     },
-    canonical(`/device/${device.codename}`),
+    canonical(`/devices/${device.codename}`),
     {
       "script:ld+json": {
         "@context": "https://schema.org",
         "@type": "Product",
         name,
-        url: `${SITE_URL}/device/${device.codename}`,
+        url: `${SITE_URL}/devices/${device.codename}`,
         ...(device.brand
           ? { brand: { "@type": "Brand", name: device.brand } }
           : {}),

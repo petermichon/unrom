@@ -84,7 +84,7 @@ export default function CommandPalette() {
                   value={`${device.name ?? ""} ${device.codename} ${
                     device.brand ?? ""
                   }`}
-                  onSelect={() => go(`/device/${device.codename}`)}
+                  onSelect={() => go(`/devices/${device.codename}`)}
                 >
                   <span className="truncate">
                     {device.name ?? device.codename}
@@ -100,7 +100,7 @@ export default function CommandPalette() {
                 <CommandItem
                   key={rom.id}
                   value={rom.name}
-                  onSelect={() => go(`/rom/${rom.id}`)}
+                  onSelect={() => go(`/roms/${rom.id}`)}
                 >
                   {rom.name}
                 </CommandItem>

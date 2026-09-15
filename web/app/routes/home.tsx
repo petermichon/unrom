@@ -55,7 +55,7 @@ export default function Home() {
         {examples.map((device) => (
           <ChipLink
             key={device.codename}
-            to={`/device/${device.codename}`}
+            to={`/devices/${device.codename}`}
             className="px-2.5 py-1 text-xs"
           >
             {device.name ?? device.codename}

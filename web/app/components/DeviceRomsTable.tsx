@@ -65,7 +65,7 @@ export default function DeviceRomsTable({ roms }: Props) {
         sortingFn: (a, b) => bySortKey(a.original.name, b.original.name),
         cell: ({ row }) => (
           <Link
-            to={`/rom/${row.original.id}`}
+            to={`/roms/${row.original.id}`}
             className="font-medium hover:underline"
           >
             {row.original.name}

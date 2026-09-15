@@ -88,7 +88,7 @@ export default function MappingsTable({ mappings }: Props) {
         cell: ({ row }) => (
           <div className="flex flex-col items-start">
             <Link
-              to={`/device/${row.original.codename}`}
+              to={`/devices/${row.original.codename}`}
               className="font-medium hover:underline"
             >
               {row.original.deviceName ?? row.original.codename}
@@ -117,7 +117,7 @@ export default function MappingsTable({ mappings }: Props) {
         ),
         cell: ({ row }) => (
           <Link
-            to={`/rom/${row.original.romId}`}
+            to={`/roms/${row.original.romId}`}
             className="font-medium hover:underline"
           >
             {row.original.romName}

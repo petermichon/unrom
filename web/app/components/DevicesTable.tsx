@@ -84,7 +84,7 @@ export default function DevicesTable({ devices }: Props) {
         cell: ({ row }) => (
           <div className="flex flex-col items-start">
             <Link
-              to={`/device/${row.original.codename}`}
+              to={`/devices/${row.original.codename}`}
               className="font-medium hover:underline"
             >
               {row.original.name ?? row.original.codename}
@@ -120,7 +120,7 @@ export default function DevicesTable({ devices }: Props) {
         cell: ({ row }) => (
           <div className="flex flex-wrap gap-1.5">
             {row.original.roms.map((rom) => (
-              <ChipLink key={rom.id} to={`/rom/${rom.id}`}>
+              <ChipLink key={rom.id} to={`/roms/${rom.id}`}>
                 {rom.name}
               </ChipLink>
             ))}
