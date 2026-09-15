@@ -50,7 +50,8 @@ source of truth.
 | --- | --- |
 | `roms` | One row per ROM/OS (`id`, `name`) |
 | `devices` | Canonical device (`codename` PK, `name`, `brand`) |
-| `rom_devices` | The many-to-many edge, with per-ROM attributes (`maintainer`, `android_base`, `rom_version`, `active`, `source_url`, `source`) |
+| `rom_devices` | The many-to-many edge, with per-ROM attributes (`maintainer`, `active`, `source_url`, `source`) |
+| `rom_device_versions` | The `(rom_version, android_base)` pairs an edge supports (either may be null) |
 | `aliases` | Maps alternate/legacy codenames to a canonical `codename` |
 | `meta` | Snapshot metadata (`generatedAt`, counts) |
 

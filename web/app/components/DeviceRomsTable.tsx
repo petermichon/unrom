@@ -49,7 +49,7 @@ export default function DeviceRomsTable({ roms }: Props) {
       {
         id: "search",
         accessorFn: (row) =>
-          [row.name, row.maintainer, row.romVersion, ...row.androidBases]
+          [row.name, row.maintainer, ...row.romVersions, ...row.androidBases]
             .filter(Boolean)
             .join(" "),
         filterFn: "includesString",
@@ -84,14 +84,14 @@ export default function DeviceRomsTable({ roms }: Props) {
       {
         id: "versions",
         accessorFn: (row) =>
-          [row.romVersion, ...row.androidBases].filter(Boolean).join(", "),
+          [...row.romVersions, ...row.androidBases].filter(Boolean).join(", "),
         header: "Versions",
         enableSorting: false,
         cell: ({ row }) => (
           <div className="flex flex-wrap gap-1.5">
             <VersionChips
               androidBases={row.original.androidBases}
-              romVersion={row.original.romVersion}
+              romVersions={row.original.romVersions}
             />
           </div>
         ),

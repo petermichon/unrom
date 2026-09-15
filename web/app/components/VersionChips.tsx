@@ -2,11 +2,11 @@ import { Badge } from "@/components/ui/badge";
 
 interface Props {
   androidBases: string[];
-  romVersion: string | null;
+  romVersions: string[];
 }
 
-export function VersionChips({ androidBases, romVersion }: Props) {
-  if (androidBases.length === 0 && !romVersion) {
+export function VersionChips({ androidBases, romVersions }: Props) {
+  if (androidBases.length === 0 && romVersions.length === 0) {
     return <span className="text-muted-foreground">—</span>;
   }
 
@@ -21,15 +21,15 @@ export function VersionChips({ androidBases, romVersion }: Props) {
           Android {version}
         </Badge>
       ))}
-      {romVersion && (
+      {romVersions.map((version) => (
         <Badge
-          key={`rom-${romVersion}`}
+          key={`rom-${version}`}
           variant="outline"
           className="font-mono text-xs"
         >
-          v{romVersion}
+          v{version}
         </Badge>
-      )}
+      ))}
     </>
   );
 }

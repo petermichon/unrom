@@ -4,7 +4,13 @@ import Database from "better-sqlite3";
 import { drizzle } from "drizzle-orm/better-sqlite3";
 
 import { generateDdl } from "../db/ddl.ts";
-import { devices, meta, romDevices, roms } from "../db/schema.ts";
+import {
+  devices,
+  meta,
+  romDeviceVersions,
+  romDevices,
+  roms,
+} from "../db/schema.ts";
 import { normalizedRomDeviceSchema } from "../normalized.ts";
 import type { NormalizedRomDevice } from "../normalized.ts";
 import {
@@ -42,7 +48,24 @@ const deviceMap = new Map<
   { codename: string; name: string | null; brand: string | null }
 >();
 const romMap = new Map<string, string>();
-const edgeMap = new Map<string, NormalizedRomDevice>();
+
+interface Edge {
+  romId: string;
+  codename: string;
+  active: boolean;
+  maintainer: string | null;
+  sourceUrl: string | null;
+  source: string;
+}
+interface Version {
+  romId: string;
+  codename: string;
+  romVersion: string | null;
+  androidBase: string | null;
+}
+
+const edgeMap = new Map<string, Edge>();
+const versionMap = new Map<string, Version>();
 
 for (const record of records) {
   romMap.set(record.romId, record.romName);
@@ -56,10 +79,36 @@ for (const record of records) {
   device.brand ??= record.brand;
   deviceMap.set(record.codename, device);
 
-  edgeMap.set(`${record.romId}:${record.codename}`, record);
+  const key = `${record.romId}:${record.codename}`;
+  const edge = edgeMap.get(key) ?? {
+    romId: record.romId,
+    codename: record.codename,
+    active: false,
+    maintainer: null,
+    sourceUrl: null,
+    source: record.source,
+  };
+  // A ROM is active if any of its snapshots says so.
+  edge.active ||= record.active;
+  edge.maintainer ??= record.maintainer;
+  edge.sourceUrl ??= record.sourceUrl;
+  edgeMap.set(key, edge);
+
+  for (const version of record.versions) {
+    versionMap.set(
+      `${key}:${version.romVersion ?? ""}:${version.androidBase ?? ""}`,
+      {
+        romId: record.romId,
+        codename: record.codename,
+        romVersion: version.romVersion,
+        androidBase: version.androidBase,
+      }
+    );
+  }
 }
 
 const edges = [...edgeMap.values()];
+const versions = [...versionMap.values()];
 // SOURCE_DATE_EPOCH makes rebuilds byte-identical (reproducible builds).
 const generatedAt = process.env.SOURCE_DATE_EPOCH
   ? new Date(Number(process.env.SOURCE_DATE_EPOCH) * 1000).toISOString()
@@ -80,18 +129,10 @@ db.transaction((tx) => {
     tx.insert(devices).values(device).run();
   }
   for (const edge of edges) {
-    tx.insert(romDevices)
-      .values({
-        romId: edge.romId,
-        codename: edge.codename,
-        romVersion: edge.romVersion,
-        androidBase: edge.androidBase,
-        active: edge.active,
-        maintainer: edge.maintainer,
-        sourceUrl: edge.sourceUrl,
-        source: edge.source,
-      })
-      .run();
+    tx.insert(romDevices).values(edge).run();
+  }
+  for (const version of versions) {
+    tx.insert(romDeviceVersions).values(version).run();
   }
   for (const [key, value] of metaRows) {
     tx.insert(meta).values({ key, value }).run();
@@ -101,5 +142,5 @@ db.transaction((tx) => {
 sqlite.close();
 
 console.log(
-  `Built ${DB_PATH}\n  ${romMap.size} ROM(s), ${deviceMap.size} device(s), ${edges.length} edge(s)`
+  `Built ${DB_PATH}\n  ${romMap.size} ROM(s), ${deviceMap.size} device(s), ${edges.length} edge(s), ${versions.length} version(s)`
 );

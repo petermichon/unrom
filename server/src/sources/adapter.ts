@@ -1,5 +1,5 @@
 import { normalizedRomDeviceSchema } from "../normalized.ts";
-import type { NormalizedRomDevice } from "../normalized.ts";
+import type { NormalizedRomDevice, NormalizedVersion } from "../normalized.ts";
 
 export type RawDevice = Record<string, unknown>;
 
@@ -40,8 +40,10 @@ export interface RecordInput {
   codename: string;
   name?: string | null;
   brand?: string | null;
+  /** Single version pair; prefer `versions` when several are known. */
   romVersion?: string | null;
   androidBase?: string | null;
+  versions?: NormalizedVersion[];
   active?: boolean;
   maintainer?: string | null;
   sourceUrl?: string | null;
@@ -49,15 +51,21 @@ export interface RecordInput {
 
 /** Build a validated record, filling the optional fields with defaults. */
 export function buildRecord(input: RecordInput): NormalizedRomDevice {
+  const { romVersion, androidBase, versions, ...rest } = input;
+  const pairs =
+    versions ??
+    (romVersion || androidBase
+      ? [{ romVersion: romVersion ?? null, androidBase: androidBase ?? null }]
+      : []);
+
   return normalizedRomDeviceSchema.parse({
     name: null,
     brand: null,
-    romVersion: null,
-    androidBase: null,
     active: true,
     maintainer: null,
     sourceUrl: null,
-    ...input,
+    ...rest,
+    versions: pairs,
   });
 }
 
@@ -210,17 +218,6 @@ function collectBases(device: RawDevice, spec: BasesSpec | undefined): string[] 
   return bases;
 }
 
-/**
- * A device may support several Android bases; the edge row stores a single
- * base for now, so we keep the newest. Proper normalization is deferred to the
- * database layer.
- */
-function newestBase(device: RawDevice, spec: BasesSpec | undefined): string | null {
-  const bases = collectBases(device, spec);
-  if (bases.length === 0) return null;
-  return bases.sort((a, b) => Number(b) - Number(a))[0] ?? null;
-}
-
 export function createParser(
   source: DeviceSource
 ): (raw: string) => NormalizedRomDevice[] {
@@ -244,8 +241,10 @@ export function createParser(
           name: pick(entry.device, source.name ?? ["name"]),
           brand:
             pick(entry.device, source.brand ?? ["brand"]) ?? entry.group ?? null,
-          romVersion: null,
-          androidBase: newestBase(entry.device, source.bases),
+          versions: collectBases(entry.device, source.bases).map((base) => ({
+            androidBase: base,
+            romVersion: null,
+          })),
           active: activeValue(
             entry.device,
             source.active,

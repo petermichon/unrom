@@ -28,13 +28,16 @@ const LINEAGE_VERSIONS: Record<string, string> = {
   "23.0": "16",
 };
 
-function newestBase(versions: unknown): string | null {
-  if (!Array.isArray(versions)) return null;
-  const bases = versions
-    .map((version) => LINEAGE_VERSIONS[String(version).trim()] ?? androidBase(version))
-    .filter((base): base is string => base !== null);
-
-  return bases.sort((a, b) => Number(b) - Number(a))[0] ?? null;
+// Keep each LineageOS release with its Android base (e.g. 22 -> 15).
+function versionPairs(versions: unknown) {
+  if (!Array.isArray(versions)) return [];
+  return versions.map((version) => {
+    const romVersion = String(version).trim();
+    return {
+      romVersion,
+      androidBase: LINEAGE_VERSIONS[romVersion] ?? androidBase(version),
+    };
+  });
 }
 
 /**
@@ -65,7 +68,7 @@ export function parseLineageOS(raw: string): NormalizedRomDevice[] {
         name: str(meta.name),
         brand: str(meta.vendor),
         maintainer: str(meta.maintainers),
-        androidBase: newestBase(meta.versions),
+        versions: versionPairs(meta.versions),
         sourceUrl: `https://wiki.lineageos.org/devices/${codename}/`,
       })
     );

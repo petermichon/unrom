@@ -48,12 +48,10 @@ export function parseKaliNetHunter(raw: string): NormalizedRomDevice[] {
       for (const kernel of device.kernels ?? []) {
         for (const version of kernel.versions ?? []) {
           const base = androidBase(version.android);
-          if (base) bases.push(base);
+          if (base && !bases.includes(base)) bases.push(base);
           maintainer ??= str(version.author);
         }
       }
-
-      const newest = bases.sort((a, b) => Number(b) - Number(a))[0] ?? null;
 
       records.push(
         buildRecord({
@@ -63,7 +61,7 @@ export function parseKaliNetHunter(raw: string): NormalizedRomDevice[] {
           codename,
           name: str(device.model),
           maintainer,
-          androidBase: newest,
+          versions: bases.map((base) => ({ androidBase: base, romVersion: null })),
         })
       );
     }

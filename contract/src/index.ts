@@ -17,7 +17,7 @@ export interface RomSupport {
   name: string;
   active: boolean;
   androidBases: string[];
-  romVersion: string | null;
+  romVersions: string[];
   maintainer: string | null;
   sourceUrl: string | null;
 }
@@ -62,7 +62,7 @@ export interface Mapping {
   romName: string;
   active: boolean;
   androidBases: string[];
-  romVersion: string | null;
+  romVersions: string[];
   maintainer: string | null;
   sourceUrl: string | null;
 }

@@ -1,4 +1,4 @@
-import { normalizedRomDeviceSchema } from "../normalized.ts";
+import { buildRecord } from "./adapter.ts";
 import type { NormalizedRomDevice } from "../normalized.ts";
 
 const ROM_ID = "pixelos";
@@ -34,17 +34,15 @@ export function parsePixelOS(raw: string): NormalizedRomDevice[] {
     if (!codename) continue;
 
     records.push(
-      normalizedRomDeviceSchema.parse({
+      buildRecord({
         romId: ROM_ID,
         romName: ROM_NAME,
         codename,
         name: str(device.model),
         brand: str(device.vendor),
-        romVersion: null,
         androidBase: str(device.version),
         active: device.active === true,
         maintainer: str(device.maintainer_name),
-        sourceUrl: null,
         source: SOURCE,
       })
     );

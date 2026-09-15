@@ -127,14 +127,14 @@ export default function MappingsTable({ mappings }: Props) {
       {
         id: "versions",
         accessorFn: (row) =>
-          [row.romVersion, ...row.androidBases].filter(Boolean).join(", "),
+          [...row.romVersions, ...row.androidBases].filter(Boolean).join(", "),
         header: "Versions",
         enableSorting: false,
         cell: ({ row }) => (
           <div className="flex flex-wrap gap-1.5">
             <VersionChips
               androidBases={row.original.androidBases}
-              romVersion={row.original.romVersion}
+              romVersions={row.original.romVersions}
             />
           </div>
         ),
