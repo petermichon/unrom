@@ -56,10 +56,11 @@ docker compose -f deploy/compose.yaml run --rm data
 - **CI** (`.github/workflows/ci.yml`) — typechecks on every push/PR, and on
   `main` builds and publishes `ghcr.io/<owner>/unrom-api` and `unrom-web`
   tagged with the commit SHA and `latest`.
-- **Deploy** (`.github/workflows/deploy.yml`) — after a successful `main` CI
-  run, SSHes to the server and runs `git pull` + `docker compose pull/up`.
-  Enable it with repo variable `DEPLOY_ENABLED=true` and secrets `SSH_HOST`,
-  `SSH_USER`, `SSH_KEY`.
+- **Deploy is pull-based** — the server runs [freshdock](https://github.com/Turbootzz/freshdock)
+  (`--profile deploy`), which recreates `api`/`web` when CI publishes a new
+  image. No SSH credentials or inbound access; healthchecks gate updates and
+  roll back a broken image. `git pull` is only needed when the compose file or
+  Caddyfile changes.
 - **Refresh data** (`.github/workflows/refresh-data.yml`) — nightly, fetches
   new source snapshots, commits `data/`, and triggers CI so fresh images ship.
 
@@ -68,11 +69,11 @@ Server bootstrap:
 ```sh
 git clone https://github.com/petermichon/unrom.git /srv/unrom
 cd /srv/unrom
-docker compose -f deploy/compose.yaml --profile proxy up -d --build
+docker compose -f deploy/compose.yaml --profile proxy --profile deploy up -d --build
 ```
 
-Updates then arrive via the deploy workflow, or manually:
-`git pull && UNROM_TAG=<sha> docker compose -f deploy/compose.yaml --profile proxy pull && ... up -d`.
+Rollback: change the tag and restart —
+`UNROM_TAG=<previous-sha> docker compose -f deploy/compose.yaml --profile proxy --profile deploy up -d`.
 
 ### Without Docker
 
