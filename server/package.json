@@ -1,6 +1,7 @@
 {
   "name": "unrom-server",
   "private": true,
+  "license": "AGPL-3.0-only",
   "type": "module",
   "version": "0.0.1",
   "engines": {
@@ -22,6 +23,7 @@
     "better-sqlite3": "^13.0.3",
     "drizzle-orm": "^0.45.2",
     "hono": "^4.13.7",
+    "yaml": "^2.9.1",
     "zod": "^4.6.5"
   },
   "devDependencies": {

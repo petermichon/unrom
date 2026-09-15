@@ -3,6 +3,7 @@ import { join } from "node:path";
 
 import { serve } from "@hono/node-server";
 import { Hono } from "hono";
+import { etag } from "hono/etag";
 import type { Context } from "hono";
 
 import { createApi } from "../data/queries.ts";
@@ -23,6 +24,27 @@ try {
 }
 
 const app = new Hono();
+
+// Read-only JSON: allow conditional requests (304) and revalidation, but never
+// a stale cache. The exports are streamed attachments and are left untouched.
+const revalidate = async (c: Context, next: () => Promise<void>) => {
+  await next();
+  if (c.res.status === 200) {
+    c.res.headers.set("cache-control", "public, max-age=0, must-revalidate");
+  }
+};
+
+for (const path of [
+  "/api/health",
+  "/api/meta",
+  "/api/devices",
+  "/api/devices/*",
+  "/api/roms",
+  "/api/roms/*",
+  "/api/data",
+]) {
+  app.use(path, etag(), revalidate);
+}
 
 async function sendFile(
   c: Context,
@@ -49,6 +71,7 @@ app.get("/api", (c) =>
   c.json({
     name: "unrom api",
     endpoints: [
+      "GET /api/health",
       "GET /api/meta",
       "GET /api/devices?q=",
       "GET /api/devices/:codename",

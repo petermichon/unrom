@@ -1,8 +1,9 @@
 import type { MetaFunction } from "react-router";
+import { useLoaderData } from "react-router";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import DevicesTable from "@/components/DevicesTable";
 import { PageHeader } from "@/components/PageHeader";
-import { getBrowseDevices } from "@/lib/api";
+import { fetchDevices } from "@/lib/data";
 import { canonical } from "@/lib/seo";
 
 export const meta: MetaFunction = () => [
@@ -15,9 +16,13 @@ export const meta: MetaFunction = () => [
   canonical("/devices"),
 ];
 
-const devices = getBrowseDevices();
+export async function loader() {
+  return { devices: await fetchDevices() };
+}
 
 export default function DevicesRoute() {
+  const { devices } = useLoaderData<typeof loader>();
+
   return (
     <div className="flex flex-col gap-6">
       <Breadcrumbs

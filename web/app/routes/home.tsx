@@ -1,7 +1,9 @@
 import type { MetaFunction } from "react-router";
+import { useLoaderData } from "react-router";
 import DeviceSearch from "@/components/DeviceSearch";
 import { ChipLink } from "@/components/ChipLink";
-import { getAllDevices } from "@/lib/api";
+import { fetchDevices } from "@/lib/data";
+import type { BrowseDevice } from "@/lib/types";
 import { canonical } from "@/lib/seo";
 
 export const meta: MetaFunction = () => [
@@ -14,16 +16,22 @@ export const meta: MetaFunction = () => [
   canonical("/"),
 ];
 
-const devices = getAllDevices();
-const deviceCount = devices.length;
-const romCount = new Set(
-  devices.flatMap((device) => device.roms.map((rom) => rom.id))
-).size;
-const examples = devices.filter((device) =>
-  ["pong", "alioth", "sweet"].includes(device.codename)
-);
+export async function loader() {
+  return { devices: await fetchDevices() };
+}
+
+const EXAMPLES = ["alioth", "sweet", "beryllium"];
 
 export default function Home() {
+  const { devices } = useLoaderData<typeof loader>();
+  const deviceCount = devices.length;
+  const romCount = new Set(
+    devices.flatMap((device) => device.roms.map((rom) => rom.id))
+  ).size;
+  const examples = EXAMPLES.map((codename) =>
+    devices.find((device) => device.codename.toLowerCase() === codename)
+  ).filter((device): device is BrowseDevice => device !== undefined);
+
   return (
     <section className="flex flex-col gap-8">
       <div className="flex flex-col gap-3">

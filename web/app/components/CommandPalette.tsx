@@ -12,15 +12,13 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
+import { fetchDevices, fetchRoms } from "@/lib/data";
 import type { BrowseDevice, RomChip } from "@/lib/types";
 
-interface Props {
-  devices: BrowseDevice[];
-  roms: RomChip[];
-}
-
-export default function CommandPalette({ devices, roms }: Props) {
+export default function CommandPalette() {
   const [open, setOpen] = useState(false);
+  const [devices, setDevices] = useState<BrowseDevice[]>([]);
+  const [roms, setRoms] = useState<RomChip[]>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -33,6 +31,22 @@ export default function CommandPalette({ devices, roms }: Props) {
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, []);
+
+  // Load the search index on first open so it is not serialized into every page.
+  useEffect(() => {
+    if (!open || devices.length > 0) return;
+    let cancelled = false;
+    Promise.all([fetchDevices(), fetchRoms()])
+      .then(([loadedDevices, loadedRoms]) => {
+        if (cancelled) return;
+        setDevices(loadedDevices);
+        setRoms(loadedRoms.map((rom) => ({ id: rom.id, name: rom.name })));
+      })
+      .catch(() => {});
+    return () => {
+      cancelled = true;
+    };
+  }, [open, devices.length]);
 
   const go = (href: string) => {
     setOpen(false);

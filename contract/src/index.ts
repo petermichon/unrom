@@ -1,3 +1,10 @@
+export interface Meta {
+  generatedAt: string;
+  deviceCount: number;
+  romCount: number;
+  edgeCount: number;
+}
+
 export interface DeviceSummary {
   codename: string;
   name: string | null;

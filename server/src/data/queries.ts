@@ -5,6 +5,7 @@ import type {
   BrowseDevice,
   DeviceDetail,
   Mapping,
+  Meta,
   RomChip,
   RomDetail,
   RomSupport,
@@ -87,7 +88,7 @@ export function createApi(dbPath: string) {
     const device = db
       .select()
       .from(devices)
-      .where(eq(devices.codename, codename))
+      .where(sql`lower(${devices.codename}) = ${codename.toLowerCase()}`)
       .get();
     if (!device) return null;
 
@@ -187,7 +188,11 @@ export function createApi(dbPath: string) {
   }
 
   function getRom(id: string): RomDetail | null {
-    const rom = db.select().from(roms).where(eq(roms.id, id)).get();
+    const rom = db
+      .select()
+      .from(roms)
+      .where(sql`lower(${roms.id}) = ${id.toLowerCase()}`)
+      .get();
     if (!rom) return null;
 
     const { deviceByCodename, romCountByDevice } = indexes();
@@ -232,14 +237,21 @@ export function createApi(dbPath: string) {
       });
   }
 
-  function getMeta(): Record<string, string> {
-    return Object.fromEntries(
+  function getMeta(): Meta {
+    const values = Object.fromEntries(
       db
         .select()
         .from(meta)
         .all()
         .map((row) => [row.key, row.value])
     );
+
+    return {
+      generatedAt: values.generatedAt ?? "",
+      deviceCount: Number(values.deviceCount ?? 0),
+      romCount: Number(values.romCount ?? 0),
+      edgeCount: Number(values.edgeCount ?? 0),
+    };
   }
 
   return {

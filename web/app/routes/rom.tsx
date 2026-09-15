@@ -1,43 +1,41 @@
-import type { MetaFunction } from "react-router";
-import { useParams } from "react-router";
+import { useLoaderData } from "react-router";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { PageHeader } from "@/components/PageHeader";
 import RomDevicesTable from "@/components/RomDevicesTable";
 import { StatusBadge } from "@/components/StatusBadge";
-import { getRom } from "@/lib/api";
-import { canonical } from "@/lib/seo";
+import { fetchRom } from "@/lib/data";
+import { SITE_URL, canonical } from "@/lib/seo";
+import type { Route } from "./+types/rom";
 
-export const meta: MetaFunction = ({ params }) => {
-  const rom = params.id ? getRom(params.id) : null;
-  const name = rom?.name ?? "ROM";
+export async function loader({ params }: Route.LoaderArgs) {
+  return { rom: await fetchRom(params.id) };
+}
+
+export const meta: Route.MetaFunction = ({ loaderData }) => {
+  const rom = loaderData?.rom;
+  if (!rom) return [{ title: "ROM not found — unrom" }];
+
   return [
-    { title: `${name} — unrom` },
+    { title: `${rom.name} — unrom` },
+    { name: "description", content: `Every device supported by ${rom.name}.` },
+    canonical(`/rom/${rom.id}`),
     {
-      name: "description",
-      content: `Every device supported by ${name}.`,
+      "script:ld+json": {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        name: rom.name,
+        applicationCategory: "OperatingSystem",
+        operatingSystem: rom.androidBases
+          .map((base) => `Android ${base}`)
+          .join(", "),
+        url: `${SITE_URL}/rom/${rom.id}`,
+      },
     },
-    ...(params.id ? [canonical(`/rom/${params.id}`)] : []),
   ];
 };
 
 export default function RomRoute() {
-  const { id } = useParams();
-  const rom = id ? getRom(id) : null;
-
-  if (!rom) {
-    return (
-      <div className="flex flex-col gap-4">
-        <Breadcrumbs
-          items={[
-            { label: "Home", to: "/" },
-            { label: "ROMs", to: "/roms" },
-            { label: "Not found" },
-          ]}
-        />
-        <p className="text-muted-foreground">No ROM found for “{id}”.</p>
-      </div>
-    );
-  }
+  const { rom } = useLoaderData<typeof loader>();
 
   const versionLabel = [
     rom.androidBases.length > 0

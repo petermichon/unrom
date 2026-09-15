@@ -3,12 +3,14 @@
   "type": "module",
   "version": "0.0.1",
   "private": true,
+  "license": "AGPL-3.0-only",
   "engines": {
     "node": ">=24"
   },
   "scripts": {
     "dev": "react-router dev",
     "build": "react-router build",
+    "start": "react-router-serve build/server/index.js",
     "preview": "vite preview --outDir build/client",
     "typecheck": "react-router typegen && tsc"
   },
@@ -17,6 +19,7 @@
     "@fontsource-variable/roboto": "^5.3.0",
     "@fontsource-variable/roboto-mono": "^5.3.0",
     "@react-router/node": "^8",
+    "@react-router/serve": "^8.3.1",
     "@tanstack/react-table": "^8.21.3",
     "@unrom/contract": "*",
     "class-variance-authority": "^0.7.1",

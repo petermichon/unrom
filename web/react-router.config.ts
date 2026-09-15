@@ -1,15 +1,7 @@
 import type { Config } from "@react-router/dev/config";
-import { devices } from "./app/fixtures/devices";
 
-// SSG + SPA, no SSR: pre-render every route to static HTML at build time,
-// then hydrate into a client-side router. Deploy `build/client` statically.
+// SSR app: routes render on the server per request and hydrate on the client.
+// Loaders read the API (see `app/lib/data.ts`); the contract is type-only.
 export default {
-  ssr: false,
-  prerender: () => {
-    const devicePaths = devices.map((device) => `/device/${device.codename}`);
-    const romPaths = [...new Set(devices.flatMap((d) => d.roms.map((r) => r.id)))].map(
-      (id) => `/rom/${id}`
-    );
-    return ["/", "/devices", "/roms", "/data", ...devicePaths, ...romPaths];
-  },
+  ssr: true,
 } satisfies Config;

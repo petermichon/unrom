@@ -9,10 +9,10 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import type { DeviceDetail } from "@/lib/types";
+import type { BrowseDevice } from "@/lib/types";
 
 interface Props {
-  devices: DeviceDetail[];
+  devices: BrowseDevice[];
 }
 
 export default function DeviceSearch({ devices }: Props) {

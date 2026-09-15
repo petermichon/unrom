@@ -5,16 +5,28 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLoaderData,
 } from "react-router";
 
 import type { Route } from "./+types/root";
 import "./app.css";
 import AppShell from "@/components/AppShell";
 import { ThemeProvider } from "@/components/theme-provider";
-import { getAllRoms, getBrowseDevices } from "@/lib/api";
+import { fetchMeta } from "@/lib/data";
 
-const devices = getBrowseDevices();
-const roms = getAllRoms().map((rom) => ({ id: rom.id, name: rom.name }));
+export async function loader() {
+  return { updatedAt: (await fetchMeta()).generatedAt };
+}
+
+function formatDate(iso: string): string {
+  const date = new Date(iso);
+  if (Number.isNaN(date.getTime())) return "unknown";
+  // Fixed locale + UTC so the server and client render identically.
+  return new Intl.DateTimeFormat("en-US", {
+    dateStyle: "medium",
+    timeZone: "UTC",
+  }).format(date);
+}
 
 export const links: Route.LinksFunction = () => [
   { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
@@ -39,6 +51,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
+  const { updatedAt } = useLoaderData<typeof loader>();
   return (
     <ThemeProvider
       attribute="class"
@@ -47,7 +60,7 @@ export default function App() {
       enableColorScheme={false}
       disableTransitionOnChange
     >
-      <AppShell devices={devices} roms={roms} buildDate={__BUILD_DATE__}>
+      <AppShell updatedAt={formatDate(updatedAt)}>
         <Outlet />
       </AppShell>
     </ThemeProvider>

@@ -1,8 +1,9 @@
 import type { MetaFunction } from "react-router";
+import { useLoaderData } from "react-router";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { PageHeader } from "@/components/PageHeader";
 import RomsTable from "@/components/RomsTable";
-import { getBrowseRoms } from "@/lib/api";
+import { fetchRoms } from "@/lib/data";
 import { canonical } from "@/lib/seo";
 
 export const meta: MetaFunction = () => [
@@ -14,9 +15,13 @@ export const meta: MetaFunction = () => [
   canonical("/roms"),
 ];
 
-const roms = getBrowseRoms();
+export async function loader() {
+  return { roms: await fetchRoms() };
+}
 
 export default function RomsRoute() {
+  const { roms } = useLoaderData<typeof loader>();
+
   return (
     <div className="flex flex-col gap-6">
       <Breadcrumbs items={[{ label: "Home", to: "/" }, { label: "ROMs" }]} />

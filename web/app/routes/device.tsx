@@ -1,48 +1,44 @@
-import type { MetaFunction } from "react-router";
-import { useParams } from "react-router";
+import { useLoaderData } from "react-router";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import DeviceRomsTable from "@/components/DeviceRomsTable";
 import { PageHeader } from "@/components/PageHeader";
 import { Badge } from "@/components/ui/badge";
-import { findDevice } from "@/lib/api";
-import { canonical } from "@/lib/seo";
+import { fetchDevice } from "@/lib/data";
+import { SITE_URL, canonical } from "@/lib/seo";
+import type { Route } from "./+types/device";
 
-export const meta: MetaFunction = ({ params }) => {
-  const device = params.codename ? findDevice(params.codename) : null;
-  const name = device?.name ?? device?.codename ?? "Device";
+export async function loader({ params }: Route.LoaderArgs) {
+  return { device: await fetchDevice(params.codename) };
+}
+
+export const meta: Route.MetaFunction = ({ loaderData }) => {
+  const device = loaderData?.device;
+  if (!device) return [{ title: "Device not found — unrom" }];
+
+  const name = device.name ?? device.codename;
   return [
     { title: `${name} — unrom` },
     {
       name: "description",
-      content: `Custom ROMs and operating systems that support the ${name}${
-        device ? ` (${device.codename})` : ""
-      }.`,
+      content: `Custom ROMs and operating systems that support the ${name} (${device.codename}).`,
     },
-    ...(params.codename ? [canonical(`/device/${params.codename}`)] : []),
+    canonical(`/device/${device.codename}`),
+    {
+      "script:ld+json": {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        name,
+        url: `${SITE_URL}/device/${device.codename}`,
+        ...(device.brand
+          ? { brand: { "@type": "Brand", name: device.brand } }
+          : {}),
+      },
+    },
   ];
 };
 
 export default function DeviceRoute() {
-  const { codename } = useParams();
-  const device = codename ? findDevice(codename) : null;
-
-  if (!device) {
-    return (
-      <div className="flex flex-col gap-4">
-        <Breadcrumbs
-          items={[
-            { label: "Home", to: "/" },
-            { label: "Devices", to: "/devices" },
-            { label: "Not found" },
-          ]}
-        />
-        <p className="text-muted-foreground">
-          No device found for “{codename}”.
-        </p>
-      </div>
-    );
-  }
-
+  const { device } = useLoaderData<typeof loader>();
   const activeCount = device.roms.filter((rom) => rom.active).length;
 
   return (

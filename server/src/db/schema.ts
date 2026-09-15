@@ -39,36 +39,8 @@ export const meta = sqliteTable("meta", {
   value: text("value").notNull(),
 });
 
-// The DB is a disposable, rebuildable artifact, so it is created from this DDL
-// rather than migrations. Keep in sync with the drizzle table definitions above.
-export const ddl = [
-  `CREATE TABLE IF NOT EXISTS roms (
-     id TEXT PRIMARY KEY,
-     name TEXT NOT NULL
-   )`,
-  `CREATE TABLE IF NOT EXISTS devices (
-     codename TEXT PRIMARY KEY,
-     name TEXT,
-     brand TEXT
-   )`,
-  `CREATE TABLE IF NOT EXISTS rom_devices (
-     rom_id TEXT NOT NULL,
-     codename TEXT NOT NULL,
-     rom_version TEXT,
-     android_base TEXT,
-     active INTEGER NOT NULL,
-     maintainer TEXT,
-     source_url TEXT,
-     source TEXT NOT NULL,
-     PRIMARY KEY (rom_id, codename)
-   )`,
-  `CREATE INDEX IF NOT EXISTS rom_devices_codename_idx ON rom_devices (codename)`,
-  `CREATE TABLE IF NOT EXISTS aliases (
-     alias TEXT PRIMARY KEY,
-     codename TEXT NOT NULL
-   )`,
-  `CREATE TABLE IF NOT EXISTS meta (
-     key TEXT PRIMARY KEY,
-     value TEXT NOT NULL
-   )`,
-];
+// This file is the single source of truth for the schema. The DB is a
+// disposable, rebuildable artifact, so its DDL is generated from these table
+// definitions in `ddl.ts` rather than maintained here by hand or tracked with
+// migrations. New tables must be added to `tables` below.
+export const tables = [roms, devices, romDevices, aliases, meta] as const;

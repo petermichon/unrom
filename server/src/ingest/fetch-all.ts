@@ -1,6 +1,5 @@
 import { mkdir, writeFile } from "node:fs/promises";
-import { dirname, join, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
+import { join } from "node:path";
 
 import { listDevices as listAfterlifeOS } from "./fetch/afterlifeos.ts";
 import { listDevices as listAICP } from "./fetch/aicp.ts";
@@ -30,9 +29,11 @@ import { listDevices as listMistOS } from "./fetch/mistos.ts";
 import { listDevices as listParanoidAndroid } from "./fetch/paranoidandroid.ts";
 import { listDevices as listPixelExperience } from "./fetch/pixelexperience.ts";
 import { listDevices as listPixelOS } from "./fetch/pixelos.ts";
+import { listDevices as listProjectInfinityX } from "./fetch/projectinfinityx.ts";
 import { listDevices as listPixysOS } from "./fetch/pixysos.ts";
 import { listDevices as listProjectPixelAge } from "./fetch/projectpixelage.ts";
 import { listDevices as listRisingOS } from "./fetch/risingos.ts";
+import { DATA_DIR } from "../paths.ts";
 
 type DeviceList = () => Promise<string | Error>;
 
@@ -44,7 +45,7 @@ interface Source {
 
 const sources: Source[] = [
   { id: "afterlifeos", file: "afterlifeos.json", fetch: listAfterlifeOS },
-  { id: "aicp", file: "aicp.json", fetch: listAICP },
+  { id: "aicp", file: "aicp.txt", fetch: listAICP },
   { id: "arrowos", file: "arrowos.txt", fetch: listArrowOS },
   { id: "awakenos", file: "awakenos.json", fetch: listAwakenOS },
   { id: "blissroms", file: "blissroms.json", fetch: listBlissROMs },
@@ -70,14 +71,10 @@ const sources: Source[] = [
   { id: "pixelexperience", file: "pixelexperience.json", fetch: listPixelExperience },
   { id: "pixelos", file: "pixelos.json", fetch: listPixelOS },
   { id: "pixysos", file: "pixysos.json", fetch: listPixysOS },
+  { id: "projectinfinityx", file: "projectinfinityx.json", fetch: listProjectInfinityX },
   { id: "projectpixelage", file: "projectpixelage.json", fetch: listProjectPixelAge },
   { id: "risingos", file: "risingos.md", fetch: listRisingOS },
 ];
-
-const here = dirname(fileURLToPath(import.meta.url));
-const DATA_DIR = process.env.DATA_DIR
-  ? resolve(process.env.DATA_DIR)
-  : resolve(here, "../../../data");
 
 const only = process.argv.slice(2);
 const selected = only.length

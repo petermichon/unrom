@@ -1,0 +1,75 @@
+# unrom — self-hosted deployment.
+#
+#   docker compose -f deploy/compose.yaml up -d --build
+#
+# The data pipeline runs once (`data` service) to build the SQLite database and
+# exports into a shared volume, then the API serves it and the web SSR app
+# renders it. Put your own reverse proxy (Caddy, nginx, Traefik) in front, or
+# enable the `proxy` profile.
+#
+# Ports are bound to 127.0.0.1 so only the host proxy reaches them.
+
+name: unrom
+
+services:
+  # Builds dist/unrom.sqlite, dist/unrom.json and dist/schema.sql from data/.
+  data:
+    build:
+      context: ..
+      target: api
+    command: ["npm", "run", "build:data", "--workspace", "server"]
+    volumes:
+      - unrom-dist:/app/server/dist
+    restart: "no"
+
+  api:
+    build:
+      context: ..
+      target: api
+    environment:
+      HOST: 0.0.0.0
+      PORT: "3000"
+    volumes:
+      - unrom-dist:/app/server/dist
+    ports:
+      - "127.0.0.1:3000:3000"
+    depends_on:
+      data:
+        condition: service_completed_successfully
+    restart: unless-stopped
+
+  web:
+    build:
+      context: ..
+      target: web
+    environment:
+      HOST: 0.0.0.0
+      PORT: "3001"
+      # Server-side loaders call the API over the compose network.
+      API_URL: http://api:3000
+    ports:
+      - "127.0.0.1:3001:3001"
+    depends_on:
+      - api
+    restart: unless-stopped
+
+  # Optional bundled reverse proxy. Skip it if the host already runs one.
+  caddy:
+    image: caddy:2
+    profiles: ["proxy"]
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    depends_on:
+      - web
+      - api
+    restart: unless-stopped
+
+volumes:
+  unrom-dist:
+  caddy-data:
+  caddy-config:

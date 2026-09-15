@@ -10,21 +10,13 @@ import CommandPalette from "@/components/CommandPalette";
 import { GitHubIcon } from "@/components/GitHubIcon";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
-import type { BrowseDevice, RomChip } from "@/lib/types";
 
 interface Props {
-  devices: BrowseDevice[];
-  roms: RomChip[];
-  buildDate: string;
+  updatedAt: string;
   children: ReactNode;
 }
 
-export default function AppShell({
-  devices,
-  roms,
-  buildDate,
-  children,
-}: Props) {
+export default function AppShell({ updatedAt, children }: Props) {
   return (
     <TooltipProvider>
       <SidebarProvider>
@@ -49,14 +41,14 @@ export default function AppShell({
                 <GitHubIcon className="size-4" />
               </Button>
               <ModeToggle />
-              <CommandPalette devices={devices} roms={roms} />
+              <CommandPalette />
             </div>
           </header>
           <main className="flex-1 px-4 py-10 sm:px-6">
             <div className="mx-auto w-full max-w-4xl">{children}</div>
           </main>
           <footer className="border-t border-border/60 px-4 py-6 text-xs text-muted-foreground sm:px-6">
-            Last updated {buildDate}
+            Last updated {updatedAt}
           </footer>
         </SidebarInset>
       </SidebarProvider>

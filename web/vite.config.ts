@@ -15,13 +15,4 @@ export default defineConfig({
       },
     },
   },
-  define: {
-    __BUILD_DATE__: JSON.stringify(
-      new Date().toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "short",
-        day: "numeric",
-      })
-    ),
-  },
 });
