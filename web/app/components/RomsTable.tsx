@@ -12,6 +12,7 @@ import { DataTableToolbar } from "@/components/data-table/data-table-toolbar";
 import { DataTableViewOptions } from "@/components/data-table/data-table-view-options";
 import { SearchInput } from "@/components/SearchInput";
 import { Button } from "@/components/ui/button";
+import { bySortKey } from "@/lib/sort";
 import type { RomDetail } from "@/lib/types";
 
 const COLUMN_WIDTHS: Record<string, string> = {
@@ -61,6 +62,7 @@ export default function RomsTable({ roms }: Props) {
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="ROM" />
         ),
+        sortingFn: (a, b) => bySortKey(a.original.name, b.original.name),
         cell: ({ row }) => (
           <Link
             to={`/rom/${row.original.id}`}

@@ -14,6 +14,7 @@ import { SearchInput } from "@/components/SearchInput";
 import { StatusBadge } from "@/components/StatusBadge";
 import { VersionChips } from "@/components/VersionChips";
 import { Button } from "@/components/ui/button";
+import { bySortKey } from "@/lib/sort";
 import type { RomSupport } from "@/lib/types";
 
 const MOBILE_HIDDEN = new Set(["versions", "maintainer", "sourceUrl"]);
@@ -61,6 +62,7 @@ export default function DeviceRomsTable({ roms }: Props) {
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="ROM" />
         ),
+        sortingFn: (a, b) => bySortKey(a.original.name, b.original.name),
         cell: ({ row }) => (
           <Link
             to={`/rom/${row.original.id}`}

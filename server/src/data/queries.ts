@@ -13,6 +13,11 @@ import type {
 
 import { devices, meta, romDevices, roms } from "../db/schema.ts";
 
+// Order by the first letter/digit so leading punctuation (e.g. "/e/OS") does not
+// push a name to the top. Display names are left untouched.
+const sortKey = (value: string): string =>
+  value.replace(/^[^\p{L}\p{N}]+/u, "").toLowerCase();
+
 type Edge = typeof romDevices.$inferSelect;
 type DeviceRow = typeof devices.$inferSelect;
 type RomRow = typeof roms.$inferSelect;
@@ -79,7 +84,7 @@ export function createApi(dbPath: string) {
       name: device.name,
       brand: device.brand,
       roms: (chipsByDevice.get(device.codename) ?? []).sort((a, b) =>
-        a.name.localeCompare(b.name)
+        sortKey(a.name).localeCompare(sortKey(b.name))
       ),
     }));
   }
@@ -99,7 +104,7 @@ export function createApi(dbPath: string) {
       .where(eq(romDevices.codename, codename))
       .all()
       .map((edge) => toRomSupport(edge, names))
-      .sort((a, b) => a.name.localeCompare(b.name));
+      .sort((a, b) => sortKey(a.name).localeCompare(sortKey(b.name)));
 
     return {
       codename: device.codename,
@@ -140,7 +145,9 @@ export function createApi(dbPath: string) {
           };
         })
         .sort((a, b) =>
-          (a.name ?? a.codename).localeCompare(b.name ?? b.codename)
+          sortKey(a.name ?? a.codename).localeCompare(
+            sortKey(b.name ?? b.codename)
+          )
         ),
     };
   }
@@ -184,7 +191,8 @@ export function createApi(dbPath: string) {
           deviceByCodename,
           romCountByDevice
         )
-      );
+      )
+      .sort((a, b) => sortKey(a.name).localeCompare(sortKey(b.name)));
   }
 
   function getRom(id: string): RomDetail | null {
