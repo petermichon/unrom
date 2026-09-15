@@ -45,9 +45,9 @@ export default function AppShell({ updatedAt, children }: Props) {
               <CommandPalette />
             </div>
           </header>
-          <main id="content" tabIndex={-1} className="flex-1 px-4 py-10 sm:px-6">
+          <div id="content" tabIndex={-1} className="flex-1 px-4 py-10 sm:px-6">
             <div className="mx-auto w-full max-w-4xl">{children}</div>
-          </main>
+          </div>
           <footer className="border-t border-border/60 px-4 py-6 text-xs text-muted-foreground sm:px-6">
             Last updated {updatedAt ?? "—"}
           </footer>

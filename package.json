@@ -19,6 +19,7 @@
     "preview": "npm run preview --workspace web",
     "check": "npm run typecheck --workspace web && npm run check --workspace server && npm run check --workspace contract",
     "lint": "npm run lint --workspace web",
+    "test:e2e": "playwright test",
     "ingest": "npm run ingest --workspace server",
     "build:data": "npm run build:data --workspace server",
     "api": "npm run start --workspace server"
@@ -27,6 +28,8 @@
     "esbuild": true
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
+    "@playwright/test": "^1.63.0",
     "concurrently": "^10.0.5"
   }
 }

@@ -58,7 +58,7 @@ export default function DeviceRoute() {
           badge={
             <Badge
               variant="outline"
-              className="bg-muted font-mono text-xs text-muted-foreground"
+              className="bg-muted font-mono text-xs text-foreground"
             >
               {device.codename}
             </Badge>

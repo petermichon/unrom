@@ -13,3 +13,7 @@ server/dist
 Dockerfile
 deploy
 README.md
+e2e
+playwright.config.ts
+test-results
+playwright-report
