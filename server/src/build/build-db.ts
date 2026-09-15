@@ -3,8 +3,10 @@ import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import Database from "better-sqlite3";
 import { drizzle } from "drizzle-orm/better-sqlite3";
 
+import { createCodenameResolver } from "../data/aliases.ts";
 import { generateDdl } from "../db/ddl.ts";
 import {
+  aliases,
   devices,
   meta,
   romDeviceVersions,
@@ -66,23 +68,27 @@ interface Version {
 
 const edgeMap = new Map<string, Edge>();
 const versionMap = new Map<string, Version>();
+const codenames = createCodenameResolver();
 
 for (const record of records) {
   romMap.set(record.romId, record.romName);
 
-  const device = deviceMap.get(record.codename) ?? {
-    codename: record.codename,
+  // Resolve cross-source casing to one canonical device identity.
+  const codename = codenames.resolve(record.codename);
+
+  const device = deviceMap.get(codename) ?? {
+    codename,
     name: null,
     brand: null,
   };
   device.name ??= record.name;
   device.brand ??= record.brand;
-  deviceMap.set(record.codename, device);
+  deviceMap.set(codename, device);
 
-  const key = `${record.romId}:${record.codename}`;
+  const key = `${record.romId}:${codename}`;
   const edge = edgeMap.get(key) ?? {
     romId: record.romId,
-    codename: record.codename,
+    codename,
     active: false,
     maintainer: null,
     sourceUrl: null,
@@ -99,7 +105,7 @@ for (const record of records) {
       `${key}:${version.romVersion ?? ""}:${version.androidBase ?? ""}`,
       {
         romId: record.romId,
-        codename: record.codename,
+        codename,
         romVersion: version.romVersion,
         androidBase: version.androidBase,
       }
@@ -109,6 +115,7 @@ for (const record of records) {
 
 const edges = [...edgeMap.values()];
 const versions = [...versionMap.values()];
+const aliasRows = codenames.aliases();
 // SOURCE_DATE_EPOCH makes rebuilds byte-identical (reproducible builds).
 const generatedAt = process.env.SOURCE_DATE_EPOCH
   ? new Date(Number(process.env.SOURCE_DATE_EPOCH) * 1000).toISOString()
@@ -134,6 +141,9 @@ db.transaction((tx) => {
   for (const version of versions) {
     tx.insert(romDeviceVersions).values(version).run();
   }
+  for (const alias of aliasRows) {
+    tx.insert(aliases).values(alias).run();
+  }
   for (const [key, value] of metaRows) {
     tx.insert(meta).values({ key, value }).run();
   }
@@ -142,5 +152,5 @@ db.transaction((tx) => {
 sqlite.close();
 
 console.log(
-  `Built ${DB_PATH}\n  ${romMap.size} ROM(s), ${deviceMap.size} device(s), ${edges.length} edge(s), ${versions.length} version(s)`
+  `Built ${DB_PATH}\n  ${romMap.size} ROM(s), ${deviceMap.size} device(s), ${edges.length} edge(s), ${versions.length} version(s), ${aliasRows.length} alias(es)`
 );
