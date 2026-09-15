@@ -4,7 +4,7 @@
   "license": "AGPL-3.0-only",
   "type": "module",
   "engines": {
-    "node": ">=24"
+    "node": ">=22.18"
   },
   "workspaces": [
     "web",

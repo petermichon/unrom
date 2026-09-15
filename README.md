@@ -76,7 +76,7 @@ Updates then arrive via the deploy workflow, or manually:
 
 ### Without Docker
 
-Node 24+:
+Node 22.18+ (24 recommended, see `.nvmrc`):
 
 ```sh
 npm install

@@ -38,11 +38,16 @@ source of truth.
 
 ## Stack
 
-- Node 24 + TypeScript
+- Node 22.18+ + TypeScript (run directly via type stripping; images pin Node 24)
 - Hono (`@hono/node-server`) for the HTTP API
 - Drizzle ORM + better-sqlite3 (SQLite)
 - Zod for validating normalized records
 - REST / JSON
+
+> `better-sqlite3` ships no types and `@types/better-sqlite3` is still on 9.x
+> while the runtime is 13.x. The API surface we use is unchanged across those
+> versions, so the mismatch is cosmetic; `skipLibCheck` covers it. Revisit (add
+> a local `.d.ts` augmentation) if we adopt a v13-only API.
 
 ## Tables
 
