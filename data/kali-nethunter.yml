@@ -112,10 +112,6 @@
 - angler:
     model  : Google/Huawei Nexus 6P
     images :
-      - id     : angler
-        name   : Google/Huawei Nexus 6P (Oreo)
-        android: oreo
-        docs   : "https://xdaforums.com/t/rom-official-kali-nethunter-for-the-huawei-nexus-6p-android-8-1.4080807/"
       - id     : angler-los
         name   : Google/Huawei Nexus 6P Nexus 6P (LineageOS 17.1)
         android: ten
@@ -411,10 +407,6 @@
             features: [HID-4, ATH9K_HTC, RTL8xxxU]
 - bullhead:
     model  : Google Nexus 5X
-    images :
-      - id     : bullhead
-        name   : Google Nexus 5X (Oreo)
-        android: oreo
     kernels:
       - id          : bullhead
         description : Google Nexus 5X for stock Android
@@ -455,14 +447,14 @@
         devicenames : c2s c2sxx c2sxxx SM-N985F samsung_exynos990 exynos990 Galaxy Note20 Ultra
         modules     : 0
         slot_device : 0
-        version     : 4.2
+        version     : 4.4
         versions    :
           - android    : thirteen
             linux      : 4.19
             description: One UI 5.1
             author     : Luka Gejak
-            source     : 'git clone https://github.com/MocLG/android_kernel_samsung_exynos990_nethunter -b nethunter-c2s-oui-ksu-v4.2'
-            features   : [CDROM, HID-4, Injection, ATH9K_HTC, BT_RFCOMM, Internal_BT, RTL-BT]
+            source     : 'git clone https://github.com/MocLG/android_kernel_samsung_exynos990_nethunter -b nethunter-c2s-oui-ksu-v4.4'
+            features   : [CDROM, HID-4, Injection, ATH9K_HTC, BT_RFCOMM, Internal_BT, RTL-BT, Nexmon, RTL-SDR, CH341, CP210X, CDC_ECM]
 - cancro:
     model  : Xiaomi Mi 3 / Mi 4
     kernels:
@@ -729,10 +721,6 @@
             features   : [BT_RFCOMM, CDROM, HID, Injection]
 - flounder:
     model  : Google Nexus 9
-    images :
-      - id     : flounder
-        name   : Google Nexus 9 (Nougat)
-        android: nougat
     kernels:
       - id          : flounder
         description : Google Nexus 9 for stock Android
@@ -858,13 +846,6 @@
             source     : 'git clone https://github.com/binkybear/android_kernel_asus_grouper.git -b android-tegra3-grouper-3.1-lollipop-release_tegra-l4t-r16-16.5 nexus7_2012-5'
 - gts4llte:
     model  : Samsung Galaxy Tab S4 LTE
-    images :
-      - id     : gts4llte
-        name   : Samsung Galaxy Tab S4 LTE (Oreo)
-        android: oreo
-        note   : >-
-                 **Our preferred tablet**<br>
-                 The LTE device currently uses the WiFi version of TWRP so we have to be flexible for a while
     kernels:
       - id          : gts4llte
         description : Samsung Galaxy Tab S4 LTE for stock Android
@@ -879,10 +860,6 @@
             features   : [HID, Injection]
 - gts4lwifi:
     model  : Samsung Galaxy Tab S4 WiFi
-    images :
-      - id     : gts4lwifi
-        name   : Samsung Galaxy Tab S4 WiFi (Oreo)
-        android: oreo
     kernels:
       - id          : gts4lwifi
         description : Samsung Galaxy Tab S4 WiFi for stock Android
@@ -988,11 +965,6 @@
             features   : [HID, Injection, CDROM, RTL8188EUS, RTL88XXAU, Internal_BT, NFS, RTL_BT]
 - hammerhead:
     model  : Google Nexus 5
-    images :
-      - id     : hammerhead-los
-        name   : Google Nexus 5 (LineageOS 14.1)
-        android: nougat
-        note   : "Nexmon support"
     kernels:
       - id          : hammerhead
         description : Google Nexus 5 for stock Android
@@ -1716,10 +1688,6 @@
     model  : Xiaomi Mi A3
     images :
       - id     : laurel-sprout-los
-        name   : Xiaomi Mi A3 (LineageOS 22)
-        android: fifteen
-        docs   : "https://xdaforums.com/t/rom-official-kali-nethunter-for-the-xiaomi-mi-a3-linageos-22.4701940/"
-      - id     : laurel-sprout-los
         name   : Xiaomi Mi A3 (LineageOS 23.2)
         android: sixteen
     kernels:
@@ -1773,7 +1741,7 @@
     kernels:
       - id          : lv517-los
         description : LG K20 Plus for Lineage OS
-        version     : 1.1
+        version     : 2.0
         kernelstring: NetHunter kernel for LG K20 Plus
         arch        : arm64
         versions    :
@@ -1782,6 +1750,7 @@
             description: LineageOS 14.1
             author     : robnew
             source     : 'git clone https://github.com/robnew/NetHunter_K20plus_arm64_Kernel.git'
+            features   : [HID, Injection, CDROM, ATH9K_HTC, BT_RFCOMM]
 - mako:
     model  : Google Nexus 4
     kernels:
@@ -2368,6 +2337,7 @@
             linux      : 4.14
             description: LineageOS 23.2
             author     : v0lk3n
+            source     : 'git clone --recurse-submodules https://github.com/V0lk3n/nethunter_kernel_oneplus_sm8150.git -b nethunter-lineage-23.2'
             features   : [HID-4, Internal Monitor, QCACLD-3 Injection, RTW88, RTL8188EUS, MT76, Docker, CAN, HLCAN, BT_RFCOMM, UART H4, VHCI, BINDER_IPC, NFS]
 - oneplus8:
     model  : OnePlus 8 / 8T / 8 Pro
@@ -2516,6 +2486,26 @@
             author     : Mashopy
             source     : 'git clone https://github.com/lineageos-on-pdx201/android_kernel_sony_sm6125 -b lineage-20'
             features   : [HID-4, Injection, RTL88XXAU, BT_RFCOMM, Internal_BT]
+- pdx235:
+    model  : Sony Xperia 10 V
+    images :
+      - id     : pdx235-los
+        name   : Sony Xperia 10 V
+        android: sixteen
+    kernels:
+      - id          : pdx235-los
+        description : Sony Xperia 10 V for LineageOS
+        kernelstring: NetHunter kernel for Xperia 10 V
+        arch        : arm64
+        block       : /dev/block/bootdevice/by-name/boot
+        devicenames : XQ-DC54,XQ-DC72
+        versions    :
+          - android    : sixteen
+            linux      : 5.4
+            description: LineageOS 23.2
+            author     : Tom60chat
+            source     : 'git clone https://github.com/Tom60chat/android_kernel_sony_sm6375 -b lineage-23.2'
+            features   : [mac80211, HID-4, CDROM, QCACLD, ATH9K_HTC, RTL8187, RTL8192CU, RT2800USB, MT7601U]
 - pl2:
     model  : Nokia 6.1
     images :
@@ -2787,6 +2777,29 @@
             description: CyanogenMod 14.1
             author     : Rishabh Rao
             source     : 'git clone https://github.com/nethunter-s2/android_kernel_leeco_s2.git -b cm-14.1'
+- sailfish:
+    model  : Google Pixel
+    images :
+      - id     : sailfish
+        name   : Google Pixel (LineageOS 22.2)
+        android: fifteen
+    kernels:
+      - id          : sailfish
+        description : Google Pixel (sailfish) for LineageOS 22.2
+        kernelstring: NetHunter Kernel by willuhmjs - Google Pixel (sailfish) - LineageOS 22 / Android 15
+        arch        : arm64
+        block       : /dev/block/bootdevice/by-name/boot
+        devicenames : sailfish,Sailfish,Pixel
+        modules     : 1
+        slot_device : 1
+        ramdisk     : auto
+        versions    :
+          - android    : fifteen
+            linux      : 4.4
+            description: LineageOS 22.2
+            author     : willuhmjs
+            source     : 'git clone git@github.com:willuhmjs/android_kernel_google_marlin -b lineage-22.2'
+            features   : [HID, Injection, RTL8812AU, RTW88, BadUSB, SDR, CAN, NFS]
 - sakura:
     model  : Xiaomi Redmi 6 Pro
     images :
@@ -3255,10 +3268,6 @@
             source     : 'git clone https://github.com/XXH3X/Ultimate-Kali'
 - zerolte:
     model  : Samsung Galaxy S6 Edge
-    images :
-      - id     : zerolte-los
-        name   : Samsung Galaxy S6 Edge (LineageOS 14.1)
-        android: nougat
     kernels:
       - id          : zerolte-los
         description : Samsung Galaxy S6 Edge (International Exynos) for LineageOS
@@ -3353,3 +3362,52 @@
             author     : dr1408
             source     : 'git clone https://github.com/dr1408/kernel_xiaomi_surya_16 -b main'
             features   : [BT_RFCOMM, HID-4, QCACLD Injection, Internal_BT, NFS, RTL8188EUS, RTW88, CAN, SDR, Docker, BTUSB UB400 & UB500]
+
+- stone-crdroid12:
+    model  : POCO X5 5G / Redmi Note 12 5G (crDroid 12)
+    images :
+      - id     : stone-crdroid12
+        name   : POCO X5 5G / Redmi Note 12 5G (crDroid 12)
+        android: sixteen
+        note   : "Build script are available on https://github.com/harifhaqim/crdroid_nethunter_builder"
+    kernels:
+      - id          : stone-crdroid12
+        description : POCO X5 5G / Redmi Note 12 5G Nethunter for crDroid 12 Android 16
+        kernelstring: crDroid NetHunter Kernel for POCO X5 5G / Redmi Note 12 5G (sunstone/moonstone)
+        arch        : arm64
+        devicenames : stone
+        block       : /dev/block/bootdevice/by-name/boot
+        version     : 5.4.302
+        modules     : 0
+        slot_device : 1
+        versions    :
+          - android    : sixteen
+            linux      : 5.4.302
+            description: crDroid12 Android 16
+            author     : harifhaqim(mikhailsimon)
+            source     : 'git clone https://github.com/harifhaqim/crdroid_nethunter_stone -b 16.0'
+            features   : [BT_RFCOMM, HID, Injection, Internal_BT, NFS, RTL8188EUS, RTW88XXAU, CAN, SDR, BTUSB]
+
+- whyred:
+    model  : Xiaomi Redmi Note 5 Pro
+    images :
+      - id     : whyred-los
+        name   : Xiaomi Redmi Note 5 Pro (LineageOS 18.1)
+        android: eleven
+        docs   : "https://xdaforums.com/t/kernel-whyred-nethunter-kernel-for-los-18-1-hid-gadget-rtl8812au-injection-ci-built.4800231/"
+    kernels:
+      - id          : whyred-los
+        description : Xiaomi Redmi Note 5 Pro for LineageOS
+        kernelstring: NetHunter kernel for Xiaomi Redmi Note 5 Pro (whyred)
+        arch        : arm64
+        block       : /dev/block/bootdevice/by-name/boot
+        devicenames : whyred
+        modules     : 1
+        version     : 4.4.302
+        versions    :
+          - android    : eleven
+            linux      : 4.4
+            description: LineageOS 18.1
+            author     : notatallnic189
+            source     : 'git clone https://github.com/notatallnic189/whyred-nethunter-kernel -b main'
+            features   : [HID, Injection, RTL8812AU]

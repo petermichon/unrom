@@ -169,5 +169,14 @@
         "maintainer": "Awaiting",
         "status": "Discontinued",
         "image": "https://raw.githubusercontent.com/The-Clover-Project/TheCloverProject.com/main/public/devices/nabu.png"
+    },
+    {
+        "id": 20,
+        "name": "POCO X7 Pro / Redmi Turbo 4",
+        "codename": "rodin",
+        "brand": "POCO & Redmi",
+        "maintainer": "RAM-UNLOK",
+        "status": "Stable",
+        "image": "https://raw.githubusercontent.com/The-Clover-Project/TheCloverProject.com/main/public/devices/rodin.png"
     }
 ]
