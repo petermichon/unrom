@@ -7,7 +7,9 @@ Node API that turns the raw ROM data in `../data` into a device → ROM index.
 > config-driven adapter in `src/sources/`; irregular shapes have dedicated
 > parsers alongside it (LineageOS and Evolution X use a two-stage fetch of
 > per-device files; iodéOS is codename-only because its GitLab API is behind an
-> anti-bot challenge). `src/db/schema.ts` is the source of truth for the tables.
+> anti-bot challenge). `/e/OS` snapshots are **frozen** — its GitLab releases
+> repo is no longer publicly readable — so they are no longer re-fetched.
+> `src/db/schema.ts` is the source of truth for the tables.
 
 ## Pipeline
 

@@ -11,13 +11,8 @@ import { listDevices as listClover } from "./fetch/clover.ts";
 import { listDevices as listCorvusOS } from "./fetch/corvusos.ts";
 import { listDevices as listDotOS } from "./fetch/dotos.ts";
 import { listDevices as listDroidXUI } from "./fetch/droidxui.ts";
-import {
-  listDevicesA14 as listEOSA14,
-  listDevicesA15 as listEOSA15,
-  listDevicesA16 as listEOSA16,
-  listDevicesV1S as listEOSV1S,
-  listDevicesV1T as listEOSV1T,
-} from "./fetch/eos.ts";
+// /e/OS: its GitLab releases repo is no longer publicly readable, so the five
+// `eos-*.yml` snapshots are frozen (the normalizer still reads them).
 import { listDevices as listEvolutionX } from "./fetch/evolutionx.ts";
 import { listDevices as listHavocOS } from "./fetch/havocos.ts";
 import { listDevices as listIode } from "./fetch/iode.ts";
@@ -54,11 +49,6 @@ const sources: Source[] = [
   { id: "corvusos", file: "corvusos.json", fetch: listCorvusOS },
   { id: "dotos", file: "dotos.json", fetch: listDotOS },
   { id: "droidxui", file: "droidxui.json", fetch: listDroidXUI },
-  { id: "eos-v1-s", file: "eos-v1-s.yml", fetch: listEOSV1S },
-  { id: "eos-v1-t", file: "eos-v1-t.yml", fetch: listEOSV1T },
-  { id: "eos-a14", file: "eos-a14.yml", fetch: listEOSA14 },
-  { id: "eos-a15", file: "eos-a15.yml", fetch: listEOSA15 },
-  { id: "eos-a16", file: "eos-a16.yml", fetch: listEOSA16 },
   { id: "evolutionx", file: "evolutionx.json", fetch: listEvolutionX },
   { id: "havocos", file: "havocos.txt", fetch: listHavocOS },
   { id: "iode", file: "iode.json", fetch: listIode },
