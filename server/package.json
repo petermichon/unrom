@@ -13,6 +13,7 @@
     "build:db": "node --disable-warning=ExperimentalWarning src/build/build-db.ts",
     "export:json": "node --disable-warning=ExperimentalWarning src/build/export-json.ts",
     "build:data": "npm run normalize && npm run build:db && npm run export:json",
+    "test": "node --disable-warning=ExperimentalWarning --test src/*.test.ts",
     "start": "node --disable-warning=ExperimentalWarning src/api/server.ts",
     "dev": "node --disable-warning=ExperimentalWarning --watch src/api/server.ts",
     "check": "tsc --noEmit"

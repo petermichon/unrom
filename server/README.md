@@ -31,7 +31,12 @@ the build step must stay runnable without the network.
 npm run ingest                       # fetch every source (from repo root)
 npm run ingest -- arrowos havocos    # fetch specific sources only
 npm run build:data                   # normalize + build SQLite + export JSON
+npm run test                         # source coverage + dataset invariants
 ```
+
+`normalize` fails if any source parses to zero records (unless listed in
+`ALLOWED_EMPTY_FILES`), so a changed upstream shape breaks the build instead of
+silently dropping data.
 
 `dist/` is a derived artifact and is gitignored; `../data` remains the immutable
 source of truth.

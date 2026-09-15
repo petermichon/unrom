@@ -2,7 +2,7 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 
 import type { NormalizedRomDevice } from "../normalized.ts";
-import { sources } from "../sources/registry.ts";
+import { ALLOWED_EMPTY_FILES, sources } from "../sources/registry.ts";
 import { DATA_DIR, DIST_DIR, NDJSON_PATH } from "../paths.ts";
 
 const records: NormalizedRomDevice[] = [];
@@ -12,6 +12,9 @@ for (const source of sources) {
   try {
     const raw = await readFile(join(DATA_DIR, source.file), "utf8");
     const parsed = source.parse(raw);
+    if (parsed.length === 0 && !ALLOWED_EMPTY_FILES.has(source.file)) {
+      throw new Error("produced no records (upstream shape may have changed)");
+    }
     records.push(...parsed);
     console.log(`✓ ${source.file} → ${parsed.length} record(s)`);
   } catch (error) {

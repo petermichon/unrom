@@ -19,6 +19,10 @@ export interface SourceAdapter {
   parse: (raw: string) => NormalizedRomDevice[];
 }
 
+// Sources that may legitimately parse to zero records (e.g. a paused project).
+// Everything else failing to parse is treated as breakage.
+export const ALLOWED_EMPTY_FILES = new Set<string>();
+
 const configs: DeviceSource[] = [
   {
     id: "pixelexperience",
