@@ -1,12 +1,12 @@
 version: 2
 updates:
+  # Group safe (minor/patch) bumps to cut noise; major versions arrive as
+  # separate PRs so one breaking bump can't block the rest.
   - package-ecosystem: npm
     directory: /
     schedule:
       interval: weekly
     open-pull-requests-limit: 5
-    # Group only safe bumps; major versions arrive as separate PRs to review
-    # individually (a single major that breaks CI shouldn't block the rest).
     groups:
       npm-minor-patch:
         patterns: ["*"]
@@ -16,11 +16,21 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      actions-minor-patch:
+        patterns: ["*"]
+        update-types: ["minor", "patch"]
 
   - package-ecosystem: docker
     directory: /
     schedule:
       interval: weekly
+    open-pull-requests-limit: 5
+    groups:
+      docker-minor-patch:
+        patterns: ["*"]
+        update-types: ["minor", "patch"]
     # The runtime is pinned intentionally (CI tests 22.18/24); bump Node by hand.
     ignore:
       - dependency-name: node
