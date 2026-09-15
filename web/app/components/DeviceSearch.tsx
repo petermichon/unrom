@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useNavigate } from "react-router";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -15,12 +15,32 @@ interface Props {
   devices: BrowseDevice[];
 }
 
+// cmdk renders and measures every item, so with hundreds of devices we filter
+// ourselves and only render the top matches.
+const MAX_RESULTS = 50;
+
+function matches(device: BrowseDevice, query: string): boolean {
+  return (
+    (device.name ?? "").toLowerCase().includes(query) ||
+    device.codename.toLowerCase().includes(query) ||
+    (device.brand ?? "").toLowerCase().includes(query)
+  );
+}
+
 export default function DeviceSearch({ devices }: Props) {
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
+  const needle = query.trim().toLowerCase();
+
+  const { results, total } = useMemo(() => {
+    if (needle === "") return { results: [], total: 0 };
+    const all = devices.filter((device) => matches(device, needle));
+    return { results: all.slice(0, MAX_RESULTS), total: all.length };
+  }, [devices, needle]);
 
   return (
     <Command
+      shouldFilter={false}
       className="rounded-xl border border-border/60"
       value={query}
       onValueChange={setQuery}
@@ -30,16 +50,14 @@ export default function DeviceSearch({ devices }: Props) {
         placeholder="Search by device name, codename, or brand…"
       />
       <CommandList className="max-h-[22rem]">
-        {query.trim() !== "" && (
+        {needle !== "" && total === 0 && (
           <CommandEmpty>No devices found.</CommandEmpty>
         )}
         <CommandGroup>
-          {devices.map((device) => (
+          {results.map((device) => (
             <CommandItem
               key={device.codename}
-              value={`${device.name ?? ""} ${device.codename} ${
-                device.brand ?? ""
-              }`}
+              value={device.codename}
               onSelect={() => navigate(`/devices/${device.codename}`)}
               className="gap-3"
             >
@@ -61,6 +79,11 @@ export default function DeviceSearch({ devices }: Props) {
             </CommandItem>
           ))}
         </CommandGroup>
+        {total > results.length && (
+          <div className="px-3 py-2 text-xs text-muted-foreground">
+            Showing {results.length} of {total} matches — refine your search.
+          </div>
+        )}
       </CommandList>
     </Command>
   );
