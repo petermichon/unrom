@@ -13,7 +13,7 @@ export interface SourceResult {
   error?: string;
 }
 
-export async function parseSource(source: SourceAdapter): Promise<SourceResult> {
+async function parseSource(source: SourceAdapter): Promise<SourceResult> {
   try {
     const raw = await readFile(join(DATA_DIR, source.file), "utf8");
     return { id: source.id, file: source.file, records: source.parse(raw).length };

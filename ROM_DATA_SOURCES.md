@@ -2,6 +2,10 @@
 
 This file tracks the data collection status for various custom Android ROMs.
 
+> Status here is a research snapshot. The **authoritative** list is
+> `server/src/ingest/fetch-all.ts` (fetchers) and `server/src/sources/registry.ts`
+> (normalizers); upstream attribution lives in `ATTRIBUTION.md`.
+
 ## Inclusion Criteria
 
 1. **Installable** - Can be flashed to replace stock ROM
@@ -23,7 +27,7 @@ This file tracks the data collection status for various custom Android ROMs.
 | CorvusOS         | AOSP | ⚠️ Unclear     | ✅ GitHub     | Single devices.json file with 15+ devices; last builds Nov 2022 (vT5.1, Android 13), project appears inactive      |
 | DroidX-UI        | AOSP | ✅ Active      | ✅ GitHub     | Single devices.json file with 20+ devices across Xiaomi, Nothing, Google, Samsung; last updated July 2025          |
 | dotOS            | AOSP | ⚠️ Unclear     | ✅ GitHub     | Last commit Sept 2022, stuck on Android 12; July 2022 announcement about restarting but no activity since          |
-| /e/OS            | AOSP | ✅ Active      | ⚠️ GitLab     | Device lists in CI/CD YAML files across 5 branches (v1-s, v1-t, a14, a15, a16); requires parsing GitLab            |
+| /e/OS            | AOSP | ✅ Active      | ⚠️ GitLab     | **Frozen**: the GitLab releases repo is no longer publicly readable; committed snapshots are still normalized     |
 | Evolution X      | AOSP | ✅ Active      | ✅ GitHub API | Individual device JSON files in `builds/` directory, last updated July 2026                                        |
 | HavocOS          | AOSP | ⚠️ Unclear     | ✅ GitHub     | Data from Sept 2023 (3 years old); HavocOS Revived exists but has no device tracking                               |
 | iodéOS           | AOSP | ✅ Active      | ✅ GitLab API | Device directories in GitLab repository tree; fetched via GitLab API                                               |
@@ -36,6 +40,7 @@ This file tracks the data collection status for various custom Android ROMs.
 | PixelExperience  | AOSP | ✅ Active      | ✅ GitHub     |                                                                                                                    |
 | PixelOS          | AOSP | ✅ Active      | ✅ GitHub     |                                                                                                                    |
 | PixysOS          | AOSP | ⚠️ Unclear     | ✅ GitHub     | Core repos last updated July 2024 (2 years old); devices list may be outdated                                      |
+| Project Infinity X | AOSP | ✅ Active    | ✅ GitHub API | Individual device JSON files via GitHub API; fetched with a two-stage fetch                                      |
 | Project PixelAge | AOSP | ✅ Active      | ✅ GitHub API | Individual device JSON files via GitHub API; 15 devices on Android 15, A16 WIP                                     |
 | RisingOS         | AOSP | ✅ Active      | ✅ GitHub     |                                                                                                                    |
 
@@ -46,7 +51,6 @@ This file tracks the data collection status for various custom Android ROMs.
 | AlphaDroid         | AOSP | ✅ Active       | ⚠️ GitHub     | 100+ individual device JSON files in OTA repository; requires fetching many files                             |
 | AXP.OS             | AOSP | ✅ Active       | ⚠️ Website    | Device list on website; main sources require login; no machine-readable data source (15+ devices)             |
 | AncientOS          | AOSP | ⚠️ Unclear      | ⚠️ GitHub     | Single website_api.json file with 70+ devices; data from 2022 (4+ years old), last repo update Sept 2023      |
-| Project Infinity X | AOSP | ✅ Active       | ⚠️ GitHub API | 90 individual device JSON files via GitHub API; requires fetching many files (too complex for simple fetcher) |
 | AospExtended       | AOSP | ❌ Discontinued | ⚠️ GitHub     | Suspended indefinitely August 2022; individual device repositories, no centralized device list                |
 | CalyxOS            | AOSP | ✅ Active       | ⚠️ Website    | Device list on website, includes latest Pixel 9 series and 2024 Motorola devices, requires web scraping       |
 | ColtOS             | AOSP | ⚠️ Unclear      | ⚠️ GitHub     | Rebranded as Colt-Enigma; device builds stuck on Android 11 from 2021; individual device JSON files           |
