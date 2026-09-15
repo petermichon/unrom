@@ -1,7 +1,7 @@
 node_modules/
-build/
+web/build/
+server/dist/
 .react-router/
-dist/
 .env
 .env.*
 !.env.example
