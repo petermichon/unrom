@@ -35,6 +35,7 @@ export default function AppShell({ updatedAt, children }: Props) {
                     href="https://github.com/petermichon/unrom"
                     target="_blank"
                     rel="noreferrer"
+                    aria-label="GitHub repository"
                   />
                 }
               >

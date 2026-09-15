@@ -21,13 +21,25 @@ export function ExportMenu() {
         <DropdownMenuGroup>
           <DropdownMenuLabel>Full dataset</DropdownMenuLabel>
           <DropdownMenuItem
-            render={<a href="/api/export/sqlite" download="unrom.sqlite" />}
+            render={
+              <a
+                href="/api/export/sqlite"
+                download="unrom.sqlite"
+                aria-label="Download SQLite database"
+              />
+            }
           >
             SQLite (.sqlite)
             <DropdownMenuShortcut>→</DropdownMenuShortcut>
           </DropdownMenuItem>
           <DropdownMenuItem
-            render={<a href="/api/export/json" download="unrom.json" />}
+            render={
+              <a
+                href="/api/export/json"
+                download="unrom.json"
+                aria-label="Download JSON export"
+              />
+            }
           >
             JSON (.json)
             <DropdownMenuShortcut>→</DropdownMenuShortcut>

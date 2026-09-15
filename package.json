@@ -18,6 +18,7 @@
     "build": "npm run build --workspace web",
     "preview": "npm run preview --workspace web",
     "check": "npm run typecheck --workspace web && npm run check --workspace server && npm run check --workspace contract",
+    "lint": "npm run lint --workspace web",
     "ingest": "npm run ingest --workspace server",
     "build:data": "npm run build:data --workspace server",
     "api": "npm run start --workspace server"

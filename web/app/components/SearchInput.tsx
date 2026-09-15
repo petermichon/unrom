@@ -12,7 +12,6 @@ interface Props {
   onValueChange: (value: string) => void;
   placeholder: string;
   ariaLabel: string;
-  autoFocus?: boolean;
   className?: string;
   inputClassName?: string;
 }
@@ -23,7 +22,6 @@ export function SearchInput({
   onValueChange,
   placeholder,
   ariaLabel,
-  autoFocus,
   className,
   inputClassName,
 }: Props) {
@@ -38,7 +36,6 @@ export function SearchInput({
         type="search"
         autoComplete="off"
         spellCheck={false}
-        autoFocus={autoFocus}
         value={value}
         onChange={(event) => onValueChange(event.target.value)}
         placeholder={placeholder}
