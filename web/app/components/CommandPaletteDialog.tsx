@@ -83,10 +83,12 @@ export default function CommandPaletteDialog({ open, onOpenChange }: Props) {
       title="Search unrom"
       description="Find a device or ROM"
     >
-      <Command shouldFilter={false} value={query} onValueChange={setQuery}>
+      <Command shouldFilter={false}>
         <CommandInput
           aria-label="Search devices and ROMs"
           placeholder="Search devices and ROMs…"
+          value={query}
+          onValueChange={setQuery}
         />
         <CommandList>
           {noResults && <CommandEmpty>No results found.</CommandEmpty>}

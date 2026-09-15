@@ -39,15 +39,12 @@ export default function DeviceSearch({ devices }: Props) {
   }, [devices, needle]);
 
   return (
-    <Command
-      shouldFilter={false}
-      className="rounded-xl border border-border/60"
-      value={query}
-      onValueChange={setQuery}
-    >
+    <Command shouldFilter={false} className="rounded-xl border border-border/60">
       <CommandInput
         aria-label="Search devices"
         placeholder="Search by device name, codename, or brand…"
+        value={query}
+        onValueChange={setQuery}
       />
       <CommandList className="max-h-[22rem]">
         {needle !== "" && total === 0 && (
