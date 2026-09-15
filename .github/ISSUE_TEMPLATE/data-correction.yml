@@ -1,0 +1,54 @@
+name: Data correction
+description: Report a wrong, missing or duplicate device↔ROM mapping
+title: "[data] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for helping improve the data. Please include a **source link** so
+        we can verify the correction.
+  - type: input
+    id: rom
+    attributes:
+      label: ROM
+      description: ROM name or id (e.g. PixelOS, /rom/pixelos)
+    validations:
+      required: true
+  - type: input
+    id: codename
+    attributes:
+      label: Device codename
+      description: e.g. beryllium
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What is wrong?
+      options:
+        - Wrong version / Android base
+        - Wrong active or discontinued status
+        - Wrong maintainer
+        - Missing ROM for this device
+        - Missing device
+        - Duplicate device
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected vs actual
+      placeholder: |
+        Actual: PixelOS 16, inactive
+        Expected: PixelOS 16, active
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Source URL
+      description: Link to the official device list or page that supports this
+      placeholder: https://…
+    validations:
+      required: true

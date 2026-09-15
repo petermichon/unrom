@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Browse the data
+    url: https://unrom.com/data
+    about: View the full dataset and export it as JSON or SQLite.
+  - name: API
+    url: https://unrom.com/api
+    about: Machine-readable endpoints for devices, ROMs and mappings.
