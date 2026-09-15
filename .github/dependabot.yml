@@ -11,6 +11,10 @@ updates:
       npm-minor-patch:
         patterns: ["*"]
         update-types: ["minor", "patch"]
+    # TanStack Table v9 is a breaking migration; revisit deliberately.
+    ignore:
+      - dependency-name: "@tanstack/react-table"
+        update-types: ["version-update:semver-major"]
 
   - package-ecosystem: github-actions
     directory: /
