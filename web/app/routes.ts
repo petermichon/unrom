@@ -9,7 +9,4 @@ export default [
   route("roms/:id", "routes/rom.tsx"),
   route("sitemap.xml", "routes/sitemap.ts"),
   route("robots.txt", "routes/robots.ts"),
-  // Legacy singular paths.
-  route("device/:codename", "routes/legacy-device.ts"),
-  route("rom/:id", "routes/legacy-rom.ts"),
 ] satisfies RouteConfig;
