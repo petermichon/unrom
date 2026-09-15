@@ -74,7 +74,10 @@ export default function CommandPalette() {
         description="Find a device or ROM"
       >
         <Command>
-          <CommandInput placeholder="Search devices and ROMs…" />
+          <CommandInput
+            aria-label="Search devices and ROMs"
+            placeholder="Search devices and ROMs…"
+          />
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
             <CommandGroup heading="Devices">

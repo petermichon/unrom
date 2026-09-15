@@ -25,7 +25,10 @@ export default function DeviceSearch({ devices }: Props) {
       value={query}
       onValueChange={setQuery}
     >
-      <CommandInput placeholder="Search by device name, codename, or brand…" />
+      <CommandInput
+        aria-label="Search devices"
+        placeholder="Search by device name, codename, or brand…"
+      />
       <CommandList className="max-h-[22rem]">
         {query.trim() !== "" && (
           <CommandEmpty>No devices found.</CommandEmpty>

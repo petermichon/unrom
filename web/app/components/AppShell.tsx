@@ -12,7 +12,7 @@ import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
 
 interface Props {
-  updatedAt: string;
+  updatedAt?: string;
   children: ReactNode;
 }
 
@@ -44,11 +44,11 @@ export default function AppShell({ updatedAt, children }: Props) {
               <CommandPalette />
             </div>
           </header>
-          <main className="flex-1 px-4 py-10 sm:px-6">
+          <main id="content" tabIndex={-1} className="flex-1 px-4 py-10 sm:px-6">
             <div className="mx-auto w-full max-w-4xl">{children}</div>
           </main>
           <footer className="border-t border-border/60 px-4 py-6 text-xs text-muted-foreground sm:px-6">
-            Last updated {updatedAt}
+            Last updated {updatedAt ?? "—"}
           </footer>
         </SidebarInset>
       </SidebarProvider>
