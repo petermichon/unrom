@@ -10,6 +10,10 @@ permissions:
   contents: write
   actions: write
 
+concurrency:
+  group: refresh-data
+  cancel-in-progress: false
+
 jobs:
   refresh:
     runs-on: ubuntu-latest
@@ -22,13 +26,33 @@ jobs:
       - run: npm ci
 
       # Partial failures are expected (a source may be down); keep the snapshots
-      # that did refresh.
+      # that did refresh and report the rest.
       - name: Ingest source snapshots
         continue-on-error: true
-        run: npm run ingest --workspace server
+        run: npm run ingest --workspace server 2>&1 | tee /tmp/ingest.log
+
+      - name: Source health
+        if: always()
+        run: |
+          {
+            echo "### Source health"
+            echo ""
+            if [ -s /tmp/ingest.log ]; then
+              echo "- refreshed: $(grep -c '^✓' /tmp/ingest.log || true)"
+              echo "- failed: $(grep -c '^✗' /tmp/ingest.log || true)"
+              echo ""
+              grep '^✗' /tmp/ingest.log || echo "_no failures_"
+            else
+              echo "_no ingest log_"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Build dataset
         run: npm run build:data
+
+      # Source coverage + dataset invariants; a broken dataset is not committed.
+      - name: Validate dataset
+        run: npm run test
 
       - name: Commit updated snapshots
         id: commit
@@ -45,8 +69,8 @@ jobs:
           fi
 
       # Pushes made with GITHUB_TOKEN do not trigger workflows, so start CI
-      # explicitly; it rebuilds the images and Deploy follows automatically.
-      - name: Rebuild images and deploy
+      # explicitly; it rebuilds the images and freshdock deploys them.
+      - name: Rebuild images
         if: steps.commit.outputs.changed == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
