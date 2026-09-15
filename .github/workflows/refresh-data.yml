@@ -1,0 +1,53 @@
+name: Refresh data
+
+on:
+  schedule:
+    # Nightly; fetchers are network-bound and may fail per source.
+    - cron: "17 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  actions: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+
+      # Partial failures are expected (a source may be down); keep the snapshots
+      # that did refresh.
+      - name: Ingest source snapshots
+        continue-on-error: true
+        run: npm run ingest --workspace server
+
+      - name: Build dataset
+        run: npm run build:data
+
+      - name: Commit updated snapshots
+        id: commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if [ -n "$(git status --porcelain data/)" ]; then
+            git add data/
+            git commit -m "chore(data): refresh source snapshots"
+            git push
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      # Pushes made with GITHUB_TOKEN do not trigger workflows, so start CI
+      # explicitly; it rebuilds the images and Deploy follows automatically.
+      - name: Rebuild images and deploy
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run ci.yml --ref main

@@ -1,0 +1,45 @@
+name: Deploy
+
+on:
+  # Automatically deploy after a successful CI run on main.
+  workflow_run:
+    workflows: ["CI"]
+    types: [completed]
+    branches: [main]
+  # Manual deploy of a specific tag (git sha or "latest").
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Image tag to deploy
+        default: latest
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    # Requires repo variable DEPLOY_ENABLED=true and the SSH_* secrets.
+    if: >-
+      vars.DEPLOY_ENABLED == 'true' && (
+        github.event_name == 'workflow_dispatch' ||
+        (github.event.workflow_run.conclusion == 'success' &&
+         github.event.workflow_run.head_branch == 'main')
+      )
+    runs-on: ubuntu-latest
+    env:
+      TAG: ${{ github.event.inputs.tag || github.event.workflow_run.head_sha || 'latest' }}
+    steps:
+      - name: Pull and restart on the server
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_KEY }}
+          script: |
+            set -e
+            cd /srv/unrom
+            git fetch origin main
+            git reset --hard origin/main
+            UNROM_TAG="${{ env.TAG }}" docker compose -f deploy/compose.yaml --profile proxy pull
+            UNROM_TAG="${{ env.TAG }}" docker compose -f deploy/compose.yaml --profile proxy up -d --remove-orphans
+            docker image prune -f

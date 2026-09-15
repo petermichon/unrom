@@ -1,6 +1,7 @@
 # unrom — self-hosted deployment.
 #
-#   docker compose -f deploy/compose.yaml up -d --build
+#   docker compose -f deploy/compose.yaml up -d --build        # build locally
+#   UNROM_TAG=<sha> docker compose -f deploy/compose.yaml pull  # use CI images
 #
 # The data pipeline runs once (`data` service) to build the SQLite database and
 # exports into a shared volume, then the API serves it and the web SSR app
@@ -8,12 +9,14 @@
 # enable the `proxy` profile.
 #
 # Ports are bound to 127.0.0.1 so only the host proxy reaches them.
+# Images are published to GHCR by CI; `UNROM_TAG` selects the version.
 
 name: unrom
 
 services:
   # Builds dist/unrom.sqlite, dist/unrom.json and dist/schema.sql from data/.
   data:
+    image: ${UNROM_REGISTRY:-ghcr.io/petermichon}/unrom-api:${UNROM_TAG:-latest}
     build:
       context: ..
       target: api
@@ -23,6 +26,7 @@ services:
     restart: "no"
 
   api:
+    image: ${UNROM_REGISTRY:-ghcr.io/petermichon}/unrom-api:${UNROM_TAG:-latest}
     build:
       context: ..
       target: api
@@ -39,6 +43,7 @@ services:
     restart: unless-stopped
 
   web:
+    image: ${UNROM_REGISTRY:-ghcr.io/petermichon}/unrom-web:${UNROM_TAG:-latest}
     build:
       context: ..
       target: web
