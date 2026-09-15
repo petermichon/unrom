@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 # ---- build -----------------------------------------------------------------
-FROM node:24-bookworm-slim AS base
+FROM node:26-bookworm-slim AS base
 WORKDIR /app
 COPY package.json package-lock.json ./
 COPY contract/package.json contract/
@@ -27,7 +27,7 @@ RUN apt-get update \
 RUN npm ci --omit=dev
 
 # ---- api -------------------------------------------------------------------
-FROM node:24-bookworm-slim AS api
+FROM node:26-bookworm-slim AS api
 WORKDIR /app
 ENV NODE_ENV=production HOST=0.0.0.0 PORT=3000
 COPY --from=prod-deps /app/node_modules ./node_modules
@@ -44,7 +44,7 @@ HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
 CMD ["node", "--disable-warning=ExperimentalWarning", "server/src/api/server.ts"]
 
 # ---- web -------------------------------------------------------------------
-FROM node:24-bookworm-slim AS web
+FROM node:26-bookworm-slim AS web
 WORKDIR /app
 ENV NODE_ENV=production HOST=0.0.0.0 PORT=3001
 COPY --from=prod-deps /app/node_modules ./node_modules
