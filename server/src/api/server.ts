@@ -25,17 +25,27 @@ try {
 
 const app = new Hono();
 
-// Read-only JSON: allow conditional requests (304) and revalidation, but never
-// a stale cache. The exports are streamed attachments and are left untouched.
+// The dataset only changes on redeploy, so serve a short fresh window and then
+// let clients reuse the cached copy while revalidating in the background. This
+// keeps repeat requests off the origin without letting clients drift far from
+// current. Exports are streamed attachments and are left untouched.
+const generatedAt = Date.parse(api.getMeta().generatedAt);
+const lastModified = Number.isNaN(generatedAt)
+  ? null
+  : new Date(generatedAt).toUTCString();
+
 const revalidate = async (c: Context, next: () => Promise<void>) => {
   await next();
   if (c.res.status === 200) {
-    c.res.headers.set("cache-control", "public, max-age=0, must-revalidate");
+    c.res.headers.set(
+      "cache-control",
+      "public, max-age=300, stale-while-revalidate=3600",
+    );
+    if (lastModified) c.res.headers.set("last-modified", lastModified);
   }
 };
 
 for (const path of [
-  "/api/health",
   "/api/meta",
   "/api/devices",
   "/api/devices/*",
@@ -87,7 +97,10 @@ app.get("/api", (c) =>
   }),
 );
 
-app.get("/api/health", (c) => c.json({ ok: true }));
+app.get("/api/health", (c) => {
+  c.header("cache-control", "no-store");
+  return c.json({ ok: true });
+});
 
 app.get("/api/meta", (c) => c.json(api.getMeta()));
 
