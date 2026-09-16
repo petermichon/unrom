@@ -21,6 +21,10 @@ export async function loader() {
   return { updatedAt: (await fetchMeta()).generatedAt };
 }
 
+export async function clientLoader() {
+  return { updatedAt: (await fetchMeta()).generatedAt };
+}
+
 function formatDate(iso: string): string {
   const date = new Date(iso);
   if (Number.isNaN(date.getTime())) return "unknown";
@@ -48,7 +52,9 @@ export const meta: Route.MetaFunction = ({ error }) => {
   const notFound = isRouteErrorResponse(error) && error.status === 404;
   return [
     {
-      title: notFound ? "Page not found — unrom" : "Something went wrong — unrom",
+      title: notFound
+        ? "Page not found — unrom"
+        : "Something went wrong — unrom",
     },
     { name: "robots", content: "noindex" },
   ];

@@ -11,7 +11,8 @@ export const meta: MetaFunction = () => [
   { title: "Data — unrom" },
   {
     name: "description",
-    content: "Every device ↔ custom ROM mapping as raw data — one row per pair.",
+    content:
+      "Every device ↔ custom ROM mapping as raw data — one row per pair.",
   },
   canonical("/data"),
   {
@@ -29,6 +30,10 @@ export const meta: MetaFunction = () => [
 ];
 
 export async function loader() {
+  return { mappings: await fetchMappings() };
+}
+
+export async function clientLoader() {
   return { mappings: await fetchMappings() };
 }
 

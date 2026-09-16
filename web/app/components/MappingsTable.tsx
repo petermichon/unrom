@@ -16,12 +16,7 @@ import { VersionChips } from "@/components/VersionChips";
 import { Button } from "@/components/ui/button";
 import type { Mapping } from "@/lib/types";
 
-const MOBILE_HIDDEN = new Set([
-  "brand",
-  "versions",
-  "maintainer",
-  "sourceUrl",
-]);
+const MOBILE_HIDDEN = new Set(["brand", "versions", "maintainer", "sourceUrl"]);
 const COLUMN_WIDTHS: Record<string, string> = {
   search: "w-0",
   deviceName: "w-[28%] whitespace-normal",
@@ -33,10 +28,7 @@ const COLUMN_WIDTHS: Record<string, string> = {
   sourceUrl: "w-[8%]",
 };
 const columnClassName = (id: string) =>
-  [
-    MOBILE_HIDDEN.has(id) && "hidden md:table-cell",
-    COLUMN_WIDTHS[id],
-  ]
+  [MOBILE_HIDDEN.has(id) && "hidden md:table-cell", COLUMN_WIDTHS[id]]
     .filter(Boolean)
     .join(" ") || undefined;
 
@@ -54,7 +46,7 @@ export default function MappingsTable({ mappings }: Props) {
     const set = new Set(
       mappings
         .map((row) => row.brand)
-        .filter((value): value is string => Boolean(value))
+        .filter((value): value is string => Boolean(value)),
     );
     return [...set].sort().map((value) => ({ label: value, value }));
   }, [mappings]);
@@ -89,6 +81,7 @@ export default function MappingsTable({ mappings }: Props) {
           <div className="flex flex-col items-start">
             <Link
               to={`/devices/${row.original.codename}`}
+              prefetch="intent"
               className="font-medium hover:underline"
             >
               {row.original.deviceName ?? row.original.codename}
@@ -118,6 +111,7 @@ export default function MappingsTable({ mappings }: Props) {
         cell: ({ row }) => (
           <Link
             to={`/roms/${row.original.romId}`}
+            prefetch="intent"
             className="font-medium hover:underline"
           >
             {row.original.romName}
@@ -176,7 +170,7 @@ export default function MappingsTable({ mappings }: Props) {
           ),
       },
     ],
-    []
+    [],
   );
 
   return (
@@ -200,7 +194,9 @@ export default function MappingsTable({ mappings }: Props) {
         <DataTableToolbar>
           <SearchInput
             id="mappings-search"
-            value={(table.getColumn("search")?.getFilterValue() as string) ?? ""}
+            value={
+              (table.getColumn("search")?.getFilterValue() as string) ?? ""
+            }
             onValueChange={(value) =>
               table.getColumn("search")?.setFilterValue(value)
             }
@@ -229,10 +225,7 @@ export default function MappingsTable({ mappings }: Props) {
             />
           )}
           {table.getState().columnFilters.length > 0 && (
-            <Button
-              variant="ghost"
-              onClick={() => table.resetColumnFilters()}
-            >
+            <Button variant="ghost" onClick={() => table.resetColumnFilters()}>
               Reset
             </Button>
           )}

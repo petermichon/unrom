@@ -19,6 +19,10 @@ export async function loader() {
   return { roms: await fetchRoms() };
 }
 
+export async function clientLoader() {
+  return { roms: await fetchRoms() };
+}
+
 export default function RomsRoute() {
   const { roms } = useLoaderData<typeof loader>();
 

@@ -21,10 +21,7 @@ const COLUMN_WIDTHS: Record<string, string> = {
   brand: "w-[40%]",
 };
 const columnClassName = (id: string) =>
-  [
-    MOBILE_HIDDEN.has(id) && "hidden md:table-cell",
-    COLUMN_WIDTHS[id],
-  ]
+  [MOBILE_HIDDEN.has(id) && "hidden md:table-cell", COLUMN_WIDTHS[id]]
     .filter(Boolean)
     .join(" ") || undefined;
 
@@ -37,7 +34,7 @@ export default function RomDevicesTable({ devices }: Props) {
     const set = new Set(
       devices
         .map((device) => device.brand)
-        .filter((value): value is string => Boolean(value))
+        .filter((value): value is string => Boolean(value)),
     );
     return [...set].sort().map((value) => ({ label: value, value }));
   }, [devices]);
@@ -62,6 +59,7 @@ export default function RomDevicesTable({ devices }: Props) {
           <div className="flex flex-col items-start">
             <Link
               to={`/devices/${row.original.codename}`}
+              prefetch="intent"
               className="font-medium hover:underline"
             >
               {row.original.name ?? row.original.codename}
@@ -97,7 +95,7 @@ export default function RomDevicesTable({ devices }: Props) {
         ),
       },
     ],
-    []
+    [],
   );
 
   return (
@@ -114,7 +112,9 @@ export default function RomDevicesTable({ devices }: Props) {
         <DataTableToolbar>
           <SearchInput
             id="rom-devices-search"
-            value={(table.getColumn("search")?.getFilterValue() as string) ?? ""}
+            value={
+              (table.getColumn("search")?.getFilterValue() as string) ?? ""
+            }
             onValueChange={(value) =>
               table.getColumn("search")?.setFilterValue(value)
             }
@@ -129,10 +129,7 @@ export default function RomDevicesTable({ devices }: Props) {
             />
           )}
           {table.getState().columnFilters.length > 0 && (
-            <Button
-              variant="ghost"
-              onClick={() => table.resetColumnFilters()}
-            >
+            <Button variant="ghost" onClick={() => table.resetColumnFilters()}>
               Reset
             </Button>
           )}

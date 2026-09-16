@@ -11,6 +11,10 @@ export async function loader({ params }: Route.LoaderArgs) {
   return { device: await fetchDevice(params.codename) };
 }
 
+export async function clientLoader({ params }: Route.ClientLoaderArgs) {
+  return { device: await fetchDevice(params.codename) };
+}
+
 export const meta: Route.MetaFunction = ({ loaderData }) => {
   const device = loaderData?.device;
   if (!device) return [{ title: "Device not found — unrom" }];

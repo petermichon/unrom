@@ -22,7 +22,9 @@ export function Breadcrumbs({ items }: { items: Crumb[] }) {
           <Fragment key={`${item.label}-${index}`}>
             <BreadcrumbItem>
               {item.to ? (
-                <BreadcrumbLink render={<Link to={item.to} />}>
+                <BreadcrumbLink
+                  render={<Link to={item.to} prefetch="intent" />}
+                >
                   {item.label}
                 </BreadcrumbLink>
               ) : (

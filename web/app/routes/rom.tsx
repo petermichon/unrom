@@ -11,6 +11,10 @@ export async function loader({ params }: Route.LoaderArgs) {
   return { rom: await fetchRom(params.id) };
 }
 
+export async function clientLoader({ params }: Route.ClientLoaderArgs) {
+  return { rom: await fetchRom(params.id) };
+}
+
 export const meta: Route.MetaFunction = ({ loaderData }) => {
   const rom = loaderData?.rom;
   if (!rom) return [{ title: "ROM not found — unrom" }];

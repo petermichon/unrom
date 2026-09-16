@@ -13,11 +13,11 @@ interface Props {
 export function ChipLink({ to, children, title, className }: Props) {
   return (
     <Badge
-      render={<Link to={to} title={title} />}
+      render={<Link to={to} title={title} prefetch="intent" />}
       variant="outline"
       className={cn(
         "h-auto px-2 py-0.5 text-xs font-normal text-muted-foreground hover:border-foreground/30 hover:text-foreground",
-        className
+        className,
       )}
     >
       {children}

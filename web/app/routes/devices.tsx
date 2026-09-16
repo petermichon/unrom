@@ -20,14 +20,16 @@ export async function loader() {
   return { devices: await fetchDevices() };
 }
 
+export async function clientLoader() {
+  return { devices: await fetchDevices() };
+}
+
 export default function DevicesRoute() {
   const { devices } = useLoaderData<typeof loader>();
 
   return (
     <div className="flex flex-col gap-6">
-      <Breadcrumbs
-        items={[{ label: "Home", to: "/" }, { label: "Devices" }]}
-      />
+      <Breadcrumbs items={[{ label: "Home", to: "/" }, { label: "Devices" }]} />
 
       <PageHeader
         title="Devices"

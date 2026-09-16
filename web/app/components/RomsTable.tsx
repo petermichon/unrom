@@ -36,7 +36,7 @@ export default function RomsTable({ roms }: Props) {
     const set = new Set(
       roms
         .flatMap((rom) => rom.devices.map((device) => device.brand))
-        .filter((value): value is string => Boolean(value))
+        .filter((value): value is string => Boolean(value)),
     );
     return [...set].sort().map((value) => ({ label: value, value }));
   }, [roms]);
@@ -70,6 +70,7 @@ export default function RomsTable({ roms }: Props) {
         cell: ({ row }) => (
           <Link
             to={`/roms/${row.original.id}`}
+            prefetch="intent"
             className="font-medium hover:underline"
           >
             {row.original.name}
@@ -111,7 +112,7 @@ export default function RomsTable({ roms }: Props) {
           ...new Set(
             row.devices
               .map((device) => device.brand)
-              .filter((value): value is string => Boolean(value))
+              .filter((value): value is string => Boolean(value)),
           ),
         ],
         header: "",
@@ -119,12 +120,12 @@ export default function RomsTable({ roms }: Props) {
         enableHiding: false,
         filterFn: (row, id, value: string[]) =>
           (row.getValue(id) as string[]).some((value2) =>
-            value.includes(value2)
+            value.includes(value2),
           ),
         cell: () => null,
       },
     ],
-    []
+    [],
   );
 
   return (
@@ -141,7 +142,9 @@ export default function RomsTable({ roms }: Props) {
         <DataTableToolbar>
           <SearchInput
             id="roms-search"
-            value={(table.getColumn("search")?.getFilterValue() as string) ?? ""}
+            value={
+              (table.getColumn("search")?.getFilterValue() as string) ?? ""
+            }
             onValueChange={(value) =>
               table.getColumn("search")?.setFilterValue(value)
             }
@@ -156,10 +159,7 @@ export default function RomsTable({ roms }: Props) {
             />
           )}
           {table.getState().columnFilters.length > 0 && (
-            <Button
-              variant="ghost"
-              onClick={() => table.resetColumnFilters()}
-            >
+            <Button variant="ghost" onClick={() => table.resetColumnFilters()}>
               Reset
             </Button>
           )}

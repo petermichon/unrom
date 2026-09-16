@@ -27,10 +27,7 @@ const COLUMN_WIDTHS: Record<string, string> = {
   sourceUrl: "w-[16%]",
 };
 const columnClassName = (id: string) =>
-  [
-    MOBILE_HIDDEN.has(id) && "hidden md:table-cell",
-    COLUMN_WIDTHS[id],
-  ]
+  [MOBILE_HIDDEN.has(id) && "hidden md:table-cell", COLUMN_WIDTHS[id]]
     .filter(Boolean)
     .join(" ") || undefined;
 
@@ -66,6 +63,7 @@ export default function DeviceRomsTable({ roms }: Props) {
         cell: ({ row }) => (
           <Link
             to={`/roms/${row.original.id}`}
+            prefetch="intent"
             className="font-medium hover:underline"
           >
             {row.original.name}
@@ -127,7 +125,7 @@ export default function DeviceRomsTable({ roms }: Props) {
           ),
       },
     ],
-    []
+    [],
   );
 
   return (
@@ -147,7 +145,9 @@ export default function DeviceRomsTable({ roms }: Props) {
         <DataTableToolbar>
           <SearchInput
             id="device-roms-search"
-            value={(table.getColumn("search")?.getFilterValue() as string) ?? ""}
+            value={
+              (table.getColumn("search")?.getFilterValue() as string) ?? ""
+            }
             onValueChange={(value) =>
               table.getColumn("search")?.setFilterValue(value)
             }
@@ -162,10 +162,7 @@ export default function DeviceRomsTable({ roms }: Props) {
             />
           )}
           {table.getState().columnFilters.length > 0 && (
-            <Button
-              variant="ghost"
-              onClick={() => table.resetColumnFilters()}
-            >
+            <Button variant="ghost" onClick={() => table.resetColumnFilters()}>
               Reset
             </Button>
           )}

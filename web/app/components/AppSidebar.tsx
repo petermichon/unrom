@@ -1,4 +1,10 @@
-import { Asterisk, Home, Layers2, Smartphone, TableProperties } from "lucide-react";
+import {
+  Asterisk,
+  Home,
+  Layers2,
+  Smartphone,
+  TableProperties,
+} from "lucide-react";
 import { Link, useLocation } from "react-router";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -16,15 +22,14 @@ import {
 export function AppSidebar() {
   const { pathname } = useLocation();
   const isActive = (...paths: string[]) =>
-    paths.some(
-      (path) => pathname === path || pathname.startsWith(`${path}/`)
-    );
+    paths.some((path) => pathname === path || pathname.startsWith(`${path}/`));
 
   return (
     <Sidebar collapsible="icon">
       <SidebarHeader>
         <Link
           to="/"
+          prefetch="viewport"
           className="flex items-center gap-2 px-2 py-1 font-heading font-semibold tracking-tight group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0"
         >
           <span
@@ -52,7 +57,7 @@ export function AppSidebar() {
               <SidebarMenuButton
                 tooltip="Home"
                 isActive={isActive("/")}
-                render={<Link to="/" />}
+                render={<Link to="/" prefetch="viewport" />}
               >
                 <Home />
                 <span>Home</span>
@@ -62,7 +67,7 @@ export function AppSidebar() {
               <SidebarMenuButton
                 tooltip="Devices"
                 isActive={isActive("/devices", "/device")}
-                render={<Link to="/devices" />}
+                render={<Link to="/devices" prefetch="viewport" />}
               >
                 <Smartphone />
                 <span>Devices</span>
@@ -72,7 +77,7 @@ export function AppSidebar() {
               <SidebarMenuButton
                 tooltip="ROMs"
                 isActive={isActive("/roms", "/rom")}
-                render={<Link to="/roms" />}
+                render={<Link to="/roms" prefetch="viewport" />}
               >
                 <Layers2 />
                 <span>ROMs</span>
@@ -82,7 +87,7 @@ export function AppSidebar() {
               <SidebarMenuButton
                 tooltip="Data"
                 isActive={isActive("/data")}
-                render={<Link to="/data" />}
+                render={<Link to="/data" prefetch="viewport" />}
               >
                 <TableProperties />
                 <span>Data</span>
