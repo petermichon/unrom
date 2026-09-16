@@ -9,17 +9,12 @@ export interface DeviceSummary {
   vendor: string;
   codename: string;
   name: string | null;
-  brand: string | null;
   romCount: number;
 }
 
 export interface RomSupport {
   id: string;
   name: string;
-  active: boolean;
-  androidBases: string[];
-  romVersions: string[];
-  maintainer: string | null;
   sourceUrl: string | null;
 }
 
@@ -28,7 +23,6 @@ export interface DeviceDetail {
   vendorName: string;
   codename: string;
   name: string | null;
-  brand: string | null;
   roms: RomSupport[];
 }
 
@@ -42,17 +36,13 @@ export interface BrowseDevice {
   vendorName: string;
   codename: string;
   name: string | null;
-  brand: string | null;
   roms: RomChip[];
 }
 
 export interface RomSummary {
   id: string;
   name: string;
-  active: boolean;
   deviceCount: number;
-  androidBases: string[];
-  romVersions: string[];
 }
 
 export interface RomDetail extends RomSummary {
@@ -63,12 +53,7 @@ export interface Mapping {
   vendor: string;
   codename: string;
   deviceName: string | null;
-  brand: string | null;
   romId: string;
   romName: string;
-  active: boolean;
-  androidBases: string[];
-  romVersions: string[];
-  maintainer: string | null;
   sourceUrl: string | null;
 }

@@ -2,7 +2,6 @@ import { useLoaderData } from "react-router";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { PageHeader } from "@/components/PageHeader";
 import RomDevicesTable from "@/components/RomDevicesTable";
-import { StatusBadge } from "@/components/StatusBadge";
 import { fetchRom } from "@/lib/data";
 import { SITE_URL, canonical } from "@/lib/seo";
 import type { Route } from "./+types/rom";
@@ -29,9 +28,6 @@ export const meta: Route.MetaFunction = ({ loaderData }) => {
         "@type": "SoftwareApplication",
         name: rom.name,
         applicationCategory: "OperatingSystem",
-        operatingSystem: rom.androidBases
-          .map((base) => `Android ${base}`)
-          .join(", "),
         url: `${SITE_URL}/roms/${rom.id}`,
       },
     },
@@ -40,15 +36,6 @@ export const meta: Route.MetaFunction = ({ loaderData }) => {
 
 export default function RomRoute() {
   const { rom } = useLoaderData<typeof loader>();
-
-  const versionLabel = [
-    rom.androidBases.length > 0
-      ? `Android ${rom.androidBases.join(", ")}`
-      : null,
-    rom.romVersions.length > 0 ? `v${rom.romVersions.join(", ")}` : null,
-  ]
-    .filter(Boolean)
-    .join(" · ");
 
   return (
     <div className="flex flex-col gap-8">
@@ -63,10 +50,9 @@ export default function RomRoute() {
         <PageHeader
           title={rom.name}
           endpoint={`/api/roms/${rom.id}`}
-          badge={<StatusBadge active={rom.active} />}
           description={`Supports ${rom.deviceCount}${
             rom.deviceCount === 1 ? " device" : " devices"
-          }${versionLabel ? ` · ${versionLabel}` : ""}`}
+          }`}
         />
       </div>
 

@@ -6,12 +6,10 @@ const ROM_NAME = "/e/OS";
 
 /**
  * /e/OS publishes one GitLab CI file per branch. Each build job lists its
- * devices in a `DEVICES: "..."` variable; the branch determines the Android
- * base (v1-s = 12, v1-t = 13, a14/a15/a16).
+ * devices in a `DEVICES: "..."` variable.
  */
 export function createEosParser(
   source: string,
-  androidBase: string,
 ): (raw: string) => NormalizedRomDevice[] {
   return (raw: string) => {
     const records: NormalizedRomDevice[] = [];
@@ -29,7 +27,6 @@ export function createEosParser(
             romName: ROM_NAME,
             source,
             codename,
-            androidBase,
           }),
         );
       }

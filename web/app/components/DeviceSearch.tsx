@@ -26,7 +26,7 @@ function matchesDevice(device: BrowseDevice, query: string): boolean {
   return (
     (device.name ?? "").toLowerCase().includes(query) ||
     device.codename.toLowerCase().includes(query) ||
-    (device.brand ?? "").toLowerCase().includes(query)
+    device.vendorName.toLowerCase().includes(query)
   );
 }
 
@@ -95,9 +95,7 @@ export default function DeviceSearch({ devices, roms, examples = [] }: Props) {
                       {device.name ?? device.codename}
                     </span>
                     <span className="truncate text-xs text-muted-foreground">
-                      {[device.brand, device.codename]
-                        .filter(Boolean)
-                        .join(" · ")}
+                      {[device.vendorName, device.codename].join(" · ")}
                     </span>
                   </span>
                   <Badge

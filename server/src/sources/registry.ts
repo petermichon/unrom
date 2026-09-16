@@ -29,7 +29,6 @@ const configs: DeviceSource[] = [
     romName: "PixelExperience",
     file: "pixelexperience.json",
     select: selectors.array,
-    bases: { key: "supported_versions", pick: "version_code" },
   },
   {
     id: "afterlifeos",
@@ -38,8 +37,6 @@ const configs: DeviceSource[] = [
     select: selectors.devices("devices"),
     name: ["name"],
     brand: ["brand"],
-    maintainer: ["maintainer"],
-    active: ["status"],
   },
   {
     id: "awakenos",
@@ -48,8 +45,6 @@ const configs: DeviceSource[] = [
     select: selectors.devices("devices"),
     name: ["model"],
     brand: ["vendor"],
-    maintainer: ["maintainer_name"],
-    active: ["active"],
   },
   {
     id: "blissroms",
@@ -58,7 +53,6 @@ const configs: DeviceSource[] = [
     select: selectors.array,
     name: ["name"],
     brand: ["brand"],
-    maintainer: ["supported_versions[].maintainer_name"],
     sourceUrl: ["supported_versions[].support_thread"],
   },
   {
@@ -77,8 +71,6 @@ const configs: DeviceSource[] = [
     select: selectors.array,
     name: ["name"],
     brand: ["brand"],
-    maintainer: ["maintainer"],
-    active: ["status"],
   },
   {
     id: "corvusos",
@@ -86,16 +78,13 @@ const configs: DeviceSource[] = [
     file: "corvusos.json",
     select: selectors.grouped(["Rom Generic", "Phh"]),
     name: ["device"],
-    maintainer: ["maintainer"],
     sourceUrl: ["download"],
-    defaultActive: false,
   },
   {
     id: "dotos",
     romName: "dotOS",
     file: "dotos.json",
     select: selectors.grouped(["GSI (Universal Builds)"]),
-    defaultActive: false,
   },
   {
     id: "droidxui",
@@ -104,8 +93,6 @@ const configs: DeviceSource[] = [
     select: selectors.array,
     name: ["model"],
     brand: ["vendor"],
-    maintainer: ["maintainer"],
-    active: ["active"],
   },
   {
     id: "matrixx",
@@ -114,8 +101,6 @@ const configs: DeviceSource[] = [
     select: selectors.devices("devices"),
     name: ["model"],
     brand: ["vendor"],
-    maintainer: ["maintainer_name"],
-    active: ["active"],
   },
   {
     id: "mistos",
@@ -124,8 +109,6 @@ const configs: DeviceSource[] = [
     select: selectors.devices("devices"),
     name: ["deviceName"],
     brand: ["OEM"],
-    maintainer: ["maintainer"],
-    active: ["enabled"],
   },
   {
     id: "paranoidandroid",
@@ -134,9 +117,7 @@ const configs: DeviceSource[] = [
     select: selectors.devices("devices"),
     name: ["name"],
     brand: ["manufacturer"],
-    maintainer: ["maintainers"],
     sourceUrl: ["xda_thread"],
-    active: ["active"],
   },
   {
     id: "pixysos",
@@ -145,9 +126,7 @@ const configs: DeviceSource[] = [
     select: selectors.array,
     name: ["name"],
     brand: ["brand"],
-    bases: { key: "supported_bases", pick: "name" },
     sourceUrl: ["supported_bases[].xda_thread"],
-    defaultActive: false,
   },
   {
     id: "projectinfinityx",
@@ -155,7 +134,6 @@ const configs: DeviceSource[] = [
     file: "projectinfinityx.json",
     select: selectors.array,
     name: ["devicemodel"],
-    maintainer: ["maintainer"],
     sourceUrl: ["supportgroupurl"],
   },
   {
@@ -167,21 +145,14 @@ const configs: DeviceSource[] = [
   },
 ];
 
-// Sources whose raw shape does not fit the config adapter. /e/OS is split
-// across branches and shares one ROM id, so its files are ordered oldest to
-// newest — the build keeps the last edge per (rom, device), i.e. the newest
-// Android base.
+// Sources whose raw shape does not fit the config adapter.
 const specialSources: SourceAdapter[] = [
   { id: "pixelos", file: "pixelos.json", parse: parsePixelOS },
   { id: "aicp", file: "aicp.txt", parse: parseAICP },
   { id: "arrowos", file: "arrowos.txt", parse: parseArrowOS },
   { id: "havocos", file: "havocos.txt", parse: parseHavocOS },
   { id: "risingos", file: "risingos.md", parse: parseRisingOS },
-  {
-    id: "kenvyra",
-    file: "kenvyra.json",
-    parse: parseKenvyra,
-  },
+  { id: "kenvyra", file: "kenvyra.json", parse: parseKenvyra },
   {
     id: "kali-nethunter",
     file: "kali-nethunter.yml",
@@ -193,27 +164,27 @@ const specialSources: SourceAdapter[] = [
   {
     id: "eos",
     file: "eos-v1-s.yml",
-    parse: createEosParser("eos-v1-s.yml", "12"),
+    parse: createEosParser("eos-v1-s.yml"),
   },
   {
     id: "eos",
     file: "eos-v1-t.yml",
-    parse: createEosParser("eos-v1-t.yml", "13"),
+    parse: createEosParser("eos-v1-t.yml"),
   },
   {
     id: "eos",
     file: "eos-a14.yml",
-    parse: createEosParser("eos-a14.yml", "14"),
+    parse: createEosParser("eos-a14.yml"),
   },
   {
     id: "eos",
     file: "eos-a15.yml",
-    parse: createEosParser("eos-a15.yml", "15"),
+    parse: createEosParser("eos-a15.yml"),
   },
   {
     id: "eos",
     file: "eos-a16.yml",
-    parse: createEosParser("eos-a16.yml", "16"),
+    parse: createEosParser("eos-a16.yml"),
   },
 ];
 

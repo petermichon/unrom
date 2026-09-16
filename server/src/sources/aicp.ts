@@ -48,8 +48,6 @@ export function parseAICP(raw: string): NormalizedRomDevice[] {
     if (!codename || seen.has(codename)) continue;
     seen.add(codename);
 
-    const base = branch.match(/w(\d+)/)?.[1] ?? null;
-
     records.push(
       buildRecord({
         romId: ROM_ID,
@@ -57,8 +55,6 @@ export function parseAICP(raw: string): NormalizedRomDevice[] {
         source: SOURCE,
         codename,
         brand: vendor(oem),
-        androidBase: base,
-        maintainer: fields[6] ?? null,
       }),
     );
   }

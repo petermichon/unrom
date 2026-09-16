@@ -33,9 +33,7 @@ export const meta: Route.MetaFunction = ({ loaderData }) => {
         "@type": "Product",
         name,
         url: `${SITE_URL}/devices/${device.vendor}/${device.codename}`,
-        ...(device.brand
-          ? { brand: { "@type": "Brand", name: device.brand } }
-          : {}),
+        brand: { "@type": "Brand", name: device.vendorName },
       },
     },
   ];
@@ -43,7 +41,6 @@ export const meta: Route.MetaFunction = ({ loaderData }) => {
 
 export default function DeviceRoute() {
   const { device } = useLoaderData<typeof loader>();
-  const activeCount = device.roms.filter((rom) => rom.active).length;
 
   return (
     <div className="flex flex-col gap-8">
@@ -68,11 +65,9 @@ export default function DeviceRoute() {
               {device.codename}
             </Badge>
           }
-          description={`${device.brand ?? "Unknown brand"} · Supported by ${
+          description={`${device.vendorName} · Supported by ${
             device.roms.length
-          }${device.roms.length === 1 ? " ROM" : " ROMs"}${
-            activeCount < device.roms.length ? ` (${activeCount} active)` : ""
-          }`}
+          }${device.roms.length === 1 ? " ROM" : " ROMs"}`}
         />
       </div>
 

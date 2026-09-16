@@ -11,7 +11,6 @@ interface Frontmatter {
   name?: unknown;
   codename?: unknown;
   manufacturer?: unknown;
-  maintainers?: unknown;
 }
 
 /**
@@ -43,7 +42,6 @@ export function parseKenvyra(raw: string): NormalizedRomDevice[] {
         codename,
         name: str(meta.name),
         brand: str(meta.manufacturer),
-        maintainer: str(meta.maintainers),
       }),
     );
   }

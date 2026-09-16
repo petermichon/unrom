@@ -11,13 +11,7 @@ import type {
   RomSupport,
 } from "@unrom/contract";
 
-import {
-  devices,
-  meta,
-  romDeviceVersions,
-  romDevices,
-  roms,
-} from "../db/schema.ts";
+import { devices, meta, romDevices, roms } from "../db/schema.ts";
 import { vendorName } from "./identity.ts";
 
 // Order by the first letter/digit so leading punctuation (e.g. "/e/OS") does not
@@ -26,20 +20,12 @@ const sortKey = (value: string): string =>
   value.replace(/^[^\p{L}\p{N}]+/u, "").toLowerCase();
 
 const bySortKey = (a: string, b: string) => sortKey(a).localeCompare(sortKey(b));
-const byBase = (a: string, b: string) => Number(a) - Number(b);
 
 type Edge = typeof romDevices.$inferSelect;
 type DeviceRow = typeof devices.$inferSelect;
 type RomRow = typeof roms.$inferSelect;
 
-interface Versions {
-  androidBases: string[];
-  romVersions: string[];
-}
-
 const deviceKey = (vendor: string, codename: string) => `${vendor}\0${codename}`;
-const edgeKey = (romId: string, vendor: string, codename: string) =>
-  `${romId}\0${vendor}\0${codename}`;
 
 export function createApi(dbPath: string) {
   const sqlite = new Database(dbPath, { readonly: true, fileMustExist: true });
@@ -55,49 +41,10 @@ export function createApi(dbPath: string) {
     );
   }
 
-  /** Group the (ROM version, Android base) rows by edge. */
-  function versionsByEdge(): Map<string, Versions> {
-    const grouped = new Map<
-      string,
-      { androidBases: Set<string>; romVersions: Set<string> }
-    >();
-
-    for (const row of db.select().from(romDeviceVersions).all()) {
-      const key = edgeKey(row.romId, row.vendor, row.codename);
-      let entry = grouped.get(key);
-      if (!entry) {
-        entry = { androidBases: new Set(), romVersions: new Set() };
-        grouped.set(key, entry);
-      }
-      if (row.androidBase) entry.androidBases.add(row.androidBase);
-      if (row.romVersion) entry.romVersions.add(row.romVersion);
-    }
-
-    const result = new Map<string, Versions>();
-    for (const [key, entry] of grouped) {
-      result.set(key, {
-        androidBases: [...entry.androidBases].sort(byBase),
-        romVersions: [...entry.romVersions].sort(),
-      });
-    }
-    return result;
-  }
-
-  function toRomSupport(
-    edge: Edge,
-    names: Map<string, string>,
-    versions: Map<string, Versions>,
-  ): RomSupport {
-    const edgeVersions = versions.get(
-      edgeKey(edge.romId, edge.vendor, edge.codename),
-    );
+  function toRomSupport(edge: Edge, names: Map<string, string>): RomSupport {
     return {
       id: edge.romId,
       name: names.get(edge.romId) ?? edge.romId,
-      active: edge.active,
-      androidBases: edgeVersions?.androidBases ?? [],
-      romVersions: edgeVersions?.romVersions ?? [],
-      maintainer: edge.maintainer,
       sourceUrl: edge.sourceUrl,
     };
   }
@@ -114,7 +61,10 @@ export function createApi(dbPath: string) {
         chipsByDevice.set(key, chips);
       }
       if (!chips.some((chip) => chip.id === edge.romId)) {
-        chips.push({ id: edge.romId, name: names.get(edge.romId) ?? edge.romId });
+        chips.push({
+          id: edge.romId,
+          name: names.get(edge.romId) ?? edge.romId,
+        });
       }
     }
 
@@ -128,7 +78,6 @@ export function createApi(dbPath: string) {
         or(
           like(devices.codename, `%${needle}%`),
           like(sql`coalesce(${devices.name}, '')`, `%${needle}%`),
-          like(sql`coalesce(${devices.brand}, '')`, `%${needle}%`),
           like(sql`coalesce(${devices.vendor}, '')`, `%${needle}%`),
         ),
       );
@@ -148,9 +97,9 @@ export function createApi(dbPath: string) {
       vendorName: vendorName(device.vendor),
       codename: device.codename,
       name: device.name,
-      brand: device.brand,
-      roms: (chipsByDevice.get(deviceKey(device.vendor, device.codename)) ?? [])
-        .sort((a, b) => bySortKey(a.name, b.name)),
+      roms: (
+        chipsByDevice.get(deviceKey(device.vendor, device.codename)) ?? []
+      ).sort((a, b) => bySortKey(a.name, b.name)),
     }));
   }
 
@@ -168,7 +117,6 @@ export function createApi(dbPath: string) {
     if (!device) return null;
 
     const names = romNames();
-    const versions = versionsByEdge();
     const roms = db
       .select()
       .from(romDevices)
@@ -179,7 +127,7 @@ export function createApi(dbPath: string) {
         ),
       )
       .all()
-      .map((edge) => toRomSupport(edge, names, versions))
+      .map((edge) => toRomSupport(edge, names))
       .sort((a, b) => bySortKey(a.name, b.name));
 
     return {
@@ -187,7 +135,6 @@ export function createApi(dbPath: string) {
       vendorName: vendorName(device.vendor),
       codename: device.codename,
       name: device.name,
-      brand: device.brand,
       roms,
     };
   }
@@ -197,29 +144,11 @@ export function createApi(dbPath: string) {
     edges: Edge[],
     deviceByKey: Map<string, DeviceRow>,
     romCountByDevice: Map<string, number>,
-    versions: Map<string, Versions>,
   ): RomDetail {
-    const androidBases = new Set<string>();
-    const romVersions = new Set<string>();
-    for (const edge of edges) {
-      const edgeVersions = versions.get(
-        edgeKey(edge.romId, edge.vendor, edge.codename),
-      );
-      for (const base of edgeVersions?.androidBases ?? []) {
-        androidBases.add(base);
-      }
-      for (const version of edgeVersions?.romVersions ?? []) {
-        romVersions.add(version);
-      }
-    }
-
     return {
       id: rom.id,
       name: rom.name,
-      active: edges.some((edge) => edge.active),
       deviceCount: edges.length,
-      androidBases: [...androidBases].sort(byBase),
-      romVersions: [...romVersions].sort(),
       devices: edges
         .map((edge) => {
           const key = deviceKey(edge.vendor, edge.codename);
@@ -228,7 +157,6 @@ export function createApi(dbPath: string) {
             vendor: edge.vendor,
             codename: edge.codename,
             name: device?.name ?? null,
-            brand: device?.brand ?? null,
             romCount: romCountByDevice.get(key) ?? 0,
           };
         })
@@ -244,7 +172,6 @@ export function createApi(dbPath: string) {
     deviceByKey: Map<string, DeviceRow>;
     romCountByDevice: Map<string, number>;
     edgesByRom: Map<string, Edge[]>;
-    versions: Map<string, Versions>;
   } {
     const deviceRows = db.select().from(devices).all();
     const edges = db.select().from(romDevices).all();
@@ -263,16 +190,11 @@ export function createApi(dbPath: string) {
       else edgesByRom.set(edge.romId, [edge]);
     }
 
-    return {
-      deviceByKey,
-      romCountByDevice,
-      edgesByRom,
-      versions: versionsByEdge(),
-    };
+    return { deviceByKey, romCountByDevice, edgesByRom };
   }
 
   function listRoms(): RomDetail[] {
-    const { deviceByKey, romCountByDevice, edgesByRom, versions } = indexes();
+    const { deviceByKey, romCountByDevice, edgesByRom } = indexes();
     return db
       .select()
       .from(roms)
@@ -283,7 +205,6 @@ export function createApi(dbPath: string) {
           edgesByRom.get(rom.id) ?? [],
           deviceByKey,
           romCountByDevice,
-          versions,
         ),
       )
       .sort((a, b) => bySortKey(a.name, b.name));
@@ -297,19 +218,18 @@ export function createApi(dbPath: string) {
       .get();
     if (!rom) return null;
 
-    const { deviceByKey, romCountByDevice, versions } = indexes();
+    const { deviceByKey, romCountByDevice } = indexes();
     const edges = db
       .select()
       .from(romDevices)
       .where(eq(romDevices.romId, rom.id))
       .all();
 
-    return buildRom(rom, edges, deviceByKey, romCountByDevice, versions);
+    return buildRom(rom, edges, deviceByKey, romCountByDevice);
   }
 
   function listMappings(): Mapping[] {
     const names = romNames();
-    const versions = versionsByEdge();
     const deviceByKey = new Map(
       db
         .select()
@@ -329,20 +249,12 @@ export function createApi(dbPath: string) {
       .all()
       .map((edge) => {
         const device = deviceByKey.get(deviceKey(edge.vendor, edge.codename));
-        const edgeVersions = versions.get(
-          edgeKey(edge.romId, edge.vendor, edge.codename),
-        );
         return {
           vendor: edge.vendor,
           codename: edge.codename,
           deviceName: device?.name ?? null,
-          brand: device?.brand ?? null,
           romId: edge.romId,
           romName: names.get(edge.romId) ?? edge.romId,
-          active: edge.active,
-          androidBases: edgeVersions?.androidBases ?? [],
-          romVersions: edgeVersions?.romVersions ?? [],
-          maintainer: edge.maintainer,
           sourceUrl: edge.sourceUrl,
         };
       });

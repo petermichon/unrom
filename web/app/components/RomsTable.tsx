@@ -4,10 +4,6 @@ import { Link } from "react-router";
 import { ChipLink } from "@/components/ChipLink";
 import { DataTable } from "@/components/data-table/data-table";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
-import {
-  DataTableFacetedFilter,
-  type FacetOption,
-} from "@/components/data-table/data-table-faceted-filter";
 import { DataTableToolbar } from "@/components/data-table/data-table-toolbar";
 import { DataTableViewOptions } from "@/components/data-table/data-table-view-options";
 import { SearchInput } from "@/components/SearchInput";
@@ -19,28 +15,9 @@ const COLUMN_WIDTHS: Record<string, string> = {
   search: "w-0",
   name: "w-[25%] whitespace-normal",
   devices: "w-[75%]",
-  brands: "w-0",
 };
-const columnClassName = (id: string) => COLUMN_WIDTHS[id];
 
-// Long ROM device lists are truncated to keep the table scannable; the full
-// list lives on the ROM detail page.
-const DEVICE_PREVIEW = 6;
-
-interface Props {
-  roms: RomDetail[];
-}
-
-export default function RomsTable({ roms }: Props) {
-  const brandOptions = useMemo<FacetOption[]>(() => {
-    const set = new Set(
-      roms
-        .flatMap((rom) => rom.devices.map((device) => device.brand))
-        .filter((value): value is string => Boolean(value)),
-    );
-    return [...set].sort().map((value) => ({ label: value, value }));
-  }, [roms]);
-
+export default function RomsTable({ roms }: { roms: RomDetail[] }) {
   const columns = useMemo<ColumnDef<RomDetail>[]>(
     () => [
       {
@@ -48,11 +25,7 @@ export default function RomsTable({ roms }: Props) {
         accessorFn: (row) =>
           [
             row.name,
-            ...row.devices.flatMap((device) => [
-              device.name,
-              device.codename,
-              device.brand,
-            ]),
+            ...row.devices.flatMap((device) => [device.name, device.codename]),
           ]
             .filter(Boolean)
             .join(" "),
@@ -83,7 +56,7 @@ export default function RomsTable({ roms }: Props) {
         header: "Supported devices",
         enableSorting: false,
         cell: ({ row }) => {
-          const preview = row.original.devices.slice(0, DEVICE_PREVIEW);
+          const preview = row.original.devices.slice(0, 6);
           const hidden = row.original.devices.length - preview.length;
           return (
             <div className="flex flex-wrap gap-1.5">
@@ -107,24 +80,6 @@ export default function RomsTable({ roms }: Props) {
           );
         },
       },
-      {
-        id: "brands",
-        accessorFn: (row) => [
-          ...new Set(
-            row.devices
-              .map((device) => device.brand)
-              .filter((value): value is string => Boolean(value)),
-          ),
-        ],
-        header: "",
-        enableSorting: false,
-        enableHiding: false,
-        filterFn: (row, id, value: string[]) =>
-          (row.getValue(id) as string[]).some((value2) =>
-            value.includes(value2),
-          ),
-        cell: () => null,
-      },
     ],
     [],
   );
@@ -133,10 +88,10 @@ export default function RomsTable({ roms }: Props) {
     <DataTable
       columns={columns}
       data={roms}
-      columnClassName={columnClassName}
+      columnClassName={(id) => COLUMN_WIDTHS[id]}
       tableClassName="table-fixed min-w-[40rem]"
       initialState={{
-        columnVisibility: { search: false, brands: false },
+        columnVisibility: { search: false },
         sorting: [{ id: "name", desc: false }],
       }}
       toolbar={(table) => (
@@ -152,13 +107,6 @@ export default function RomsTable({ roms }: Props) {
             placeholder="Filter ROMs or devices…"
             ariaLabel="Filter ROMs or devices"
           />
-          {table.getColumn("brands") && (
-            <DataTableFacetedFilter
-              column={table.getColumn("brands")!}
-              title="Brand"
-              options={brandOptions}
-            />
-          )}
           {table.getState().columnFilters.length > 0 && (
             <Button variant="ghost" onClick={() => table.resetColumnFilters()}>
               Reset

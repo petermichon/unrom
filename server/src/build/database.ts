@@ -13,21 +13,13 @@ import {
   vendorForName,
 } from "../data/identity.ts";
 import { generateDdl } from "../db/ddl.ts";
-import {
-  aliases,
-  devices,
-  meta,
-  romDeviceVersions,
-  romDevices,
-  roms,
-} from "../db/schema.ts";
+import { aliases, devices, meta, romDevices, roms } from "../db/schema.ts";
 import type { NormalizedRomDevice } from "../normalized.ts";
 
 export interface BuildResult {
   romCount: number;
   deviceCount: number;
   edgeCount: number;
-  versionCount: number;
   aliasCount: number;
   generatedAt: string;
 }
@@ -36,25 +28,14 @@ interface Device {
   vendor: string;
   codename: string;
   name: string | null;
-  brand: string | null;
 }
 
 interface Edge {
   romId: string;
   vendor: string;
   codename: string;
-  active: boolean;
-  maintainer: string | null;
-  sourceUrl: string | null;
   source: string;
-}
-
-interface Version {
-  romId: string;
-  vendor: string;
-  codename: string;
-  romVersion: string | null;
-  androidBase: string | null;
+  sourceUrl: string | null;
 }
 
 interface Alias {
@@ -118,7 +99,6 @@ export function buildDatabase(
   const deviceMap = new Map<string, Device>();
   const romMap = new Map<string, string>();
   const edgeMap = new Map<string, Edge>();
-  const versionMap = new Map<string, Version>();
   const aliasMap = new Map<string, Alias>();
 
   for (const { record, part, canonical, vendor: reported } of prepared) {
@@ -135,10 +115,8 @@ export function buildDatabase(
       vendor,
       codename: resolved,
       name: null,
-      brand: null,
     };
     device.name ??= record.name;
-    device.brand ??= record.brand;
     deviceMap.set(deviceKey, device);
 
     if (part !== resolved) {
@@ -149,38 +127,19 @@ export function buildDatabase(
       });
     }
 
-    const edgeKey = `${record.romId}\0${deviceKey}`;
-    const edge = edgeMap.get(edgeKey) ?? {
+    const key = `${record.romId}\0${deviceKey}`;
+    const edge = edgeMap.get(key) ?? {
       romId: record.romId,
       vendor,
       codename: resolved,
-      active: false,
-      maintainer: null,
-      sourceUrl: null,
       source: record.source,
+      sourceUrl: null,
     };
-    // A ROM is active if any of its snapshots says so.
-    edge.active ||= record.active;
-    edge.maintainer ??= record.maintainer;
     edge.sourceUrl ??= record.sourceUrl;
-    edgeMap.set(edgeKey, edge);
-
-    for (const version of record.versions) {
-      versionMap.set(
-        `${edgeKey}\0${version.romVersion ?? ""}\0${version.androidBase ?? ""}`,
-        {
-          romId: record.romId,
-          vendor,
-          codename: resolved,
-          romVersion: version.romVersion,
-          androidBase: version.androidBase,
-        },
-      );
-    }
+    edgeMap.set(key, edge);
   }
 
   const edges = [...edgeMap.values()];
-  const versions = [...versionMap.values()];
   const aliasRows = [...aliasMap.values()];
 
   // SOURCE_DATE_EPOCH makes rebuilds deterministic (reproducible builds).
@@ -205,9 +164,6 @@ export function buildDatabase(
     for (const edge of edges) {
       tx.insert(romDevices).values(edge).run();
     }
-    for (const version of versions) {
-      tx.insert(romDeviceVersions).values(version).run();
-    }
     for (const alias of aliasRows) {
       tx.insert(aliases).values(alias).run();
     }
@@ -222,7 +178,6 @@ export function buildDatabase(
     romCount: romMap.size,
     deviceCount: deviceMap.size,
     edgeCount: edges.length,
-    versionCount: versions.length,
     aliasCount: aliasRows.length,
     generatedAt,
   };

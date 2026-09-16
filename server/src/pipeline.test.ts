@@ -59,13 +59,6 @@ test("build produces a consistent dataset", async () => {
     );
     assert.equal(
       count(
-        "select count(*) c from rom_device_versions v left join rom_devices e on e.rom_id = v.rom_id and e.vendor = v.vendor and e.codename = v.codename where e.rom_id is null",
-      ),
-      0,
-      "versions without an edge",
-    );
-    assert.equal(
-      count(
         "select count(*) c from aliases a left join devices d on d.vendor = a.vendor and d.codename = a.codename where d.codename is null",
       ),
       0,

@@ -1,5 +1,5 @@
 import { normalizedRomDeviceSchema } from "../normalized.ts";
-import type { NormalizedRomDevice, NormalizedVersion } from "../normalized.ts";
+import type { NormalizedRomDevice } from "../normalized.ts";
 import { expandCodename } from "../data/identity.ts";
 
 export type RawDevice = Record<string, unknown>;
@@ -8,11 +8,6 @@ export interface DeviceEntry {
   device: RawDevice;
   codename?: string | null;
   group?: string | null;
-}
-
-export interface BasesSpec {
-  key: string;
-  pick?: string;
 }
 
 /**
@@ -27,11 +22,7 @@ export interface DeviceSource {
   codename?: string[];
   name?: string[];
   brand?: string[];
-  maintainer?: string[];
   sourceUrl?: string[];
-  active?: string[];
-  bases?: BasesSpec;
-  defaultActive?: boolean;
 }
 
 export interface RecordInput {
@@ -41,32 +32,16 @@ export interface RecordInput {
   codename: string;
   name?: string | null;
   brand?: string | null;
-  /** Single version pair; prefer `versions` when several are known. */
-  romVersion?: string | null;
-  androidBase?: string | null;
-  versions?: NormalizedVersion[];
-  active?: boolean;
-  maintainer?: string | null;
   sourceUrl?: string | null;
 }
 
 /** Build a validated record, filling the optional fields with defaults. */
 export function buildRecord(input: RecordInput): NormalizedRomDevice {
-  const { romVersion, androidBase, versions, ...rest } = input;
-  const pairs =
-    versions ??
-    (romVersion || androidBase
-      ? [{ romVersion: romVersion ?? null, androidBase: androidBase ?? null }]
-      : []);
-
   return normalizedRomDeviceSchema.parse({
     name: null,
     brand: null,
-    active: true,
-    maintainer: null,
     sourceUrl: null,
-    ...rest,
-    versions: pairs,
+    ...input,
   });
 }
 
@@ -127,105 +102,6 @@ function pick(device: RawDevice, keys: string[] | undefined): string | null {
   return null;
 }
 
-const TRUE_WORDS = new Set([
-  "true",
-  "yes",
-  "active",
-  "stable",
-  "nightly",
-  "weekly",
-  "official",
-  "enabled",
-]);
-const FALSE_WORDS = new Set([
-  "false",
-  "no",
-  "inactive",
-  "discontinued",
-  "eol",
-  "dead",
-  "disabled",
-  "unmaintained",
-]);
-
-export function asBool(value: unknown, fallback: boolean): boolean {
-  if (typeof value === "boolean") return value;
-  if (typeof value === "string") {
-    const word = value.trim().toLowerCase();
-    if (TRUE_WORDS.has(word)) return true;
-    if (FALSE_WORDS.has(word)) return false;
-  }
-  return fallback;
-}
-
-function activeValue(
-  device: RawDevice,
-  keys: string[] | undefined,
-  fallback: boolean,
-): boolean {
-  if (keys) {
-    for (const key of keys) {
-      if (device[key] !== undefined) return asBool(device[key], fallback);
-    }
-  }
-  return fallback;
-}
-
-const ANDROID_BASES: Record<string, string> = {
-  kitkat: "4",
-  lollipop: "5",
-  marshmallow: "6",
-  nougat: "7",
-  oreo: "8",
-  pie: "9",
-  nine: "9",
-  ten: "10",
-  eleven: "11",
-  twelve: "12",
-  twelve_plus: "12",
-  thirteen: "13",
-  thirteen_plus: "13",
-  fourteen: "14",
-  fourteen_plus: "14",
-  fifteen: "15",
-  fifteen_plus: "15",
-  sixteen: "16",
-  seventeen: "17",
-};
-
-export function androidBase(value: unknown): string | null {
-  const raw = str(value);
-  if (!raw) return null;
-  const word = raw
-    .toLowerCase()
-    .replace(/^android\s*/, "")
-    .replace(/[\s.]+/g, "_");
-  if (/^\d+$/.test(word)) return word;
-  return ANDROID_BASES[word] ?? null;
-}
-
-function collectBases(
-  device: RawDevice,
-  spec: BasesSpec | undefined,
-): string[] {
-  if (!spec) return [];
-  const raw = device[spec.key];
-  const items = Array.isArray(raw)
-    ? raw
-    : raw === undefined || raw === null
-      ? []
-      : [raw];
-  const bases: string[] = [];
-
-  for (const item of items) {
-    const value = spec.pick && isObject(item) ? item[spec.pick] : item;
-    const base = androidBase(value);
-    if (base && !bases.includes(base)) bases.push(base);
-  }
-
-  return bases;
-}
-
 export function createParser(
   source: DeviceSource,
 ): (raw: string) => NormalizedRomDevice[] {
@@ -254,16 +130,6 @@ export function createParser(
               pick(entry.device, source.brand ?? ["brand"]) ??
               entry.group ??
               null,
-            versions: collectBases(entry.device, source.bases).map((base) => ({
-              androidBase: base,
-              romVersion: null,
-            })),
-            active: activeValue(
-              entry.device,
-              source.active,
-              source.defaultActive ?? true,
-            ),
-            maintainer: pick(entry.device, source.maintainer),
             sourceUrl: pick(entry.device, source.sourceUrl),
             source: source.file,
           }),

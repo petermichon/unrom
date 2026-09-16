@@ -14,13 +14,12 @@ import { SearchInput } from "@/components/SearchInput";
 import { Button } from "@/components/ui/button";
 import type { BrowseDevice } from "@/lib/types";
 
-const MOBILE_HIDDEN = new Set(["codename", "brand"]);
+const MOBILE_HIDDEN = new Set(["codename"]);
 const COLUMN_WIDTHS: Record<string, string> = {
   search: "w-0",
-  brand: "w-[12%]",
-  name: "w-[24%] whitespace-normal",
+  name: "w-[30%] whitespace-normal",
   codename: "w-[14%]",
-  roms: "w-[50%]",
+  roms: "w-[56%]",
 };
 const columnClassName = (id: string) =>
   [MOBILE_HIDDEN.has(id) && "hidden md:table-cell", COLUMN_WIDTHS[id]]
@@ -32,15 +31,6 @@ interface Props {
 }
 
 export default function DevicesTable({ devices }: Props) {
-  const brandOptions = useMemo<FacetOption[]>(() => {
-    const set = new Set(
-      devices
-        .map((device) => device.brand)
-        .filter((value): value is string => Boolean(value)),
-    );
-    return [...set].sort().map((value) => ({ label: value, value }));
-  }, [devices]);
-
   const romOptions = useMemo<FacetOption[]>(() => {
     const map = new Map<string, string>();
     for (const device of devices) {
@@ -56,22 +46,11 @@ export default function DevicesTable({ devices }: Props) {
       {
         id: "search",
         accessorFn: (row) =>
-          [row.name, row.codename, row.brand].filter(Boolean).join(" "),
+          [row.name, row.codename, row.vendor].filter(Boolean).join(" "),
         filterFn: "includesString",
         enableSorting: false,
         enableHiding: false,
         cell: () => null,
-      },
-      {
-        accessorKey: "brand",
-        header: ({ column }) => (
-          <DataTableColumnHeader column={column} title="Brand" />
-        ),
-        filterFn: (row, id, value: string[]) =>
-          value.includes(row.getValue(id)),
-        cell: ({ row }) => (
-          <span className="text-muted-foreground">{row.original.brand}</span>
-        ),
       },
       {
         accessorKey: "name",
@@ -91,9 +70,7 @@ export default function DevicesTable({ devices }: Props) {
                 {name}
               </Link>
               <span className="truncate font-mono text-xs text-muted-foreground md:hidden">
-                {[row.original.codename, row.original.brand]
-                  .filter(Boolean)
-                  .join(" · ")}
+                {row.original.codename}
               </span>
             </div>
           );
@@ -138,13 +115,10 @@ export default function DevicesTable({ devices }: Props) {
       columns={columns}
       data={devices}
       columnClassName={columnClassName}
-      tableClassName="table-fixed min-w-[44rem]"
+      tableClassName="table-fixed min-w-[40rem]"
       initialState={{
         columnVisibility: { search: false },
-        sorting: [
-          { id: "brand", desc: false },
-          { id: "name", desc: false },
-        ],
+        sorting: [{ id: "name", desc: false }],
       }}
       toolbar={(table) => (
         <DataTableToolbar>
@@ -159,13 +133,6 @@ export default function DevicesTable({ devices }: Props) {
             placeholder="Filter devices…"
             ariaLabel="Filter devices"
           />
-          {table.getColumn("brand") && (
-            <DataTableFacetedFilter
-              column={table.getColumn("brand")!}
-              title="Brand"
-              options={brandOptions}
-            />
-          )}
           {table.getColumn("roms") && (
             <DataTableFacetedFilter
               column={table.getColumn("roms")!}

@@ -20,5 +20,5 @@ const result = buildDatabase(records, DB_PATH);
 
 console.log(
   `Built ${DB_PATH}\n  ${result.romCount} ROM(s), ${result.deviceCount} device(s), ` +
-    `${result.edgeCount} edge(s), ${result.versionCount} version(s), ${result.aliasCount} alias(es)`
+    `${result.edgeCount} edge(s), ${result.aliasCount} alias(es)`
 );

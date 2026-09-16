@@ -4,8 +4,6 @@ import type { NormalizedRomDevice } from "../normalized.ts";
 const ROM_ID = "arrowos";
 const ROM_NAME = "ArrowOS";
 const SOURCE = "arrowos.txt";
-// Raw data comes from the `arrow-13.1` branch; the file itself has no version.
-const ANDROID_BASE = "13";
 
 /**
  * arrow.devices lines: `<buildtype-prefix> <codename> <buildtype> <chipset>`,
@@ -34,8 +32,6 @@ export function parseArrowOS(raw: string): NormalizedRomDevice[] {
         romName: ROM_NAME,
         source: SOURCE,
         codename,
-        androidBase: ANDROID_BASE,
-        active: false,
       }),
     );
   }

@@ -10,9 +10,6 @@ interface RawPixelOSDevice {
   codename_alt?: unknown;
   vendor?: unknown;
   model?: unknown;
-  maintainer_name?: unknown;
-  active?: unknown;
-  version?: unknown;
 }
 
 function str(value: unknown): string | null {
@@ -40,9 +37,6 @@ export function parsePixelOS(raw: string): NormalizedRomDevice[] {
         codename,
         name: str(device.model),
         brand: str(device.vendor),
-        androidBase: str(device.version),
-        active: device.active === true,
-        maintainer: str(device.maintainer_name),
         source: SOURCE,
       }),
     );

@@ -4,8 +4,6 @@ import type { NormalizedRomDevice } from "../normalized.ts";
 const ROM_ID = "risingos";
 const ROM_NAME = "RisingOS";
 const SOURCE = "risingos.md";
-// Raw data comes from the `fifteen` branch; the file itself has no version.
-const ANDROID_BASE = "15";
 
 /**
  * risingos.md groups devices under `## <brand>` headings:
@@ -34,8 +32,6 @@ export function parseRisingOS(raw: string): NormalizedRomDevice[] {
     if (!last) continue;
 
     const name = label.slice(0, label.lastIndexOf("(")).trim() || null;
-    const maintainer =
-      extra.match(/`([^`]+)`/)?.[1] ?? extra.match(/@[\w.]+/)?.[0] ?? null;
     const sourceUrl = extra.match(/\((https?:\/\/[^)]+)\)/)?.[1] ?? null;
 
     for (const rawCodename of last.split("/")) {
@@ -51,9 +47,7 @@ export function parseRisingOS(raw: string): NormalizedRomDevice[] {
           codename,
           name,
           brand,
-          maintainer,
           sourceUrl,
-          androidBase: ANDROID_BASE,
         }),
       );
     }
