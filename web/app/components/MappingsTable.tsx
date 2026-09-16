@@ -77,20 +77,24 @@ export default function MappingsTable({ mappings }: Props) {
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="Device" />
         ),
-        cell: ({ row }) => (
-          <div className="flex flex-col items-start">
-            <Link
-              to={`/devices/${row.original.codename}`}
-              prefetch="intent"
-              className="font-medium hover:underline"
-            >
-              {row.original.deviceName ?? row.original.codename}
-            </Link>
-            <span className="font-mono text-xs text-muted-foreground md:hidden">
-              {row.original.codename}
-            </span>
-          </div>
-        ),
+        cell: ({ row }) => {
+          const name = row.original.deviceName ?? row.original.codename;
+          return (
+            <div className="flex min-w-0 flex-col">
+              <Link
+                to={`/devices/${row.original.codename}`}
+                prefetch="intent"
+                title={name}
+                className="truncate font-medium hover:underline"
+              >
+                {name}
+              </Link>
+              <span className="truncate font-mono text-xs text-muted-foreground md:hidden">
+                {row.original.codename}
+              </span>
+            </div>
+          );
+        },
       },
       {
         accessorKey: "brand",
@@ -112,7 +116,8 @@ export default function MappingsTable({ mappings }: Props) {
           <Link
             to={`/roms/${row.original.romId}`}
             prefetch="intent"
-            className="font-medium hover:underline"
+            title={row.original.romName}
+            className="block truncate font-medium hover:underline"
           >
             {row.original.romName}
           </Link>

@@ -64,7 +64,8 @@ export default function DeviceRomsTable({ roms }: Props) {
           <Link
             to={`/roms/${row.original.id}`}
             prefetch="intent"
-            className="font-medium hover:underline"
+            title={row.original.name}
+            className="block truncate font-medium hover:underline"
           >
             {row.original.name}
           </Link>

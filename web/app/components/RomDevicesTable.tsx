@@ -55,22 +55,26 @@ export default function RomDevicesTable({ devices }: Props) {
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="Device" />
         ),
-        cell: ({ row }) => (
-          <div className="flex flex-col items-start">
-            <Link
-              to={`/devices/${row.original.codename}`}
-              prefetch="intent"
-              className="font-medium hover:underline"
-            >
-              {row.original.name ?? row.original.codename}
-            </Link>
-            <span className="font-mono text-xs text-muted-foreground md:hidden">
-              {[row.original.codename, row.original.brand]
-                .filter(Boolean)
-                .join(" · ")}
-            </span>
-          </div>
-        ),
+        cell: ({ row }) => {
+          const name = row.original.name ?? row.original.codename;
+          return (
+            <div className="flex min-w-0 flex-col">
+              <Link
+                to={`/devices/${row.original.codename}`}
+                prefetch="intent"
+                title={name}
+                className="truncate font-medium hover:underline"
+              >
+                {name}
+              </Link>
+              <span className="truncate font-mono text-xs text-muted-foreground md:hidden">
+                {[row.original.codename, row.original.brand]
+                  .filter(Boolean)
+                  .join(" · ")}
+              </span>
+            </div>
+          );
+        },
       },
       {
         accessorKey: "codename",
