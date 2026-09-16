@@ -11,16 +11,22 @@ export const roms = sqliteTable("roms", {
   name: text("name").notNull(),
 });
 
-export const devices = sqliteTable("devices", {
-  codename: text("codename").primaryKey(),
-  name: text("name"),
-  brand: text("brand"),
-});
+export const devices = sqliteTable(
+  "devices",
+  {
+    vendor: text("vendor").notNull(),
+    codename: text("codename").notNull(),
+    name: text("name"),
+    brand: text("brand"),
+  },
+  (table) => [primaryKey({ columns: [table.vendor, table.codename] })],
+);
 
 export const romDevices = sqliteTable(
   "rom_devices",
   {
     romId: text("rom_id").notNull(),
+    vendor: text("vendor").notNull(),
     codename: text("codename").notNull(),
     active: integer("active", { mode: "boolean" }).notNull(),
     maintainer: text("maintainer"),
@@ -28,8 +34,8 @@ export const romDevices = sqliteTable(
     source: text("source").notNull(),
   },
   (table) => [
-    primaryKey({ columns: [table.romId, table.codename] }),
-    index("rom_devices_codename_idx").on(table.codename),
+    primaryKey({ columns: [table.romId, table.vendor, table.codename] }),
+    index("rom_devices_device_idx").on(table.vendor, table.codename),
   ],
 );
 
@@ -39,19 +45,29 @@ export const romDeviceVersions = sqliteTable(
   {
     id: integer("id").primaryKey({ autoIncrement: true }),
     romId: text("rom_id").notNull(),
+    vendor: text("vendor").notNull(),
     codename: text("codename").notNull(),
     romVersion: text("rom_version"),
     androidBase: text("android_base"),
   },
   (table) => [
-    index("rom_device_versions_edge_idx").on(table.romId, table.codename),
+    index("rom_device_versions_edge_idx").on(
+      table.romId,
+      table.vendor,
+      table.codename,
+    ),
   ],
 );
 
-export const aliases = sqliteTable("aliases", {
-  alias: text("alias").primaryKey(),
-  codename: text("codename").notNull(),
-});
+export const aliases = sqliteTable(
+  "aliases",
+  {
+    vendor: text("vendor").notNull(),
+    alias: text("alias").notNull(),
+    codename: text("codename").notNull(),
+  },
+  (table) => [primaryKey({ columns: [table.vendor, table.alias] })],
+);
 
 export const meta = sqliteTable("meta", {
   key: text("key").primaryKey(),

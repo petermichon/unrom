@@ -3,7 +3,15 @@ import { rmSync } from "node:fs";
 import Database from "better-sqlite3";
 import { drizzle } from "drizzle-orm/better-sqlite3";
 
-import { createCodenameResolver } from "../data/aliases.ts";
+import {
+  CANONICAL_CODENAMES,
+  UNKNOWN_VENDOR,
+  canonicalCodename,
+  expandCodename,
+  vendorForBrand,
+  vendorForCodename,
+  vendorForName,
+} from "../data/identity.ts";
 import { generateDdl } from "../db/ddl.ts";
 import {
   aliases,
@@ -24,8 +32,16 @@ export interface BuildResult {
   generatedAt: string;
 }
 
+interface Device {
+  vendor: string;
+  codename: string;
+  name: string | null;
+  brand: string | null;
+}
+
 interface Edge {
   romId: string;
+  vendor: string;
   codename: string;
   active: boolean;
   maintainer: string | null;
@@ -35,15 +51,33 @@ interface Edge {
 
 interface Version {
   romId: string;
+  vendor: string;
   codename: string;
   romVersion: string | null;
   androidBase: string | null;
 }
 
+interface Alias {
+  vendor: string;
+  alias: string;
+  codename: string;
+}
+
+interface Prepared {
+  record: NormalizedRomDevice;
+  part: string;
+  canonical: string;
+  vendor: string | null;
+}
+
+function soleVendor(vendors: Set<string> | undefined): string | null {
+  return vendors && vendors.size === 1 ? [...vendors][0] : null;
+}
+
 /** Build the disposable SQLite database from normalized records. */
 export function buildDatabase(
   records: NormalizedRomDevice[],
-  dbPath: string
+  dbPath: string,
 ): BuildResult {
   for (const suffix of ["", "-wal", "-shm"]) {
     rmSync(dbPath + suffix, { force: true });
@@ -54,35 +88,72 @@ export function buildDatabase(
   sqlite.exec(generateDdl());
   const db = drizzle(sqlite);
 
-  // Aggregate devices (first non-null name/brand wins) and roms.
-  const deviceMap = new Map<
-    string,
-    { codename: string; name: string | null; brand: string | null }
-  >();
+  // Canonical casing: explicit overrides, then first-seen wins.
+  const casing = new Map<string, string>();
+  const canonicalCasing = (raw: string): string => {
+    const value =
+      CANONICAL_CODENAMES[raw] ?? casing.get(raw.toLowerCase()) ?? raw;
+    casing.set(raw.toLowerCase(), value);
+    return value;
+  };
+
+  // Expand combined codenames, resolve casing, and learn each codename's
+  // vendor from the records that report a brand (used to fill brand-less ones).
+  const prepared: Prepared[] = [];
+  const vendorsByCodename = new Map<string, Set<string>>();
+  for (const record of records) {
+    const reportedVendor =
+      vendorForBrand(record.brand) ?? vendorForName(record.name);
+    for (const part of expandCodename(record.codename)) {
+      const canonical = canonicalCasing(part);
+      prepared.push({ record, part, canonical, vendor: reportedVendor });
+      if (reportedVendor) {
+        const vendors = vendorsByCodename.get(canonical) ?? new Set<string>();
+        vendors.add(reportedVendor);
+        vendorsByCodename.set(canonical, vendors);
+      }
+    }
+  }
+
+  const deviceMap = new Map<string, Device>();
   const romMap = new Map<string, string>();
   const edgeMap = new Map<string, Edge>();
   const versionMap = new Map<string, Version>();
-  const codenames = createCodenameResolver();
+  const aliasMap = new Map<string, Alias>();
 
-  for (const record of records) {
+  for (const { record, part, canonical, vendor: reported } of prepared) {
     romMap.set(record.romId, record.romName);
 
-    // Resolve cross-source casing to one canonical device identity.
-    const codename = codenames.resolve(record.codename);
+    const inherited =
+      soleVendor(vendorsByCodename.get(canonical)) ??
+      vendorForCodename(canonical);
+    const vendor = reported ?? inherited ?? UNKNOWN_VENDOR;
+    const resolved = canonicalCodename(vendor, canonical);
+    const deviceKey = `${vendor}\0${resolved}`;
 
-    const device = deviceMap.get(codename) ?? {
-      codename,
+    const device = deviceMap.get(deviceKey) ?? {
+      vendor,
+      codename: resolved,
       name: null,
       brand: null,
     };
     device.name ??= record.name;
     device.brand ??= record.brand;
-    deviceMap.set(codename, device);
+    deviceMap.set(deviceKey, device);
 
-    const key = `${record.romId}:${codename}`;
-    const edge = edgeMap.get(key) ?? {
+    if (part !== resolved) {
+      aliasMap.set(`${vendor}\0${part}`, {
+        vendor,
+        alias: part,
+        codename: resolved,
+      });
+    }
+
+    const edgeKey = `${record.romId}\0${deviceKey}`;
+    const edge = edgeMap.get(edgeKey) ?? {
       romId: record.romId,
-      codename,
+      vendor,
+      codename: resolved,
       active: false,
       maintainer: null,
       sourceUrl: null,
@@ -92,24 +163,25 @@ export function buildDatabase(
     edge.active ||= record.active;
     edge.maintainer ??= record.maintainer;
     edge.sourceUrl ??= record.sourceUrl;
-    edgeMap.set(key, edge);
+    edgeMap.set(edgeKey, edge);
 
     for (const version of record.versions) {
       versionMap.set(
-        `${key}:${version.romVersion ?? ""}:${version.androidBase ?? ""}`,
+        `${edgeKey}\0${version.romVersion ?? ""}\0${version.androidBase ?? ""}`,
         {
           romId: record.romId,
-          codename,
+          vendor,
+          codename: resolved,
           romVersion: version.romVersion,
           androidBase: version.androidBase,
-        }
+        },
       );
     }
   }
 
   const edges = [...edgeMap.values()];
   const versions = [...versionMap.values()];
-  const aliasRows = codenames.aliases();
+  const aliasRows = [...aliasMap.values()];
 
   // SOURCE_DATE_EPOCH makes rebuilds deterministic (reproducible builds).
   const generatedAt = process.env.SOURCE_DATE_EPOCH

@@ -1,5 +1,6 @@
 import { normalizedRomDeviceSchema } from "../normalized.ts";
 import type { NormalizedRomDevice, NormalizedVersion } from "../normalized.ts";
+import { expandCodename } from "../data/identity.ts";
 
 export type RawDevice = Record<string, unknown>;
 
@@ -235,35 +236,39 @@ export function createParser(
     const seen = new Set<string>();
 
     for (const entry of entries) {
-      const codename =
+      const rawCodename =
         entry.codename ?? pick(entry.device, source.codename ?? ["codename"]);
-      if (!codename || seen.has(codename)) continue;
-      seen.add(codename);
+      if (!rawCodename) continue;
 
-      records.push(
-        normalizedRomDeviceSchema.parse({
-          romId: source.id,
-          romName: source.romName,
-          codename,
-          name: pick(entry.device, source.name ?? ["name"]),
-          brand:
-            pick(entry.device, source.brand ?? ["brand"]) ??
-            entry.group ??
-            null,
-          versions: collectBases(entry.device, source.bases).map((base) => ({
-            androidBase: base,
-            romVersion: null,
-          })),
-          active: activeValue(
-            entry.device,
-            source.active,
-            source.defaultActive ?? true,
-          ),
-          maintainer: pick(entry.device, source.maintainer),
-          sourceUrl: pick(entry.device, source.sourceUrl),
-          source: source.file,
-        }),
-      );
+      for (const codename of expandCodename(rawCodename)) {
+        if (seen.has(codename)) continue;
+        seen.add(codename);
+
+        records.push(
+          normalizedRomDeviceSchema.parse({
+            romId: source.id,
+            romName: source.romName,
+            codename,
+            name: pick(entry.device, source.name ?? ["name"]),
+            brand:
+              pick(entry.device, source.brand ?? ["brand"]) ??
+              entry.group ??
+              null,
+            versions: collectBases(entry.device, source.bases).map((base) => ({
+              androidBase: base,
+              romVersion: null,
+            })),
+            active: activeValue(
+              entry.device,
+              source.active,
+              source.defaultActive ?? true,
+            ),
+            maintainer: pick(entry.device, source.maintainer),
+            sourceUrl: pick(entry.device, source.sourceUrl),
+            source: source.file,
+          }),
+        );
+      }
     }
 
     return records;

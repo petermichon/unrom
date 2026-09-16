@@ -6,6 +6,7 @@ export interface Meta {
 }
 
 export interface DeviceSummary {
+  vendor: string;
   codename: string;
   name: string | null;
   brand: string | null;
@@ -23,6 +24,7 @@ export interface RomSupport {
 }
 
 export interface DeviceDetail {
+  vendor: string;
   codename: string;
   name: string | null;
   brand: string | null;
@@ -35,6 +37,7 @@ export interface RomChip {
 }
 
 export interface BrowseDevice {
+  vendor: string;
   codename: string;
   name: string | null;
   brand: string | null;
@@ -55,6 +58,7 @@ export interface RomDetail extends RomSummary {
 }
 
 export interface Mapping {
+  vendor: string;
   codename: string;
   deviceName: string | null;
   brand: string | null;

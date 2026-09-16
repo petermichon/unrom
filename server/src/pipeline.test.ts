@@ -7,6 +7,7 @@ import { test } from "node:test";
 import Database from "better-sqlite3";
 
 import { buildDatabase } from "./build/database.ts";
+import { expandCodename, vendorForBrand } from "./data/identity.ts";
 import { ALLOWED_EMPTY_FILES, sources } from "./sources/registry.ts";
 import { listDataFiles, parseAllSources, validateSources } from "./validate.ts";
 
@@ -51,25 +52,91 @@ test("build produces a consistent dataset", async () => {
 
     assert.equal(
       count(
-        "select count(*) c from (select rom_id, codename from rom_devices group by 1,2 having count(*) > 1)",
+        "select count(*) c from (select rom_id, vendor, codename from rom_devices group by 1,2,3 having count(*) > 1)",
       ),
       0,
       "duplicate edges",
     );
     assert.equal(
       count(
-        "select count(*) c from rom_device_versions v left join rom_devices e on e.rom_id = v.rom_id and e.codename = v.codename where e.rom_id is null",
+        "select count(*) c from rom_device_versions v left join rom_devices e on e.rom_id = v.rom_id and e.vendor = v.vendor and e.codename = v.codename where e.rom_id is null",
       ),
       0,
       "versions without an edge",
     );
     assert.equal(
       count(
-        "select count(*) c from aliases a left join devices d on d.codename = a.codename where d.codename is null",
+        "select count(*) c from aliases a left join devices d on d.vendor = a.vendor and d.codename = a.codename where d.codename is null",
       ),
       0,
       "aliases without a device",
     );
+    assert.equal(
+      count("select count(*) c from devices where codename like '%/%'"),
+      0,
+      "combined codenames became devices",
+    );
+    db.close();
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("combined codenames expand to real devices", () => {
+  assert.deepEqual(expandCodename("vayu/bhima"), ["vayu"]);
+  assert.deepEqual(expandCodename("haydnin/haydn"), ["haydn"]);
+  assert.deepEqual(expandCodename("raphael/in"), ["raphael"]);
+  assert.deepEqual(expandCodename("sapphire/sapphiren"), ["sapphire"]);
+  assert.deepEqual(expandCodename("ginkgo/willow"), ["ginkgo"]);
+  assert.deepEqual(expandCodename("mojito/sunny"), ["mojito", "sunny"]);
+  assert.deepEqual(expandCodename("single"), ["single"]);
+  assert.deepEqual(expandCodename("a/b/c"), ["a", "b", "c"]);
+});
+
+test("brands map to manufacturers", () => {
+  assert.equal(vendorForBrand("Poco"), "xiaomi");
+  assert.equal(vendorForBrand("POCO"), "xiaomi");
+  assert.equal(vendorForBrand("Redmi"), "xiaomi");
+  assert.equal(vendorForBrand("Xiaomi"), "xiaomi");
+  assert.equal(vendorForBrand("realme"), "realme");
+  assert.equal(vendorForBrand("ZUK"), "lenovo");
+  assert.equal(vendorForBrand("LGE"), "lg");
+  assert.equal(vendorForBrand(null), null);
+});
+
+test("cross-vendor collisions resolve to distinct devices", async () => {
+  const records = await parseAllSources();
+  const dir = mkdtempSync(join(tmpdir(), "unrom-test-"));
+  const dbPath = join(dir, "unrom.sqlite");
+
+  try {
+    buildDatabase(records, dbPath);
+    const db = new Database(dbPath, { readonly: true });
+    const vendors = (codename: string) =>
+      (
+        db
+          .prepare(
+            "select vendor from devices where codename = ? order by vendor",
+          )
+          .all(codename) as Array<{ vendor: string }>
+      ).map((row) => row.vendor);
+
+    // `sirius` is Sony's Xperia Z2; Xiaomi's Mi 8 SE is aliased to `xmsirius`.
+    assert.deepEqual(vendors("sirius"), ["sony"]);
+    assert.deepEqual(vendors("xmsirius"), ["xiaomi"]);
+
+    // A Xiaomi Mi 8 SE PixelExperience edge must land on `xmsirius`.
+    const onXmsirius = db
+      .prepare(
+        "select count(*) c from rom_devices where codename = 'xmsirius' and rom_id = 'pixelexperience'",
+      )
+      .get() as { c: number };
+    assert.equal(onXmsirius.c, 1);
+
+    // `tulip` and `oscar` are shared across vendors and must stay separate (a
+    // brand-less source for a collided codename cannot be attributed).
+    assert.deepEqual(vendors("tulip"), ["unknown", "xiaomi", "zte"]);
+    assert.deepEqual(vendors("oscar"), ["oneplus", "realme", "unknown"]);
     db.close();
   } finally {
     rmSync(dir, { recursive: true, force: true });

@@ -108,6 +108,15 @@ app.get("/api/devices", (c) =>
   c.json(api.listDevices(c.req.query("q") ?? undefined)),
 );
 
+app.get("/api/devices/:vendor/:codename", (c) => {
+  const codename = c.req.param("codename");
+  const vendor = c.req.param("vendor");
+  const device = api.getDevice(codename, vendor);
+  return device
+    ? c.json(device)
+    : c.json({ error: `device not found: ${vendor}/${codename}` }, 404);
+});
+
 app.get("/api/devices/:codename", (c) => {
   const codename = c.req.param("codename");
   const device = api.getDevice(codename);
