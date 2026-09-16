@@ -13,14 +13,14 @@ import {
   vendorForName,
 } from "../data/identity.ts";
 import { generateDdl } from "../db/ddl.ts";
-import { aliases, devices, meta, romDevices, roms } from "../db/schema.ts";
+import { devices, meta, romDevices, roms } from "../db/schema.ts";
 import type { NormalizedRomDevice } from "../normalized.ts";
 
 export interface BuildResult {
   romCount: number;
   deviceCount: number;
   edgeCount: number;
-  aliasCount: number;
+  aliases: Alias[];
   generatedAt: string;
 }
 
@@ -164,9 +164,6 @@ export function buildDatabase(
     for (const edge of edges) {
       tx.insert(romDevices).values(edge).run();
     }
-    for (const alias of aliasRows) {
-      tx.insert(aliases).values(alias).run();
-    }
     for (const [key, value] of metaRows) {
       tx.insert(meta).values({ key, value }).run();
     }
@@ -178,7 +175,7 @@ export function buildDatabase(
     romCount: romMap.size,
     deviceCount: deviceMap.size,
     edgeCount: edges.length,
-    aliasCount: aliasRows.length,
+    aliases: aliasRows,
     generatedAt,
   };
 }

@@ -58,17 +58,19 @@ test("build produces a consistent dataset", async () => {
       "duplicate edges",
     );
     assert.equal(
-      count(
-        "select count(*) c from aliases a left join devices d on d.vendor = a.vendor and d.codename = a.codename where d.codename is null",
-      ),
-      0,
-      "aliases without a device",
-    );
-    assert.equal(
       count("select count(*) c from devices where codename like '%/%'"),
       0,
       "combined codenames became devices",
     );
+
+    // Alias resolution is emitted as an artifact; every alias must resolve to a
+    // device that actually exists.
+    for (const alias of result.aliases) {
+      const found = db
+        .prepare("select 1 from devices where vendor = ? and codename = ?")
+        .get(alias.vendor, alias.codename);
+      assert.ok(found, `alias ${alias.alias} points at a missing device`);
+    }
     db.close();
   } finally {
     rmSync(dir, { recursive: true, force: true });

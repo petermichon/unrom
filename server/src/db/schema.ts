@@ -30,16 +30,6 @@ export const romDevices = sqliteTable(
   ],
 );
 
-export const aliases = sqliteTable(
-  "aliases",
-  {
-    vendor: text("vendor").notNull(),
-    alias: text("alias").notNull(),
-    codename: text("codename").notNull(),
-  },
-  (table) => [primaryKey({ columns: [table.vendor, table.alias] })],
-);
-
 export const meta = sqliteTable("meta", {
   key: text("key").primaryKey(),
   value: text("value").notNull(),
@@ -49,4 +39,4 @@ export const meta = sqliteTable("meta", {
 // disposable, rebuildable artifact, so its DDL is generated from these table
 // definitions in `ddl.ts` rather than maintained here by hand or tracked with
 // migrations. New tables must be added to `tables` below.
-export const tables = [roms, devices, romDevices, aliases, meta] as const;
+export const tables = [roms, devices, romDevices, meta] as const;

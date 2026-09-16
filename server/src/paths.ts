@@ -20,3 +20,4 @@ export const DB_PATH = process.env.DB_PATH
 export const JSON_PATH = join(DIST_DIR, "unrom.json");
 export const NDJSON_PATH = join(DIST_DIR, "normalized.ndjson");
 export const SCHEMA_SQL_PATH = join(DIST_DIR, "schema.sql");
+export const ALIASES_PATH = join(DIST_DIR, "aliases.json");
