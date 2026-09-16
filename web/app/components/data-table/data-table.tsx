@@ -14,7 +14,7 @@ import {
   useReactTable,
   type Table as TanStackTable,
 } from "@tanstack/react-table";
-import { cn } from "cn";
+import { cn } from "@/lib/utils";
 import { SearchX } from "lucide-react";
 import {
   Empty,
