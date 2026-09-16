@@ -14,12 +14,13 @@ import { SearchInput } from "@/components/SearchInput";
 import { Button } from "@/components/ui/button";
 import type { Mapping } from "@/lib/types";
 
-const MOBILE_HIDDEN = new Set(["sourceUrl"]);
+const MOBILE_HIDDEN = new Set(["vendor", "sourceUrl"]);
 const COLUMN_WIDTHS: Record<string, string> = {
   search: "w-0",
-  deviceName: "w-[42%] whitespace-normal",
-  romName: "w-[42%] whitespace-normal",
-  sourceUrl: "w-[16%]",
+  vendor: "w-[14%]",
+  deviceName: "w-[32%] whitespace-normal",
+  romName: "w-[30%] whitespace-normal",
+  sourceUrl: "w-[12%]",
 };
 const columnClassName = (id: string) =>
   [MOBILE_HIDDEN.has(id) && "hidden md:table-cell", COLUMN_WIDTHS[id]]
@@ -31,6 +32,11 @@ interface Props {
 }
 
 export default function MappingsTable({ mappings }: Props) {
+  const vendorOptions = useMemo<FacetOption[]>(() => {
+    const set = new Set(mappings.map((row) => row.vendorName));
+    return [...set].sort().map((value) => ({ label: value, value }));
+  }, [mappings]);
+
   const romOptions = useMemo<FacetOption[]>(() => {
     const map = new Map<string, string>();
     for (const row of mappings) map.set(row.romId, row.romName);
@@ -44,13 +50,36 @@ export default function MappingsTable({ mappings }: Props) {
       {
         id: "search",
         accessorFn: (row) =>
-          [row.deviceName, row.codename, row.vendor, row.romName]
+          [
+            row.deviceName,
+            row.codename,
+            row.vendor,
+            row.vendorName,
+            row.romName,
+          ]
             .filter(Boolean)
             .join(" "),
         filterFn: "includesString",
         enableSorting: false,
         enableHiding: false,
         cell: () => null,
+      },
+      {
+        accessorKey: "vendorName",
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title="Vendor" />
+        ),
+        filterFn: (row, id, value: string[]) =>
+          value.includes(row.getValue(id)),
+        cell: ({ row }) => (
+          <Link
+            to={`/devices/${row.original.vendor}`}
+            prefetch="intent"
+            className="text-muted-foreground hover:text-foreground hover:underline"
+          >
+            {row.original.vendorName}
+          </Link>
+        ),
       },
       {
         accessorKey: "deviceName",
@@ -70,7 +99,7 @@ export default function MappingsTable({ mappings }: Props) {
                 {name}
               </Link>
               <span className="truncate font-mono text-xs text-muted-foreground md:hidden">
-                {row.original.codename}
+                {[row.original.vendorName, row.original.codename].join(" · ")}
               </span>
             </div>
           );
@@ -120,10 +149,13 @@ export default function MappingsTable({ mappings }: Props) {
       columns={columns}
       data={mappings}
       columnClassName={columnClassName}
-      tableClassName="table-fixed min-w-[44rem]"
+      tableClassName="table-fixed min-w-[52rem]"
       initialState={{
         columnVisibility: { search: false, sourceUrl: false },
-        sorting: [{ id: "deviceName", desc: false }],
+        sorting: [
+          { id: "vendorName", desc: false },
+          { id: "deviceName", desc: false },
+        ],
       }}
       toolbar={(table) => (
         <DataTableToolbar>
@@ -138,6 +170,13 @@ export default function MappingsTable({ mappings }: Props) {
             placeholder="Filter mappings…"
             ariaLabel="Filter mappings"
           />
+          {table.getColumn("vendorName") && (
+            <DataTableFacetedFilter
+              column={table.getColumn("vendorName")!}
+              title="Vendor"
+              options={vendorOptions}
+            />
+          )}
           {table.getColumn("romName") && (
             <DataTableFacetedFilter
               column={table.getColumn("romName")!}

@@ -251,6 +251,7 @@ export function createApi(dbPath: string) {
         const device = deviceByKey.get(deviceKey(edge.vendor, edge.codename));
         return {
           vendor: edge.vendor,
+          vendorName: vendorName(edge.vendor),
           codename: edge.codename,
           deviceName: device?.name ?? null,
           romId: edge.romId,

@@ -51,6 +51,7 @@ export interface RomDetail extends RomSummary {
 
 export interface Mapping {
   vendor: string;
+  vendorName: string;
   codename: string;
   deviceName: string | null;
   romId: string;
