@@ -44,7 +44,7 @@ export function parseKenvyra(raw: string): NormalizedRomDevice[] {
         name: str(meta.name),
         brand: str(meta.manufacturer),
         maintainer: str(meta.maintainers),
-      })
+      }),
     );
   }
 

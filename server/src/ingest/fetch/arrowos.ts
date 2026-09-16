@@ -4,9 +4,7 @@ const BASE_URL =
 export async function listDevices(): Promise<string | Error> {
   const response = await fetch(BASE_URL);
   if (!response.ok) {
-    return new Error(
-      `Failed to fetch ArrowOS devices: ${response.statusText}`,
-    );
+    return new Error(`Failed to fetch ArrowOS devices: ${response.statusText}`);
   }
 
   return await response.text();

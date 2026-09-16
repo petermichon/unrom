@@ -17,8 +17,7 @@ export default defineConfig({
       timeout: 120_000,
     },
     {
-      command:
-        "npm run build --workspace web && npm run start --workspace web",
+      command: "npm run build --workspace web && npm run start --workspace web",
       url: WEB_URL,
       env: { API_URL, PORT: "3001" },
       reuseExistingServer: !process.env.CI,

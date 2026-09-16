@@ -58,7 +58,7 @@ export function generateDdl(): string {
     }
 
     statements.push(
-      `CREATE TABLE ${quote(config.name)} (\n${columns.join(",\n")}\n);`
+      `CREATE TABLE ${quote(config.name)} (\n${columns.join(",\n")}\n);`,
     );
 
     for (const index of config.indexes) {
@@ -68,8 +68,8 @@ export function generateDdl(): string {
       const unique = index.config.unique ? "UNIQUE " : "";
       statements.push(
         `CREATE ${unique}INDEX ${quote(index.config.name)} ON ${quote(
-          config.name
-        )} (${names});`
+          config.name,
+        )} (${names});`,
       );
     }
   }

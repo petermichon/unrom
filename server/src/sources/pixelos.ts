@@ -44,7 +44,7 @@ export function parsePixelOS(raw: string): NormalizedRomDevice[] {
         active: device.active === true,
         maintainer: str(device.maintainer_name),
         source: SOURCE,
-      })
+      }),
     );
   }
 

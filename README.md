@@ -10,13 +10,13 @@ exportable).
 
 ## Repository
 
-| Path | What |
-| --- | --- |
-| `data/` | Raw per-source snapshots (source of truth, not hand-edited) |
-| `server/` | Pipeline (ingest → normalize → SQLite) and the REST API |
-| `web/` | React Router SSR app that views the data |
-| `contract/` | Shared, type-only API DTOs |
-| `deploy/` | Container + reverse-proxy deployment |
+| Path        | What                                                        |
+| ----------- | ----------------------------------------------------------- |
+| `data/`     | Raw per-source snapshots (source of truth, not hand-edited) |
+| `server/`   | Pipeline (ingest → normalize → SQLite) and the REST API     |
+| `web/`      | React Router SSR app that views the data                    |
+| `contract/` | Shared, type-only API DTOs                                  |
+| `deploy/`   | Container + reverse-proxy deployment                        |
 
 ## Self-hosting
 

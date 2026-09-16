@@ -160,7 +160,7 @@ export function asBool(value: unknown, fallback: boolean): boolean {
 function activeValue(
   device: RawDevice,
   keys: string[] | undefined,
-  fallback: boolean
+  fallback: boolean,
 ): boolean {
   if (keys) {
     for (const key of keys) {
@@ -203,10 +203,17 @@ export function androidBase(value: unknown): string | null {
   return ANDROID_BASES[word] ?? null;
 }
 
-function collectBases(device: RawDevice, spec: BasesSpec | undefined): string[] {
+function collectBases(
+  device: RawDevice,
+  spec: BasesSpec | undefined,
+): string[] {
   if (!spec) return [];
   const raw = device[spec.key];
-  const items = Array.isArray(raw) ? raw : raw === undefined || raw === null ? [] : [raw];
+  const items = Array.isArray(raw)
+    ? raw
+    : raw === undefined || raw === null
+      ? []
+      : [raw];
   const bases: string[] = [];
 
   for (const item of items) {
@@ -219,7 +226,7 @@ function collectBases(device: RawDevice, spec: BasesSpec | undefined): string[] 
 }
 
 export function createParser(
-  source: DeviceSource
+  source: DeviceSource,
 ): (raw: string) => NormalizedRomDevice[] {
   return (raw: string) => {
     const data: unknown = JSON.parse(raw);
@@ -240,7 +247,9 @@ export function createParser(
           codename,
           name: pick(entry.device, source.name ?? ["name"]),
           brand:
-            pick(entry.device, source.brand ?? ["brand"]) ?? entry.group ?? null,
+            pick(entry.device, source.brand ?? ["brand"]) ??
+            entry.group ??
+            null,
           versions: collectBases(entry.device, source.bases).map((base) => ({
             androidBase: base,
             romVersion: null,
@@ -248,12 +257,12 @@ export function createParser(
           active: activeValue(
             entry.device,
             source.active,
-            source.defaultActive ?? true
+            source.defaultActive ?? true,
           ),
           maintainer: pick(entry.device, source.maintainer),
           sourceUrl: pick(entry.device, source.sourceUrl),
           source: source.file,
-        })
+        }),
       );
     }
 
@@ -267,28 +276,32 @@ export const selectors = {
       device: isObject(device) ? device : {},
     })),
 
-  devices: (key: string) => (data: unknown): DeviceEntry[] => {
-    const list = isObject(data) ? data[key] : undefined;
-    return (Array.isArray(list) ? list : []).map((device) => ({
-      device: isObject(device) ? device : {},
-    }));
-  },
+  devices:
+    (key: string) =>
+    (data: unknown): DeviceEntry[] => {
+      const list = isObject(data) ? data[key] : undefined;
+      return (Array.isArray(list) ? list : []).map((device) => ({
+        device: isObject(device) ? device : {},
+      }));
+    },
 
-  grouped: (skip: string[] = []) => (data: unknown): DeviceEntry[] => {
-    const entries: DeviceEntry[] = [];
-    if (!isObject(data)) return entries;
+  grouped:
+    (skip: string[] = []) =>
+    (data: unknown): DeviceEntry[] => {
+      const entries: DeviceEntry[] = [];
+      if (!isObject(data)) return entries;
 
-    for (const [group, value] of Object.entries(data)) {
-      if (skip.includes(group) || !isObject(value)) continue;
-      for (const [codename, info] of Object.entries(value)) {
-        entries.push({
-          codename,
-          group,
-          device: isObject(info) ? info : { name: info },
-        });
+      for (const [group, value] of Object.entries(data)) {
+        if (skip.includes(group) || !isObject(value)) continue;
+        for (const [codename, info] of Object.entries(value)) {
+          entries.push({
+            codename,
+            group,
+            device: isObject(info) ? info : { name: info },
+          });
+        }
       }
-    }
 
-    return entries;
-  },
+      return entries;
+    },
 };

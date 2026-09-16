@@ -4,7 +4,7 @@ test("skip link is the first focusable element", async ({ page }) => {
   await page.goto("/");
   await page.keyboard.press("Tab");
   await expect(
-    page.getByRole("link", { name: "Skip to content" })
+    page.getByRole("link", { name: "Skip to content" }),
   ).toBeFocused();
 });
 

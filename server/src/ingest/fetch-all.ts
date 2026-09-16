@@ -52,17 +52,37 @@ const sources: Source[] = [
   { id: "evolutionx", file: "evolutionx.json", fetch: listEvolutionX },
   { id: "havocos", file: "havocos.txt", fetch: listHavocOS },
   { id: "iode", file: "iode.json", fetch: listIode },
-  { id: "kali-nethunter", file: "kali-nethunter.yml", fetch: listKaliNetHunter },
+  {
+    id: "kali-nethunter",
+    file: "kali-nethunter.yml",
+    fetch: listKaliNetHunter,
+  },
   { id: "kenvyra", file: "kenvyra.json", fetch: listKenvyra },
   { id: "lineageos", file: "lineageos.json", fetch: listLineageOS },
   { id: "matrixx", file: "matrixx.json", fetch: listMatrixx },
   { id: "mistos", file: "mistos.json", fetch: listMistOS },
-  { id: "paranoidandroid", file: "paranoidandroid.json", fetch: listParanoidAndroid },
-  { id: "pixelexperience", file: "pixelexperience.json", fetch: listPixelExperience },
+  {
+    id: "paranoidandroid",
+    file: "paranoidandroid.json",
+    fetch: listParanoidAndroid,
+  },
+  {
+    id: "pixelexperience",
+    file: "pixelexperience.json",
+    fetch: listPixelExperience,
+  },
   { id: "pixelos", file: "pixelos.json", fetch: listPixelOS },
   { id: "pixysos", file: "pixysos.json", fetch: listPixysOS },
-  { id: "projectinfinityx", file: "projectinfinityx.json", fetch: listProjectInfinityX },
-  { id: "projectpixelage", file: "projectpixelage.json", fetch: listProjectPixelAge },
+  {
+    id: "projectinfinityx",
+    file: "projectinfinityx.json",
+    fetch: listProjectInfinityX,
+  },
+  {
+    id: "projectpixelage",
+    file: "projectpixelage.json",
+    fetch: listProjectPixelAge,
+  },
   { id: "risingos", file: "risingos.md", fetch: listRisingOS },
 ];
 
@@ -95,9 +115,11 @@ await Promise.all(
       console.log(`✓ ${id} → ${file}`);
     } catch (error) {
       failures++;
-      console.error(`✗ ${id}: ${error instanceof Error ? error.message : error}`);
+      console.error(
+        `✗ ${id}: ${error instanceof Error ? error.message : error}`,
+      );
     }
-  })
+  }),
 );
 
 if (failures > 0) {

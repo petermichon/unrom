@@ -19,6 +19,8 @@
     "preview": "npm run preview --workspace web",
     "check": "npm run typecheck --workspace web && npm run check --workspace server && npm run check --workspace contract",
     "lint": "npm run lint --workspace web",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
     "test": "npm run test --workspace server",
     "test:e2e": "playwright test",
     "ingest": "npm run ingest --workspace server",
@@ -31,6 +33,7 @@
   "devDependencies": {
     "@axe-core/playwright": "^4.13.0",
     "@playwright/test": "^1.63.0",
-    "concurrently": "^10.0.5"
+    "concurrently": "^10.0.5",
+    "prettier": "^3.9.7"
   }
 }

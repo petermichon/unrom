@@ -40,7 +40,7 @@ export function parseEvolutionX(raw: string): NormalizedRomDevice[] {
         active: asBool(entry.currently_maintained, true),
         androidBase: base,
         sourceUrl: str(entry.forum) ?? str(entry.download),
-      })
+      }),
     );
   }
 

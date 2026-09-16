@@ -11,13 +11,13 @@ export async function listDevices(): Promise<string | Error> {
   const response = await fetch(BASE_URL);
   if (!response.ok) {
     return new Error(
-      `Failed to fetch Project Infinity X device list: ${response.statusText}`
+      `Failed to fetch Project Infinity X device list: ${response.statusText}`,
     );
   }
 
   const files = (await response.json()) as GitHubFile[];
   const jsonFiles = files.filter(
-    (file) => file.type === "file" && file.name.endsWith(".json")
+    (file) => file.type === "file" && file.name.endsWith(".json"),
   );
 
   const devices: unknown[] = [];
@@ -27,7 +27,7 @@ export async function listDevices(): Promise<string | Error> {
       const deviceResponse = await fetch(file.download_url);
       if (!deviceResponse.ok) {
         console.error(
-          `Failed to fetch device ${file.name}: ${deviceResponse.statusText}`
+          `Failed to fetch device ${file.name}: ${deviceResponse.statusText}`,
         );
         continue;
       }

@@ -58,14 +58,14 @@ source of truth.
 
 ## Tables
 
-| Table | Purpose |
-| --- | --- |
-| `roms` | One row per ROM/OS (`id`, `name`) |
-| `devices` | Canonical device (`codename` PK, `name`, `brand`) |
-| `rom_devices` | The many-to-many edge, with per-ROM attributes (`maintainer`, `active`, `source_url`, `source`) |
-| `rom_device_versions` | The `(rom_version, android_base)` pairs an edge supports (either may be null) |
-| `aliases` | Maps alternate/legacy codenames to a canonical `codename` |
-| `meta` | Snapshot metadata (`generatedAt`, counts) |
+| Table                 | Purpose                                                                                         |
+| --------------------- | ----------------------------------------------------------------------------------------------- |
+| `roms`                | One row per ROM/OS (`id`, `name`)                                                               |
+| `devices`             | Canonical device (`codename` PK, `name`, `brand`)                                               |
+| `rom_devices`         | The many-to-many edge, with per-ROM attributes (`maintainer`, `active`, `source_url`, `source`) |
+| `rom_device_versions` | The `(rom_version, android_base)` pairs an edge supports (either may be null)                   |
+| `aliases`             | Maps alternate/legacy codenames to a canonical `codename`                                       |
+| `meta`                | Snapshot metadata (`generatedAt`, counts)                                                       |
 
 Search is a plain `LIKE` over codename/name/brand. An FTS5 index can be added
 when the dataset is large enough to need it.

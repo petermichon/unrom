@@ -39,6 +39,7 @@ have the right to submit the contribution under the project's licenses.
 ## Before opening a PR
 
 ```sh
+npm run format      # format all files with Prettier
 npm run check       # typecheck all workspaces
 npm run build:data  # normalize + build SQLite + export JSON
 ```

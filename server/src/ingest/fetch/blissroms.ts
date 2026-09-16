@@ -1,5 +1,6 @@
 export async function listDevices(): Promise<string | Error> {
-  const url = "https://raw.githubusercontent.com/BlissRoms-Devices/official-devices/master/devices.json";
+  const url =
+    "https://raw.githubusercontent.com/BlissRoms-Devices/official-devices/master/devices.json";
 
   try {
     const response = await fetch(url);

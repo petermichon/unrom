@@ -36,7 +36,7 @@ export function parseKaliNetHunter(raw: string): NormalizedRomDevice[] {
     if (!entry || typeof entry !== "object") continue;
 
     for (const [codename, value] of Object.entries(
-      entry as Record<string, unknown>
+      entry as Record<string, unknown>,
     )) {
       if (seen.has(codename)) continue;
       seen.add(codename);
@@ -61,8 +61,11 @@ export function parseKaliNetHunter(raw: string): NormalizedRomDevice[] {
           codename,
           name: str(device.model),
           maintainer,
-          versions: bases.map((base) => ({ androidBase: base, romVersion: null })),
-        })
+          versions: bases.map((base) => ({
+            androidBase: base,
+            romVersion: null,
+          })),
+        }),
       );
     }
   }

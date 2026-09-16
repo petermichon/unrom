@@ -41,7 +41,7 @@ export function parseIode(raw: string): NormalizedRomDevice[] {
         romName: ROM_NAME,
         source: SOURCE,
         codename,
-      })
+      }),
     );
   }
 

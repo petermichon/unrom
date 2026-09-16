@@ -21,7 +21,7 @@ export async function listDevices(): Promise<string | Error> {
       (file) =>
         file.type === "file" &&
         file.name.endsWith(".yml") &&
-        file.download_url !== null
+        file.download_url !== null,
     );
 
     const documents = await mapLimit(devices, 8, async (file) => {
@@ -32,20 +32,20 @@ export async function listDevices(): Promise<string | Error> {
         console.error(
           `Failed to fetch ${file.name}: ${
             error instanceof Error ? error.message : error
-          }`
+          }`,
         );
         return null;
       }
     });
 
     return JSON.stringify(
-      documents.filter((document): document is string => document !== null)
+      documents.filter((document): document is string => document !== null),
     );
   } catch (error) {
     return new Error(
       `Failed to fetch LineageOS devices: ${
         error instanceof Error ? error.message : error
-      }`
+      }`,
     );
   }
 }

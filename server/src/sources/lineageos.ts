@@ -70,7 +70,7 @@ export function parseLineageOS(raw: string): NormalizedRomDevice[] {
         maintainer: str(meta.maintainers),
         versions: versionPairs(meta.versions),
         sourceUrl: `https://wiki.lineageos.org/devices/${codename}/`,
-      })
+      }),
     );
   }
 

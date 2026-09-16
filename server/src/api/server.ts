@@ -18,7 +18,7 @@ try {
 } catch {
   console.error(
     `Could not open the database at ${DB_PATH}.\n` +
-      "Build it first: npm run build:data"
+      "Build it first: npm run build:data",
   );
   process.exit(1);
 }
@@ -50,10 +50,13 @@ async function sendFile(
   c: Context,
   filePath: string,
   contentType: string,
-  filename: string
+  filename: string,
 ): Promise<Response> {
   try {
-    const [body, info] = await Promise.all([readFile(filePath), stat(filePath)]);
+    const [body, info] = await Promise.all([
+      readFile(filePath),
+      stat(filePath),
+    ]);
     return new Response(body, {
       headers: {
         "content-type": contentType,
@@ -81,7 +84,7 @@ app.get("/api", (c) =>
       "GET /api/export/json",
       "GET /api/export/sqlite",
     ],
-  })
+  }),
 );
 
 app.get("/api/health", (c) => c.json({ ok: true }));
@@ -89,7 +92,7 @@ app.get("/api/health", (c) => c.json({ ok: true }));
 app.get("/api/meta", (c) => c.json(api.getMeta()));
 
 app.get("/api/devices", (c) =>
-  c.json(api.listDevices(c.req.query("q") ?? undefined))
+  c.json(api.listDevices(c.req.query("q") ?? undefined)),
 );
 
 app.get("/api/devices/:codename", (c) => {
@@ -115,8 +118,8 @@ app.get("/api/export/json", (c) =>
     c,
     join(DIST_DIR, "unrom.json"),
     "application/json; charset=utf-8",
-    "unrom.json"
-  )
+    "unrom.json",
+  ),
 );
 
 app.get("/api/export/sqlite", (c) =>
@@ -124,8 +127,8 @@ app.get("/api/export/sqlite", (c) =>
     c,
     join(DIST_DIR, "unrom.sqlite"),
     "application/vnd.sqlite3",
-    "unrom.sqlite"
-  )
+    "unrom.sqlite",
+  ),
 );
 
 app.notFound((c) => c.json({ error: "not found" }, 404));
@@ -135,17 +138,20 @@ app.onError((error, c) => {
   return c.json({ error: "internal error" }, 500);
 });
 
-const server = serve({ fetch: app.fetch, hostname: HOST, port: PORT }, (info) => {
-  console.log(
-    `unrom api listening on http://${HOST}:${info.port} (db: ${DB_PATH})`
-  );
-});
+const server = serve(
+  { fetch: app.fetch, hostname: HOST, port: PORT },
+  (info) => {
+    console.log(
+      `unrom api listening on http://${HOST}:${info.port} (db: ${DB_PATH})`,
+    );
+  },
+);
 
 server.on("error", (error: NodeJS.ErrnoException) => {
   console.error(
     error.code === "EADDRINUSE"
       ? `Port ${PORT} is already in use. Set PORT to another value.`
-      : error
+      : error,
   );
   process.exit(1);
 });

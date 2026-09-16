@@ -26,13 +26,15 @@ export async function listDevices(): Promise<string | Error> {
       (file) =>
         file.type === "file" &&
         file.name.endsWith(".json") &&
-        file.download_url !== null
+        file.download_url !== null,
     );
 
     const builds = await mapLimit(devices, 8, async (file) => {
       if (!file.download_url) return null;
       try {
-        const data = JSON.parse(await fetchText(file.download_url)) as BuildFile;
+        const data = JSON.parse(
+          await fetchText(file.download_url),
+        ) as BuildFile;
         const latest = data.response?.[0];
         if (!latest) return null;
         return { ...latest, codename: file.name.replace(/\.json$/, "") };
@@ -40,7 +42,7 @@ export async function listDevices(): Promise<string | Error> {
         console.error(
           `Failed to fetch ${file.name}: ${
             error instanceof Error ? error.message : error
-          }`
+          }`,
         );
         return null;
       }
@@ -51,7 +53,7 @@ export async function listDevices(): Promise<string | Error> {
     return new Error(
       `Failed to fetch Evolution X devices: ${
         error instanceof Error ? error.message : error
-      }`
+      }`,
     );
   }
 }

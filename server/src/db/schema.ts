@@ -1,4 +1,10 @@
-import { sqliteTable, text, integer, primaryKey, index } from "drizzle-orm/sqlite-core";
+import {
+  sqliteTable,
+  text,
+  integer,
+  primaryKey,
+  index,
+} from "drizzle-orm/sqlite-core";
 
 export const roms = sqliteTable("roms", {
   id: text("id").primaryKey(),
@@ -24,7 +30,7 @@ export const romDevices = sqliteTable(
   (table) => [
     primaryKey({ columns: [table.romId, table.codename] }),
     index("rom_devices_codename_idx").on(table.codename),
-  ]
+  ],
 );
 
 // The (ROM version, Android base) pairs an edge supports; either may be null.
@@ -39,7 +45,7 @@ export const romDeviceVersions = sqliteTable(
   },
   (table) => [
     index("rom_device_versions_edge_idx").on(table.romId, table.codename),
-  ]
+  ],
 );
 
 export const aliases = sqliteTable("aliases", {

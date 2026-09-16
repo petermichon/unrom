@@ -59,7 +59,7 @@ export function parseAICP(raw: string): NormalizedRomDevice[] {
         brand: vendor(oem),
         androidBase: base,
         maintainer: fields[6] ?? null,
-      })
+      }),
     );
   }
 

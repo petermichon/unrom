@@ -54,10 +54,10 @@ export default function CommandPaletteDialog({ open, onOpenChange }: Props) {
               (device) =>
                 (device.name ?? "").toLowerCase().includes(needle) ||
                 device.codename.toLowerCase().includes(needle) ||
-                (device.brand ?? "").toLowerCase().includes(needle)
+                (device.brand ?? "").toLowerCase().includes(needle),
             )
             .slice(0, DEVICE_LIMIT),
-    [devices, needle]
+    [devices, needle],
   );
   const romMatches = useMemo(
     () =>
@@ -66,7 +66,7 @@ export default function CommandPaletteDialog({ open, onOpenChange }: Props) {
         : roms
             .filter((rom) => rom.name.toLowerCase().includes(needle))
             .slice(0, ROM_LIMIT),
-    [roms, needle]
+    [roms, needle],
   );
 
   const go = (href: string) => {
@@ -74,7 +74,8 @@ export default function CommandPaletteDialog({ open, onOpenChange }: Props) {
     navigate(href);
   };
 
-  const noResults = needle !== "" && deviceMatches.length === 0 && romMatches.length === 0;
+  const noResults =
+    needle !== "" && deviceMatches.length === 0 && romMatches.length === 0;
 
   return (
     <CommandDialog

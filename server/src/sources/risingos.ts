@@ -54,7 +54,7 @@ export function parseRisingOS(raw: string): NormalizedRomDevice[] {
           maintainer,
           sourceUrl,
           androidBase: ANDROID_BASE,
-        })
+        }),
       );
     }
   }

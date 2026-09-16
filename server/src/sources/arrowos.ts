@@ -36,7 +36,7 @@ export function parseArrowOS(raw: string): NormalizedRomDevice[] {
         codename,
         androidBase: ANDROID_BASE,
         active: false,
-      })
+      }),
     );
   }
 

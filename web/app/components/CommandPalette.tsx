@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Kbd } from "@/components/ui/kbd";
 
 const CommandPaletteDialog = lazy(
-  () => import("@/components/CommandPaletteDialog")
+  () => import("@/components/CommandPaletteDialog"),
 );
 
 export default function CommandPalette() {

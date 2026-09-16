@@ -25,7 +25,7 @@ export function parseHavocOS(raw: string): NormalizedRomDevice[] {
         codename,
         androidBase: ANDROID_BASE,
         active: false,
-      })
+      }),
     );
   }
 

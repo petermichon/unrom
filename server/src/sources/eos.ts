@@ -11,7 +11,7 @@ const ROM_NAME = "/e/OS";
  */
 export function createEosParser(
   source: string,
-  androidBase: string
+  androidBase: string,
 ): (raw: string) => NormalizedRomDevice[] {
   return (raw: string) => {
     const records: NormalizedRomDevice[] = [];
@@ -30,7 +30,7 @@ export function createEosParser(
             source,
             codename,
             androidBase,
-          })
+          }),
         );
       }
     }
