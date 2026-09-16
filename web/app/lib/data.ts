@@ -47,8 +47,9 @@ async function get<T>(path: string): Promise<T> {
   }
 }
 
-export function fetchDevices(): Promise<BrowseDevice[]> {
-  return get<BrowseDevice[]>("/api/devices");
+export function fetchDevices(vendor?: string): Promise<BrowseDevice[]> {
+  const query = vendor ? `?vendor=${encodeURIComponent(vendor)}` : "";
+  return get<BrowseDevice[]>(`/api/devices${query}`);
 }
 
 export function fetchDevice(

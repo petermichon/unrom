@@ -18,6 +18,7 @@ import {
   romDevices,
   roms,
 } from "../db/schema.ts";
+import { vendorName } from "./identity.ts";
 
 // Order by the first letter/digit so leading punctuation (e.g. "/e/OS") does not
 // push a name to the top. Display names are left untouched.
@@ -101,7 +102,7 @@ export function createApi(dbPath: string) {
     };
   }
 
-  function listDevices(query?: string): BrowseDevice[] {
+  function listDevices(query?: string, vendor?: string): BrowseDevice[] {
     const names = romNames();
 
     const chipsByDevice = new Map<string, RomChip[]>();
@@ -117,25 +118,34 @@ export function createApi(dbPath: string) {
       }
     }
 
+    const filters = [];
+    if (vendor) {
+      filters.push(eq(sql`lower(${devices.vendor})`, vendor.toLowerCase()));
+    }
     const needle = query?.trim();
-    const rows = needle
+    if (needle) {
+      filters.push(
+        or(
+          like(devices.codename, `%${needle}%`),
+          like(sql`coalesce(${devices.name}, '')`, `%${needle}%`),
+          like(sql`coalesce(${devices.brand}, '')`, `%${needle}%`),
+          like(sql`coalesce(${devices.vendor}, '')`, `%${needle}%`),
+        ),
+      );
+    }
+
+    const rows = filters.length
       ? db
           .select()
           .from(devices)
-          .where(
-            or(
-              like(devices.codename, `%${needle}%`),
-              like(sql`coalesce(${devices.name}, '')`, `%${needle}%`),
-              like(sql`coalesce(${devices.brand}, '')`, `%${needle}%`),
-              like(sql`coalesce(${devices.vendor}, '')`, `%${needle}%`),
-            ),
-          )
-          .orderBy(asc(devices.codename))
+          .where(and(...filters))
+          .orderBy(asc(devices.vendor), asc(devices.codename))
           .all()
       : db.select().from(devices).orderBy(asc(devices.codename)).all();
 
     return rows.map((device) => ({
       vendor: device.vendor,
+      vendorName: vendorName(device.vendor),
       codename: device.codename,
       name: device.name,
       brand: device.brand,
@@ -174,6 +184,7 @@ export function createApi(dbPath: string) {
 
     return {
       vendor: device.vendor,
+      vendorName: vendorName(device.vendor),
       codename: device.codename,
       name: device.name,
       brand: device.brand,

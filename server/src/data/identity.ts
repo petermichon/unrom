@@ -167,3 +167,70 @@ const VENDOR_CODENAME_ALIASES: Record<string, string> = {
 export function canonicalCodename(vendor: string, codename: string): string {
   return VENDOR_CODENAME_ALIASES[`${vendor}\0${codename}`] ?? codename;
 }
+
+// Display names for vendor slugs.
+const VENDOR_NAMES: Record<string, string> = {
+  "10or": "10.or",
+  ark: "ARK",
+  asus: "Asus",
+  ayn: "AYN",
+  bananapi: "Banana Pi",
+  bq: "BQ",
+  droidlogic: "DroidLogic",
+  dynalink: "Dynalink",
+  essential: "Essential",
+  fairphone: "Fairphone",
+  freebox: "Freebox",
+  fxtec: "F(x)tec",
+  genric: "Generic",
+  google: "Google",
+  hardkernel: "HardKernel",
+  htc: "HTC",
+  huawei: "Huawei",
+  infinix: "Infinix",
+  itel: "Itel",
+  jiayu: "Jiayu",
+  leeco: "LeEco",
+  lenovo: "Lenovo",
+  lg: "LG",
+  micromax: "Micromax",
+  mobvoi: "Mobvoi",
+  motorola: "Motorola",
+  nextbit: "Nextbit",
+  nintendo: "Nintendo",
+  nokia: "Nokia",
+  nothing: "Nothing",
+  nubia: "Nubia",
+  nvidia: "NVIDIA",
+  oneplus: "OnePlus",
+  oppo: "OPPO",
+  osom: "OSOM",
+  planetcomputers: "Planet Computers",
+  qualcomm: "Qualcomm",
+  radxa: "Radxa",
+  razer: "Razer",
+  realme: "realme",
+  retroid: "Retroid",
+  samsung: "Samsung",
+  shift: "SHIFT",
+  smartisan: "Smartisan",
+  solana: "Solana",
+  sony: "Sony",
+  tecno: "TECNO",
+  teracube: "Teracube",
+  vsmart: "Vsmart",
+  walmart: "Walmart",
+  wileyfox: "Wileyfox",
+  wingtech: "Wingtech",
+  xiaomi: "Xiaomi",
+  yandex: "Yandex",
+  yu: "YU",
+  zinwa: "Zinwa",
+  zte: "ZTE",
+};
+
+export function vendorName(vendor: string): string {
+  return (
+    VENDOR_NAMES[vendor] ?? vendor.charAt(0).toUpperCase() + vendor.slice(1)
+  );
+}

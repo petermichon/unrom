@@ -52,6 +52,7 @@ export default function DeviceRoute() {
           items={[
             { label: "Home", to: "/" },
             { label: "Devices", to: "/devices" },
+            { label: device.vendorName, to: `/devices/${device.vendor}` },
             { label: device.name ?? device.codename },
           ]}
         />

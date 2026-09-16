@@ -13,6 +13,7 @@ function analyze(page: Page) {
 const PATHS = [
   "/",
   "/devices",
+  "/devices/xiaomi",
   "/roms",
   "/data",
   "/devices/lenovo/A6020",

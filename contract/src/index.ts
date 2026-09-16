@@ -25,6 +25,7 @@ export interface RomSupport {
 
 export interface DeviceDetail {
   vendor: string;
+  vendorName: string;
   codename: string;
   name: string | null;
   brand: string | null;
@@ -38,6 +39,7 @@ export interface RomChip {
 
 export interface BrowseDevice {
   vendor: string;
+  vendorName: string;
   codename: string;
   name: string | null;
   brand: string | null;

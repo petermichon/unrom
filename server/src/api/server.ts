@@ -86,7 +86,7 @@ app.get("/api", (c) =>
     endpoints: [
       "GET /api/health",
       "GET /api/meta",
-      "GET /api/devices?q=",
+      "GET /api/devices?q=&vendor=",
       "GET /api/devices/:vendor/:codename",
       "GET /api/roms",
       "GET /api/roms/:id",
@@ -105,7 +105,12 @@ app.get("/api/health", (c) => {
 app.get("/api/meta", (c) => c.json(api.getMeta()));
 
 app.get("/api/devices", (c) =>
-  c.json(api.listDevices(c.req.query("q") ?? undefined)),
+  c.json(
+    api.listDevices(
+      c.req.query("q") ?? undefined,
+      c.req.query("vendor") ?? undefined,
+    ),
+  ),
 );
 
 app.get("/api/devices/:vendor/:codename", (c) => {
