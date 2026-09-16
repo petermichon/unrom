@@ -79,7 +79,7 @@ the schema can change freely.
 GET /api/health                   → { ok: true }
 GET /api/meta                     → { generatedAt, deviceCount, romCount, edgeCount }
 GET /api/devices?q=pixel          → BrowseDevice[]
-GET /api/devices/:codename        → DeviceDetail | 404
+GET /api/devices/:vendor/:codename → DeviceDetail | 404
 GET /api/roms                     → RomDetail[]
 GET /api/roms/:id                 → RomDetail | 404
 GET /api/data                     → Mapping[]
