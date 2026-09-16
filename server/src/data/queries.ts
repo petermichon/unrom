@@ -144,14 +144,14 @@ export function createApi(dbPath: string) {
     }));
   }
 
-  function getDevice(codename: string, vendor?: string): DeviceDetail | null {
+  function getDevice(vendor: string, codename: string): DeviceDetail | null {
     const device = db
       .select()
       .from(devices)
       .where(
         and(
+          eq(sql`lower(${devices.vendor})`, vendor.toLowerCase()),
           eq(sql`lower(${devices.codename})`, codename.toLowerCase()),
-          vendor ? eq(sql`lower(${devices.vendor})`, vendor.toLowerCase()) : undefined,
         ),
       )
       .get();

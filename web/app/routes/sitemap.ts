@@ -9,7 +9,7 @@ export async function loader() {
     "/devices",
     "/roms",
     "/data",
-    ...devices.map((device) => `/devices/${device.codename}`),
+    ...devices.map((device) => `/devices/${device.vendor}/${device.codename}`),
     ...roms.map((rom) => `/roms/${rom.id}`),
   ];
 

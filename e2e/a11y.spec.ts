@@ -15,7 +15,7 @@ const PATHS = [
   "/devices",
   "/roms",
   "/data",
-  "/devices/A6020",
+  "/devices/lenovo/A6020",
   "/roms/pixelos",
 ];
 

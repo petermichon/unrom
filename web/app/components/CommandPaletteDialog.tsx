@@ -97,9 +97,11 @@ export default function CommandPaletteDialog({ open, onOpenChange }: Props) {
             <CommandGroup heading="Devices">
               {deviceMatches.map((device) => (
                 <CommandItem
-                  key={device.codename}
-                  value={device.codename}
-                  onSelect={() => go(`/devices/${device.codename}`)}
+                  key={`${device.vendor}-${device.codename}`}
+                  value={`${device.vendor}-${device.codename}`}
+                  onSelect={() =>
+                    go(`/devices/${device.vendor}/${device.codename}`)
+                  }
                 >
                   <span className="truncate">
                     {device.name ?? device.codename}

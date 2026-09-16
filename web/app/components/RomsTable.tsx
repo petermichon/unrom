@@ -89,8 +89,8 @@ export default function RomsTable({ roms }: Props) {
             <div className="flex flex-wrap gap-1.5">
               {preview.map((device) => (
                 <ChipLink
-                  key={device.codename}
-                  to={`/devices/${device.codename}`}
+                  key={`${device.vendor}-${device.codename}`}
+                  to={`/devices/${device.vendor}/${device.codename}`}
                 >
                   {device.name ?? device.codename}
                 </ChipLink>

@@ -82,7 +82,7 @@ export default function MappingsTable({ mappings }: Props) {
           return (
             <div className="flex min-w-0 flex-col">
               <Link
-                to={`/devices/${row.original.codename}`}
+                to={`/devices/${row.original.vendor}/${row.original.codename}`}
                 prefetch="intent"
                 title={name}
                 className="truncate font-medium hover:underline"

@@ -8,11 +8,11 @@ import { SITE_URL, canonical } from "@/lib/seo";
 import type { Route } from "./+types/device";
 
 export async function loader({ params }: Route.LoaderArgs) {
-  return { device: await fetchDevice(params.codename) };
+  return { device: await fetchDevice(params.vendor, params.codename) };
 }
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
-  return { device: await fetchDevice(params.codename) };
+  return { device: await fetchDevice(params.vendor, params.codename) };
 }
 
 export const meta: Route.MetaFunction = ({ loaderData }) => {
@@ -26,13 +26,13 @@ export const meta: Route.MetaFunction = ({ loaderData }) => {
       name: "description",
       content: `Custom ROMs and operating systems that support the ${name} (${device.codename}).`,
     },
-    canonical(`/devices/${device.codename}`),
+    canonical(`/devices/${device.vendor}/${device.codename}`),
     {
       "script:ld+json": {
         "@context": "https://schema.org",
         "@type": "Product",
         name,
-        url: `${SITE_URL}/devices/${device.codename}`,
+        url: `${SITE_URL}/devices/${device.vendor}/${device.codename}`,
         ...(device.brand
           ? { brand: { "@type": "Brand", name: device.brand } }
           : {}),
@@ -58,7 +58,7 @@ export default function DeviceRoute() {
 
         <PageHeader
           title={device.name ?? device.codename}
-          endpoint={`/api/devices/${device.codename}`}
+          endpoint={`/api/devices/${device.vendor}/${device.codename}`}
           badge={
             <Badge
               variant="outline"

@@ -51,8 +51,13 @@ export function fetchDevices(): Promise<BrowseDevice[]> {
   return get<BrowseDevice[]>("/api/devices");
 }
 
-export function fetchDevice(codename: string): Promise<DeviceDetail> {
-  return get<DeviceDetail>(`/api/devices/${encodeURIComponent(codename)}`);
+export function fetchDevice(
+  vendor: string,
+  codename: string,
+): Promise<DeviceDetail> {
+  return get<DeviceDetail>(
+    `/api/devices/${encodeURIComponent(vendor)}/${encodeURIComponent(codename)}`,
+  );
 }
 
 export function fetchRoms(): Promise<RomDetail[]> {

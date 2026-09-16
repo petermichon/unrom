@@ -83,9 +83,11 @@ export default function DeviceSearch({ devices, roms, examples = [] }: Props) {
             <CommandGroup heading="Devices">
               {deviceResults.map((device) => (
                 <CommandItem
-                  key={`device-${device.codename}`}
-                  value={`device-${device.codename}`}
-                  onSelect={() => navigate(`/devices/${device.codename}`)}
+                  key={`device-${device.vendor}-${device.codename}`}
+                  value={`device-${device.vendor}-${device.codename}`}
+                  onSelect={() =>
+                    navigate(`/devices/${device.vendor}/${device.codename}`)
+                  }
                   className="gap-3"
                 >
                   <span className="flex min-w-0 flex-1 flex-col">

@@ -87,7 +87,7 @@ app.get("/api", (c) =>
       "GET /api/health",
       "GET /api/meta",
       "GET /api/devices?q=",
-      "GET /api/devices/:codename",
+      "GET /api/devices/:vendor/:codename",
       "GET /api/roms",
       "GET /api/roms/:id",
       "GET /api/data",
@@ -109,20 +109,12 @@ app.get("/api/devices", (c) =>
 );
 
 app.get("/api/devices/:vendor/:codename", (c) => {
-  const codename = c.req.param("codename");
   const vendor = c.req.param("vendor");
-  const device = api.getDevice(codename, vendor);
+  const codename = c.req.param("codename");
+  const device = api.getDevice(vendor, codename);
   return device
     ? c.json(device)
     : c.json({ error: `device not found: ${vendor}/${codename}` }, 404);
-});
-
-app.get("/api/devices/:codename", (c) => {
-  const codename = c.req.param("codename");
-  const device = api.getDevice(codename);
-  return device
-    ? c.json(device)
-    : c.json({ error: `device not found: ${codename}` }, 404);
 });
 
 app.get("/api/roms", (c) => c.json(api.listRoms()));
