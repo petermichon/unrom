@@ -1,6 +1,6 @@
 # unrom
 
-The open database for device–ROM compatibility.
+Open database for device–ROM compatibility.
 
 unrom tracks which custom Android ROMs support which devices, and makes that
 data available through an API and a web app. It is judged by two things only:
