@@ -1,7 +1,12 @@
-import { useMemo } from "react";
-import type { ColumnDef } from "@tanstack/react-table";
+import { useMemo, useState } from "react";
+import type {
+  ColumnDef,
+  ColumnFiltersState,
+  Table,
+  VisibilityState,
+} from "@tanstack/react-table";
 import { ExternalLink } from "lucide-react";
-import { Link } from "react-router";
+import { Link, useSearchParams } from "react-router";
 import { DataTable } from "@/components/data-table/data-table";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import {
@@ -28,7 +33,96 @@ interface Props {
   mappings: Mapping[];
 }
 
+// Toggle a value in a column's facet filter.
+function toggleFilter<T>(
+  table: Table<T>,
+  columnId: string,
+  value: string,
+): void {
+  const column = table.getColumn(columnId);
+  if (!column) return;
+  const current = (column.getFilterValue() as string[] | undefined) ?? [];
+  const next = current.includes(value)
+    ? current.filter((entry) => entry !== value)
+    : [...current, value];
+  column.setFilterValue(next.length ? next : undefined);
+}
+
 export default function MappingsTable({ mappings }: Props) {
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const vendorNameBySlug = useMemo(
+    () => new Map(mappings.map((row) => [row.vendor, row.vendorName])),
+    [mappings],
+  );
+  const slugByVendorName = useMemo(
+    () => new Map(mappings.map((row) => [row.vendorName, row.vendor])),
+    [mappings],
+  );
+  const romNameById = useMemo(
+    () => new Map(mappings.map((row) => [row.romId, row.romName])),
+    [mappings],
+  );
+  const idByRomName = useMemo(
+    () => new Map(mappings.map((row) => [row.romName, row.romId])),
+    [mappings],
+  );
+
+  // Read the initial filters from the URL once; afterwards the URL follows the
+  // table state.
+  const initialFilters = useMemo<ColumnFiltersState>(() => {
+    const filters: ColumnFiltersState = [];
+    const vendor = searchParams.get("vendor");
+    const rom = searchParams.get("rom");
+    const vendorName = vendor ? vendorNameBySlug.get(vendor) : undefined;
+    const romName = rom ? romNameById.get(rom) : undefined;
+    if (vendorName) filters.push({ id: "vendorName", value: [vendorName] });
+    if (romName) filters.push({ id: "romName", value: [romName] });
+    return filters;
+    // Intentionally read the URL only on mount.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const [filters, setFilters] = useState<ColumnFiltersState>(initialFilters);
+  const [visibility, setVisibility] = useState<VisibilityState>(() => ({
+    search: false,
+    referenceUrl: false,
+    vendorName: !initialFilters.some((f) => f.id === "vendorName"),
+    romName: !initialFilters.some((f) => f.id === "romName"),
+  }));
+
+  const handleFilters = (next: ColumnFiltersState) => {
+    setFilters(next);
+    const vendors = next.find((f) => f.id === "vendorName")?.value as
+      string[] | undefined;
+    const roms = next.find((f) => f.id === "romName")?.value as
+      string[] | undefined;
+
+    // A single-value filter narrows to one context, so hide that column.
+    setVisibility((prev) => ({
+      ...prev,
+      vendorName: vendors?.length === 1 ? false : true,
+      romName: roms?.length === 1 ? false : true,
+    }));
+
+    const params = new URLSearchParams(searchParams);
+    const setParam = (key: string, value: string | undefined) => {
+      if (value) params.set(key, value);
+      else params.delete(key);
+    };
+    setParam(
+      "vendor",
+      vendors?.length === 1
+        ? (slugByVendorName.get(vendors[0]) ?? vendors[0])
+        : undefined,
+    );
+    setParam(
+      "rom",
+      roms?.length === 1 ? (idByRomName.get(roms[0]) ?? roms[0]) : undefined,
+    );
+    setSearchParams(params, { replace: true });
+  };
+
   const vendorOptions = useMemo<FacetOption[]>(() => {
     const set = new Set(mappings.map((row) => row.vendorName));
     return [...set].sort().map((value) => ({ label: value, value }));
@@ -69,14 +163,16 @@ export default function MappingsTable({ mappings }: Props) {
         ),
         filterFn: (row, id, value: string[]) =>
           value.includes(row.getValue(id)),
-        cell: ({ row }) => (
-          <Link
-            to={`/devices/${row.original.vendor}`}
-            prefetch="intent"
-            className="w-fit max-w-full text-muted-foreground hover:text-foreground hover:underline"
+        cell: ({ row, table }) => (
+          <button
+            type="button"
+            onClick={() =>
+              toggleFilter(table, "vendorName", row.original.vendorName)
+            }
+            className="w-fit max-w-full truncate text-left text-muted-foreground hover:text-foreground hover:underline"
           >
             {row.original.vendorName}
-          </Link>
+          </button>
         ),
       },
       {
@@ -110,15 +206,16 @@ export default function MappingsTable({ mappings }: Props) {
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="ROM" />
         ),
-        cell: ({ row }) => (
-          <Link
-            to={`/roms/${row.original.romId}`}
-            prefetch="intent"
-            title={row.original.romName}
-            className="w-fit max-w-full truncate font-medium hover:underline"
+        filterFn: (row, id, value: string[]) =>
+          value.includes(row.getValue(id)),
+        cell: ({ row, table }) => (
+          <button
+            type="button"
+            onClick={() => toggleFilter(table, "romName", row.original.romName)}
+            className="w-fit max-w-full truncate text-left font-medium hover:underline"
           >
             {row.original.romName}
-          </Link>
+          </button>
         ),
       },
       {
@@ -165,8 +262,11 @@ export default function MappingsTable({ mappings }: Props) {
       data={mappings}
       columnClassName={columnClassName}
       tableClassName="min-w-[52rem]"
+      columnFilters={filters}
+      onColumnFiltersChange={handleFilters}
+      columnVisibility={visibility}
+      onColumnVisibilityChange={setVisibility}
       initialState={{
-        columnVisibility: { search: false, referenceUrl: false },
         sorting: [
           { id: "vendorName", desc: false },
           { id: "deviceName", desc: false },
@@ -200,7 +300,18 @@ export default function MappingsTable({ mappings }: Props) {
             />
           )}
           {table.getState().columnFilters.length > 0 && (
-            <Button variant="ghost" onClick={() => table.resetColumnFilters()}>
+            <Button
+              variant="ghost"
+              onClick={() => {
+                table.resetColumnFilters();
+                setVisibility({
+                  search: false,
+                  referenceUrl: false,
+                  vendorName: true,
+                  romName: true,
+                });
+              }}
+            >
               Reset
             </Button>
           )}

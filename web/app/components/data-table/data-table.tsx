@@ -41,8 +41,14 @@ interface Props<TData, TValue> {
   tableClassName?: string;
   initialState?: {
     columnVisibility?: VisibilityState;
+    columnFilters?: ColumnFiltersState;
     sorting?: SortingState;
   };
+  // Optional controlled state (used to sync filters/visibility with the URL).
+  columnFilters?: ColumnFiltersState;
+  onColumnFiltersChange?: (filters: ColumnFiltersState) => void;
+  columnVisibility?: VisibilityState;
+  onColumnVisibilityChange?: (visibility: VisibilityState) => void;
 }
 
 // Equal-share columns: a fixed layout with `width: 1%` on every column makes
@@ -56,22 +62,41 @@ export function DataTable<TData, TValue>({
   columnClassName,
   tableClassName,
   initialState,
+  columnFilters: controlledFilters,
+  onColumnFiltersChange,
+  columnVisibility: controlledVisibility,
+  onColumnVisibilityChange,
 }: Props<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>(
     initialState?.sorting ?? [],
   );
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(
+  const [internalFilters, setInternalFilters] = useState<ColumnFiltersState>(
+    initialState?.columnFilters ?? [],
+  );
+  const [internalVisibility, setInternalVisibility] = useState<VisibilityState>(
     initialState?.columnVisibility ?? {},
   );
+
+  const columnFilters = controlledFilters ?? internalFilters;
+  const columnVisibility = controlledVisibility ?? internalVisibility;
 
   const table = useReactTable({
     data,
     columns,
     state: { sorting, columnFilters, columnVisibility },
     onSortingChange: setSorting,
-    onColumnFiltersChange: setColumnFilters,
-    onColumnVisibilityChange: setColumnVisibility,
+    onColumnFiltersChange: (updater) => {
+      const next =
+        typeof updater === "function" ? updater(columnFilters) : updater;
+      if (controlledFilters !== undefined) onColumnFiltersChange?.(next);
+      else setInternalFilters(next);
+    },
+    onColumnVisibilityChange: (updater) => {
+      const next =
+        typeof updater === "function" ? updater(columnVisibility) : updater;
+      if (controlledVisibility !== undefined) onColumnVisibilityChange?.(next);
+      else setInternalVisibility(next);
+    },
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
