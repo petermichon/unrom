@@ -180,27 +180,27 @@ const specialSources: SourceAdapter[] = [
   {
     id: "eos",
     file: "eos-v1-s.yml",
-    parse: createEosParser("eos-v1-s.yml"),
+    parse: createEosParser(),
   },
   {
     id: "eos",
     file: "eos-v1-t.yml",
-    parse: createEosParser("eos-v1-t.yml"),
+    parse: createEosParser(),
   },
   {
     id: "eos",
     file: "eos-a14.yml",
-    parse: createEosParser("eos-a14.yml"),
+    parse: createEosParser(),
   },
   {
     id: "eos",
     file: "eos-a15.yml",
-    parse: createEosParser("eos-a15.yml"),
+    parse: createEosParser(),
   },
   {
     id: "eos",
     file: "eos-a16.yml",
-    parse: createEosParser("eos-a16.yml"),
+    parse: createEosParser(),
   },
 ];
 

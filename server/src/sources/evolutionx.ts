@@ -3,7 +3,6 @@ import type { NormalizedRomDevice } from "../normalized.ts";
 
 const ROM_ID = "evolutionx";
 const ROM_NAME = "Evolution X";
-const SOURCE = "evolutionx.json";
 
 /** The Evolution X fetcher stores one build object per device. */
 export function parseEvolutionX(raw: string): NormalizedRomDevice[] {
@@ -25,7 +24,6 @@ export function parseEvolutionX(raw: string): NormalizedRomDevice[] {
       buildRecord({
         romId: ROM_ID,
         romName: ROM_NAME,
-        source: SOURCE,
         codename,
         name: str(entry.device),
         brand: str(entry.oem),

@@ -3,7 +3,6 @@ import type { NormalizedRomDevice } from "../normalized.ts";
 
 const ROM_ID = "arrowos";
 const ROM_NAME = "ArrowOS";
-const SOURCE = "arrowos.txt";
 
 /**
  * arrow.devices lines: `<buildtype-prefix> <codename> <buildtype> <chipset>`,
@@ -30,7 +29,6 @@ export function parseArrowOS(raw: string): NormalizedRomDevice[] {
       buildRecord({
         romId: ROM_ID,
         romName: ROM_NAME,
-        source: SOURCE,
         referenceUrl:
           "https://github.com/ArrowOS/arrow_infrastructure_devices/blob/arrow-13.1/arrow.devices",
         codename,

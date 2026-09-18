@@ -36,7 +36,6 @@ interface Edge {
   romId: string;
   vendor: string;
   codename: string;
-  source: string;
   referenceUrl: string | null;
 }
 
@@ -81,7 +80,7 @@ function contentHash(
     ),
   )) {
     hash.update(
-      `e\0${edge.romId}\0${edge.vendor}\0${edge.codename}\0${edge.source}\0${edge.referenceUrl ?? ""}\n`,
+      `e\0${edge.romId}\0${edge.vendor}\0${edge.codename}\0${edge.referenceUrl ?? ""}\n`,
     );
   }
 
@@ -167,7 +166,6 @@ export function buildDatabase(
       romId: record.romId,
       vendor,
       codename: resolved,
-      source: record.source,
       referenceUrl: null,
     };
     edge.referenceUrl ??= record.referenceUrl;

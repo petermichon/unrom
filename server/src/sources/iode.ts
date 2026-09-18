@@ -3,7 +3,6 @@ import type { NormalizedRomDevice } from "../normalized.ts";
 
 const ROM_ID = "iode";
 const ROM_NAME = "iodéOS";
-const SOURCE = "iode.json";
 
 interface TreeEntry {
   name?: unknown;
@@ -39,7 +38,6 @@ export function parseIode(raw: string): NormalizedRomDevice[] {
       buildRecord({
         romId: ROM_ID,
         romName: ROM_NAME,
-        source: SOURCE,
         referenceUrl: "https://iode.tech/iodeos-official-supported-devices",
         codename,
       }),

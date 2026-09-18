@@ -3,7 +3,6 @@ import type { NormalizedRomDevice } from "../normalized.ts";
 
 const ROM_ID = "pixelos";
 const ROM_NAME = "PixelOS";
-const SOURCE = "pixelos.json";
 
 interface RawPixelOSDevice {
   codename?: unknown;
@@ -37,7 +36,6 @@ export function parsePixelOS(raw: string): NormalizedRomDevice[] {
         codename,
         name: str(device.model),
         brand: str(device.vendor),
-        source: SOURCE,
         referenceUrl: `https://pixelos.net/download/${codename}`,
       }),
     );

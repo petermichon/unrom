@@ -3,7 +3,6 @@ import type { NormalizedRomDevice } from "../normalized.ts";
 
 const ROM_ID = "havocos";
 const ROM_NAME = "Havoc-OS";
-const SOURCE = "havocos.txt";
 
 /** havocos.txt is a plain list of device codenames, one per line. */
 export function parseHavocOS(raw: string): NormalizedRomDevice[] {
@@ -19,7 +18,6 @@ export function parseHavocOS(raw: string): NormalizedRomDevice[] {
       buildRecord({
         romId: ROM_ID,
         romName: ROM_NAME,
-        source: SOURCE,
         referenceUrl:
           "https://github.com/Havoc-OS/Devices/blob/thirteen/devices",
         codename,

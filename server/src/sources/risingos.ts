@@ -3,7 +3,6 @@ import type { NormalizedRomDevice } from "../normalized.ts";
 
 const ROM_ID = "risingos";
 const ROM_NAME = "RisingOS";
-const SOURCE = "risingos.md";
 
 /**
  * risingos.md groups devices under `## <brand>` headings:
@@ -43,7 +42,6 @@ export function parseRisingOS(raw: string): NormalizedRomDevice[] {
         buildRecord({
           romId: ROM_ID,
           romName: ROM_NAME,
-          source: SOURCE,
           codename,
           name,
           brand,

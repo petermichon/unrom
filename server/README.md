@@ -65,12 +65,12 @@ source of truth.
 
 ## Tables
 
-| Table         | Purpose                                           |
-| ------------- | ------------------------------------------------- |
-| `roms`        | One row per ROM/OS (`id`, `name`)                 |
-| `devices`     | One row per `(vendor, codename)` device (`name`)  |
-| `rom_devices` | The many-to-many edge (`source`, `reference_url`) |
-| `meta`        | Snapshot metadata (`generatedAt`, `contentHash`)  |
+| Table         | Purpose                                          |
+| ------------- | ------------------------------------------------ |
+| `roms`        | One row per ROM/OS (`id`, `name`)                |
+| `devices`     | One row per `(vendor, codename)` device (`name`) |
+| `rom_devices` | The many-to-many edge (`reference_url`)          |
+| `meta`        | Snapshot metadata (`generatedAt`, `contentHash`) |
 
 Search is a plain `LIKE` over codename/name/vendor. An FTS5 index can be added
 when the dataset is large enough to need it.

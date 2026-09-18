@@ -21,7 +21,6 @@ export const romDevices = sqliteTable(
     romId: text("rom_id").notNull(),
     vendor: text("vendor").notNull(),
     codename: text("codename").notNull(),
-    source: text("source").notNull(),
     referenceUrl: text("reference_url"),
   },
   (table) => [

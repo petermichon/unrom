@@ -5,7 +5,6 @@ import type { NormalizedRomDevice } from "../normalized.ts";
 
 const ROM_ID = "lineageos";
 const ROM_NAME = "LineageOS";
-const SOURCE = "lineageos.json";
 
 /**
  * The LineageOS fetcher stores the raw wiki YAML for each device; here we parse
@@ -30,7 +29,6 @@ export function parseLineageOS(raw: string): NormalizedRomDevice[] {
       buildRecord({
         romId: ROM_ID,
         romName: ROM_NAME,
-        source: SOURCE,
         codename,
         name: str(meta.name),
         brand: str(meta.vendor),

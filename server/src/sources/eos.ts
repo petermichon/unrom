@@ -8,9 +8,7 @@ const ROM_NAME = "/e/OS";
  * /e/OS publishes one GitLab CI file per branch. Each build job lists its
  * devices in a `DEVICES: "..."` variable.
  */
-export function createEosParser(
-  source: string,
-): (raw: string) => NormalizedRomDevice[] {
+export function createEosParser(): (raw: string) => NormalizedRomDevice[] {
   return (raw: string) => {
     const records: NormalizedRomDevice[] = [];
     const seen = new Set<string>();
@@ -25,7 +23,6 @@ export function createEosParser(
           buildRecord({
             romId: ROM_ID,
             romName: ROM_NAME,
-            source,
             codename,
             referenceUrl: `https://doc.e.foundation/devices/${codename}`,
           }),

@@ -3,7 +3,6 @@ import type { NormalizedRomDevice } from "../normalized.ts";
 
 const ROM_ID = "aicp";
 const ROM_NAME = "AICP";
-const SOURCE = "aicp.txt";
 
 const VENDORS: Record<string, string> = {
   samsung: "Samsung",
@@ -52,7 +51,6 @@ export function parseAICP(raw: string): NormalizedRomDevice[] {
       buildRecord({
         romId: ROM_ID,
         romName: ROM_NAME,
-        source: SOURCE,
         referenceUrl:
           "https://github.com/AICP/vendor_jenkins/blob/w16.0/aicp-build-targets",
         codename,

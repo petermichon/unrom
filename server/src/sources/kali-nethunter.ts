@@ -5,7 +5,6 @@ import type { NormalizedRomDevice } from "../normalized.ts";
 
 const ROM_ID = "kali-nethunter";
 const ROM_NAME = "Kali NetHunter";
-const SOURCE = "kali-nethunter.yml";
 
 interface KaliDevice {
   model?: unknown;
@@ -35,7 +34,6 @@ export function parseKaliNetHunter(raw: string): NormalizedRomDevice[] {
         buildRecord({
           romId: ROM_ID,
           romName: ROM_NAME,
-          source: SOURCE,
           codename,
           name: str(device.model),
           referenceUrl:

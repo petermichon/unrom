@@ -5,7 +5,6 @@ import type { NormalizedRomDevice } from "../normalized.ts";
 
 const ROM_ID = "kenvyra";
 const ROM_NAME = "Kenvyra";
-const SOURCE = "kenvyra.json";
 
 interface Frontmatter {
   name?: unknown;
@@ -38,7 +37,6 @@ export function parseKenvyra(raw: string): NormalizedRomDevice[] {
       buildRecord({
         romId: ROM_ID,
         romName: ROM_NAME,
-        source: SOURCE,
         referenceUrl: `https://github.com/Kenvyra/website/blob/main/src/devices/${codename}.md`,
         codename,
         name: str(meta.name),

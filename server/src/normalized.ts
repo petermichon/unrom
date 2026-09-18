@@ -9,7 +9,6 @@ export const normalizedRomDeviceSchema = z.object({
   name: z.string().nullable(),
   brand: z.string().nullable(),
   referenceUrl: z.string().nullable(),
-  source: z.string().min(1),
 });
 
 export type NormalizedRomDevice = z.infer<typeof normalizedRomDeviceSchema>;

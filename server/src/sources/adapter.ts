@@ -31,7 +31,6 @@ export interface DeviceSource {
 export interface RecordInput {
   romId: string;
   romName: string;
-  source: string;
   codename: string;
   name?: string | null;
   brand?: string | null;
@@ -140,7 +139,6 @@ export function createParser(
               entry.group ??
               null,
             referenceUrl,
-            source: source.file,
           }),
         );
       }
