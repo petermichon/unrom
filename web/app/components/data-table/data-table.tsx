@@ -1,4 +1,4 @@
-import { useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import {
   type ColumnDef,
   type ColumnFiltersState,
@@ -61,6 +61,33 @@ interface Props<TData, TValue> {
 // the browser scale all columns to the same width, independent of content.
 const EQUAL_SHARE = "w-[1%]";
 
+// Controlled-or-internal state. The latest value is tracked in a ref so several
+// changes in one tick compose even before a controlled prop re-renders.
+function useControllableState<T>(
+  controlled: T | undefined,
+  initial: T,
+  onChange?: (value: T) => void,
+): [T, (updater: T | ((prev: T) => T)) => void] {
+  const [internal, setInternal] = useState(initial);
+  const value = controlled ?? internal;
+  const ref = useRef(value);
+  useEffect(() => {
+    ref.current = value;
+  }, [value]);
+
+  const set = (updater: T | ((prev: T) => T)) => {
+    const next =
+      typeof updater === "function"
+        ? (updater as (prev: T) => T)(ref.current)
+        : updater;
+    ref.current = next;
+    if (controlled !== undefined) onChange?.(next);
+    else setInternal(next);
+  };
+
+  return [value, set];
+}
+
 export function DataTable<TData, TValue>({
   columns,
   data,
@@ -77,71 +104,35 @@ export function DataTable<TData, TValue>({
   pagination: controlledPagination,
   onPaginationChange,
 }: Props<TData, TValue>) {
-  const [internalSorting, setInternalSorting] = useState<SortingState>(
+  const [sorting, setSorting] = useControllableState(
+    controlledSorting,
     initialState?.sorting ?? [],
+    onSortingChange,
   );
-  const [internalFilters, setInternalFilters] = useState<ColumnFiltersState>(
+  const [columnFilters, setColumnFilters] = useControllableState(
+    controlledFilters,
     initialState?.columnFilters ?? [],
+    onColumnFiltersChange,
   );
-  const [internalVisibility, setInternalVisibility] = useState<VisibilityState>(
+  const [columnVisibility, setColumnVisibility] = useControllableState(
+    controlledVisibility,
     initialState?.columnVisibility ?? {},
+    onColumnVisibilityChange,
   );
-  const [internalPagination, setInternalPagination] = useState<PaginationState>(
+  const [pagination, setPagination] = useControllableState(
+    controlledPagination,
     initialState?.pagination ?? { pageIndex: 0, pageSize: 10 },
+    onPaginationChange,
   );
-
-  const sorting = controlledSorting ?? internalSorting;
-  const columnFilters = controlledFilters ?? internalFilters;
-  const columnVisibility = controlledVisibility ?? internalVisibility;
-  const pagination = controlledPagination ?? internalPagination;
-
-  // Track the latest value so multiple changes in one tick compose correctly,
-  // even when the controlled prop has not re-rendered yet.
-  const sortingRef = useRef(sorting);
-  sortingRef.current = sorting;
-  const filtersRef = useRef(columnFilters);
-  filtersRef.current = columnFilters;
-  const visibilityRef = useRef(columnVisibility);
-  visibilityRef.current = columnVisibility;
-  const paginationRef = useRef(pagination);
-  paginationRef.current = pagination;
 
   const table = useReactTable({
     data,
     columns,
     state: { sorting, columnFilters, columnVisibility, pagination },
-    onSortingChange: (updater) => {
-      const next =
-        typeof updater === "function" ? updater(sortingRef.current) : updater;
-      sortingRef.current = next;
-      if (controlledSorting !== undefined) onSortingChange?.(next);
-      else setInternalSorting(next);
-    },
-    onColumnFiltersChange: (updater) => {
-      const next =
-        typeof updater === "function" ? updater(filtersRef.current) : updater;
-      filtersRef.current = next;
-      if (controlledFilters !== undefined) onColumnFiltersChange?.(next);
-      else setInternalFilters(next);
-    },
-    onColumnVisibilityChange: (updater) => {
-      const next =
-        typeof updater === "function"
-          ? updater(visibilityRef.current)
-          : updater;
-      visibilityRef.current = next;
-      if (controlledVisibility !== undefined) onColumnVisibilityChange?.(next);
-      else setInternalVisibility(next);
-    },
-    onPaginationChange: (updater) => {
-      const next =
-        typeof updater === "function"
-          ? updater(paginationRef.current)
-          : updater;
-      paginationRef.current = next;
-      if (controlledPagination !== undefined) onPaginationChange?.(next);
-      else setInternalPagination(next);
-    },
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
+    onColumnVisibilityChange: setColumnVisibility,
+    onPaginationChange: setPagination,
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
