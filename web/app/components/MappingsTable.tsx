@@ -23,7 +23,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { referenceLabel } from "@/lib/sort";
+import { bySortKey, referenceLabel } from "@/lib/sort";
 import type { Mapping } from "@/lib/types";
 
 const MOBILE_HIDDEN = new Set(["vendor", "referenceUrl"]);
@@ -178,7 +178,7 @@ export default function MappingsTable({ mappings }: Props) {
     for (const row of mappings) map.set(row.vendor, row.vendorName);
     return [...map.entries()]
       .map(([value, label]) => ({ label, value }))
-      .sort((a, b) => a.label.localeCompare(b.label));
+      .sort((a, b) => bySortKey(a.label, b.label));
   }, [mappings]);
 
   const romOptions = useMemo<FacetOption[]>(() => {
@@ -186,7 +186,7 @@ export default function MappingsTable({ mappings }: Props) {
     for (const row of mappings) map.set(row.romId, row.romName);
     return [...map.entries()]
       .map(([value, label]) => ({ label, value }))
-      .sort((a, b) => a.label.localeCompare(b.label));
+      .sort((a, b) => bySortKey(a.label, b.label));
   }, [mappings]);
 
   const columns = useMemo<ColumnDef<Mapping>[]>(
