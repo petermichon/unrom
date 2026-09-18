@@ -5,7 +5,7 @@ import type {
   Table,
   VisibilityState,
 } from "@tanstack/react-table";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, X } from "lucide-react";
 import { useSearchParams } from "react-router";
 import { DataTable } from "@/components/data-table/data-table";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
@@ -16,6 +16,7 @@ import {
 import { DataTableToolbar } from "@/components/data-table/data-table-toolbar";
 import { DataTableViewOptions } from "@/components/data-table/data-table-view-options";
 import { SearchInput } from "@/components/SearchInput";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Tooltip,
@@ -122,23 +123,24 @@ export default function MappingsTable({ mappings }: Props) {
     [facetFilters, search],
   );
 
-  const count = (id: string) =>
-    (facetFilters.find((f) => f.id === id)?.value as string[] | undefined)
-      ?.length ?? 0;
+  const facetValues = (id: string) =>
+    (facetFilters.find((f) => f.id === id)?.value as string[] | undefined) ??
+    [];
+  const activeVendors = facetValues("vendorName");
+  const activeCodenames = facetValues("codename");
+  const activeRoms = facetValues("romName");
 
-  // The id columns are hidden by default; a single-value facet filter also hides
-  // its now-redundant name column. User toggles from View are layered on top.
+  // Columns never change visibility because of filters; only explicit View
+  // toggles (userVisibility) apply. The id columns are hidden by default.
   const visibility: VisibilityState = {
     search: false,
     referenceUrl: userVisibility.referenceUrl ?? false,
     vendor: userVisibility.vendor ?? false,
     codename: userVisibility.codename ?? false,
     romId: userVisibility.romId ?? false,
-    vendorName:
-      count("vendorName") === 1 ? false : (userVisibility.vendorName ?? true),
-    deviceName:
-      count("codename") === 1 ? false : (userVisibility.deviceName ?? true),
-    romName: count("romName") === 1 ? false : (userVisibility.romName ?? true),
+    vendorName: userVisibility.vendorName ?? true,
+    deviceName: userVisibility.deviceName ?? true,
+    romName: userVisibility.romName ?? true,
   };
 
   const handleVisibility = (next: VisibilityState) => {
@@ -431,8 +433,53 @@ export default function MappingsTable({ mappings }: Props) {
             </Button>
           )}
           <DataTableViewOptions table={table} />
+          {(activeVendors.length > 0 ||
+            activeCodenames.length > 0 ||
+            activeRoms.length > 0) && (
+            <div className="flex basis-full flex-wrap items-center gap-1.5">
+              <FilterChip
+                items={activeVendors}
+                prefix="Vendor"
+                onRemove={(value) => toggleFilter(table, "vendorName", value)}
+              />
+              <FilterChip
+                items={activeCodenames}
+                prefix="Device"
+                onRemove={(value) => toggleFilter(table, "codename", value)}
+              />
+              <FilterChip
+                items={activeRoms}
+                prefix="ROM"
+                onRemove={(value) => toggleFilter(table, "romName", value)}
+              />
+            </div>
+          )}
         </DataTableToolbar>
       )}
     />
   );
+}
+
+function FilterChip({
+  items,
+  prefix,
+  onRemove,
+}: {
+  items: string[];
+  prefix: string;
+  onRemove: (value: string) => void;
+}) {
+  return items.map((value) => (
+    <Badge key={value} variant="secondary" className="gap-1 pr-1">
+      {prefix}: {value}
+      <button
+        type="button"
+        onClick={() => onRemove(value)}
+        aria-label={`Remove ${prefix} filter ${value}`}
+        className="rounded-full text-muted-foreground hover:text-foreground"
+      >
+        <X className="size-3" />
+      </button>
+    </Badge>
+  ));
 }
