@@ -96,57 +96,81 @@ export default function MappingsTable({ mappings }: Props) {
     [mappings],
   );
 
-  // Read the initial filters from the URL once; afterwards the URL follows the
-  // table state.
-  const initialFilters = useMemo<ColumnFiltersState>(() => {
-    const filters: ColumnFiltersState = [];
+  const [search, setSearch] = useState("");
+  const [userVisibility, setUserVisibility] = useState<VisibilityState>({});
+
+  // The URL is the source of truth for the facet filters, so the table stays in
+  // sync with Back/Forward and deep links.
+  const facetFilters = useMemo<ColumnFiltersState>(() => {
+    const next: ColumnFiltersState = [];
     const vendor = searchParams.get("vendor");
     const rom = searchParams.get("rom");
     const device = searchParams.get("device");
     const vendorName = vendor ? vendorNameBySlug.get(vendor) : undefined;
     const romName = rom ? romNameById.get(rom) : undefined;
-    if (vendorName) filters.push({ id: "vendorName", value: [vendorName] });
-    if (romName) filters.push({ id: "romName", value: [romName] });
-    if (device) filters.push({ id: "codename", value: [device] });
-    return filters;
-    // Intentionally read the URL only on mount.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    if (vendorName) next.push({ id: "vendorName", value: [vendorName] });
+    if (romName) next.push({ id: "romName", value: [romName] });
+    if (device) next.push({ id: "codename", value: [device] });
+    return next;
+  }, [searchParams, vendorNameBySlug, romNameById]);
 
-  const [filters, setFilters] = useState<ColumnFiltersState>(initialFilters);
-  const [visibility, setVisibility] = useState<VisibilityState>(() => ({
+  const filters = useMemo<ColumnFiltersState>(
+    () =>
+      search
+        ? [...facetFilters, { id: "search", value: search }]
+        : facetFilters,
+    [facetFilters, search],
+  );
+
+  const count = (id: string) =>
+    (facetFilters.find((f) => f.id === id)?.value as string[] | undefined)
+      ?.length ?? 0;
+
+  // The id columns are hidden by default; a single-value facet filter also hides
+  // its now-redundant name column. User toggles from View are layered on top.
+  const visibility: VisibilityState = {
     search: false,
-    referenceUrl: false,
-    vendor: false,
-    codename: false,
-    romId: false,
-    vendorName: !initialFilters.some((f) => f.id === "vendorName"),
-    deviceName: !initialFilters.some((f) => f.id === "codename"),
-    romName: !initialFilters.some((f) => f.id === "romName"),
-  }));
+    referenceUrl: userVisibility.referenceUrl ?? false,
+    vendor: userVisibility.vendor ?? false,
+    codename: userVisibility.codename ?? false,
+    romId: userVisibility.romId ?? false,
+    vendorName:
+      count("vendorName") === 1 ? false : (userVisibility.vendorName ?? true),
+    deviceName:
+      count("codename") === 1 ? false : (userVisibility.deviceName ?? true),
+    romName: count("romName") === 1 ? false : (userVisibility.romName ?? true),
+  };
+
+  const handleVisibility = (next: VisibilityState) => {
+    setUserVisibility((prev) => {
+      const merged = { ...prev };
+      for (const key of Object.keys(next)) {
+        if (next[key] !== visibility[key]) merged[key] = next[key];
+      }
+      return merged;
+    });
+  };
 
   const handleFilters = (next: ColumnFiltersState) => {
-    setFilters(next);
-    const vendors = next.find((f) => f.id === "vendorName")?.value as
-      string[] | undefined;
-    const roms = next.find((f) => f.id === "romName")?.value as
-      string[] | undefined;
-    const devices = next.find((f) => f.id === "codename")?.value as
-      string[] | undefined;
+    setSearch((next.find((f) => f.id === "search")?.value as string) ?? "");
 
-    // A single-value filter narrows to one context, so hide that column. The id
-    // columns stay hidden (their values are not shown by default).
-    setVisibility((prev) => ({
-      ...prev,
-      vendorName: vendors?.length === 1 ? false : true,
-      deviceName: devices?.length === 1 ? false : true,
-      romName: roms?.length === 1 ? false : true,
-      codename: false,
-    }));
+    const value = (id: string) =>
+      next.find((f) => f.id === id)?.value as string[] | undefined;
+    const vendors = value("vendorName");
+    const roms = value("romName");
+    const devices = value("codename");
+
+    const facetsChanged =
+      JSON.stringify([vendors, roms, devices]) !==
+      JSON.stringify([
+        facetFilters.find((f) => f.id === "vendorName")?.value,
+        facetFilters.find((f) => f.id === "romName")?.value,
+        facetFilters.find((f) => f.id === "codename")?.value,
+      ]);
 
     const params = new URLSearchParams(searchParams);
-    const setParam = (key: string, value: string | undefined) => {
-      if (value) params.set(key, value);
+    const setParam = (key: string, value2: string | undefined) => {
+      if (value2) params.set(key, value2);
       else params.delete(key);
     };
     setParam(
@@ -160,15 +184,7 @@ export default function MappingsTable({ mappings }: Props) {
       roms?.length === 1 ? (idByRomName.get(roms[0]) ?? roms[0]) : undefined,
     );
     setParam("device", devices?.length === 1 ? devices[0] : undefined);
-
-    // Discrete filter changes push history so Back undoes the last filter;
-    // typing in the search box replaces, to avoid a history entry per keystroke.
-    const changed = (id: string) =>
-      JSON.stringify(filters.find((f) => f.id === id)?.value) !==
-      JSON.stringify(next.find((f) => f.id === id)?.value);
-    const onlySearch =
-      changed("search") && !["vendorName", "codename", "romName"].some(changed);
-    setSearchParams(params, { replace: onlySearch });
+    setSearchParams(params, { replace: !facetsChanged });
   };
 
   const vendorOptions = useMemo<FacetOption[]>(() => {
@@ -372,7 +388,7 @@ export default function MappingsTable({ mappings }: Props) {
       columnFilters={filters}
       onColumnFiltersChange={handleFilters}
       columnVisibility={visibility}
-      onColumnVisibilityChange={setVisibility}
+      onColumnVisibilityChange={handleVisibility}
       initialState={{
         sorting: [
           { id: "vendorName", desc: false },
@@ -383,12 +399,8 @@ export default function MappingsTable({ mappings }: Props) {
         <DataTableToolbar>
           <SearchInput
             id="mappings-search"
-            value={
-              (table.getColumn("search")?.getFilterValue() as string) ?? ""
-            }
-            onValueChange={(value) =>
-              table.getColumn("search")?.setFilterValue(value)
-            }
+            value={search}
+            onValueChange={setSearch}
             placeholder="Filter mappings…"
             ariaLabel="Filter mappings"
           />
@@ -406,21 +418,13 @@ export default function MappingsTable({ mappings }: Props) {
               options={romOptions}
             />
           )}
-          {table.getState().columnFilters.length > 0 && (
+          {(facetFilters.length > 0 || search !== "") && (
             <Button
               variant="ghost"
               onClick={() => {
-                table.resetColumnFilters();
-                setVisibility({
-                  search: false,
-                  referenceUrl: false,
-                  vendor: false,
-                  codename: false,
-                  romId: false,
-                  vendorName: true,
-                  deviceName: true,
-                  romName: true,
-                });
+                setSearch("");
+                setUserVisibility({});
+                setSearchParams(new URLSearchParams(), { replace: true });
               }}
             >
               Reset
