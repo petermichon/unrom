@@ -420,18 +420,6 @@ export default function MappingsTable({ mappings }: Props) {
               options={romOptions}
             />
           )}
-          {(facetFilters.length > 0 || search !== "") && (
-            <Button
-              variant="ghost"
-              onClick={() => {
-                setSearch("");
-                setUserVisibility({});
-                setSearchParams(new URLSearchParams(), { replace: true });
-              }}
-            >
-              Reset
-            </Button>
-          )}
           <DataTableViewOptions table={table} />
           {(activeVendors.length > 0 ||
             activeCodenames.length > 0 ||
@@ -452,6 +440,17 @@ export default function MappingsTable({ mappings }: Props) {
                 prefix="ROM"
                 onRemove={(value) => toggleFilter(table, "romName", value)}
               />
+              <Button
+                variant="ghost"
+                size="sm"
+                className="h-5 px-1.5 text-xs text-muted-foreground"
+                onClick={() => {
+                  setSearch("");
+                  setSearchParams(new URLSearchParams(), { replace: true });
+                }}
+              >
+                Clear all
+              </Button>
             </div>
           )}
         </DataTableToolbar>
