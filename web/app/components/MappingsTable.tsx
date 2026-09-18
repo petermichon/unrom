@@ -2,6 +2,8 @@ import { useMemo, useState } from "react";
 import type {
   ColumnDef,
   ColumnFiltersState,
+  PaginationState,
+  SortingState,
   Table,
   VisibilityState,
 } from "@tanstack/react-table";
@@ -27,6 +29,11 @@ import { bySortKey, referenceLabel } from "@/lib/sort";
 import type { Mapping } from "@/lib/types";
 
 const MOBILE_HIDDEN = new Set(["vendor", "referenceUrl"]);
+const PAGE_SIZE = 10;
+const DEFAULT_SORTING: SortingState = [
+  { id: "vendorName", desc: false },
+  { id: "deviceName", desc: false },
+];
 const columnClassName = (id: string) =>
   MOBILE_HIDDEN.has(id) ? "hidden md:table-cell" : undefined;
 
@@ -65,10 +72,23 @@ export default function MappingsTable({ mappings }: Props) {
 
   const [search, setSearch] = useState("");
   const [userVisibility, setUserVisibility] = useState<VisibilityState>({});
+  const [sortingState, setSortingState] = useState<SortingState>(() => {
+    const id = searchParams.get("sort");
+    if (!id) return DEFAULT_SORTING;
+    return [{ id, desc: searchParams.get("order") === "desc" }];
+  });
+  const [paginationState, setPaginationState] = useState<PaginationState>(
+    () => {
+      const page = Number(searchParams.get("page") ?? "1");
+      return {
+        pageIndex: Number.isFinite(page) && page > 1 ? page - 1 : 0,
+        pageSize: PAGE_SIZE,
+      };
+    },
+  );
 
   // Facet filters live in state (for synchronous multi-select) and follow the
-  // URL for Back/Forward and deep links. Each param holds a comma-separated
-  // list of ids.
+  // URL for Back/Forward and deep links. Each id is a repeated param.
   const deriveFacets = useMemo(
     () =>
       (params: URLSearchParams): ColumnFiltersState => {
@@ -97,6 +117,17 @@ export default function MappingsTable({ mappings }: Props) {
   if (searchParams !== syncedParams) {
     setSyncedParams(searchParams);
     setFacetState(deriveFacets(searchParams));
+    const id = searchParams.get("sort");
+    setSortingState(
+      id
+        ? [{ id, desc: searchParams.get("order") === "desc" }]
+        : DEFAULT_SORTING,
+    );
+    const page = Number(searchParams.get("page") ?? "1");
+    setPaginationState({
+      pageIndex: Number.isFinite(page) && page > 1 ? page - 1 : 0,
+      pageSize: PAGE_SIZE,
+    });
   }
 
   const filters = useMemo<ColumnFiltersState>(
@@ -162,15 +193,57 @@ export default function MappingsTable({ mappings }: Props) {
         facetState.find((f) => f.id === "codename")?.value,
       ]);
 
-    const params = new URLSearchParams(searchParams);
-    const setParam = (key: string, values: string[] | undefined) => {
+    const setParam = (
+      params: URLSearchParams,
+      key: string,
+      values: string[] | undefined,
+    ) => {
       params.delete(key);
       for (const item of values ?? []) params.append(key, item);
     };
-    setParam("vendor", vendors);
-    setParam("device", devices);
-    setParam("rom", roms);
-    setSearchParams(params, { replace: !facetsChanged });
+    setSearchParams(
+      (prev) => {
+        const params = new URLSearchParams(prev);
+        setParam(params, "vendor", vendors);
+        setParam(params, "device", devices);
+        setParam(params, "rom", roms);
+        return params;
+      },
+      { replace: !facetsChanged },
+    );
+  };
+
+  // Sorting is discrete: push history so Back undoes it. Page changes replace.
+  const handleSorting = (next: SortingState) => {
+    setSortingState(next);
+    setPaginationState((prev) => ({ ...prev, pageIndex: 0 }));
+
+    setSearchParams((prev) => {
+      const params = new URLSearchParams(prev);
+      const first = next[0];
+      if (first) {
+        params.set("sort", first.id);
+        params.set("order", first.desc ? "desc" : "asc");
+      } else {
+        params.delete("sort");
+        params.delete("order");
+      }
+      params.delete("page");
+      return params;
+    });
+  };
+
+  const handlePagination = (next: PaginationState) => {
+    setPaginationState(next);
+    setSearchParams(
+      (prev) => {
+        const params = new URLSearchParams(prev);
+        if (next.pageIndex > 0) params.set("page", String(next.pageIndex + 1));
+        else params.delete("page");
+        return params;
+      },
+      { replace: true },
+    );
   };
 
   const vendorOptions = useMemo<FacetOption[]>(() => {
@@ -378,12 +451,10 @@ export default function MappingsTable({ mappings }: Props) {
       onColumnFiltersChange={handleFilters}
       columnVisibility={visibility}
       onColumnVisibilityChange={handleVisibility}
-      initialState={{
-        sorting: [
-          { id: "vendorName", desc: false },
-          { id: "deviceName", desc: false },
-        ],
-      }}
+      sorting={sortingState}
+      onSortingChange={handleSorting}
+      pagination={paginationState}
+      onPaginationChange={handlePagination}
       toolbar={(table) => (
         <DataTableToolbar>
           <SearchInput
