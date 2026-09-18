@@ -56,6 +56,34 @@ function toggleFilter<T>(
   column.setFilterValue(next.length ? next : undefined);
 }
 
+// Read facet filters from the URL. Values are stable ids: vendor slug,
+// codename, and rom id, each as a repeated param.
+function deriveFacets(params: URLSearchParams): ColumnFiltersState {
+  const next: ColumnFiltersState = [];
+  const values = (key: string) => params.getAll(key).filter(Boolean);
+  const vendors = values("vendor");
+  const devices = values("device");
+  const roms = values("rom");
+  if (vendors.length) next.push({ id: "vendor", value: vendors });
+  if (devices.length) next.push({ id: "codename", value: devices });
+  if (roms.length) next.push({ id: "romId", value: roms });
+  return next;
+}
+
+function deriveSorting(params: URLSearchParams): SortingState {
+  const id = params.get("sort");
+  if (!id) return DEFAULT_SORTING;
+  return [{ id, desc: params.get("order") === "desc" }];
+}
+
+function derivePagination(params: URLSearchParams): PaginationState {
+  const page = Number(params.get("page") ?? "1");
+  return {
+    pageIndex: Number.isFinite(page) && page > 1 ? page - 1 : 0,
+    pageSize: PAGE_SIZE,
+  };
+}
+
 export default function MappingsTable({ mappings }: Props) {
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -72,41 +100,12 @@ export default function MappingsTable({ mappings }: Props) {
 
   const [search, setSearch] = useState("");
   const [userVisibility, setUserVisibility] = useState<VisibilityState>({});
-  const [sortingState, setSortingState] = useState<SortingState>(() => {
-    const id = searchParams.get("sort");
-    if (!id) return DEFAULT_SORTING;
-    return [{ id, desc: searchParams.get("order") === "desc" }];
-  });
-  const [paginationState, setPaginationState] = useState<PaginationState>(
-    () => {
-      const page = Number(searchParams.get("page") ?? "1");
-      return {
-        pageIndex: Number.isFinite(page) && page > 1 ? page - 1 : 0,
-        pageSize: PAGE_SIZE,
-      };
-    },
+  const [sortingState, setSortingState] = useState<SortingState>(() =>
+    deriveSorting(searchParams),
   );
-
-  // Facet filters live in state (for synchronous multi-select) and follow the
-  // URL for Back/Forward and deep links. Each id is a repeated param.
-  const deriveFacets = useMemo(
-    () =>
-      (params: URLSearchParams): ColumnFiltersState => {
-        const next: ColumnFiltersState = [];
-        const values = (key: string) => params.getAll(key).filter(Boolean);
-
-        const vendors = values("vendor");
-        const roms = values("rom");
-        const devices = values("device");
-
-        if (vendors.length) next.push({ id: "vendor", value: vendors });
-        if (devices.length) next.push({ id: "codename", value: devices });
-        if (roms.length) next.push({ id: "romId", value: roms });
-        return next;
-      },
-    [],
+  const [paginationState, setPaginationState] = useState<PaginationState>(() =>
+    derivePagination(searchParams),
   );
-
   const [facetState, setFacetState] = useState<ColumnFiltersState>(() =>
     deriveFacets(searchParams),
   );
@@ -117,17 +116,8 @@ export default function MappingsTable({ mappings }: Props) {
   if (searchParams !== syncedParams) {
     setSyncedParams(searchParams);
     setFacetState(deriveFacets(searchParams));
-    const id = searchParams.get("sort");
-    setSortingState(
-      id
-        ? [{ id, desc: searchParams.get("order") === "desc" }]
-        : DEFAULT_SORTING,
-    );
-    const page = Number(searchParams.get("page") ?? "1");
-    setPaginationState({
-      pageIndex: Number.isFinite(page) && page > 1 ? page - 1 : 0,
-      pageSize: PAGE_SIZE,
-    });
+    setSortingState(deriveSorting(searchParams));
+    setPaginationState(derivePagination(searchParams));
   }
 
   const filters = useMemo<ColumnFiltersState>(
@@ -175,7 +165,9 @@ export default function MappingsTable({ mappings }: Props) {
   };
 
   const handleFilters = (next: ColumnFiltersState) => {
-    setSearch((next.find((f) => f.id === "search")?.value as string) ?? "");
+    const nextSearch =
+      (next.find((f) => f.id === "search")?.value as string) ?? "";
+    setSearch(nextSearch);
 
     const value = (id: string) =>
       next.find((f) => f.id === id)?.value as string[] | undefined;
@@ -192,6 +184,9 @@ export default function MappingsTable({ mappings }: Props) {
         facetState.find((f) => f.id === "romId")?.value,
         facetState.find((f) => f.id === "codename")?.value,
       ]);
+    // A changed filter invalidates the current page.
+    const changed = facetsChanged || nextSearch !== search;
+    if (changed) setPaginationState((prev) => ({ ...prev, pageIndex: 0 }));
 
     const setParam = (
       params: URLSearchParams,
@@ -207,6 +202,7 @@ export default function MappingsTable({ mappings }: Props) {
         setParam(params, "vendor", vendors);
         setParam(params, "device", devices);
         setParam(params, "rom", roms);
+        if (changed) params.delete("page");
         return params;
       },
       { replace: !facetsChanged },
