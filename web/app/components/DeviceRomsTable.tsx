@@ -16,7 +16,7 @@ import {
 import { bySortKey, referenceLabel } from "@/lib/sort";
 import type { RomSupport } from "@/lib/types";
 
-const MOBILE_HIDDEN = new Set(["sourceUrl"]);
+const MOBILE_HIDDEN = new Set(["referenceUrl"]);
 const columnClassName = (id: string) =>
   MOBILE_HIDDEN.has(id) ? "hidden md:table-cell" : undefined;
 
@@ -54,33 +54,33 @@ export default function DeviceRomsTable({ roms }: Props) {
         ),
       },
       {
-        accessorKey: "sourceUrl",
+        accessorKey: "referenceUrl",
         meta: { title: "Source" },
         header: ({ column }) => (
-          <DataTableColumnHeader column={column} title="Source" />
+          <DataTableColumnHeader column={column} title="Reference" />
         ),
         enableSorting: false,
         cell: ({ row }) =>
-          row.original.sourceUrl ? (
+          row.original.referenceUrl ? (
             <Tooltip>
               <TooltipTrigger
                 render={
                   <a
-                    href={row.original.sourceUrl}
+                    href={row.original.referenceUrl}
                     target="_blank"
                     rel="noreferrer"
-                    aria-label={`Open source: ${row.original.sourceUrl}`}
+                    aria-label={`Open reference: ${row.original.referenceUrl}`}
                     className="inline-flex max-w-full items-center gap-1 text-xs text-muted-foreground underline underline-offset-4 hover:text-foreground"
                   />
                 }
               >
                 <span className="truncate">
-                  {referenceLabel(row.original.sourceUrl)}
+                  {referenceLabel(row.original.referenceUrl)}
                 </span>
                 <ExternalLink className="size-3 shrink-0" />
               </TooltipTrigger>
               <TooltipContent className="max-w-md break-all">
-                {row.original.sourceUrl}
+                {row.original.referenceUrl}
               </TooltipContent>
             </Tooltip>
           ) : (

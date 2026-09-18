@@ -38,6 +38,8 @@ const configs: DeviceSource[] = [
     select: selectors.devices("devices"),
     name: ["name"],
     brand: ["brand"],
+    referencePage:
+      "https://github.com/AfterlifeOS/device_afterlife_ota/blob/16.2/devices.json",
   },
   {
     id: "awakenos",
@@ -46,6 +48,8 @@ const configs: DeviceSource[] = [
     select: selectors.devices("devices"),
     name: ["model"],
     brand: ["vendor"],
+    referencePage:
+      "https://github.com/Project-Awaken/official_devices/blob/ursa/devices.json",
   },
   {
     id: "blissroms",
@@ -54,7 +58,7 @@ const configs: DeviceSource[] = [
     select: selectors.array,
     name: ["name"],
     brand: ["brand"],
-    sourceUrl: ["supported_versions[].support_thread"],
+    referenceUrl: ["supported_versions[].support_thread"],
   },
   {
     id: "cherishos",
@@ -63,7 +67,7 @@ const configs: DeviceSource[] = [
     select: selectors.devices("data"),
     name: ["name"],
     brand: ["brand"],
-    sourceUrl: ["downloadUrl"],
+    referenceUrl: ["downloadUrl"],
   },
   {
     id: "clover",
@@ -80,7 +84,7 @@ const configs: DeviceSource[] = [
     file: "corvusos.json",
     select: selectors.grouped(["Rom Generic", "Phh"]),
     name: ["device"],
-    sourceUrl: ["download"],
+    referenceUrl: ["download"],
   },
   {
     id: "dotos",
@@ -96,6 +100,8 @@ const configs: DeviceSource[] = [
     select: selectors.array,
     name: ["model"],
     brand: ["vendor"],
+    referencePage:
+      "https://github.com/DroidX-UI-Devices/vendor_droidxOTA/blob/15/devices.json",
   },
   {
     id: "matrixx",
@@ -104,6 +110,8 @@ const configs: DeviceSource[] = [
     select: selectors.devices("devices"),
     name: ["model"],
     brand: ["vendor"],
+    referencePage:
+      "https://github.com/Matrixx-Devices/official_devices/blob/16.0/devices.json",
   },
   {
     id: "mistos",
@@ -112,6 +120,8 @@ const configs: DeviceSource[] = [
     select: selectors.devices("devices"),
     name: ["deviceName"],
     brand: ["OEM"],
+    referencePage:
+      "https://github.com/MistOS-Devices/official_devices/blob/16.2/buildDevices.json",
   },
   {
     id: "paranoidandroid",
@@ -120,7 +130,8 @@ const configs: DeviceSource[] = [
     select: selectors.devices("devices"),
     name: ["name"],
     brand: ["manufacturer"],
-    sourceUrl: ["xda_thread"],
+    referenceUrl: ["xda_thread"],
+    referencePage: "https://github.com/AOSPA/ota/blob/master/devices",
   },
   {
     id: "pixysos",
@@ -129,7 +140,8 @@ const configs: DeviceSource[] = [
     select: selectors.array,
     name: ["name"],
     brand: ["brand"],
-    sourceUrl: ["supported_bases[].xda_thread"],
+    referenceUrl: ["supported_bases[].xda_thread"],
+    referencePage: "https://pixysos.com/{codename}",
   },
   {
     id: "projectinfinityx",
@@ -137,7 +149,7 @@ const configs: DeviceSource[] = [
     file: "projectinfinityx.json",
     select: selectors.array,
     name: ["devicemodel"],
-    sourceUrl: ["supportgroupurl"],
+    referenceUrl: ["supportgroupurl"],
     referencePage: "https://projectinfinity-x.com/downloads/{codename}",
   },
   {
@@ -145,7 +157,7 @@ const configs: DeviceSource[] = [
     romName: "Project PixelAge",
     file: "projectpixelage.json",
     select: selectors.array,
-    sourceUrl: ["url"],
+    referenceUrl: ["url"],
   },
 ];
 

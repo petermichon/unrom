@@ -32,7 +32,7 @@ export function parseRisingOS(raw: string): NormalizedRomDevice[] {
     if (!last) continue;
 
     const name = label.slice(0, label.lastIndexOf("(")).trim() || null;
-    const sourceUrl = extra.match(/\((https?:\/\/[^)]+)\)/)?.[1] ?? null;
+    const referenceUrl = extra.match(/\((https?:\/\/[^)]+)\)/)?.[1] ?? null;
 
     for (const rawCodename of last.split("/")) {
       const codename = rawCodename.trim();
@@ -47,7 +47,7 @@ export function parseRisingOS(raw: string): NormalizedRomDevice[] {
           codename,
           name,
           brand,
-          sourceUrl,
+          referenceUrl,
         }),
       );
     }

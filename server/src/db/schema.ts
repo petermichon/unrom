@@ -22,7 +22,7 @@ export const romDevices = sqliteTable(
     vendor: text("vendor").notNull(),
     codename: text("codename").notNull(),
     source: text("source").notNull(),
-    sourceUrl: text("source_url"),
+    referenceUrl: text("reference_url"),
   },
   (table) => [
     primaryKey({ columns: [table.romId, table.vendor, table.codename] }),

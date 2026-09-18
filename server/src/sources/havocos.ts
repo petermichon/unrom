@@ -20,6 +20,8 @@ export function parseHavocOS(raw: string): NormalizedRomDevice[] {
         romId: ROM_ID,
         romName: ROM_NAME,
         source: SOURCE,
+        referenceUrl:
+          "https://github.com/Havoc-OS/Devices/blob/thirteen/devices",
         codename,
       }),
     );

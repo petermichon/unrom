@@ -31,6 +31,8 @@ export function parseArrowOS(raw: string): NormalizedRomDevice[] {
         romId: ROM_ID,
         romName: ROM_NAME,
         source: SOURCE,
+        referenceUrl:
+          "https://github.com/ArrowOS/arrow_infrastructure_devices/blob/arrow-13.1/arrow.devices",
         codename,
       }),
     );

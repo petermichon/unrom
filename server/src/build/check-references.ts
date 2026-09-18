@@ -2,7 +2,7 @@ import Database from "better-sqlite3";
 
 import { DB_PATH } from "../paths.ts";
 
-// Reference health check. Every `rom_devices.source_url` is a citation for the
+// Reference health check. Every `rom_devices.reference_url` is a citation for the
 // claim "this ROM supports this device"; a citation that no longer resolves is
 // worse than none, because it implies verifiability. This script reads the
 // built database and reports which reference hosts are dead — it never mutates
@@ -43,11 +43,11 @@ function collectReferences(dbPath: string): Reference[] {
   const sqlite = new Database(dbPath, { readonly: true, fileMustExist: true });
   const rows = sqlite
     .prepare(
-      "select rom_id, source_url from rom_devices where source_url is not null",
+      "select rom_id, reference_url from rom_devices where reference_url is not null",
     )
-    .all() as Array<{ rom_id: string; source_url: string }>;
+    .all() as Array<{ rom_id: string; reference_url: string }>;
   sqlite.close();
-  return rows.map((row) => ({ romId: row.rom_id, url: row.source_url }));
+  return rows.map((row) => ({ romId: row.rom_id, url: row.reference_url }));
 }
 
 async function probe(

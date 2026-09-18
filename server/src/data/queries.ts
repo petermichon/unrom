@@ -45,7 +45,7 @@ export function createApi(dbPath: string) {
     return {
       id: edge.romId,
       name: names.get(edge.romId) ?? edge.romId,
-      sourceUrl: edge.sourceUrl,
+      referenceUrl: edge.referenceUrl,
     };
   }
 
@@ -256,7 +256,7 @@ export function createApi(dbPath: string) {
           deviceName: device?.name ?? null,
           romId: edge.romId,
           romName: names.get(edge.romId) ?? edge.romId,
-          sourceUrl: edge.sourceUrl,
+          referenceUrl: edge.referenceUrl,
         };
       });
   }

@@ -34,7 +34,7 @@ export function parseLineageOS(raw: string): NormalizedRomDevice[] {
         codename,
         name: str(meta.name),
         brand: str(meta.vendor),
-        sourceUrl: `https://wiki.lineageos.org/devices/${codename}/`,
+        referenceUrl: `https://wiki.lineageos.org/devices/${codename}/`,
       }),
     );
   }

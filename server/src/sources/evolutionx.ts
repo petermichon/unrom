@@ -29,7 +29,7 @@ export function parseEvolutionX(raw: string): NormalizedRomDevice[] {
         codename,
         name: str(entry.device),
         brand: str(entry.oem),
-        sourceUrl: str(entry.forum) ?? str(entry.download),
+        referenceUrl: str(entry.forum) ?? str(entry.download),
       }),
     );
   }

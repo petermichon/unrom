@@ -13,7 +13,7 @@ export interface DeviceSummary {
 export interface RomSupport {
   id: string;
   name: string;
-  sourceUrl: string | null;
+  referenceUrl: string | null;
 }
 
 export interface DeviceDetail {
@@ -54,5 +54,5 @@ export interface Mapping {
   deviceName: string | null;
   romId: string;
   romName: string;
-  sourceUrl: string | null;
+  referenceUrl: string | null;
 }

@@ -22,8 +22,8 @@ export interface DeviceSource {
   codename?: string[];
   name?: string[];
   brand?: string[];
-  sourceUrl?: string[];
-  /** Deterministic per-device page, built from the codename when `sourceUrl`
+  referenceUrl?: string[];
+  /** Deterministic per-device page, built from the codename when `referenceUrl`
    * is absent. A `{codename}` placeholder is substituted. */
   referencePage?: string;
 }
@@ -35,7 +35,7 @@ export interface RecordInput {
   codename: string;
   name?: string | null;
   brand?: string | null;
-  sourceUrl?: string | null;
+  referenceUrl?: string | null;
 }
 
 /** Build a validated record, filling the optional fields with defaults. */
@@ -43,7 +43,7 @@ export function buildRecord(input: RecordInput): NormalizedRomDevice {
   return normalizedRomDeviceSchema.parse({
     name: null,
     brand: null,
-    sourceUrl: null,
+    referenceUrl: null,
     ...input,
   });
 }
@@ -123,8 +123,8 @@ export function createParser(
         if (seen.has(codename)) continue;
         seen.add(codename);
 
-        const sourceUrl =
-          pick(entry.device, source.sourceUrl) ??
+        const referenceUrl =
+          pick(entry.device, source.referenceUrl) ??
           (source.referencePage
             ? source.referencePage.replace("{codename}", codename)
             : null);
@@ -139,7 +139,7 @@ export function createParser(
               pick(entry.device, source.brand ?? ["brand"]) ??
               entry.group ??
               null,
-            sourceUrl,
+            referenceUrl,
             source: source.file,
           }),
         );

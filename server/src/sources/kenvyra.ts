@@ -39,6 +39,7 @@ export function parseKenvyra(raw: string): NormalizedRomDevice[] {
         romId: ROM_ID,
         romName: ROM_NAME,
         source: SOURCE,
+        referenceUrl: `https://github.com/Kenvyra/website/blob/main/src/devices/${codename}.md`,
         codename,
         name: str(meta.name),
         brand: str(meta.manufacturer),

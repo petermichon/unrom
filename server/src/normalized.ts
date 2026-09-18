@@ -8,7 +8,7 @@ export const normalizedRomDeviceSchema = z.object({
   codename: z.string().min(1),
   name: z.string().nullable(),
   brand: z.string().nullable(),
-  sourceUrl: z.string().nullable(),
+  referenceUrl: z.string().nullable(),
   source: z.string().min(1),
 });
 

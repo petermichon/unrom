@@ -40,6 +40,7 @@ export function parseIode(raw: string): NormalizedRomDevice[] {
         romId: ROM_ID,
         romName: ROM_NAME,
         source: SOURCE,
+        referenceUrl: "https://iode.tech/iodeos-official-supported-devices",
         codename,
       }),
     );

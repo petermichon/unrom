@@ -53,6 +53,8 @@ export function parseAICP(raw: string): NormalizedRomDevice[] {
         romId: ROM_ID,
         romName: ROM_NAME,
         source: SOURCE,
+        referenceUrl:
+          "https://github.com/AICP/vendor_jenkins/blob/w16.0/aicp-build-targets",
         codename,
         brand: vendor(oem),
       }),

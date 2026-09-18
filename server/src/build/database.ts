@@ -37,7 +37,7 @@ interface Edge {
   vendor: string;
   codename: string;
   source: string;
-  sourceUrl: string | null;
+  referenceUrl: string | null;
 }
 
 interface Alias {
@@ -81,7 +81,7 @@ function contentHash(
     ),
   )) {
     hash.update(
-      `e\0${edge.romId}\0${edge.vendor}\0${edge.codename}\0${edge.source}\0${edge.sourceUrl ?? ""}\n`,
+      `e\0${edge.romId}\0${edge.vendor}\0${edge.codename}\0${edge.source}\0${edge.referenceUrl ?? ""}\n`,
     );
   }
 
@@ -168,9 +168,9 @@ export function buildDatabase(
       vendor,
       codename: resolved,
       source: record.source,
-      sourceUrl: null,
+      referenceUrl: null,
     };
-    edge.sourceUrl ??= record.sourceUrl;
+    edge.referenceUrl ??= record.referenceUrl;
     edgeMap.set(key, edge);
   }
 

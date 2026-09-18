@@ -38,6 +38,8 @@ export function parseKaliNetHunter(raw: string): NormalizedRomDevice[] {
           source: SOURCE,
           codename,
           name: str(device.model),
+          referenceUrl:
+            "https://gitlab.com/kalilinux/nethunter/build-scripts/kali-nethunter-kernels/-/blob/main/devices.yml",
         }),
       );
     }

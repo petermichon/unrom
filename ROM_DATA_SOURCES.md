@@ -91,31 +91,31 @@ a citation. Coverage per source:
 | Source             | Class | Reference                                                        |
 | ------------------ | ----- | ---------------------------------------------------------------- |
 | LineageOS          | A     | `wiki.lineageos.org/devices/<codename>/`                         |
-| Paranoid Android   | A     | `xda_thread`                                                     |
-| PixysOS            | A     | `supported_bases[].xda_thread`                                   |
-| Evolution X        | A     | `forum`                                                          |
+| Paranoid Android   | A/C   | `xda_thread`, else pinned `AOSPA/ota` devices file               |
+| PixysOS            | A/B   | `supported_bases[].xda_thread`, else `pixysos.com/<codename>`    |
+| Evolution X        | A     | `forum` (fallback `download`)                                    |
 | BlissROMs          | A     | `supported_versions[].support_thread`                            |
 | Project Infinity X | A/B   | `projectinfinity-x.com/downloads/<codename>` (fallback Telegram) |
 | CherishOS          | A     | `downloadUrl` (download, not a device page)                      |
 | CorvusOS           | D     | exception: site/download host dead; SourceForge root only        |
 | Project PixelAge   | A     | `url` (download, not a device page)                              |
 | RisingOS           | A     | maintainer profile (weak)                                        |
-| Kali NetHunter     | A     | kernel git repo (weak)                                           |
-| MistOS             | A     | Telegram/donate (weak)                                           |
 | PixelExperience    | B     | `download.pixelexperience.org/<codename>`                        |
 | PixelOS            | B     | `pixelos.net/download/<codename>`                                |
 | Clover             | B     | `thecloverproject.com/download?device=<codename>`                |
 | dotOS              | B     | `www.droidontime.com/devices/<codename>`                         |
 | /e/OS              | B     | `doc.e.foundation/devices/<codename>`                            |
+| Kenvyra            | B     | `Kenvyra/website/src/devices/<codename>.md`                      |
 | AICP               | C     | pinned `vendor_jenkins/aicp-build-targets`                       |
 | ArrowOS            | C     | pinned `arrow_infrastructure_devices/arrow.devices`              |
-| Havoc-OS           | C     | pinned `Havoc-OS/Devices`                                        |
+| Havoc-OS           | C     | pinned `Havoc-OS/Devices` devices file                           |
 | iodéOS             | C     | `iode.tech/iodeos-official-supported-devices` (index)            |
-| AwakenOS           | D     | exception: no device page                                        |
-| DroidX-UI          | D     | exception: no device page                                        |
-| Matrixx            | D     | exception: no device page                                        |
-| Kenvyra            | D     | exception: 4 devices, no page                                    |
-| AfterlifeOS        | D     | exception: no device page                                        |
+| Kali NetHunter     | C     | pinned `kali-nethunter-kernels` devices.yml                      |
+| AwakenOS           | C     | pinned `Project-Awaken/official_devices` devices.json            |
+| DroidX-UI          | C     | pinned `DroidX-UI-Devices/vendor_droidxOTA` devices.json         |
+| Matrixx            | C     | pinned `Matrixx-Devices/official_devices` devices.json           |
+| AfterlifeOS        | C     | pinned `AfterlifeOS/device_afterlife_ota` devices.json           |
+| MistOS             | C     | pinned `MistOS-Devices/official_devices` buildDevices.json       |
 
 ## Legend
 
