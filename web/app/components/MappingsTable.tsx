@@ -52,20 +52,14 @@ function toggleFilter<T>(
 export default function MappingsTable({ mappings }: Props) {
   const [searchParams, setSearchParams] = useSearchParams();
 
+  // Facet filters use stable ids (vendor slug, codename, rom id); these maps
+  // render the human labels.
   const vendorNameBySlug = useMemo(
     () => new Map(mappings.map((row) => [row.vendor, row.vendorName])),
     [mappings],
   );
-  const slugByVendorName = useMemo(
-    () => new Map(mappings.map((row) => [row.vendorName, row.vendor])),
-    [mappings],
-  );
   const romNameById = useMemo(
     () => new Map(mappings.map((row) => [row.romId, row.romName])),
-    [mappings],
-  );
-  const idByRomName = useMemo(
-    () => new Map(mappings.map((row) => [row.romName, row.romId])),
     [mappings],
   );
 
@@ -73,29 +67,24 @@ export default function MappingsTable({ mappings }: Props) {
   const [userVisibility, setUserVisibility] = useState<VisibilityState>({});
 
   // Facet filters live in state (for synchronous multi-select) and follow the
-  // URL for Back/Forward and deep links. Each param may hold a comma-separated
-  // list for multi-select.
+  // URL for Back/Forward and deep links. Each param holds a comma-separated
+  // list of ids.
   const deriveFacets = useMemo(
     () =>
       (params: URLSearchParams): ColumnFiltersState => {
         const next: ColumnFiltersState = [];
-        const split = (key: string) =>
-          (params.get(key) ?? "").split(",").filter(Boolean);
+        const values = (key: string) => params.getAll(key).filter(Boolean);
 
-        const vendors = split("vendor")
-          .map((slug) => vendorNameBySlug.get(slug))
-          .filter((name): name is string => name !== undefined);
-        const roms = split("rom")
-          .map((id) => romNameById.get(id))
-          .filter((name): name is string => name !== undefined);
-        const devices = split("device");
+        const vendors = values("vendor");
+        const roms = values("rom");
+        const devices = values("device");
 
-        if (vendors.length) next.push({ id: "vendorName", value: vendors });
-        if (roms.length) next.push({ id: "romName", value: roms });
+        if (vendors.length) next.push({ id: "vendor", value: vendors });
         if (devices.length) next.push({ id: "codename", value: devices });
+        if (roms.length) next.push({ id: "romId", value: roms });
         return next;
       },
-    [vendorNameBySlug, romNameById],
+    [],
   );
 
   const [facetState, setFacetState] = useState<ColumnFiltersState>(() =>
@@ -118,9 +107,18 @@ export default function MappingsTable({ mappings }: Props) {
 
   const facetValues = (id: string) =>
     (facetState.find((f) => f.id === id)?.value as string[] | undefined) ?? [];
-  const activeVendors = facetValues("vendorName");
-  const activeCodenames = facetValues("codename");
-  const activeRoms = facetValues("romName");
+  const activeVendors = facetValues("vendor").map((value) => ({
+    value,
+    label: vendorNameBySlug.get(value) ?? value,
+  }));
+  const activeCodenames = facetValues("codename").map((value) => ({
+    value,
+    label: value,
+  }));
+  const activeRoms = facetValues("romId").map((value) => ({
+    value,
+    label: romNameById.get(value) ?? value,
+  }));
 
   // Columns never change visibility because of filters; only explicit View
   // toggles (userVisibility) apply. The id columns are hidden by default.
@@ -150,8 +148,8 @@ export default function MappingsTable({ mappings }: Props) {
 
     const value = (id: string) =>
       next.find((f) => f.id === id)?.value as string[] | undefined;
-    const vendors = value("vendorName");
-    const roms = value("romName");
+    const vendors = value("vendor");
+    const roms = value("romId");
     const devices = value("codename");
 
     setFacetState(next.filter((f) => f.id !== "search"));
@@ -159,42 +157,36 @@ export default function MappingsTable({ mappings }: Props) {
     const facetsChanged =
       JSON.stringify([vendors, roms, devices]) !==
       JSON.stringify([
-        facetState.find((f) => f.id === "vendorName")?.value,
-        facetState.find((f) => f.id === "romName")?.value,
+        facetState.find((f) => f.id === "vendor")?.value,
+        facetState.find((f) => f.id === "romId")?.value,
         facetState.find((f) => f.id === "codename")?.value,
       ]);
 
     const params = new URLSearchParams(searchParams);
-    const setParam = (key: string, value2: string | undefined) => {
-      if (value2) params.set(key, value2);
-      else params.delete(key);
+    const setParam = (key: string, values: string[] | undefined) => {
+      params.delete(key);
+      for (const item of values ?? []) params.append(key, item);
     };
-    setParam(
-      "vendor",
-      vendors?.length
-        ? vendors.map((name) => slugByVendorName.get(name) ?? name).join(",")
-        : undefined,
-    );
-    setParam(
-      "rom",
-      roms?.length
-        ? roms.map((name) => idByRomName.get(name) ?? name).join(",")
-        : undefined,
-    );
-    setParam("device", devices?.length ? devices.join(",") : undefined);
+    setParam("vendor", vendors);
+    setParam("device", devices);
+    setParam("rom", roms);
     setSearchParams(params, { replace: !facetsChanged });
   };
 
   const vendorOptions = useMemo<FacetOption[]>(() => {
-    const set = new Set(mappings.map((row) => row.vendorName));
-    return [...set].sort().map((value) => ({ label: value, value }));
+    const map = new Map<string, string>();
+    for (const row of mappings) map.set(row.vendor, row.vendorName);
+    return [...map.entries()]
+      .map(([value, label]) => ({ label, value }))
+      .sort((a, b) => a.label.localeCompare(b.label));
   }, [mappings]);
 
   const romOptions = useMemo<FacetOption[]>(() => {
-    const names = new Set(mappings.map((row) => row.romName));
-    return [...names]
-      .sort((a, b) => a.localeCompare(b))
-      .map((name) => ({ label: name, value: name }));
+    const map = new Map<string, string>();
+    for (const row of mappings) map.set(row.romId, row.romName);
+    return [...map.entries()]
+      .map(([value, label]) => ({ label, value }))
+      .sort((a, b) => a.label.localeCompare(b.label));
   }, [mappings]);
 
   const columns = useMemo<ColumnDef<Mapping>[]>(
@@ -222,14 +214,10 @@ export default function MappingsTable({ mappings }: Props) {
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="Vendor" />
         ),
-        filterFn: (row, id, value: string[]) =>
-          value.includes(row.getValue(id)),
         cell: ({ row, table }) => (
           <button
             type="button"
-            onClick={() =>
-              toggleFilter(table, "vendorName", row.original.vendorName)
-            }
+            onClick={() => toggleFilter(table, "vendor", row.original.vendor)}
             className="w-fit max-w-full truncate text-left text-muted-foreground hover:text-foreground hover:underline"
           >
             {row.original.vendorName}
@@ -239,15 +227,15 @@ export default function MappingsTable({ mappings }: Props) {
       {
         accessorKey: "vendor",
         meta: { title: "Vendor ID" },
+        filterFn: (row, id, value: string[]) =>
+          value.includes(row.getValue(id)),
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="Vendor ID" />
         ),
         cell: ({ row, table }) => (
           <button
             type="button"
-            onClick={() =>
-              toggleFilter(table, "vendorName", row.original.vendorName)
-            }
+            onClick={() => toggleFilter(table, "vendor", row.original.vendor)}
             className="w-fit max-w-full truncate text-left font-mono text-xs text-muted-foreground hover:text-foreground hover:underline"
           >
             {row.original.vendor}
@@ -306,12 +294,10 @@ export default function MappingsTable({ mappings }: Props) {
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="ROM" />
         ),
-        filterFn: (row, id, value: string[]) =>
-          value.includes(row.getValue(id)),
         cell: ({ row, table }) => (
           <button
             type="button"
-            onClick={() => toggleFilter(table, "romName", row.original.romName)}
+            onClick={() => toggleFilter(table, "romId", row.original.romId)}
             className="w-fit max-w-full truncate text-left font-medium hover:underline"
           >
             {row.original.romName}
@@ -321,13 +307,15 @@ export default function MappingsTable({ mappings }: Props) {
       {
         accessorKey: "romId",
         meta: { title: "ROM ID" },
+        filterFn: (row, id, value: string[]) =>
+          value.includes(row.getValue(id)),
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="ROM ID" />
         ),
         cell: ({ row, table }) => (
           <button
             type="button"
-            onClick={() => toggleFilter(table, "romName", row.original.romName)}
+            onClick={() => toggleFilter(table, "romId", row.original.romId)}
             className="w-fit max-w-full truncate text-left font-mono text-xs text-muted-foreground hover:text-foreground hover:underline"
           >
             {row.original.romId}
@@ -397,16 +385,16 @@ export default function MappingsTable({ mappings }: Props) {
             placeholder="Filter mappings…"
             ariaLabel="Filter mappings"
           />
-          {table.getColumn("vendorName") && (
+          {table.getColumn("vendor") && (
             <DataTableFacetedFilter
-              column={table.getColumn("vendorName")!}
+              column={table.getColumn("vendor")!}
               title="Vendor"
               options={vendorOptions}
             />
           )}
-          {table.getColumn("romName") && (
+          {table.getColumn("romId") && (
             <DataTableFacetedFilter
-              column={table.getColumn("romName")!}
+              column={table.getColumn("romId")!}
               title="ROM"
               options={romOptions}
             />
@@ -419,7 +407,7 @@ export default function MappingsTable({ mappings }: Props) {
               <FilterChip
                 items={activeVendors}
                 prefix="Vendor"
-                onRemove={(value) => toggleFilter(table, "vendorName", value)}
+                onRemove={(value) => toggleFilter(table, "vendor", value)}
               />
               <FilterChip
                 items={activeCodenames}
@@ -429,7 +417,7 @@ export default function MappingsTable({ mappings }: Props) {
               <FilterChip
                 items={activeRoms}
                 prefix="ROM"
-                onRemove={(value) => toggleFilter(table, "romName", value)}
+                onRemove={(value) => toggleFilter(table, "romId", value)}
               />
               <Button
                 variant="ghost"
@@ -455,17 +443,17 @@ function FilterChip({
   prefix,
   onRemove,
 }: {
-  items: string[];
+  items: { value: string; label: string }[];
   prefix: string;
   onRemove: (value: string) => void;
 }) {
-  return items.map((value) => (
+  return items.map(({ value, label }) => (
     <Badge key={value} variant="secondary" className="gap-1 pr-1">
-      {prefix}: {value}
+      {prefix}: {label}
       <button
         type="button"
         onClick={() => onRemove(value)}
-        aria-label={`Remove ${prefix} filter ${value}`}
+        aria-label={`Remove ${prefix} filter ${label}`}
         className="rounded-full text-muted-foreground hover:text-foreground"
       >
         <X className="size-3" />
