@@ -52,7 +52,6 @@ export default function RomsTable({ roms }: { roms: RomDetail[] }) {
           <DataTableColumnHeader column={column} title="Devices" />
         ),
         cell: ({ row }) => {
-          // The device list lives on the ROM page; the table shows the count.
           const count = row.original.deviceCount;
           return (
             <Link
@@ -60,8 +59,41 @@ export default function RomsTable({ roms }: { roms: RomDetail[] }) {
               prefetch="intent"
               className="w-fit max-w-full text-muted-foreground hover:text-foreground hover:underline"
             >
-              {count} {count === 1 ? "device" : "devices"}
+              {count}
             </Link>
+          );
+        },
+      },
+      {
+        id: "deviceList",
+        accessorFn: (row) =>
+          row.devices
+            .map((device) => device.name ?? device.codename)
+            .join(", "),
+        meta: { title: "Device list" },
+        enableSorting: false,
+        enableColumnFilter: false,
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title="Device list" />
+        ),
+        cell: ({ row }) => {
+          // A glance at the most cross-compatible devices first; the full list
+          // lives on the ROM page.
+          const names = [...row.original.devices]
+            .sort(
+              (a, b) =>
+                b.romCount - a.romCount ||
+                (a.name ?? a.codename).localeCompare(b.name ?? b.codename),
+            )
+            .map((device) => device.name ?? device.codename)
+            .join(", ");
+          return (
+            <span
+              className="block truncate text-muted-foreground"
+              title={names}
+            >
+              {names}
+            </span>
           );
         },
       },

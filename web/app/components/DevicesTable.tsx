@@ -22,6 +22,18 @@ interface Props {
 }
 
 export default function DevicesTable({ devices }: Props) {
+  // How many devices each ROM supports, so a device's ROMs can be listed with
+  // the widest-reaching first (LineageOS, /e/OS, PixelExperience, …).
+  const romPopularity = useMemo(() => {
+    const counts = new Map<string, number>();
+    for (const device of devices) {
+      for (const rom of device.roms) {
+        counts.set(rom.id, (counts.get(rom.id) ?? 0) + 1);
+      }
+    }
+    return counts;
+  }, [devices]);
+
   const romOptions = useMemo<FacetOption[]>(() => {
     const counts = new Set(devices.map((device) => device.roms.length));
     return [...counts]
@@ -105,7 +117,6 @@ export default function DevicesTable({ devices }: Props) {
           <DataTableColumnHeader column={column} title="ROMs" />
         ),
         cell: ({ row }) => {
-          // The ROM list lives on the device page; the table shows the count.
           const count = row.original.roms.length;
           return (
             <Link
@@ -113,15 +124,46 @@ export default function DevicesTable({ devices }: Props) {
               prefetch="intent"
               className="w-fit max-w-full text-muted-foreground hover:text-foreground hover:underline"
             >
-              {count} {count === 1 ? "ROM" : "ROMs"}
+              {count}
             </Link>
           );
         },
         filterFn: (row, id, value: string[]) =>
           value.includes(String(row.getValue(id))),
       },
+      {
+        id: "romList",
+        accessorFn: (row) => row.roms.map((rom) => rom.name).join(", "),
+        meta: { title: "ROM list" },
+        enableSorting: false,
+        enableColumnFilter: false,
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title="ROM list" />
+        ),
+        cell: ({ row }) => {
+          // A glance at the widest-reaching ROMs first; the full list lives on
+          // the device page.
+          const names = [...row.original.roms]
+            .sort(
+              (a, b) =>
+                (romPopularity.get(b.id) ?? 0) -
+                  (romPopularity.get(a.id) ?? 0) ||
+                a.name.localeCompare(b.name),
+            )
+            .map((rom) => rom.name)
+            .join(", ");
+          return (
+            <span
+              className="block truncate text-muted-foreground"
+              title={names}
+            >
+              {names}
+            </span>
+          );
+        },
+      },
     ],
-    [],
+    [romPopularity],
   );
 
   return (
