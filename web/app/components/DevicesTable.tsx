@@ -70,7 +70,6 @@ export default function DevicesTable({ devices }: Props) {
           <Link
             to={`/devices/${row.original.vendor}`}
             prefetch="intent"
-            title={row.original.vendorName}
             className="w-fit max-w-full truncate text-muted-foreground hover:text-foreground hover:underline"
           >
             {row.original.vendorName}
@@ -90,7 +89,6 @@ export default function DevicesTable({ devices }: Props) {
               <Link
                 to={`/devices/${row.original.vendor}/${row.original.codename}`}
                 prefetch="intent"
-                title={name}
                 className="w-fit max-w-full truncate font-medium hover:underline"
               >
                 {name}
@@ -121,18 +119,11 @@ export default function DevicesTable({ devices }: Props) {
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="ROMs" />
         ),
-        cell: ({ row }) => {
-          const count = row.original.roms.length;
-          return (
-            <Link
-              to={`/devices/${row.original.vendor}/${row.original.codename}`}
-              prefetch="intent"
-              className="w-fit max-w-full text-muted-foreground hover:text-foreground hover:underline"
-            >
-              {count}
-            </Link>
-          );
-        },
+        cell: ({ row }) => (
+          <span className="text-muted-foreground">
+            {row.original.roms.length}
+          </span>
+        ),
         filterFn: (row, id, value: string[]) =>
           value.includes(String(row.getValue(id))),
       },
