@@ -49,21 +49,6 @@ function toggleFilter<T>(
   column.setFilterValue(next.length ? next : undefined);
 }
 
-// Filter to a single device by codename. The vendor is a separate facet, so it
-// is left untouched (codenames that collide across vendors stay visible via the
-// Vendor column).
-function selectDevice<T>(table: Table<T>, codename: string): void {
-  const current = table.getState().columnFilters;
-  const existing = current.find((f) => f.id === "codename")?.value as
-    string[] | undefined;
-  const already = existing?.length === 1 && existing[0] === codename;
-
-  const rest = current.filter((f) => f.id !== "codename");
-  table.setColumnFilters(
-    already ? rest : [...rest, { id: "codename", value: [codename] }],
-  );
-}
-
 export default function MappingsTable({ mappings }: Props) {
   const [searchParams, setSearchParams] = useSearchParams();
 
@@ -87,32 +72,52 @@ export default function MappingsTable({ mappings }: Props) {
   const [search, setSearch] = useState("");
   const [userVisibility, setUserVisibility] = useState<VisibilityState>({});
 
-  // The URL is the source of truth for the facet filters, so the table stays in
-  // sync with Back/Forward and deep links.
-  const facetFilters = useMemo<ColumnFiltersState>(() => {
-    const next: ColumnFiltersState = [];
-    const vendor = searchParams.get("vendor");
-    const rom = searchParams.get("rom");
-    const device = searchParams.get("device");
-    const vendorName = vendor ? vendorNameBySlug.get(vendor) : undefined;
-    const romName = rom ? romNameById.get(rom) : undefined;
-    if (vendorName) next.push({ id: "vendorName", value: [vendorName] });
-    if (romName) next.push({ id: "romName", value: [romName] });
-    if (device) next.push({ id: "codename", value: [device] });
-    return next;
-  }, [searchParams, vendorNameBySlug, romNameById]);
+  // Facet filters live in state (for synchronous multi-select) and follow the
+  // URL for Back/Forward and deep links. Each param may hold a comma-separated
+  // list for multi-select.
+  const deriveFacets = useMemo(
+    () =>
+      (params: URLSearchParams): ColumnFiltersState => {
+        const next: ColumnFiltersState = [];
+        const split = (key: string) =>
+          (params.get(key) ?? "").split(",").filter(Boolean);
+
+        const vendors = split("vendor")
+          .map((slug) => vendorNameBySlug.get(slug))
+          .filter((name): name is string => name !== undefined);
+        const roms = split("rom")
+          .map((id) => romNameById.get(id))
+          .filter((name): name is string => name !== undefined);
+        const devices = split("device");
+
+        if (vendors.length) next.push({ id: "vendorName", value: vendors });
+        if (roms.length) next.push({ id: "romName", value: roms });
+        if (devices.length) next.push({ id: "codename", value: devices });
+        return next;
+      },
+    [vendorNameBySlug, romNameById],
+  );
+
+  const [facetState, setFacetState] = useState<ColumnFiltersState>(() =>
+    deriveFacets(searchParams),
+  );
+
+  // Sync from the URL when it changes externally (Back/Forward, deep link).
+  // Adjusting state during render is the supported alternative to an effect.
+  const [syncedParams, setSyncedParams] = useState(searchParams);
+  if (searchParams !== syncedParams) {
+    setSyncedParams(searchParams);
+    setFacetState(deriveFacets(searchParams));
+  }
 
   const filters = useMemo<ColumnFiltersState>(
     () =>
-      search
-        ? [...facetFilters, { id: "search", value: search }]
-        : facetFilters,
-    [facetFilters, search],
+      search ? [...facetState, { id: "search", value: search }] : facetState,
+    [facetState, search],
   );
 
   const facetValues = (id: string) =>
-    (facetFilters.find((f) => f.id === id)?.value as string[] | undefined) ??
-    [];
+    (facetState.find((f) => f.id === id)?.value as string[] | undefined) ?? [];
   const activeVendors = facetValues("vendorName");
   const activeCodenames = facetValues("codename");
   const activeRoms = facetValues("romName");
@@ -149,12 +154,14 @@ export default function MappingsTable({ mappings }: Props) {
     const roms = value("romName");
     const devices = value("codename");
 
+    setFacetState(next.filter((f) => f.id !== "search"));
+
     const facetsChanged =
       JSON.stringify([vendors, roms, devices]) !==
       JSON.stringify([
-        facetFilters.find((f) => f.id === "vendorName")?.value,
-        facetFilters.find((f) => f.id === "romName")?.value,
-        facetFilters.find((f) => f.id === "codename")?.value,
+        facetState.find((f) => f.id === "vendorName")?.value,
+        facetState.find((f) => f.id === "romName")?.value,
+        facetState.find((f) => f.id === "codename")?.value,
       ]);
 
     const params = new URLSearchParams(searchParams);
@@ -164,15 +171,17 @@ export default function MappingsTable({ mappings }: Props) {
     };
     setParam(
       "vendor",
-      vendors?.length === 1
-        ? (slugByVendorName.get(vendors[0]) ?? vendors[0])
+      vendors?.length
+        ? vendors.map((name) => slugByVendorName.get(name) ?? name).join(",")
         : undefined,
     );
     setParam(
       "rom",
-      roms?.length === 1 ? (idByRomName.get(roms[0]) ?? roms[0]) : undefined,
+      roms?.length
+        ? roms.map((name) => idByRomName.get(name) ?? name).join(",")
+        : undefined,
     );
-    setParam("device", devices?.length === 1 ? devices[0] : undefined);
+    setParam("device", devices?.length ? devices.join(",") : undefined);
     setSearchParams(params, { replace: !facetsChanged });
   };
 
@@ -258,7 +267,9 @@ export default function MappingsTable({ mappings }: Props) {
             <div className="flex min-w-0 flex-col">
               <button
                 type="button"
-                onClick={() => selectDevice(table, row.original.codename)}
+                onClick={() =>
+                  toggleFilter(table, "codename", row.original.codename)
+                }
                 className="w-fit max-w-full truncate text-left font-medium hover:underline"
               >
                 {name}

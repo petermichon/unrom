@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from "react";
+import { useRef, useState, type ReactNode } from "react";
 import {
   type ColumnDef,
   type ColumnFiltersState,
@@ -80,6 +80,13 @@ export function DataTable<TData, TValue>({
   const columnFilters = controlledFilters ?? internalFilters;
   const columnVisibility = controlledVisibility ?? internalVisibility;
 
+  // Track the latest value so multiple changes in one tick compose correctly,
+  // even when the controlled prop has not re-rendered yet.
+  const filtersRef = useRef(columnFilters);
+  filtersRef.current = columnFilters;
+  const visibilityRef = useRef(columnVisibility);
+  visibilityRef.current = columnVisibility;
+
   const table = useReactTable({
     data,
     columns,
@@ -87,13 +94,17 @@ export function DataTable<TData, TValue>({
     onSortingChange: setSorting,
     onColumnFiltersChange: (updater) => {
       const next =
-        typeof updater === "function" ? updater(columnFilters) : updater;
+        typeof updater === "function" ? updater(filtersRef.current) : updater;
+      filtersRef.current = next;
       if (controlledFilters !== undefined) onColumnFiltersChange?.(next);
       else setInternalFilters(next);
     },
     onColumnVisibilityChange: (updater) => {
       const next =
-        typeof updater === "function" ? updater(columnVisibility) : updater;
+        typeof updater === "function"
+          ? updater(visibilityRef.current)
+          : updater;
+      visibilityRef.current = next;
       if (controlledVisibility !== undefined) onColumnVisibilityChange?.(next);
       else setInternalVisibility(next);
     },

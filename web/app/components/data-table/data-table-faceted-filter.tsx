@@ -64,10 +64,14 @@ export function DataTableFacetedFilter<TData, TValue>({
                   <CommandItem
                     key={option.value}
                     onSelect={() => {
-                      const next = new Set(selected);
-                      if (isSelected) next.delete(option.value);
-                      else next.add(option.value);
-                      column.setFilterValue(next.size ? [...next] : undefined);
+                      // Functional update so rapid selections compose even
+                      // before the controlled state re-renders.
+                      column.setFilterValue((old: string[] | undefined) => {
+                        const next = new Set(old ?? []);
+                        if (next.has(option.value)) next.delete(option.value);
+                        else next.add(option.value);
+                        return next.size ? [...next] : undefined;
+                      });
                     }}
                   >
                     <div
