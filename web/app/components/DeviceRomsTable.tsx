@@ -55,7 +55,7 @@ export default function DeviceRomsTable({ roms }: Props) {
       },
       {
         accessorKey: "referenceUrl",
-        meta: { title: "Source" },
+        meta: { title: "Reference" },
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="Reference" />
         ),

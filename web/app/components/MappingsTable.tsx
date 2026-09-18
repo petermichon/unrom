@@ -74,10 +74,12 @@ export default function MappingsTable({ mappings }: Props) {
     const filters: ColumnFiltersState = [];
     const vendor = searchParams.get("vendor");
     const rom = searchParams.get("rom");
+    const device = searchParams.get("device");
     const vendorName = vendor ? vendorNameBySlug.get(vendor) : undefined;
     const romName = rom ? romNameById.get(rom) : undefined;
     if (vendorName) filters.push({ id: "vendorName", value: [vendorName] });
     if (romName) filters.push({ id: "romName", value: [romName] });
+    if (device) filters.push({ id: "codename", value: [device] });
     return filters;
     // Intentionally read the URL only on mount.
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -87,6 +89,9 @@ export default function MappingsTable({ mappings }: Props) {
   const [visibility, setVisibility] = useState<VisibilityState>(() => ({
     search: false,
     referenceUrl: false,
+    vendor: false,
+    codename: false,
+    romId: false,
     vendorName: !initialFilters.some((f) => f.id === "vendorName"),
     romName: !initialFilters.some((f) => f.id === "romName"),
   }));
@@ -97,12 +102,16 @@ export default function MappingsTable({ mappings }: Props) {
       string[] | undefined;
     const roms = next.find((f) => f.id === "romName")?.value as
       string[] | undefined;
+    const devices = next.find((f) => f.id === "codename")?.value as
+      string[] | undefined;
 
-    // A single-value filter narrows to one context, so hide that column.
+    // A single-value filter narrows to one context, so hide that column. The id
+    // columns stay hidden (their values are not shown by default).
     setVisibility((prev) => ({
       ...prev,
       vendorName: vendors?.length === 1 ? false : true,
       romName: roms?.length === 1 ? false : true,
+      codename: false,
     }));
 
     const params = new URLSearchParams(searchParams);
@@ -120,6 +129,7 @@ export default function MappingsTable({ mappings }: Props) {
       "rom",
       roms?.length === 1 ? (idByRomName.get(roms[0]) ?? roms[0]) : undefined,
     );
+    setParam("device", devices?.length === 1 ? devices[0] : undefined);
     setSearchParams(params, { replace: true });
   };
 
@@ -220,7 +230,7 @@ export default function MappingsTable({ mappings }: Props) {
       },
       {
         accessorKey: "referenceUrl",
-        meta: { title: "Source" },
+        meta: { title: "Reference" },
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="Reference" />
         ),
@@ -251,6 +261,60 @@ export default function MappingsTable({ mappings }: Props) {
           ) : (
             <span className="text-muted-foreground">—</span>
           ),
+      },
+      {
+        accessorKey: "vendor",
+        meta: { title: "Vendor ID" },
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title="Vendor ID" />
+        ),
+        cell: ({ row, table }) => (
+          <button
+            type="button"
+            onClick={() =>
+              toggleFilter(table, "vendorName", row.original.vendorName)
+            }
+            className="w-fit max-w-full truncate text-left font-mono text-xs text-muted-foreground hover:text-foreground hover:underline"
+          >
+            {row.original.vendor}
+          </button>
+        ),
+      },
+      {
+        accessorKey: "codename",
+        meta: { title: "Codename" },
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title="Codename" />
+        ),
+        filterFn: (row, id, value: string[]) =>
+          value.includes(row.getValue(id)),
+        cell: ({ row, table }) => (
+          <button
+            type="button"
+            onClick={() =>
+              toggleFilter(table, "codename", row.original.codename)
+            }
+            className="w-fit max-w-full truncate text-left font-mono text-xs text-muted-foreground hover:text-foreground hover:underline"
+          >
+            {row.original.codename}
+          </button>
+        ),
+      },
+      {
+        accessorKey: "romId",
+        meta: { title: "ROM ID" },
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title="ROM ID" />
+        ),
+        cell: ({ row, table }) => (
+          <button
+            type="button"
+            onClick={() => toggleFilter(table, "romName", row.original.romName)}
+            className="w-fit max-w-full truncate text-left font-mono text-xs text-muted-foreground hover:text-foreground hover:underline"
+          >
+            {row.original.romId}
+          </button>
+        ),
       },
     ],
     [],
@@ -307,6 +371,9 @@ export default function MappingsTable({ mappings }: Props) {
                 setVisibility({
                   search: false,
                   referenceUrl: false,
+                  vendor: false,
+                  codename: false,
+                  romId: false,
                   vendorName: true,
                   romName: true,
                 });
