@@ -6,7 +6,7 @@ import type {
   VisibilityState,
 } from "@tanstack/react-table";
 import { ExternalLink } from "lucide-react";
-import { Link, useSearchParams } from "react-router";
+import { useSearchParams } from "react-router";
 import { DataTable } from "@/components/data-table/data-table";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import {
@@ -46,6 +46,34 @@ function toggleFilter<T>(
     ? current.filter((entry) => entry !== value)
     : [...current, value];
   column.setFilterValue(next.length ? next : undefined);
+}
+
+// Filter to a single device. Codenames are only unique per vendor, so the
+// vendor filter is set too.
+function selectDevice<T>(
+  table: Table<T>,
+  vendorName: string,
+  codename: string,
+): void {
+  const current = table.getState().columnFilters;
+  const already =
+    (current.find((f) => f.id === "vendorName")?.value as string[] | undefined)
+      ?.length === 1 &&
+    (current.find((f) => f.id === "codename")?.value as string[] | undefined)
+      ?.length === 1;
+
+  const rest = current.filter(
+    (f) => f.id !== "vendorName" && f.id !== "codename",
+  );
+  table.setColumnFilters(
+    already
+      ? rest
+      : [
+          ...rest,
+          { id: "vendorName", value: [vendorName] },
+          { id: "codename", value: [codename] },
+        ],
+  );
 }
 
 export default function MappingsTable({ mappings }: Props) {
@@ -93,6 +121,7 @@ export default function MappingsTable({ mappings }: Props) {
     codename: false,
     romId: false,
     vendorName: !initialFilters.some((f) => f.id === "vendorName"),
+    deviceName: !initialFilters.some((f) => f.id === "codename"),
     romName: !initialFilters.some((f) => f.id === "romName"),
   }));
 
@@ -110,6 +139,7 @@ export default function MappingsTable({ mappings }: Props) {
     setVisibility((prev) => ({
       ...prev,
       vendorName: vendors?.length === 1 ? false : true,
+      deviceName: devices?.length === 1 ? false : true,
       romName: roms?.length === 1 ? false : true,
       codename: false,
     }));
@@ -191,18 +221,23 @@ export default function MappingsTable({ mappings }: Props) {
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="Device" />
         ),
-        cell: ({ row }) => {
+        cell: ({ row, table }) => {
           const name = row.original.deviceName ?? row.original.codename;
           return (
             <div className="flex min-w-0 flex-col">
-              <Link
-                to={`/devices/${row.original.vendor}/${row.original.codename}`}
-                prefetch="intent"
-                title={name}
-                className="w-fit max-w-full truncate font-medium hover:underline"
+              <button
+                type="button"
+                onClick={() =>
+                  selectDevice(
+                    table,
+                    row.original.vendorName,
+                    row.original.codename,
+                  )
+                }
+                className="w-fit max-w-full truncate text-left font-medium hover:underline"
               >
                 {name}
-              </Link>
+              </button>
               <span className="truncate font-mono text-xs text-muted-foreground md:hidden">
                 {[row.original.vendorName, row.original.codename].join(" · ")}
               </span>
@@ -375,6 +410,7 @@ export default function MappingsTable({ mappings }: Props) {
                   codename: false,
                   romId: false,
                   vendorName: true,
+                  deviceName: true,
                   romName: true,
                 });
               }}
