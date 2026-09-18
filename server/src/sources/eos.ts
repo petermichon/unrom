@@ -27,6 +27,7 @@ export function createEosParser(
             romName: ROM_NAME,
             source,
             codename,
+            sourceUrl: `https://doc.e.foundation/devices/${codename}`,
           }),
         );
       }

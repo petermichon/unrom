@@ -7,7 +7,11 @@ import { test } from "node:test";
 import Database from "better-sqlite3";
 
 import { buildDatabase } from "./build/database.ts";
-import { expandCodename, vendorForBrand } from "./data/identity.ts";
+import {
+  EXCLUDED_CODENAMES,
+  expandCodename,
+  vendorForBrand,
+} from "./data/identity.ts";
 import { ALLOWED_EMPTY_FILES, sources } from "./sources/registry.ts";
 import { listDataFiles, parseAllSources, validateSources } from "./validate.ts";
 
@@ -128,10 +132,28 @@ test("cross-vendor collisions resolve to distinct devices", async () => {
       .get() as { c: number };
     assert.equal(onXmsirius.c, 1);
 
-    // `tulip` and `oscar` are shared across vendors and must stay separate (a
-    // brand-less source for a collided codename cannot be attributed).
-    assert.deepEqual(vendors("tulip"), ["unknown", "xiaomi", "zte"]);
-    assert.deepEqual(vendors("oscar"), ["oneplus", "realme", "unknown"]);
+    // `tulip` and `oscar` are shared across vendors and must stay separate. The
+    // brand-less records for them are seeded to their known vendor.
+    assert.deepEqual(vendors("tulip"), ["xiaomi", "zte"]);
+    assert.deepEqual(vendors("oscar"), ["oneplus", "realme"]);
+
+    // No record is left unattributed: every codename resolves to a vendor.
+    const unknown = db
+      .prepare("select codename from devices where vendor = 'unknown'")
+      .all() as Array<{ codename: string }>;
+    assert.deepEqual(unknown, [], "unattributed devices remain");
+
+    // Emulator images and unified build targets never become devices.
+    for (const codename of EXCLUDED_CODENAMES) {
+      const found = db
+        .prepare("select 1 from devices where codename = ?")
+        .get(codename);
+      assert.equal(
+        found,
+        undefined,
+        `excluded codename became a device: ${codename}`,
+      );
+    }
     db.close();
   } finally {
     rmSync(dir, { recursive: true, force: true });

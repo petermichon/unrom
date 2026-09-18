@@ -23,6 +23,9 @@ export interface DeviceSource {
   name?: string[];
   brand?: string[];
   sourceUrl?: string[];
+  /** Deterministic per-device page, built from the codename when `sourceUrl`
+   * is absent. A `{codename}` placeholder is substituted. */
+  referencePage?: string;
 }
 
 export interface RecordInput {
@@ -120,6 +123,12 @@ export function createParser(
         if (seen.has(codename)) continue;
         seen.add(codename);
 
+        const sourceUrl =
+          pick(entry.device, source.sourceUrl) ??
+          (source.referencePage
+            ? source.referencePage.replace("{codename}", codename)
+            : null);
+
         records.push(
           normalizedRomDeviceSchema.parse({
             romId: source.id,
@@ -130,7 +139,7 @@ export function createParser(
               pick(entry.device, source.brand ?? ["brand"]) ??
               entry.group ??
               null,
-            sourceUrl: pick(entry.device, source.sourceUrl),
+            sourceUrl,
             source: source.file,
           }),
         );

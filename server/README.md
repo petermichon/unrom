@@ -33,12 +33,19 @@ the build step must stay runnable without the network.
 npm run ingest                       # fetch every source (from repo root)
 npm run ingest -- arrowos havocos    # fetch specific sources only
 npm run build:data                   # normalize + build SQLite + export JSON
+npm run check:references             # report dead reference hosts (no writes)
 npm run test                         # source coverage + dataset invariants
 ```
 
 `normalize` fails if any source parses to zero records (unless listed in
 `ALLOWED_EMPTY_FILES`), so a changed upstream shape breaks the build instead of
 silently dropping data.
+
+`check:references` probes one sample URL per reference host (not every device
+page) and reports hosts that are dead, blocked (alive but rejects automated
+requests, e.g. XDA), or timed out. A dead host means a citation is gone; fix the
+source or move it to the exception list in `ROM_DATA_SOURCES.md`. It exits
+non-zero when any host is dead.
 
 `dist/` is a derived artifact and is gitignored; `../data` remains the immutable
 source of truth.
@@ -58,16 +65,14 @@ source of truth.
 
 ## Tables
 
-| Table                 | Purpose                                                                                         |
-| --------------------- | ----------------------------------------------------------------------------------------------- |
-| `roms`                | One row per ROM/OS (`id`, `name`)                                                               |
-| `devices`             | Canonical device (`codename` PK, `name`, `brand`)                                               |
-| `rom_devices`         | The many-to-many edge, with per-ROM attributes (`maintainer`, `active`, `source_url`, `source`) |
-| `rom_device_versions` | The `(rom_version, android_base)` pairs an edge supports (either may be null)                   |
-| `aliases`             | Maps alternate/legacy codenames to a canonical `codename`                                       |
-| `meta`                | Snapshot metadata (`generatedAt`, counts)                                                       |
+| Table         | Purpose                                          |
+| ------------- | ------------------------------------------------ |
+| `roms`        | One row per ROM/OS (`id`, `name`)                |
+| `devices`     | One row per `(vendor, codename)` device (`name`) |
+| `rom_devices` | The many-to-many edge (`source`, `source_url`)   |
+| `meta`        | Snapshot metadata (`generatedAt`, `contentHash`) |
 
-Search is a plain `LIKE` over codename/name/brand. An FTS5 index can be added
+Search is a plain `LIKE` over codename/name/vendor. An FTS5 index can be added
 when the dataset is large enough to need it.
 
 The DB is a **derived artifact** — rebuildable from `../data` at any time, so
@@ -77,7 +82,7 @@ the schema can change freely.
 
 ```
 GET /api/health                   → { ok: true }
-GET /api/meta                     → { generatedAt, deviceCount, romCount, edgeCount }
+GET /api/meta                     → { generatedAt, contentHash }
 GET /api/devices?q=pixel&vendor=  → BrowseDevice[]
 GET /api/devices/:vendor/:codename → DeviceDetail | 404
 GET /api/roms                     → RomDetail[]

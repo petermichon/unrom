@@ -1,10 +1,12 @@
 import { rmSync } from "node:fs";
+import { createHash } from "node:crypto";
 
 import Database from "better-sqlite3";
 import { drizzle } from "drizzle-orm/better-sqlite3";
 
 import {
   CANONICAL_CODENAMES,
+  EXCLUDED_CODENAMES,
   UNKNOWN_VENDOR,
   canonicalCodename,
   expandCodename,
@@ -55,6 +57,37 @@ function soleVendor(vendors: Set<string> | undefined): string | null {
   return vendors && vendors.size === 1 ? [...vendors][0] : null;
 }
 
+// A stable digest of the dataset, independent of row insertion order and build
+// time. Consumers can use it to detect a content change without diffing.
+function contentHash(
+  romMap: Map<string, string>,
+  deviceMap: Map<string, Device>,
+  edges: Edge[],
+): string {
+  const hash = createHash("sha256");
+  const key = (vendor: string, codename: string) => `${vendor}\0${codename}`;
+
+  for (const [id, name] of [...romMap].sort(([a], [b]) => a.localeCompare(b))) {
+    hash.update(`r\0${id}\0${name}\n`);
+  }
+  for (const device of [...deviceMap.values()].sort((a, b) =>
+    key(a.vendor, a.codename).localeCompare(key(b.vendor, b.codename)),
+  )) {
+    hash.update(`d\0${device.vendor}\0${device.codename}\0${device.name ?? ""}\n`);
+  }
+  for (const edge of [...edges].sort((a, b) =>
+    `${a.romId}\0${key(a.vendor, a.codename)}`.localeCompare(
+      `${b.romId}\0${key(b.vendor, b.codename)}`,
+    ),
+  )) {
+    hash.update(
+      `e\0${edge.romId}\0${edge.vendor}\0${edge.codename}\0${edge.source}\0${edge.sourceUrl ?? ""}\n`,
+    );
+  }
+
+  return hash.digest("hex").slice(0, 16);
+}
+
 /** Build the disposable SQLite database from normalized records. */
 export function buildDatabase(
   records: NormalizedRomDevice[],
@@ -86,6 +119,8 @@ export function buildDatabase(
     const reportedVendor =
       vendorForBrand(record.brand) ?? vendorForName(record.name);
     for (const part of expandCodename(record.codename)) {
+      // Emulator images and unified build targets are not devices.
+      if (EXCLUDED_CODENAMES.has(part.trim().toLowerCase())) continue;
       const canonical = canonicalCasing(part);
       prepared.push({ record, part, canonical, vendor: reportedVendor });
       if (reportedVendor) {
@@ -148,9 +183,7 @@ export function buildDatabase(
     : new Date().toISOString();
   const metaRows: Array<[string, string]> = [
     ["generatedAt", generatedAt],
-    ["deviceCount", String(deviceMap.size)],
-    ["romCount", String(romMap.size)],
-    ["edgeCount", String(edges.length)],
+    ["contentHash", contentHash(romMap, deviceMap, edges)],
   ];
 
   // One transaction: all-or-nothing, and far faster than per-row commits.

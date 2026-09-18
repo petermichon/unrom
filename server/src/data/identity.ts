@@ -90,6 +90,7 @@ const VENDOR_BY_BRAND: Record<string, string> = {
   sony: "sony",
   tecno: "tecno",
   teracube: "teracube",
+  ticwatch: "mobvoi",
   vsmart: "vsmart",
   walmart: "walmart",
   wileyfox: "wileyfox",
@@ -123,15 +124,36 @@ export function vendorForName(name: string | null): string | null {
 }
 
 // A few codenames only ever appear without a brand. Seed their vendor so they
-// do not fall into the `unknown` bucket. (Confirmed against MobileModels /
-// LineageOS wiki.)
+// do not fall into the `unknown` bucket. (Confirmed against the /e/OS device
+// docs, LineageOS wiki, iodéOS and the ArrowOS build targets.)
 const VENDOR_BY_CODENAME: Record<string, string> = {
   sapphire: "xiaomi",
+  "2e": "teracube",
+  brax3: "brax",
+  dreamlte: "samsung",
+  dream2lte: "samsung",
+  elish: "xiaomi",
+  emerald: "teracube",
+  gs290: "gigaset",
+  gs6_venus: "gigaset",
+  mimir: "volla",
+  one: "murena",
+  oscar: "realme",
+  tulip: "xiaomi",
+  two: "murena",
+  zirconia: "teracube",
 };
 
 export function vendorForCodename(codename: string): string | null {
   return VENDOR_BY_CODENAME[codename.toLowerCase()] ?? null;
 }
+
+// Build targets that are not real devices: emulator images and unified trees
+// covering several devices. Dropping them keeps phantom rows out of `devices`.
+export const EXCLUDED_CODENAMES = new Set<string>([
+  "sdk_phone_x86_64",
+  "opkona",
+]);
 
 export const UNKNOWN_VENDOR = "unknown";
 
@@ -175,6 +197,7 @@ const VENDOR_NAMES: Record<string, string> = {
   asus: "Asus",
   ayn: "AYN",
   bananapi: "Banana Pi",
+  brax: "Brax",
   bq: "BQ",
   droidlogic: "DroidLogic",
   dynalink: "Dynalink",
@@ -183,6 +206,7 @@ const VENDOR_NAMES: Record<string, string> = {
   freebox: "Freebox",
   fxtec: "F(x)tec",
   genric: "Generic",
+  gigaset: "Gigaset",
   google: "Google",
   hardkernel: "HardKernel",
   htc: "HTC",
@@ -196,6 +220,7 @@ const VENDOR_NAMES: Record<string, string> = {
   micromax: "Micromax",
   mobvoi: "Mobvoi",
   motorola: "Motorola",
+  murena: "Murena",
   nextbit: "Nextbit",
   nintendo: "Nintendo",
   nokia: "Nokia",
@@ -218,6 +243,7 @@ const VENDOR_NAMES: Record<string, string> = {
   sony: "Sony",
   tecno: "TECNO",
   teracube: "Teracube",
+  volla: "Volla",
   vsmart: "Vsmart",
   walmart: "Walmart",
   wileyfox: "Wileyfox",

@@ -1,8 +1,6 @@
 export interface Meta {
   generatedAt: string;
-  deviceCount: number;
-  romCount: number;
-  edgeCount: number;
+  contentHash: string;
 }
 
 export interface DeviceSummary {

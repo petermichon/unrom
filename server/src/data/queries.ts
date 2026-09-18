@@ -272,9 +272,7 @@ export function createApi(dbPath: string) {
 
     return {
       generatedAt: values.generatedAt ?? "",
-      deviceCount: Number(values.deviceCount ?? 0),
-      romCount: Number(values.romCount ?? 0),
-      edgeCount: Number(values.edgeCount ?? 0),
+      contentHash: values.contentHash ?? "",
     };
   }
 

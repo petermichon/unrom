@@ -72,6 +72,51 @@ This file tracks the data collection status for various custom Android ROMs.
 | VoltageOS      | AOSP | ✅ Active       | ⚠️ GitHub   | Text file with codenames only, no device names; requires codename-to-name mapping                           |
 | xiaomi.eu      | MIUI | ✅ Active       | ⚠️ Website  | Device list in forum thread; community-modified MIUI ROM with multilingual support, requires web scraping   |
 
+## Per-device references
+
+Every edge should cite a **device-specific** source a human can open and check:
+the ROM's own page for that device. A project homepage or a download link is not
+a citation. Coverage per source:
+
+- **A — URL already in the raw data.** The fetcher receives a device-specific
+  URL; it must be emitted as the reference (some fields are downloads or
+  contact links, not citations).
+- **B — deterministic device page.** A per-device page exists and is derivable
+  from the codename (verified live).
+- **C — list-only.** No per-device page; cite a pinned deep link to the exact
+  file/commit the record came from.
+- **D — no device-specific page.** Cite the source index if one exists and
+  record it here as an exception.
+
+| Source             | Class | Reference                                                        |
+| ------------------ | ----- | ---------------------------------------------------------------- |
+| LineageOS          | A     | `wiki.lineageos.org/devices/<codename>/`                         |
+| Paranoid Android   | A     | `xda_thread`                                                     |
+| PixysOS            | A     | `supported_bases[].xda_thread`                                   |
+| Evolution X        | A     | `forum`                                                          |
+| BlissROMs          | A     | `supported_versions[].support_thread`                            |
+| Project Infinity X | A/B   | `projectinfinity-x.com/downloads/<codename>` (fallback Telegram) |
+| CherishOS          | A     | `downloadUrl` (download, not a device page)                      |
+| CorvusOS           | D     | exception: site/download host dead; SourceForge root only        |
+| Project PixelAge   | A     | `url` (download, not a device page)                              |
+| RisingOS           | A     | maintainer profile (weak)                                        |
+| Kali NetHunter     | A     | kernel git repo (weak)                                           |
+| MistOS             | A     | Telegram/donate (weak)                                           |
+| PixelExperience    | B     | `download.pixelexperience.org/<codename>`                        |
+| PixelOS            | B     | `pixelos.net/download/<codename>`                                |
+| Clover             | B     | `thecloverproject.com/download?device=<codename>`                |
+| dotOS              | B     | `www.droidontime.com/devices/<codename>`                         |
+| /e/OS              | B     | `doc.e.foundation/devices/<codename>`                            |
+| AICP               | C     | pinned `vendor_jenkins/aicp-build-targets`                       |
+| ArrowOS            | C     | pinned `arrow_infrastructure_devices/arrow.devices`              |
+| Havoc-OS           | C     | pinned `Havoc-OS/Devices`                                        |
+| iodéOS             | C     | `iode.tech/iodeos-official-supported-devices` (index)            |
+| AwakenOS           | D     | exception: no device page                                        |
+| DroidX-UI          | D     | exception: no device page                                        |
+| Matrixx            | D     | exception: no device page                                        |
+| Kenvyra            | D     | exception: 4 devices, no page                                    |
+| AfterlifeOS        | D     | exception: no device page                                        |
+
 ## Legend
 
 **Base:**

@@ -29,6 +29,7 @@ const configs: DeviceSource[] = [
     romName: "PixelExperience",
     file: "pixelexperience.json",
     select: selectors.array,
+    referencePage: "https://download.pixelexperience.org/{codename}",
   },
   {
     id: "afterlifeos",
@@ -71,6 +72,7 @@ const configs: DeviceSource[] = [
     select: selectors.array,
     name: ["name"],
     brand: ["brand"],
+    referencePage: "https://thecloverproject.com/download?device={codename}",
   },
   {
     id: "corvusos",
@@ -85,6 +87,7 @@ const configs: DeviceSource[] = [
     romName: "dotOS",
     file: "dotos.json",
     select: selectors.grouped(["GSI (Universal Builds)"]),
+    referencePage: "https://www.droidontime.com/devices/{codename}",
   },
   {
     id: "droidxui",
@@ -135,6 +138,7 @@ const configs: DeviceSource[] = [
     select: selectors.array,
     name: ["devicemodel"],
     sourceUrl: ["supportgroupurl"],
+    referencePage: "https://projectinfinity-x.com/downloads/{codename}",
   },
   {
     id: "projectpixelage",
