@@ -240,6 +240,24 @@ export default function MappingsTable({ mappings }: Props) {
         ),
       },
       {
+        accessorKey: "vendor",
+        meta: { title: "Vendor ID" },
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title="Vendor ID" />
+        ),
+        cell: ({ row, table }) => (
+          <button
+            type="button"
+            onClick={() =>
+              toggleFilter(table, "vendorName", row.original.vendorName)
+            }
+            className="w-fit max-w-full truncate text-left font-mono text-xs text-muted-foreground hover:text-foreground hover:underline"
+          >
+            {row.original.vendor}
+          </button>
+        ),
+      },
+      {
         accessorKey: "deviceName",
         meta: { title: "Device" },
         header: ({ column }) => (
@@ -270,6 +288,26 @@ export default function MappingsTable({ mappings }: Props) {
         },
       },
       {
+        accessorKey: "codename",
+        meta: { title: "Codename" },
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title="Codename" />
+        ),
+        filterFn: (row, id, value: string[]) =>
+          value.includes(row.getValue(id)),
+        cell: ({ row, table }) => (
+          <button
+            type="button"
+            onClick={() =>
+              toggleFilter(table, "codename", row.original.codename)
+            }
+            className="w-fit max-w-full truncate text-left font-mono text-xs text-muted-foreground hover:text-foreground hover:underline"
+          >
+            {row.original.codename}
+          </button>
+        ),
+      },
+      {
         accessorKey: "romName",
         meta: { title: "ROM" },
         header: ({ column }) => (
@@ -284,6 +322,22 @@ export default function MappingsTable({ mappings }: Props) {
             className="w-fit max-w-full truncate text-left font-medium hover:underline"
           >
             {row.original.romName}
+          </button>
+        ),
+      },
+      {
+        accessorKey: "romId",
+        meta: { title: "ROM ID" },
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title="ROM ID" />
+        ),
+        cell: ({ row, table }) => (
+          <button
+            type="button"
+            onClick={() => toggleFilter(table, "romName", row.original.romName)}
+            className="w-fit max-w-full truncate text-left font-mono text-xs text-muted-foreground hover:text-foreground hover:underline"
+          >
+            {row.original.romId}
           </button>
         ),
       },
@@ -320,60 +374,6 @@ export default function MappingsTable({ mappings }: Props) {
           ) : (
             <span className="text-muted-foreground">—</span>
           ),
-      },
-      {
-        accessorKey: "vendor",
-        meta: { title: "Vendor ID" },
-        header: ({ column }) => (
-          <DataTableColumnHeader column={column} title="Vendor ID" />
-        ),
-        cell: ({ row, table }) => (
-          <button
-            type="button"
-            onClick={() =>
-              toggleFilter(table, "vendorName", row.original.vendorName)
-            }
-            className="w-fit max-w-full truncate text-left font-mono text-xs text-muted-foreground hover:text-foreground hover:underline"
-          >
-            {row.original.vendor}
-          </button>
-        ),
-      },
-      {
-        accessorKey: "codename",
-        meta: { title: "Codename" },
-        header: ({ column }) => (
-          <DataTableColumnHeader column={column} title="Codename" />
-        ),
-        filterFn: (row, id, value: string[]) =>
-          value.includes(row.getValue(id)),
-        cell: ({ row, table }) => (
-          <button
-            type="button"
-            onClick={() =>
-              toggleFilter(table, "codename", row.original.codename)
-            }
-            className="w-fit max-w-full truncate text-left font-mono text-xs text-muted-foreground hover:text-foreground hover:underline"
-          >
-            {row.original.codename}
-          </button>
-        ),
-      },
-      {
-        accessorKey: "romId",
-        meta: { title: "ROM ID" },
-        header: ({ column }) => (
-          <DataTableColumnHeader column={column} title="ROM ID" />
-        ),
-        cell: ({ row, table }) => (
-          <button
-            type="button"
-            onClick={() => toggleFilter(table, "romName", row.original.romName)}
-            className="w-fit max-w-full truncate text-left font-mono text-xs text-muted-foreground hover:text-foreground hover:underline"
-          >
-            {row.original.romId}
-          </button>
-        ),
       },
     ],
     [],
