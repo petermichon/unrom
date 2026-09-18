@@ -11,6 +11,11 @@ import { DataTableToolbar } from "@/components/data-table/data-table-toolbar";
 import { DataTableViewOptions } from "@/components/data-table/data-table-view-options";
 import { SearchInput } from "@/components/SearchInput";
 import { Button } from "@/components/ui/button";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
 import type { BrowseDevice } from "@/lib/types";
 
 const MOBILE_HIDDEN = new Set(["vendor", "codename"]);
@@ -141,24 +146,43 @@ export default function DevicesTable({ devices }: Props) {
           <DataTableColumnHeader column={column} title="ROM list" />
         ),
         cell: ({ row }) => {
-          // A glance at the widest-reaching ROMs first; the full list lives on
-          // the device page.
-          const names = [...row.original.roms]
-            .sort(
-              (a, b) =>
-                (romPopularity.get(b.id) ?? 0) -
-                  (romPopularity.get(a.id) ?? 0) ||
-                a.name.localeCompare(b.name),
-            )
+          // A bounded preview of the widest-reaching ROMs; the full list lives
+          // on the device page.
+          const PreviewLimit = 12;
+          const sorted = [...row.original.roms].sort(
+            (a, b) =>
+              (romPopularity.get(b.id) ?? 0) - (romPopularity.get(a.id) ?? 0) ||
+              a.name.localeCompare(b.name),
+          );
+          const names = sorted.map((rom) => rom.name).join(", ");
+          const preview = sorted
+            .slice(0, PreviewLimit)
             .map((rom) => rom.name)
             .join(", ");
+          const hidden = sorted.length - PreviewLimit;
+          const count = sorted.length;
           return (
-            <span
-              className="block truncate text-muted-foreground"
-              title={names}
-            >
-              {names}
-            </span>
+            <HoverCard>
+              <HoverCardTrigger
+                render={
+                  <span className="block truncate text-left text-muted-foreground" />
+                }
+              >
+                {names}
+              </HoverCardTrigger>
+              <HoverCardContent>
+                <p className="leading-relaxed">{preview}</p>
+                <Link
+                  to={`/devices/${row.original.vendor}/${row.original.codename}`}
+                  prefetch="intent"
+                  className="mt-2 inline-block text-xs text-muted-foreground hover:text-foreground hover:underline"
+                >
+                  {hidden > 0
+                    ? `+${hidden} more · view all ${count} ROMs`
+                    : `View all ${count} ROMs`}
+                </Link>
+              </HoverCardContent>
+            </HoverCard>
           );
         },
       },

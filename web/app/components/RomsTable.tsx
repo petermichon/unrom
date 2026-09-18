@@ -7,6 +7,11 @@ import { DataTableToolbar } from "@/components/data-table/data-table-toolbar";
 import { DataTableViewOptions } from "@/components/data-table/data-table-view-options";
 import { SearchInput } from "@/components/SearchInput";
 import { Button } from "@/components/ui/button";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
 import { bySortKey } from "@/lib/sort";
 import type { RomDetail } from "@/lib/types";
 
@@ -77,23 +82,44 @@ export default function RomsTable({ roms }: { roms: RomDetail[] }) {
           <DataTableColumnHeader column={column} title="Device list" />
         ),
         cell: ({ row }) => {
-          // A glance at the most cross-compatible devices first; the full list
-          // lives on the ROM page.
-          const names = [...row.original.devices]
-            .sort(
-              (a, b) =>
-                b.romCount - a.romCount ||
-                (a.name ?? a.codename).localeCompare(b.name ?? b.codename),
-            )
+          // A bounded preview of the most cross-compatible devices; the full
+          // list lives on the ROM page.
+          const PreviewLimit = 12;
+          const sorted = [...row.original.devices].sort(
+            (a, b) =>
+              b.romCount - a.romCount ||
+              (a.name ?? a.codename).localeCompare(b.name ?? b.codename),
+          );
+          const names = sorted
             .map((device) => device.name ?? device.codename)
             .join(", ");
+          const preview = sorted
+            .slice(0, PreviewLimit)
+            .map((device) => device.name ?? device.codename)
+            .join(", ");
+          const hidden = sorted.length - PreviewLimit;
           return (
-            <span
-              className="block truncate text-muted-foreground"
-              title={names}
-            >
-              {names}
-            </span>
+            <HoverCard>
+              <HoverCardTrigger
+                render={
+                  <span className="block truncate text-left text-muted-foreground" />
+                }
+              >
+                {names}
+              </HoverCardTrigger>
+              <HoverCardContent>
+                <p className="leading-relaxed">{preview}</p>
+                <Link
+                  to={`/roms/${row.original.id}`}
+                  prefetch="intent"
+                  className="mt-2 inline-block text-xs text-muted-foreground hover:text-foreground hover:underline"
+                >
+                  {hidden > 0
+                    ? `+${hidden} more · view all ${row.original.deviceCount} devices`
+                    : `View all ${row.original.deviceCount} devices`}
+                </Link>
+              </HoverCardContent>
+            </HoverCard>
           );
         },
       },

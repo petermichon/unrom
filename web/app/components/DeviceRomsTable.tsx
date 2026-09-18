@@ -8,6 +8,11 @@ import { DataTableToolbar } from "@/components/data-table/data-table-toolbar";
 import { DataTableViewOptions } from "@/components/data-table/data-table-view-options";
 import { SearchInput } from "@/components/SearchInput";
 import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { bySortKey, referenceLabel } from "@/lib/sort";
 import type { RomSupport } from "@/lib/types";
 
@@ -57,18 +62,27 @@ export default function DeviceRomsTable({ roms }: Props) {
         enableSorting: false,
         cell: ({ row }) =>
           row.original.sourceUrl ? (
-            <a
-              href={row.original.sourceUrl}
-              target="_blank"
-              rel="noreferrer"
-              title={row.original.sourceUrl}
-              className="inline-flex max-w-full items-center gap-1 text-xs text-muted-foreground underline underline-offset-4 hover:text-foreground"
-            >
-              <span className="truncate">
-                {referenceLabel(row.original.sourceUrl)}
-              </span>
-              <ExternalLink className="size-3 shrink-0" />
-            </a>
+            <Tooltip>
+              <TooltipTrigger
+                render={
+                  <a
+                    href={row.original.sourceUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={`Open source: ${row.original.sourceUrl}`}
+                    className="inline-flex max-w-full items-center gap-1 text-xs text-muted-foreground underline underline-offset-4 hover:text-foreground"
+                  />
+                }
+              >
+                <span className="truncate">
+                  {referenceLabel(row.original.sourceUrl)}
+                </span>
+                <ExternalLink className="size-3 shrink-0" />
+              </TooltipTrigger>
+              <TooltipContent className="max-w-md break-all">
+                {row.original.sourceUrl}
+              </TooltipContent>
+            </Tooltip>
           ) : (
             <span className="text-muted-foreground">—</span>
           ),
