@@ -49,31 +49,18 @@ function toggleFilter<T>(
   column.setFilterValue(next.length ? next : undefined);
 }
 
-// Filter to a single device. Codenames are only unique per vendor, so the
-// vendor filter is set too.
-function selectDevice<T>(
-  table: Table<T>,
-  vendorName: string,
-  codename: string,
-): void {
+// Filter to a single device by codename. The vendor is a separate facet, so it
+// is left untouched (codenames that collide across vendors stay visible via the
+// Vendor column).
+function selectDevice<T>(table: Table<T>, codename: string): void {
   const current = table.getState().columnFilters;
-  const already =
-    (current.find((f) => f.id === "vendorName")?.value as string[] | undefined)
-      ?.length === 1 &&
-    (current.find((f) => f.id === "codename")?.value as string[] | undefined)
-      ?.length === 1;
+  const existing = current.find((f) => f.id === "codename")?.value as
+    string[] | undefined;
+  const already = existing?.length === 1 && existing[0] === codename;
 
-  const rest = current.filter(
-    (f) => f.id !== "vendorName" && f.id !== "codename",
-  );
+  const rest = current.filter((f) => f.id !== "codename");
   table.setColumnFilters(
-    already
-      ? rest
-      : [
-          ...rest,
-          { id: "vendorName", value: [vendorName] },
-          { id: "codename", value: [codename] },
-        ],
+    already ? rest : [...rest, { id: "codename", value: [codename] }],
   );
 }
 
@@ -271,13 +258,7 @@ export default function MappingsTable({ mappings }: Props) {
             <div className="flex min-w-0 flex-col">
               <button
                 type="button"
-                onClick={() =>
-                  selectDevice(
-                    table,
-                    row.original.vendorName,
-                    row.original.codename,
-                  )
-                }
+                onClick={() => selectDevice(table, row.original.codename)}
                 className="w-fit max-w-full truncate text-left font-medium hover:underline"
               >
                 {name}
