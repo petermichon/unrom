@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { Column } from "@tanstack/react-table";
 import { Check, PlusCircle } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -23,6 +24,8 @@ export interface FacetOption {
   value: string;
 }
 
+const EMPTY: string[] = [];
+
 interface Props<TData, TValue> {
   column: Column<TData, TValue>;
   title: string;
@@ -34,7 +37,26 @@ export function DataTableFacetedFilter<TData, TValue>({
   title,
   options,
 }: Props<TData, TValue>) {
-  const selected = new Set((column.getFilterValue() as string[]) ?? []);
+  // Optimistic local copy so the checkbox reflects a click immediately, even
+  // while the controlled filter value is still catching up (e.g. a router
+  // transition). Re-synced when the column value changes externally.
+  const propValue = (column.getFilterValue() as string[] | undefined) ?? EMPTY;
+  const [value, setValue] = useState<string[]>(propValue);
+  const [synced, setSynced] = useState<string[]>(propValue);
+  if (propValue !== synced) {
+    setSynced(propValue);
+    setValue(propValue);
+  }
+  const selected = new Set(value);
+
+  const toggle = (optionValue: string) => {
+    const next = new Set(value);
+    if (next.has(optionValue)) next.delete(optionValue);
+    else next.add(optionValue);
+    const array = [...next];
+    setValue(array);
+    column.setFilterValue(array.length ? array : undefined);
+  };
 
   return (
     <Popover>
@@ -63,16 +85,7 @@ export function DataTableFacetedFilter<TData, TValue>({
                 return (
                   <CommandItem
                     key={option.value}
-                    onSelect={() => {
-                      // Functional update so rapid selections compose even
-                      // before the controlled state re-renders.
-                      column.setFilterValue((old: string[] | undefined) => {
-                        const next = new Set(old ?? []);
-                        if (next.has(option.value)) next.delete(option.value);
-                        else next.add(option.value);
-                        return next.size ? [...next] : undefined;
-                      });
-                    }}
+                    onSelect={() => toggle(option.value)}
                   >
                     <div
                       className={cn(

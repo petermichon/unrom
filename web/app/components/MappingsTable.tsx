@@ -191,11 +191,10 @@ export default function MappingsTable({ mappings }: Props) {
   }, [mappings]);
 
   const romOptions = useMemo<FacetOption[]>(() => {
-    const map = new Map<string, string>();
-    for (const row of mappings) map.set(row.romId, row.romName);
-    return [...map.entries()]
-      .map(([value, label]) => ({ label, value }))
-      .sort((a, b) => a.label.localeCompare(b.label));
+    const names = new Set(mappings.map((row) => row.romName));
+    return [...names]
+      .sort((a, b) => a.localeCompare(b))
+      .map((name) => ({ label: name, value: name }));
   }, [mappings]);
 
   const columns = useMemo<ColumnDef<Mapping>[]>(
