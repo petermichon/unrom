@@ -45,6 +45,10 @@ interface Props<TData, TValue> {
   };
 }
 
+// Equal-share columns: a fixed layout with `width: 1%` on every column makes
+// the browser scale all columns to the same width, independent of content.
+const EQUAL_SHARE = "w-[1%]";
+
 export function DataTable<TData, TValue>({
   columns,
   data,
@@ -76,19 +80,25 @@ export function DataTable<TData, TValue>({
     getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
+  const cellClass = (columnId: string) =>
+    cn(
+      columnId === "search" ? "w-0" : EQUAL_SHARE,
+      columnClassName?.(columnId),
+    ) || undefined;
+
   return (
     <div className="flex flex-col gap-4">
       {toolbar?.(table)}
 
       <div className="overflow-x-auto rounded-xl border border-border/60">
-        <Table className={tableClassName}>
+        <Table className={cn("table-fixed", tableClassName)}>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
                   <TableHead
                     key={header.id}
-                    className={columnClassName?.(header.column.id)}
+                    className={cellClass(header.column.id)}
                   >
                     {header.isPlaceholder
                       ? null
@@ -108,7 +118,7 @@ export function DataTable<TData, TValue>({
                   {row.getVisibleCells().map((cell) => (
                     <TableCell
                       key={cell.id}
-                      className={cn("py-3", columnClassName?.(cell.column.id))}
+                      className={cn("py-3", cellClass(cell.column.id))}
                     >
                       {flexRender(
                         cell.column.columnDef.cell,

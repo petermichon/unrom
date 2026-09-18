@@ -17,10 +17,17 @@ interface Props {
   examples?: string[];
 }
 
+interface VendorResult {
+  vendor: string;
+  vendorName: string;
+  deviceCount: number;
+}
+
 // cmdk renders and measures every item, so with hundreds of records we filter
 // ourselves and only render the top matches.
 const DEVICE_LIMIT = 50;
 const ROM_LIMIT = 20;
+const VENDOR_LIMIT = 10;
 
 function matchesDevice(device: BrowseDevice, query: string): boolean {
   return (
@@ -36,26 +43,59 @@ export default function DeviceSearch({ devices, roms, examples = [] }: Props) {
   const [query, setQuery] = useState("");
   const needle = query.trim().toLowerCase();
 
-  const { deviceResults, deviceTotal, romResults, romTotal } = useMemo(() => {
-    if (needle === "")
-      return { deviceResults: [], deviceTotal: 0, romResults: [], romTotal: 0 };
-
-    const deviceMatches = devices.filter((device) =>
-      matchesDevice(device, needle),
+  const vendors = useMemo<VendorResult[]>(() => {
+    const map = new Map<string, VendorResult>();
+    for (const device of devices) {
+      const entry = map.get(device.vendor) ?? {
+        vendor: device.vendor,
+        vendorName: device.vendorName,
+        deviceCount: 0,
+      };
+      entry.deviceCount++;
+      map.set(device.vendor, entry);
+    }
+    return [...map.values()].sort((a, b) =>
+      a.vendorName.localeCompare(b.vendorName),
     );
-    const romMatches = roms.filter((rom) =>
-      rom.name.toLowerCase().includes(needle),
-    );
+  }, [devices]);
 
-    return {
-      deviceResults: deviceMatches.slice(0, DEVICE_LIMIT),
-      deviceTotal: deviceMatches.length,
-      romResults: romMatches.slice(0, ROM_LIMIT),
-      romTotal: romMatches.length,
-    };
-  }, [devices, roms, needle]);
+  const { deviceResults, deviceTotal, romResults, romTotal, vendorResults } =
+    useMemo(() => {
+      if (needle === "")
+        return {
+          deviceResults: [],
+          deviceTotal: 0,
+          romResults: [],
+          romTotal: 0,
+          vendorResults: [],
+        };
 
-  const noResults = needle !== "" && deviceTotal === 0 && romTotal === 0;
+      const deviceMatches = devices.filter((device) =>
+        matchesDevice(device, needle),
+      );
+      const romMatches = roms.filter((rom) =>
+        rom.name.toLowerCase().includes(needle),
+      );
+      const vendorMatches = vendors.filter(
+        (vendor) =>
+          vendor.vendorName.toLowerCase().includes(needle) ||
+          vendor.vendor.toLowerCase().includes(needle),
+      );
+
+      return {
+        deviceResults: deviceMatches.slice(0, DEVICE_LIMIT),
+        deviceTotal: deviceMatches.length,
+        romResults: romMatches.slice(0, ROM_LIMIT),
+        romTotal: romMatches.length,
+        vendorResults: vendorMatches.slice(0, VENDOR_LIMIT),
+      };
+    }, [devices, roms, vendors, needle]);
+
+  const noResults =
+    needle !== "" &&
+    deviceTotal === 0 &&
+    romTotal === 0 &&
+    vendorResults.length === 0;
   const truncated =
     deviceTotal > deviceResults.length || romTotal > romResults.length;
 
@@ -72,13 +112,38 @@ export default function DeviceSearch({ devices, roms, examples = [] }: Props) {
       >
         <CommandInput
           ref={inputRef}
-          aria-label="Search devices and ROMs"
-          placeholder="Search by device name, codename, brand, or ROM…"
+          aria-label="Search devices, vendors, and ROMs"
+          placeholder="Search by device name, codename, vendor, or ROM…"
           value={query}
           onValueChange={setQuery}
         />
         <CommandList className="max-h-[26rem]">
           {noResults && <CommandEmpty>No matches found.</CommandEmpty>}
+          {vendorResults.length > 0 && (
+            <CommandGroup heading="Vendors">
+              {vendorResults.map((vendor) => (
+                <CommandItem
+                  key={`vendor-${vendor.vendor}`}
+                  value={`vendor-${vendor.vendor}`}
+                  onSelect={() => navigate(`/devices/${vendor.vendor}`)}
+                  className="gap-3"
+                >
+                  <span className="flex min-w-0 flex-1 flex-col">
+                    <span className="truncate font-medium">
+                      {vendor.vendorName}
+                    </span>
+                  </span>
+                  <Badge
+                    variant="outline"
+                    className="shrink-0 text-[11px] font-normal text-muted-foreground"
+                  >
+                    {vendor.deviceCount}{" "}
+                    {vendor.deviceCount === 1 ? "device" : "devices"}
+                  </Badge>
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          )}
           {deviceResults.length > 0 && (
             <CommandGroup heading="Devices">
               {deviceResults.map((device) => (

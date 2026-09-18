@@ -18,6 +18,16 @@ function label(id: string) {
     .replace(/^./, (char) => char.toUpperCase());
 }
 
+// Prefer the column's own header title (registered via `DataTableColumnHeader`)
+// so the View menu can never drift from the table headers.
+function columnLabel(column: {
+  id: string;
+  columnDef: { meta?: unknown };
+}): string {
+  const meta = column.columnDef.meta as { title?: unknown } | undefined;
+  return typeof meta?.title === "string" ? meta.title : label(column.id);
+}
+
 export function DataTableViewOptions<TData>({ table }: Props<TData>) {
   return (
     <DropdownMenu>
@@ -43,11 +53,10 @@ export function DataTableViewOptions<TData>({ table }: Props<TData>) {
           .map((column) => (
             <DropdownMenuCheckboxItem
               key={column.id}
-              className="capitalize"
               checked={column.getIsVisible()}
               onCheckedChange={(value) => column.toggleVisibility(!!value)}
             >
-              {label(column.id)}
+              {columnLabel(column)}
             </DropdownMenuCheckboxItem>
           ))}
       </DropdownMenuContent>

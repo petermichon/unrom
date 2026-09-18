@@ -20,6 +20,13 @@ interface Props {
 // cmdk measures every rendered item, so filter ourselves and cap the results.
 const DEVICE_LIMIT = 12;
 const ROM_LIMIT = 12;
+const VENDOR_LIMIT = 6;
+
+interface VendorResult {
+  vendor: string;
+  vendorName: string;
+  deviceCount: number;
+}
 
 // Loaded on demand (see `CommandPalette`) so the command-menu code is not in
 // the initial bundle.
@@ -45,6 +52,21 @@ export default function CommandPaletteDialog({ open, onOpenChange }: Props) {
   }, [open, devices.length]);
 
   const needle = query.trim().toLowerCase();
+  const vendors = useMemo<VendorResult[]>(() => {
+    const map = new Map<string, VendorResult>();
+    for (const device of devices) {
+      const entry = map.get(device.vendor) ?? {
+        vendor: device.vendor,
+        vendorName: device.vendorName,
+        deviceCount: 0,
+      };
+      entry.deviceCount++;
+      map.set(device.vendor, entry);
+    }
+    return [...map.values()].sort((a, b) =>
+      a.vendorName.localeCompare(b.vendorName),
+    );
+  }, [devices]);
   const deviceMatches = useMemo(
     () =>
       needle === ""
@@ -68,6 +90,19 @@ export default function CommandPaletteDialog({ open, onOpenChange }: Props) {
             .slice(0, ROM_LIMIT),
     [roms, needle],
   );
+  const vendorMatches = useMemo(
+    () =>
+      needle === ""
+        ? []
+        : vendors
+            .filter(
+              (vendor) =>
+                vendor.vendorName.toLowerCase().includes(needle) ||
+                vendor.vendor.toLowerCase().includes(needle),
+            )
+            .slice(0, VENDOR_LIMIT),
+    [vendors, needle],
+  );
 
   const go = (href: string) => {
     onOpenChange(false);
@@ -75,24 +110,44 @@ export default function CommandPaletteDialog({ open, onOpenChange }: Props) {
   };
 
   const noResults =
-    needle !== "" && deviceMatches.length === 0 && romMatches.length === 0;
+    needle !== "" &&
+    deviceMatches.length === 0 &&
+    romMatches.length === 0 &&
+    vendorMatches.length === 0;
 
   return (
     <CommandDialog
       open={open}
       onOpenChange={onOpenChange}
       title="Search unrom"
-      description="Find a device or ROM"
+      description="Find a device, vendor, or ROM"
     >
       <Command shouldFilter={false}>
         <CommandInput
-          aria-label="Search devices and ROMs"
-          placeholder="Search devices and ROMs…"
+          aria-label="Search devices, vendors, and ROMs"
+          placeholder="Search devices, vendors, and ROMs…"
           value={query}
           onValueChange={setQuery}
         />
         <CommandList>
           {noResults && <CommandEmpty>No results found.</CommandEmpty>}
+          {vendorMatches.length > 0 && (
+            <CommandGroup heading="Vendors">
+              {vendorMatches.map((vendor) => (
+                <CommandItem
+                  key={`vendor-${vendor.vendor}`}
+                  value={`vendor-${vendor.vendor}`}
+                  onSelect={() => go(`/devices/${vendor.vendor}`)}
+                >
+                  <span className="truncate">{vendor.vendorName}</span>
+                  <span className="ml-auto text-xs text-muted-foreground">
+                    {vendor.deviceCount}{" "}
+                    {vendor.deviceCount === 1 ? "device" : "devices"}
+                  </span>
+                </CommandItem>
+              ))}
+            </CommandGroup>
+          )}
           {deviceMatches.length > 0 && (
             <CommandGroup heading="Devices">
               {deviceMatches.map((device) => (

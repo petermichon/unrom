@@ -27,7 +27,7 @@ export default function CommandPalette() {
         type="button"
         variant="outline"
         onClick={() => setOpen(true)}
-        aria-label="Search devices and ROMs"
+        aria-label="Search devices, vendors, and ROMs"
         className="text-muted-foreground"
       >
         <Search className="size-4" />

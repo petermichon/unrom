@@ -1,7 +1,6 @@
 import { useMemo } from "react";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Link } from "react-router";
-import { ChipLink } from "@/components/ChipLink";
 import { DataTable } from "@/components/data-table/data-table";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { DataTableToolbar } from "@/components/data-table/data-table-toolbar";
@@ -10,12 +9,6 @@ import { SearchInput } from "@/components/SearchInput";
 import { Button } from "@/components/ui/button";
 import { bySortKey } from "@/lib/sort";
 import type { RomDetail } from "@/lib/types";
-
-const COLUMN_WIDTHS: Record<string, string> = {
-  search: "w-0",
-  name: "w-[25%] whitespace-normal",
-  devices: "w-[75%]",
-};
 
 export default function RomsTable({ roms }: { roms: RomDetail[] }) {
   const columns = useMemo<ColumnDef<RomDetail>[]>(
@@ -36,6 +29,7 @@ export default function RomsTable({ roms }: { roms: RomDetail[] }) {
       },
       {
         accessorKey: "name",
+        meta: { title: "ROM" },
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="ROM" />
         ),
@@ -45,38 +39,29 @@ export default function RomsTable({ roms }: { roms: RomDetail[] }) {
             to={`/roms/${row.original.id}`}
             prefetch="intent"
             title={row.original.name}
-            className="block truncate font-medium hover:underline"
+            className="w-fit max-w-full truncate font-medium hover:underline"
           >
             {row.original.name}
           </Link>
         ),
       },
       {
-        id: "devices",
-        header: "Supported devices",
-        enableSorting: false,
+        accessorKey: "deviceCount",
+        meta: { title: "Devices" },
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title="Devices" />
+        ),
         cell: ({ row }) => {
-          const preview = row.original.devices.slice(0, 6);
-          const hidden = row.original.devices.length - preview.length;
+          // The device list lives on the ROM page; the table shows the count.
+          const count = row.original.deviceCount;
           return (
-            <div className="flex flex-wrap gap-1.5">
-              {preview.map((device) => (
-                <ChipLink
-                  key={`${device.vendor}-${device.codename}`}
-                  to={`/devices/${device.vendor}/${device.codename}`}
-                >
-                  {device.name ?? device.codename}
-                </ChipLink>
-              ))}
-              {hidden > 0 && (
-                <ChipLink
-                  to={`/roms/${row.original.id}`}
-                  className="text-muted-foreground"
-                >
-                  +{hidden} more
-                </ChipLink>
-              )}
-            </div>
+            <Link
+              to={`/roms/${row.original.id}`}
+              prefetch="intent"
+              className="w-fit max-w-full text-muted-foreground hover:text-foreground hover:underline"
+            >
+              {count} {count === 1 ? "device" : "devices"}
+            </Link>
           );
         },
       },
@@ -88,11 +73,10 @@ export default function RomsTable({ roms }: { roms: RomDetail[] }) {
     <DataTable
       columns={columns}
       data={roms}
-      columnClassName={(id) => COLUMN_WIDTHS[id]}
-      tableClassName="table-fixed min-w-[40rem]"
+      tableClassName="min-w-[40rem]"
       initialState={{
         columnVisibility: { search: false },
-        sorting: [{ id: "name", desc: false }],
+        sorting: [{ id: "deviceCount", desc: true }],
       }}
       toolbar={(table) => (
         <DataTableToolbar>

@@ -10,15 +10,8 @@ import { Button } from "@/components/ui/button";
 import type { DeviceSummary } from "@/lib/types";
 
 const MOBILE_HIDDEN = new Set(["codename"]);
-const COLUMN_WIDTHS: Record<string, string> = {
-  search: "w-0",
-  name: "w-[60%] whitespace-normal",
-  codename: "w-[40%]",
-};
 const columnClassName = (id: string) =>
-  [MOBILE_HIDDEN.has(id) && "hidden md:table-cell", COLUMN_WIDTHS[id]]
-    .filter(Boolean)
-    .join(" ") || undefined;
+  MOBILE_HIDDEN.has(id) ? "hidden md:table-cell" : undefined;
 
 interface Props {
   devices: DeviceSummary[];
@@ -38,6 +31,7 @@ export default function RomDevicesTable({ devices }: Props) {
       },
       {
         accessorKey: "name",
+        meta: { title: "Device" },
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="Device" />
         ),
@@ -49,7 +43,7 @@ export default function RomDevicesTable({ devices }: Props) {
                 to={`/devices/${row.original.vendor}/${row.original.codename}`}
                 prefetch="intent"
                 title={name}
-                className="truncate font-medium hover:underline"
+                className="w-fit max-w-full truncate font-medium hover:underline"
               >
                 {name}
               </Link>
@@ -62,6 +56,7 @@ export default function RomDevicesTable({ devices }: Props) {
       },
       {
         accessorKey: "codename",
+        meta: { title: "Codename" },
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="Codename" />
         ),
@@ -80,7 +75,7 @@ export default function RomDevicesTable({ devices }: Props) {
       columns={columns}
       data={devices}
       columnClassName={columnClassName}
-      tableClassName="table-fixed min-w-[36rem]"
+      tableClassName="min-w-[36rem]"
       initialState={{
         columnVisibility: { search: false },
         sorting: [{ id: "name", desc: false }],

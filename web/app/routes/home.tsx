@@ -10,7 +10,7 @@ export const meta: MetaFunction = () => [
   {
     name: "description",
     content:
-      "Search by device name, codename, brand, or ROM to find supported devices and custom ROMs.",
+      "Search by device name, codename, vendor, or ROM to find supported devices and custom ROMs.",
   },
   canonical("/"),
 ];
@@ -49,7 +49,7 @@ export default function Home() {
           The open database for device–ROM compatibility
         </h1>
         <p className="text-muted-foreground">
-          Search by device name, codename, brand, or ROM to see what supports
+          Search by device name, codename, vendor, or ROM to see what supports
           it.
         </p>
         <p className="text-sm text-muted-foreground">

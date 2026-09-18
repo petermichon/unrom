@@ -1,7 +1,6 @@
 import { useMemo } from "react";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Link } from "react-router";
-import { ChipLink } from "@/components/ChipLink";
 import { DataTable } from "@/components/data-table/data-table";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import {
@@ -14,17 +13,9 @@ import { SearchInput } from "@/components/SearchInput";
 import { Button } from "@/components/ui/button";
 import type { BrowseDevice } from "@/lib/types";
 
-const MOBILE_HIDDEN = new Set(["codename"]);
-const COLUMN_WIDTHS: Record<string, string> = {
-  search: "w-0",
-  name: "w-[30%] whitespace-normal",
-  codename: "w-[14%]",
-  roms: "w-[56%]",
-};
+const MOBILE_HIDDEN = new Set(["vendor", "codename"]);
 const columnClassName = (id: string) =>
-  [MOBILE_HIDDEN.has(id) && "hidden md:table-cell", COLUMN_WIDTHS[id]]
-    .filter(Boolean)
-    .join(" ") || undefined;
+  MOBILE_HIDDEN.has(id) ? "hidden md:table-cell" : undefined;
 
 interface Props {
   devices: BrowseDevice[];
@@ -32,13 +23,13 @@ interface Props {
 
 export default function DevicesTable({ devices }: Props) {
   const romOptions = useMemo<FacetOption[]>(() => {
-    const map = new Map<string, string>();
-    for (const device of devices) {
-      for (const rom of device.roms) map.set(rom.id, rom.name);
-    }
-    return [...map.entries()]
-      .map(([value, label]) => ({ label, value }))
-      .sort((a, b) => a.label.localeCompare(b.label));
+    const counts = new Set(devices.map((device) => device.roms.length));
+    return [...counts]
+      .sort((a, b) => a - b)
+      .map((count) => ({
+        label: `${count} ${count === 1 ? "ROM" : "ROMs"}`,
+        value: String(count),
+      }));
   }, [devices]);
 
   const columns = useMemo<ColumnDef<BrowseDevice>[]>(
@@ -53,7 +44,25 @@ export default function DevicesTable({ devices }: Props) {
         cell: () => null,
       },
       {
+        accessorKey: "vendorName",
+        meta: { title: "Vendor" },
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title="Vendor" />
+        ),
+        cell: ({ row }) => (
+          <Link
+            to={`/devices/${row.original.vendor}`}
+            prefetch="intent"
+            title={row.original.vendorName}
+            className="w-fit max-w-full truncate text-muted-foreground hover:text-foreground hover:underline"
+          >
+            {row.original.vendorName}
+          </Link>
+        ),
+      },
+      {
         accessorKey: "name",
+        meta: { title: "Device" },
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="Device" />
         ),
@@ -65,7 +74,7 @@ export default function DevicesTable({ devices }: Props) {
                 to={`/devices/${row.original.vendor}/${row.original.codename}`}
                 prefetch="intent"
                 title={name}
-                className="truncate font-medium hover:underline"
+                className="w-fit max-w-full truncate font-medium hover:underline"
               >
                 {name}
               </Link>
@@ -78,6 +87,7 @@ export default function DevicesTable({ devices }: Props) {
       },
       {
         accessorKey: "codename",
+        meta: { title: "Codename" },
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="Codename" />
         ),
@@ -89,22 +99,26 @@ export default function DevicesTable({ devices }: Props) {
       },
       {
         id: "roms",
-        accessorFn: (row) => row.roms.map((rom) => rom.id),
-        header: "ROMs",
-        enableSorting: false,
-        filterFn: (row, id, value: string[]) =>
-          (row.getValue(id) as string[]).some((value2) =>
-            value.includes(value2),
-          ),
-        cell: ({ row }) => (
-          <div className="flex flex-wrap gap-1.5">
-            {row.original.roms.map((rom) => (
-              <ChipLink key={rom.id} to={`/roms/${rom.id}`}>
-                {rom.name}
-              </ChipLink>
-            ))}
-          </div>
+        accessorFn: (row) => row.roms.length,
+        meta: { title: "ROMs" },
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title="ROMs" />
         ),
+        cell: ({ row }) => {
+          // The ROM list lives on the device page; the table shows the count.
+          const count = row.original.roms.length;
+          return (
+            <Link
+              to={`/devices/${row.original.vendor}/${row.original.codename}`}
+              prefetch="intent"
+              className="w-fit max-w-full text-muted-foreground hover:text-foreground hover:underline"
+            >
+              {count} {count === 1 ? "ROM" : "ROMs"}
+            </Link>
+          );
+        },
+        filterFn: (row, id, value: string[]) =>
+          value.includes(String(row.getValue(id))),
       },
     ],
     [],
@@ -115,10 +129,10 @@ export default function DevicesTable({ devices }: Props) {
       columns={columns}
       data={devices}
       columnClassName={columnClassName}
-      tableClassName="table-fixed min-w-[40rem]"
+      tableClassName="min-w-[40rem]"
       initialState={{
         columnVisibility: { search: false },
-        sorting: [{ id: "name", desc: false }],
+        sorting: [{ id: "roms", desc: true }],
       }}
       toolbar={(table) => (
         <DataTableToolbar>
@@ -136,7 +150,7 @@ export default function DevicesTable({ devices }: Props) {
           {table.getColumn("roms") && (
             <DataTableFacetedFilter
               column={table.getColumn("roms")!}
-              title="ROM"
+              title="ROMs"
               options={romOptions}
             />
           )}

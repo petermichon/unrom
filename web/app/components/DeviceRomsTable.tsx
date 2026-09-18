@@ -8,19 +8,12 @@ import { DataTableToolbar } from "@/components/data-table/data-table-toolbar";
 import { DataTableViewOptions } from "@/components/data-table/data-table-view-options";
 import { SearchInput } from "@/components/SearchInput";
 import { Button } from "@/components/ui/button";
-import { bySortKey } from "@/lib/sort";
+import { bySortKey, referenceLabel } from "@/lib/sort";
 import type { RomSupport } from "@/lib/types";
 
 const MOBILE_HIDDEN = new Set(["sourceUrl"]);
-const COLUMN_WIDTHS: Record<string, string> = {
-  search: "w-0",
-  name: "w-[75%] whitespace-normal",
-  sourceUrl: "w-[25%]",
-};
 const columnClassName = (id: string) =>
-  [MOBILE_HIDDEN.has(id) && "hidden md:table-cell", COLUMN_WIDTHS[id]]
-    .filter(Boolean)
-    .join(" ") || undefined;
+  MOBILE_HIDDEN.has(id) ? "hidden md:table-cell" : undefined;
 
 interface Props {
   roms: RomSupport[];
@@ -39,6 +32,7 @@ export default function DeviceRomsTable({ roms }: Props) {
       },
       {
         accessorKey: "name",
+        meta: { title: "ROM" },
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="ROM" />
         ),
@@ -48,7 +42,7 @@ export default function DeviceRomsTable({ roms }: Props) {
             to={`/roms/${row.original.id}`}
             prefetch="intent"
             title={row.original.name}
-            className="block truncate font-medium hover:underline"
+            className="w-fit max-w-full truncate font-medium hover:underline"
           >
             {row.original.name}
           </Link>
@@ -56,7 +50,10 @@ export default function DeviceRomsTable({ roms }: Props) {
       },
       {
         accessorKey: "sourceUrl",
-        header: "Source",
+        meta: { title: "Source" },
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title="Source" />
+        ),
         enableSorting: false,
         cell: ({ row }) =>
           row.original.sourceUrl ? (
@@ -64,10 +61,13 @@ export default function DeviceRomsTable({ roms }: Props) {
               href={row.original.sourceUrl}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-1 text-xs underline underline-offset-4 hover:text-foreground"
+              title={row.original.sourceUrl}
+              className="inline-flex max-w-full items-center gap-1 text-xs text-muted-foreground underline underline-offset-4 hover:text-foreground"
             >
-              Source
-              <ExternalLink className="size-3" />
+              <span className="truncate">
+                {referenceLabel(row.original.sourceUrl)}
+              </span>
+              <ExternalLink className="size-3 shrink-0" />
             </a>
           ) : (
             <span className="text-muted-foreground">—</span>
@@ -82,7 +82,7 @@ export default function DeviceRomsTable({ roms }: Props) {
       columns={columns}
       data={roms}
       columnClassName={columnClassName}
-      tableClassName="table-fixed min-w-[36rem]"
+      tableClassName="min-w-[36rem]"
       initialState={{
         columnVisibility: { search: false },
         sorting: [{ id: "name", desc: false }],

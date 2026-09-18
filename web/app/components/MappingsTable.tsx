@@ -12,20 +12,12 @@ import { DataTableToolbar } from "@/components/data-table/data-table-toolbar";
 import { DataTableViewOptions } from "@/components/data-table/data-table-view-options";
 import { SearchInput } from "@/components/SearchInput";
 import { Button } from "@/components/ui/button";
+import { referenceLabel } from "@/lib/sort";
 import type { Mapping } from "@/lib/types";
 
 const MOBILE_HIDDEN = new Set(["vendor", "sourceUrl"]);
-const COLUMN_WIDTHS: Record<string, string> = {
-  search: "w-0",
-  vendor: "w-[14%]",
-  deviceName: "w-[32%] whitespace-normal",
-  romName: "w-[30%] whitespace-normal",
-  sourceUrl: "w-[12%]",
-};
 const columnClassName = (id: string) =>
-  [MOBILE_HIDDEN.has(id) && "hidden md:table-cell", COLUMN_WIDTHS[id]]
-    .filter(Boolean)
-    .join(" ") || undefined;
+  MOBILE_HIDDEN.has(id) ? "hidden md:table-cell" : undefined;
 
 interface Props {
   mappings: Mapping[];
@@ -66,6 +58,7 @@ export default function MappingsTable({ mappings }: Props) {
       },
       {
         accessorKey: "vendorName",
+        meta: { title: "Vendor" },
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="Vendor" />
         ),
@@ -75,7 +68,7 @@ export default function MappingsTable({ mappings }: Props) {
           <Link
             to={`/devices/${row.original.vendor}`}
             prefetch="intent"
-            className="text-muted-foreground hover:text-foreground hover:underline"
+            className="w-fit max-w-full text-muted-foreground hover:text-foreground hover:underline"
           >
             {row.original.vendorName}
           </Link>
@@ -83,6 +76,7 @@ export default function MappingsTable({ mappings }: Props) {
       },
       {
         accessorKey: "deviceName",
+        meta: { title: "Device" },
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="Device" />
         ),
@@ -94,7 +88,7 @@ export default function MappingsTable({ mappings }: Props) {
                 to={`/devices/${row.original.vendor}/${row.original.codename}`}
                 prefetch="intent"
                 title={name}
-                className="truncate font-medium hover:underline"
+                className="w-fit max-w-full truncate font-medium hover:underline"
               >
                 {name}
               </Link>
@@ -107,6 +101,7 @@ export default function MappingsTable({ mappings }: Props) {
       },
       {
         accessorKey: "romName",
+        meta: { title: "ROM" },
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="ROM" />
         ),
@@ -115,7 +110,7 @@ export default function MappingsTable({ mappings }: Props) {
             to={`/roms/${row.original.romId}`}
             prefetch="intent"
             title={row.original.romName}
-            className="block truncate font-medium hover:underline"
+            className="w-fit max-w-full truncate font-medium hover:underline"
           >
             {row.original.romName}
           </Link>
@@ -123,7 +118,10 @@ export default function MappingsTable({ mappings }: Props) {
       },
       {
         accessorKey: "sourceUrl",
-        header: "Source",
+        meta: { title: "Source" },
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title="Source" />
+        ),
         enableSorting: false,
         cell: ({ row }) =>
           row.original.sourceUrl ? (
@@ -131,10 +129,13 @@ export default function MappingsTable({ mappings }: Props) {
               href={row.original.sourceUrl}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-1 text-xs underline underline-offset-4 hover:text-foreground"
+              title={row.original.sourceUrl}
+              className="inline-flex max-w-full items-center gap-1 text-xs text-muted-foreground underline underline-offset-4 hover:text-foreground"
             >
-              Source
-              <ExternalLink className="size-3" />
+              <span className="truncate">
+                {referenceLabel(row.original.sourceUrl)}
+              </span>
+              <ExternalLink className="size-3 shrink-0" />
             </a>
           ) : (
             <span className="text-muted-foreground">—</span>
@@ -149,7 +150,7 @@ export default function MappingsTable({ mappings }: Props) {
       columns={columns}
       data={mappings}
       columnClassName={columnClassName}
-      tableClassName="table-fixed min-w-[52rem]"
+      tableClassName="min-w-[52rem]"
       initialState={{
         columnVisibility: { search: false, sourceUrl: false },
         sorting: [

@@ -3,7 +3,7 @@ import { expect, test } from "@playwright/test";
 test("home search shows matching devices while typing", async ({ page }) => {
   await page.goto("/");
   await page
-    .getByPlaceholder("Search by device name, codename, brand, or ROM…")
+    .getByPlaceholder("Search by device name, codename, vendor, or ROM…")
     .fill("poco");
   await expect(page.getByRole("option").first()).toBeVisible();
 });
@@ -11,7 +11,7 @@ test("home search shows matching devices while typing", async ({ page }) => {
 test("home search also matches ROMs", async ({ page }) => {
   await page.goto("/");
   await page
-    .getByPlaceholder("Search by device name, codename, brand, or ROM…")
+    .getByPlaceholder("Search by device name, codename, vendor, or ROM…")
     .fill("lineage");
   await expect(
     page.getByRole("option", { name: /lineageos/i }).first(),
@@ -21,16 +21,27 @@ test("home search also matches ROMs", async ({ page }) => {
 test("home search says nothing was found for a bad query", async ({ page }) => {
   await page.goto("/");
   await page
-    .getByPlaceholder("Search by device name, codename, brand, or ROM…")
+    .getByPlaceholder("Search by device name, codename, vendor, or ROM…")
     .fill("zzzzzzzz");
   await expect(page.getByText("No matches found.")).toBeVisible();
+});
+
+test("home search shows matching vendors", async ({ page }) => {
+  await page.goto("/");
+  await page
+    .getByPlaceholder("Search by device name, codename, vendor, or ROM…")
+    .fill("samsung");
+  const vendor = page.getByRole("option", { name: /^Samsung/ }).first();
+  await expect(vendor).toBeVisible();
+  await vendor.click();
+  await page.waitForURL("**/devices/samsung");
 });
 
 test("clicking an example fills the search", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Search for vayu" }).click();
   await expect(
-    page.getByPlaceholder("Search by device name, codename, brand, or ROM…"),
+    page.getByPlaceholder("Search by device name, codename, vendor, or ROM…"),
   ).toHaveValue("vayu");
   await expect(
     page.getByRole("option", { name: /POCO X3 Pro/ }).first(),
@@ -50,6 +61,8 @@ test("command palette shows matches while typing", async ({ page }) => {
 
   await page.goto("/");
   await page.keyboard.press("Control+k");
-  await page.getByPlaceholder("Search devices and ROMs…").fill("poco");
+  await page
+    .getByPlaceholder("Search devices, vendors, and ROMs…")
+    .fill("poco");
   await expect(page.getByRole("option").first()).toBeVisible();
 });
