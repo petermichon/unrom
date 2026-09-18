@@ -160,7 +160,15 @@ export default function MappingsTable({ mappings }: Props) {
       roms?.length === 1 ? (idByRomName.get(roms[0]) ?? roms[0]) : undefined,
     );
     setParam("device", devices?.length === 1 ? devices[0] : undefined);
-    setSearchParams(params, { replace: true });
+
+    // Discrete filter changes push history so Back undoes the last filter;
+    // typing in the search box replaces, to avoid a history entry per keystroke.
+    const changed = (id: string) =>
+      JSON.stringify(filters.find((f) => f.id === id)?.value) !==
+      JSON.stringify(next.find((f) => f.id === id)?.value);
+    const onlySearch =
+      changed("search") && !["vendorName", "codename", "romName"].some(changed);
+    setSearchParams(params, { replace: onlySearch });
   };
 
   const vendorOptions = useMemo<FacetOption[]>(() => {
