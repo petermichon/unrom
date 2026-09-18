@@ -211,6 +211,8 @@ export default function MappingsTable({ mappings }: Props) {
       {
         accessorKey: "vendorName",
         meta: { title: "Vendor" },
+        sortingFn: (a, b) =>
+          bySortKey(a.original.vendorName, b.original.vendorName),
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="Vendor" />
         ),
@@ -245,6 +247,11 @@ export default function MappingsTable({ mappings }: Props) {
       {
         accessorKey: "deviceName",
         meta: { title: "Device" },
+        sortingFn: (a, b) =>
+          bySortKey(
+            a.original.deviceName ?? a.original.codename,
+            b.original.deviceName ?? b.original.codename,
+          ),
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="Device" />
         ),
@@ -291,6 +298,7 @@ export default function MappingsTable({ mappings }: Props) {
       {
         accessorKey: "romName",
         meta: { title: "ROM" },
+        sortingFn: (a, b) => bySortKey(a.original.romName, b.original.romName),
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="ROM" />
         ),
