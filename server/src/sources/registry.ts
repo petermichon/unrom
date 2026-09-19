@@ -87,6 +87,26 @@ const configs: DeviceSource[] = [
     referenceUrl: ["download"],
   },
   {
+    id: "crdroid",
+    romName: "crDroid",
+    file: "crdroid.json",
+    select: selectors.array,
+    name: ["device"],
+    brand: ["oem"],
+    referenceUrl: ["devicePage", "forum", "sourceUrl"],
+  },
+  {
+    id: "derpfest",
+    romName: "DerpFest",
+    file: "derpfest.json",
+    select: selectors.array,
+    name: ["displayName"],
+    referenceUrl: ["reference", "url"],
+    // DerpFest's override data mislabels `lunaa` as "Motorola Moto G9"; the
+    // codename is the Realme GT Master Edition (Moto G9 is `guamp`).
+    nameCorrections: { lunaa: "Realme GT Master Edition" },
+  },
+  {
     id: "dotos",
     romName: "dotOS",
     file: "dotos.json",
@@ -102,6 +122,14 @@ const configs: DeviceSource[] = [
     brand: ["vendor"],
     referencePage:
       "https://github.com/DroidX-UI-Devices/vendor_droidxOTA/blob/15/devices.json",
+  },
+  {
+    id: "lunaris",
+    romName: "Lunaris AOSP",
+    file: "lunaris.json",
+    select: selectors.array,
+    brand: ["oem"],
+    referenceUrl: ["forum", "sourceUrl"],
   },
   {
     id: "matrixx",
@@ -132,6 +160,14 @@ const configs: DeviceSource[] = [
     brand: ["manufacturer"],
     referenceUrl: ["xda_thread"],
     referencePage: "https://github.com/AOSPA/ota/blob/master/devices",
+  },
+  {
+    id: "pixelextended",
+    romName: "PixelExtended",
+    file: "pixelextended.json",
+    select: selectors.array,
+    name: ["device_name"],
+    referenceUrl: ["forum_url", "xda_thread", "sourceUrl"],
   },
   {
     id: "pixysos",

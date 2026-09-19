@@ -19,6 +19,8 @@ open an issue.
 | CherishOS          | `/api/devices`         | https://www.cherishos.com                                                   |
 | Clover             | `devices.json`         | https://github.com/The-Clover-Project/TheCloverProject.com                  |
 | CorvusOS           | `devices.json`         | https://github.com/CorvusRom-Devices/jenkins                                |
+| crDroid            | OTA `<codename>.json`  | https://github.com/crdroidandroid/android_vendor_crDroidOTA                 |
+| DerpFest           | `devices-index.json`   | https://derpfest.org (from DerpFest-AOSP/Updater-Stuff)                     |
 | dotOS              | `devices.json`         | https://github.com/DotOS/official_devices                                   |
 | DroidX-UI          | `devices.json`         | https://github.com/DroidX-UI-Devices/vendor_droidxOTA                       |
 | /e/OS              | `.gitlab-ci.yml`       | https://gitlab.e.foundation/e/os/releases                                   |
@@ -28,9 +30,11 @@ open an issue.
 | Kali NetHunter     | `devices.yml`          | https://gitlab.com/kalilinux/nethunter/build-scripts/kali-nethunter-kernels |
 | Kenvyra            | `src/devices`          | https://github.com/Kenvyra/website                                          |
 | LineageOS          | `lineage_wiki` devices | https://github.com/LineageOS/lineage_wiki                                   |
+| Lunaris AOSP       | OTA `builds/*.json`    | https://github.com/Lunaris-AOSP/OTA                                         |
 | Matrixx            | `devices.json`         | https://github.com/Matrixx-Devices/official_devices                         |
 | MistOS             | `buildDevices.json`    | https://github.com/MistOS-Devices/official_devices                          |
 | Paranoid Android   | `devices`              | https://github.com/AOSPA/ota                                                |
+| PixelExtended      | OTA `builds/*.json`    | https://github.com/PixelExtended/OTA                                        |
 | PixelExperience    | `devices.json`         | https://github.com/PixelExperience/official_devices                         |
 | PixelOS            | `devices.json`         | https://github.com/PixelOS-AOSP/official_devices                            |
 | PixysOS            | `devices.json`         | https://github.com/PixysOS/official_devices                                 |

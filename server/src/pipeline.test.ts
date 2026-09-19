@@ -9,9 +9,11 @@ import Database from "better-sqlite3";
 import { buildDatabase } from "./build/database.ts";
 import {
   EXCLUDED_CODENAMES,
+  canonicalCodename,
   expandCodename,
   vendorForBrand,
 } from "./data/identity.ts";
+import { parseKaliNetHunter } from "./sources/kali-nethunter.ts";
 import { ALLOWED_EMPTY_FILES, sources } from "./sources/registry.ts";
 import { listDataFiles, parseAllSources, validateSources } from "./validate.ts";
 
@@ -90,6 +92,33 @@ test("combined codenames expand to real devices", () => {
   assert.deepEqual(expandCodename("mojito/sunny"), ["mojito", "sunny"]);
   assert.deepEqual(expandCodename("single"), ["single"]);
   assert.deepEqual(expandCodename("a/b/c"), ["a", "b", "c"]);
+});
+
+test("Kali variant keys resolve to real codenames", () => {
+  const records = parseKaliNetHunter(`
+- surya-16:
+    model: Xiaomi Poco X3 NFC (PixelOS)
+- oneplus-nord:
+    model: OnePlus Nord
+- oneplus6:
+    model: OnePlus 6 / 6T
+- stone-crdroid12:
+    model: POCO X5 5G
+`);
+  assert.deepEqual(records.map((record) => record.codename).sort(), [
+    "avicii",
+    "enchilada",
+    "fajita",
+    "stone",
+    "surya",
+  ]);
+});
+
+test("Teracube 2e batch codenames resolve", () => {
+  // iodéOS `2e` and /e/OS `zirconia` are the same 2020 hardware; `emerald` is
+  // the distinct 2021 batch.
+  assert.equal(canonicalCodename("teracube", "2e"), "zirconia");
+  assert.equal(canonicalCodename("teracube", "emerald"), "emerald");
 });
 
 test("brands map to manufacturers", () => {

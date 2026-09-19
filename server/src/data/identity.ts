@@ -40,6 +40,7 @@ const VENDOR_BY_BRAND: Record<string, string> = {
   asus: "asus",
   ayn: "ayn",
   "banana pi": "bananapi",
+  bluefox: "bluefox",
   bq: "bq",
   droidlogic: "droidlogic",
   dynalink: "dynalink",
@@ -59,6 +60,7 @@ const VENDOR_BY_BRAND: Record<string, string> = {
   lenovo: "lenovo",
   lg: "lg",
   lge: "lg",
+  meizu: "meizu",
   mi: "xiaomi",
   micromax: "micromax",
   mobvoi: "mobvoi",
@@ -153,6 +155,8 @@ export function vendorForCodename(codename: string): string | null {
 export const EXCLUDED_CODENAMES = new Set<string>([
   "sdk_phone_x86_64",
   "opkona",
+  "gsi_gapps",
+  "gsi_vanilla",
 ]);
 
 export const UNKNOWN_VENDOR = "unknown";
@@ -179,10 +183,12 @@ export function expandCodename(codename: string): string[] {
     .filter(Boolean);
 }
 
-// Within a vendor, some sources use the un-disambiguated codename for a device
-// the vendor names differently (LineageOS uses `xmsirius` for the Xiaomi Mi 8 SE
-// because `sirius` is Sony's Xperia Z2). Map `(vendor, codename)` → canonical.
+// Within a vendor, some sources use a different codename for the same device.
+// LineageOS uses `xmsirius` for the Xiaomi Mi 8 SE because `sirius` is Sony's
+// Xperia Z2; iodéOS uses `2e` for the Teracube 2e (2020 batch) that /e/OS calls
+// `zirconia`. Map `(vendor, codename)` → canonical.
 const VENDOR_CODENAME_ALIASES: Record<string, string> = {
+  "teracube\u00002e": "zirconia",
   "xiaomi\0sirius": "xmsirius",
 };
 
@@ -197,6 +203,7 @@ const VENDOR_NAMES: Record<string, string> = {
   asus: "Asus",
   ayn: "AYN",
   bananapi: "Banana Pi",
+  bluefox: "Bluefox",
   brax: "Brax",
   bq: "BQ",
   droidlogic: "DroidLogic",
@@ -217,6 +224,7 @@ const VENDOR_NAMES: Record<string, string> = {
   leeco: "LeEco",
   lenovo: "Lenovo",
   lg: "LG",
+  meizu: "Meizu",
   micromax: "Micromax",
   mobvoi: "Mobvoi",
   motorola: "Motorola",

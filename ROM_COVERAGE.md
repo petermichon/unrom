@@ -1,0 +1,181 @@
+# ROM Coverage
+
+Index of Android ROM projects from
+[musabcel/android_rom_list](https://github.com/musabcel/android_rom_list).
+🟢 = implemented · ❌ = evaluated, not implemented · unmarked = not yet evaluated.
+
+- ❌ 2by2 Project
+- ❌ Advanced XPerience OS
+- 🟢 AICP
+- ❌ AIM ROM
+- ❌ AlphaDroid
+- ❌ AlrightOS
+- ❌ AmogOS Rom
+- ❌ AmyROM
+- ❌ Ancient OS
+- ❌ AOKP
+- ❌ AOSDP
+- ❌ AOSiP
+- ❌ AOSP Extended
+- ❌ Aquari OS
+- ❌ ArfoxOS
+- 🟢 Arrow OS
+- ❌ Atomic OS
+- ❌ AuroraDroid
+- ❌ BaikalOS
+- ❌ BananaDroid
+- ❌ BeastROMs
+- ❌ Benzo ROM
+- ❌ Bianca Project
+- ❌ Black Iron Project
+- 🟢 Bliss ROMs
+- ❌ Bootleggers ROM
+- ❌ BsdkOS
+- ❌ CAF Extended
+- ❌ CalyxOS
+- ❌ CandyRoms
+- ❌ Carbon ROM
+- ❌ CatalystOS
+- ❌ Cesium OS
+- 🟢 Cherish OS
+- ❌ CipherOS
+- ❌ Citrus CAF
+- ❌ ClownUI
+- ❌ Colt OS
+- ❌ ConquerOS
+- 🟢 Corvus ROM
+- ❌ Cosmic OS
+- 🟢 CrDroid
+- ❌ Cygnus ROM
+- ❌ Cypher OS
+- 🟢 Derpfest
+- ❌ Descendant X
+- ❌ Dirty Unicorns
+- ❌ DivestOS
+- 🟢 Dot OS
+- 🟢 DroidX-UI
+- 🟢 eFoundation
+- ❌ EliteRoms
+- ❌ ElytraOS
+- ❌ Eternity OS
+- ❌ EtherealOS
+- ❌ euclidOS
+- ❌ EunoiaOS
+- ❌ Evervolv
+- 🟢 Evolution X
+- ❌ ExTHmUI
+- ❌ FireHound
+- ❌ Flamingo OS
+- ❌ Floko ROM
+- ❌ Fluid OS
+- ❌ Fork LineageOS
+- ❌ fortuneOS
+- ❌ Freaky OS
+- ❌ Fusion OS
+- ❌ GenesisOS
+- ❌ GhostOS
+- ❌ GrapheneOS
+- ❌ Halcyon Project
+- ❌ Halogen OS
+- 🟢 Havoc OS
+- ❌ HentaiOS
+- ❌ HyconOS
+- 🟢 iodéOS
+- ❌ Ion OS
+- ❌ IronOS Project
+- ❌ Kang OS
+- ❌ Komodo OS
+- ❌ Krypton Open Source Project
+- ❌ Legion OS
+- ❌ LessAOSP
+- ❌ LightningFastRom
+- 🟢 Lineage OS
+- ❌ Liquid Remix
+- ❌ LLuvia OS
+- ❌ LMODroid
+- 🟢 Lunaris AOSP
+- ❌ LunarUI
+- ❌ Magnus OS
+- ❌ Mallu OS
+- ❌ Miku UI
+- 🟢 Mist OS
+- ❌ MoKee ROM
+- ❌ MSM Xtended
+- 🟢 Nethunter OS
+- ❌ Nitrogen OS
+- ❌ Nusantara Project
+- ❌ Octavi OS
+- ❌ Omni ROM
+- ❌ OrionOS
+- ❌ PalladiumOS
+- 🟢 Paranoid Android
+- ❌ PhoenixAOSP
+- ❌ Pixel Blaster OS
+- ❌ Pixel Dust
+- 🟢 Pixel Experience
+- ❌ Pixel Project
+- 🟢 PixelExtended ROM
+- 🟢 PixelOS
+- ❌ PixelPlusUI
+- 🟢 Pixys OS
+- ❌ POSP
+- ❌ Project 404
+- ❌ Project Arcana
+- 🟢 Project Awaken
+- ❌ Project Blaze
+- ❌ Project Elixir
+- 🟢 Project Infinity X
+- ❌ Project Kaleidoscope
+- ❌ Project Kasumi
+- ❌ Project Lighthouse
+- 🟢 Project Matrixx
+- ❌ Project Mushroom
+- ❌ Project Radiant
+- ❌ Project Sakura
+- ❌ Project Streak
+- ❌ Project Titanium
+- ❌ Project Zephyrus
+- ❌ ProjectEverest
+- ❌ Proton AOSP
+- ❌ ReloadedOS
+- ❌ Resurrection Remix OS
+- ❌ ResurrectionRemix-Revived
+- ❌ Revenge OS
+- ❌ RevOS
+- 🟢 RisingOS
+- ❌ RohieOS
+- ❌ Scorpion ROM
+- ❌ SerasaOS
+- ❌ ShapeShift OS
+- ❌ SigmaDroid
+- ❌ SkyLineUI
+- ❌ SlimRoms
+- ❌ SomethingOS
+- ❌ SoniUI
+- ❌ SparkOS
+- ❌ Spice OS
+- ❌ Stag OS
+- ❌ StatiX OS
+- ❌ Superior OS
+- ❌ Syberia OS
+- ❌ TenXOS
+- ❌ Tequila OS
+- ❌ The Kraken Project
+- ❌ The Styx Project
+- ❌ The XPerience Project
+- ❌ Tipsy OS
+- ❌ Toxyc OS
+- ❌ UlimateOS
+- ❌ Validus OS
+- ❌ Viper OS
+- ❌ VoidUI
+- ❌ Voltage OS
+- ❌ WaveOS
+- ❌ Weeb Projekt
+- ❌ WitAqua
+- ❌ Xdroid CAF
+- ❌ Xdroid OS
+- ❌ Xen AOSP
+- ❌ Xenon HD
+- ❌ YAAP AOSP
+- ❌ ZeusOS

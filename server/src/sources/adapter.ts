@@ -26,6 +26,8 @@ export interface DeviceSource {
   /** Deterministic per-device page, built from the codename when `referenceUrl`
    * is absent. A `{codename}` placeholder is substituted. */
   referencePage?: string;
+  /** Correct display names where upstream mislabels a codename. */
+  nameCorrections?: Record<string, string>;
 }
 
 export interface RecordInput {
@@ -133,7 +135,9 @@ export function createParser(
             romId: source.id,
             romName: source.romName,
             codename,
-            name: pick(entry.device, source.name ?? ["name"]),
+            name:
+              source.nameCorrections?.[codename] ??
+              pick(entry.device, source.name ?? ["name"]),
             brand:
               pick(entry.device, source.brand ?? ["brand"]) ??
               entry.group ??
