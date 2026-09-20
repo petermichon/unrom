@@ -85,7 +85,21 @@ function derivePagination(params: URLSearchParams): PaginationState {
 }
 
 export default function MappingsTable({ mappings }: Props) {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
+
+  // The URL is a write-only snapshot of the table state: it seeds the initial
+  // state on load and is overwritten on every change so a refresh or a shared
+  // link reproduces the view. State itself lives in memory.
+  const updateUrl = (mutate: (params: URLSearchParams) => void) => {
+    const params = new URLSearchParams(window.location.search);
+    mutate(params);
+    const query = params.toString();
+    window.history.replaceState(
+      null,
+      "",
+      query ? `?${query}` : window.location.pathname,
+    );
+  };
 
   // Facet filters use stable ids (vendor slug, codename, rom id); these maps
   // render the human labels.
@@ -109,16 +123,6 @@ export default function MappingsTable({ mappings }: Props) {
   const [facetState, setFacetState] = useState<ColumnFiltersState>(() =>
     deriveFacets(searchParams),
   );
-
-  // Sync from the URL when it changes externally (Back/Forward, deep link).
-  // Adjusting state during render is the supported alternative to an effect.
-  const [syncedParams, setSyncedParams] = useState(searchParams);
-  if (searchParams !== syncedParams) {
-    setSyncedParams(searchParams);
-    setFacetState(deriveFacets(searchParams));
-    setSortingState(deriveSorting(searchParams));
-    setPaginationState(derivePagination(searchParams));
-  }
 
   const filters = useMemo<ColumnFiltersState>(
     () =>
@@ -196,26 +200,19 @@ export default function MappingsTable({ mappings }: Props) {
       params.delete(key);
       for (const item of values ?? []) params.append(key, item);
     };
-    setSearchParams(
-      (prev) => {
-        const params = new URLSearchParams(prev);
-        setParam(params, "vendor", vendors);
-        setParam(params, "device", devices);
-        setParam(params, "rom", roms);
-        if (changed) params.delete("page");
-        return params;
-      },
-      { replace: !facetsChanged },
-    );
+    updateUrl((params) => {
+      setParam(params, "vendor", vendors);
+      setParam(params, "device", devices);
+      setParam(params, "rom", roms);
+      if (changed) params.delete("page");
+    });
   };
 
-  // Sorting is discrete: push history so Back undoes it. Page changes replace.
   const handleSorting = (next: SortingState) => {
     setSortingState(next);
     setPaginationState((prev) => ({ ...prev, pageIndex: 0 }));
 
-    setSearchParams((prev) => {
-      const params = new URLSearchParams(prev);
+    updateUrl((params) => {
       const first = next[0];
       if (first) {
         params.set("sort", first.id);
@@ -225,21 +222,15 @@ export default function MappingsTable({ mappings }: Props) {
         params.delete("order");
       }
       params.delete("page");
-      return params;
     });
   };
 
   const handlePagination = (next: PaginationState) => {
     setPaginationState(next);
-    setSearchParams(
-      (prev) => {
-        const params = new URLSearchParams(prev);
-        if (next.pageIndex > 0) params.set("page", String(next.pageIndex + 1));
-        else params.delete("page");
-        return params;
-      },
-      { replace: true },
-    );
+    updateUrl((params) => {
+      if (next.pageIndex > 0) params.set("page", String(next.pageIndex + 1));
+      else params.delete("page");
+    });
   };
 
   const vendorOptions = useMemo<FacetOption[]>(() => {
@@ -500,7 +491,12 @@ export default function MappingsTable({ mappings }: Props) {
                 className="h-5 px-1.5 text-xs text-muted-foreground"
                 onClick={() => {
                   setSearch("");
-                  setSearchParams(new URLSearchParams(), { replace: true });
+                  setFacetState([]);
+                  setSortingState(DEFAULT_SORTING);
+                  setPaginationState((prev) => ({ ...prev, pageIndex: 0 }));
+                  updateUrl((params) => {
+                    for (const key of [...params.keys()]) params.delete(key);
+                  });
                 }}
               >
                 Clear all
