@@ -1,5 +1,4 @@
 import { buildRecord, str } from "./adapter.ts";
-import { variantCodenames } from "../data/identity.ts";
 import type { NormalizedRomDevice } from "../normalized.ts";
 
 const ROM_ID = "pixelos";
@@ -22,29 +21,19 @@ export function parsePixelOS(raw: string): NormalizedRomDevice[] {
   for (const device of rawDevices) {
     const codename = str(device.codename);
     if (!codename) continue;
+    if (seen.has(codename)) continue;
+    seen.add(codename);
 
-    // `codename_alt` lists the other variants this build covers.
-    const covered = [
-      codename,
-      ...variantCodenames(codename, str(device.codename_alt)),
-    ];
-
-    for (const variant of covered) {
-      if (seen.has(variant)) continue;
-      seen.add(variant);
-
-      records.push(
-        buildRecord({
-          romId: ROM_ID,
-          romName: ROM_NAME,
-          codename: variant,
-          name: str(device.model),
-          brand: str(device.vendor),
-          referenceUrl: `https://pixelos.net/download/${variant}`,
-          reportedCodename: codename,
-        }),
-      );
-    }
+    records.push(
+      buildRecord({
+        romId: ROM_ID,
+        romName: ROM_NAME,
+        codename,
+        name: str(device.model),
+        brand: str(device.vendor),
+        referenceUrl: `https://pixelos.net/download/${codename}`,
+      }),
+    );
   }
 
   return records;

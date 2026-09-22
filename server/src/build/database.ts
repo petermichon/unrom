@@ -7,8 +7,9 @@ import { drizzle } from "drizzle-orm/better-sqlite3";
 import {
   CANONICAL_CODENAMES,
   EXCLUDED_CODENAMES,
+  DECLARED_GROUPS,
   UNKNOWN_VENDOR,
-  VERIFIED_COVERAGE,
+  VERIFIED_GROUPS,
   canonicalCodename,
   expandCodename,
   vendorForBrand,
@@ -61,6 +62,7 @@ interface Coverage {
   codename: string;
   variantCodename: string;
   source: "declared" | "verified";
+  evidence: string;
 }
 
 interface Prepared {
@@ -108,7 +110,7 @@ function contentHash(
     ),
   )) {
     hash.update(
-      `v\0${row.vendor}\0${row.codename}\0${row.variantCodename}\0${row.source}\n`,
+      `v\0${row.vendor}\0${row.codename}\0${row.variantCodename}\0${row.source}\0${row.evidence}\n`,
     );
   }
 
@@ -162,13 +164,66 @@ export function buildDatabase(
   const romMap = new Map<string, string>();
   const edgeMap = new Map<string, Edge>();
   const aliasMap = new Map<string, Alias>();
-  const coverageMap = new Map<string, Coverage>();
 
   const ensureDevice = (vendor: string, codename: string): void => {
     const key = `${vendor}\0${codename}`;
     if (!deviceMap.has(key)) {
       deviceMap.set(key, { vendor, codename, name: null });
     }
+  };
+
+  // Union-find over device keys to build compatibility groups: the sets of
+  // codenames a single build is valid for. Verified groups come from the device
+  // tree; a roster grouping (a combined codename) declares one.
+  const groupParent = new Map<string, string>();
+  const groupMembers = new Map<string, Set<string>>();
+  const groupMeta = new Map<
+    string,
+    { source: "declared" | "verified"; evidence: string }
+  >();
+
+  const ensureGroup = (key: string): void => {
+    if (groupParent.has(key)) return;
+    groupParent.set(key, key);
+    groupMembers.set(key, new Set([key]));
+    groupMeta.set(key, { source: "declared", evidence: "" });
+  };
+
+  const groupRoot = (key: string): string => {
+    let root = key;
+    while (groupParent.get(root) !== root) root = groupParent.get(root)!;
+    let current = key;
+    while (groupParent.get(current) !== root) {
+      const next = groupParent.get(current)!;
+      groupParent.set(current, root);
+      current = next;
+    }
+    return root;
+  };
+
+  const joinGroup = (
+    a: string,
+    b: string,
+    meta: { source: "declared" | "verified"; evidence: string },
+  ): void => {
+    ensureGroup(a);
+    ensureGroup(b);
+    const rootA = groupRoot(a);
+    const rootB = groupRoot(b);
+    const existing = groupMeta.get(rootA)!;
+    // A verified fact wins over a declared one; otherwise keep what we have.
+    const merged =
+      meta.source === "verified" || !existing.evidence ? meta : existing;
+    if (rootA === rootB) {
+      groupMeta.set(rootA, merged);
+      return;
+    }
+    groupParent.set(rootB, rootA);
+    const members = groupMembers.get(rootA)!;
+    for (const member of groupMembers.get(rootB)!) members.add(member);
+    groupMembers.delete(rootB);
+    groupMeta.delete(rootB);
+    groupMeta.set(rootA, merged);
   };
 
   for (const { record, part, canonical, vendor: reported } of prepared) {
@@ -217,36 +272,54 @@ export function buildDatabase(
       );
       if (main !== resolved) {
         edge.reportedCodename ??= main;
-        coverageMap.set(`${vendor}\0${main}\0${resolved}`, {
-          vendor,
-          codename: main,
-          variantCodename: resolved,
+        joinGroup(`${vendor}\0${main}`, `${vendor}\0${resolved}`, {
           source: "declared",
+          evidence: `${record.romId} roster`,
         });
       }
     }
     edgeMap.set(key, edge);
   }
 
-  // Verified coverage is authoritative and does not depend on a roster
-  // mentioning the variant; make sure both codenames are real devices.
-  for (const [key, variants] of Object.entries(VERIFIED_COVERAGE)) {
-    const [vendor, main] = key.split("\0");
-    for (const variant of variants) {
-      ensureDevice(vendor, main);
-      ensureDevice(vendor, variant);
-      coverageMap.set(`${vendor}\0${main}\0${variant}`, {
-        vendor,
-        codename: main,
-        variantCodename: variant,
-        source: "verified",
+  // Verified groups are authoritative: a build is valid for every member, even
+  // when no roster names the variant. Make sure each member is a real device.
+  for (const group of [...VERIFIED_GROUPS, ...DECLARED_GROUPS]) {
+    const keys = group.members.map((member) => {
+      ensureDevice(group.vendor, member);
+      return `${group.vendor}\0${member}`;
+    });
+    for (const key of keys) {
+      joinGroup(keys[0], key, {
+        source: group.source,
+        evidence: group.evidence,
       });
+    }
+  }
+
+  // Materialize each group as symmetric coverage rows: every member is covered
+  // by builds for every other member.
+  const coverageRows: Coverage[] = [];
+  for (const [root, members] of groupMembers) {
+    if (members.size < 2) continue;
+    const meta = groupMeta.get(root)!;
+    const list = [...members];
+    for (const member of list) {
+      const [vendor, codename] = member.split("\0");
+      for (const other of list) {
+        if (other === member) continue;
+        coverageRows.push({
+          vendor,
+          codename,
+          variantCodename: other.split("\0")[1],
+          source: meta.source,
+          evidence: meta.evidence,
+        });
+      }
     }
   }
 
   const edges = [...edgeMap.values()];
   const aliasRows = [...aliasMap.values()];
-  const coverageRows = [...coverageMap.values()];
 
   // SOURCE_DATE_EPOCH makes rebuilds deterministic (reproducible builds).
   const generatedAt = process.env.SOURCE_DATE_EPOCH

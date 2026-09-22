@@ -79,9 +79,8 @@ export default function DeviceRoute() {
             `${device.vendorName} · Supported by ${device.roms.length}${
               device.roms.length === 1 ? " ROM" : " ROMs"
             }`,
-            device.variantOf ? `Variant of ${device.variantOf}` : null,
-            device.variants.length
-              ? `Also covers ${device.variants.join(", ")}`
+            device.group.length > 1
+              ? `Build covers ${device.group.join(", ")}`
               : null,
             device.aliases.length
               ? `Also known as ${device.aliases.join(", ")}`

@@ -41,6 +41,7 @@ export const deviceVariants = sqliteTable(
     codename: text("codename").notNull(),
     variantCodename: text("variant_codename").notNull(),
     source: text("source").notNull(),
+    evidence: text("evidence").notNull(),
   },
   (table) => [
     primaryKey({

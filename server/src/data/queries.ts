@@ -277,8 +277,11 @@ export function createApi(dbPath: string) {
       codename: device.codename,
       name: device.name,
       aliases: deviceAliases,
-      variantOf: mains.length === 1 ? mains[0].split("\0")[1] : null,
-      variants: coverage.variantsByMain.get(key) ?? [],
+      // Every codename a single build covers, including this one.
+      group: [
+        device.codename,
+        ...(coverage.variantsByMain.get(key) ?? []),
+      ].sort(),
       roms,
     };
   }
@@ -462,6 +465,7 @@ export function createApi(dbPath: string) {
         codename: row.codename,
         variantCodename: row.variantCodename,
         source: row.source,
+        evidence: row.evidence,
       }));
   }
 

@@ -24,10 +24,8 @@ export interface DeviceDetail {
   codename: string;
   name: string | null;
   aliases: string[];
-  /** The main codename whose builds cover this device, if it is a variant. */
-  variantOf: string | null;
-  /** Codename variants this device's builds cover. */
-  variants: string[];
+  /** Every codename a single build is valid for, including this one. */
+  group: string[];
   roms: RomSupport[];
 }
 
@@ -60,6 +58,7 @@ export interface DeviceVariant {
   codename: string;
   variantCodename: string;
   source: string;
+  evidence: string;
 }
 
 export interface Mapping {

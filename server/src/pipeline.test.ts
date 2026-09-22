@@ -12,7 +12,6 @@ import {
   EXCLUDED_CODENAMES,
   canonicalCodename,
   expandCodename,
-  variantCodenames,
   vendorForBrand,
 } from "./data/identity.ts";
 import { createParser, isCitation, selectors } from "./sources/adapter.ts";
@@ -98,15 +97,6 @@ test("combined codenames expand to real devices", () => {
   assert.deepEqual(expandCodename("mojito/sunny"), ["mojito", "sunny"]);
   assert.deepEqual(expandCodename("single"), ["single"]);
   assert.deepEqual(expandCodename("a/b/c"), ["a", "b", "c"]);
-});
-
-test("variant codenames only include real devices", () => {
-  // A duplicate of the primary or a vendor identifier is not a variant.
-  assert.deepEqual(variantCodenames("sweet", "sweetin"), ["sweetin"]);
-  assert.deepEqual(variantCodenames("sweet", "sweet/sweetin"), ["sweetin"]);
-  assert.deepEqual(variantCodenames("sweet", "sweet"), []);
-  assert.deepEqual(variantCodenames("hotdog", "OnePlus7TPro"), []);
-  assert.deepEqual(variantCodenames("g", "G"), []);
 });
 
 test("Kali variant keys resolve to real codenames", () => {
@@ -232,7 +222,7 @@ test("renamed codenames resolve to the canonical device", async () => {
   }
 });
 
-test("variant codenames stay distinct and record their main", async () => {
+test("compatibility groups share one build's coverage", async () => {
   const records = await parseAllSources();
   const dir = mkdtempSync(join(tmpdir(), "unrom-test-"));
   const dbPath = join(dir, "unrom.sqlite");
@@ -241,29 +231,31 @@ test("variant codenames stay distinct and record their main", async () => {
     const result = buildDatabase(records, dbPath);
     const api = createApi(dbPath);
 
-    // `sweetin` is a real variant, not a rename: it is not an alias.
+    // `sweetin` is a group member, not a rename.
     assert.equal(
       result.aliases.some((entry) => entry.alias === "sweetin"),
       false,
     );
 
-    const variant = api.getDevice("xiaomi", "sweetin");
-    assert.equal(variant?.codename, "sweetin");
-    assert.equal(variant?.variantOf, "sweet");
-    // Coverage is device-level: the variant inherits every `sweet` build.
-    const main = api.getDevice("xiaomi", "sweet");
-    assert.ok(main?.variants.includes("sweetin"));
+    const sweet = api.getDevice("xiaomi", "sweet");
+    const sweetin = api.getDevice("xiaomi", "sweetin");
+    assert.deepEqual(sweet?.group, ["sweet", "sweetin"]);
+    assert.deepEqual(sweetin?.group, ["sweet", "sweetin"]);
+    // Every member inherits the group's ROMs, so the sets are equal.
+    assert.equal(sweet?.roms.length, sweetin?.roms.length);
     assert.ok(
-      (variant?.roms.length ?? 0) > (main?.roms.length ?? 0) - 1,
-      "variant should inherit the main's ROMs",
+      sweetin?.roms.some((rom) => rom.inheritedFrom === "sweet"),
+      "members should record the covering codename",
     );
-    assert.ok(
-      variant?.roms.some((rom) => rom.inheritedFrom === "sweet"),
-      "variant ROMs should record their covering target",
-    );
-    assert.ok(main?.roms.every((rom) => rom.inheritedFrom === null));
 
-    // Search finds the variant as its own device.
+    // `mojito`/`sunny` is symmetric: both trees assert both codenames.
+    const mojito = api.getDevice("xiaomi", "mojito");
+    const sunny = api.getDevice("xiaomi", "sunny");
+    assert.deepEqual(mojito?.group, ["mojito", "sunny"]);
+    assert.deepEqual(sunny?.group, ["mojito", "sunny"]);
+    assert.equal(mojito?.roms.length, sunny?.roms.length);
+
+    // Search finds each member as its own device.
     assert.deepEqual(
       api.listDevices("sweetin").map((entry) => entry.codename),
       ["sweetin"],

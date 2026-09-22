@@ -28,11 +28,11 @@ test("home search matches a device by a variant codename", async ({ page }) => {
   ).toBeVisible();
 });
 
-test("a variant device has its own page and names its main", async ({
+test("a group member page lists the shared build coverage", async ({
   page,
 }) => {
   await page.goto("/devices/xiaomi/sweetin");
-  await expect(page.getByText(/Variant of sweet/)).toBeVisible();
+  await expect(page.getByText(/Build covers sweet, sweetin/)).toBeVisible();
 });
 
 test("a renamed codename redirects to the canonical device", async ({

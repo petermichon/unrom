@@ -46,7 +46,6 @@ const configs: DeviceSource[] = [
     romName: "AwakenOS",
     file: "awakenos.json",
     select: selectors.devices("devices"),
-    codenameAlt: ["codename_alt"],
     name: ["model"],
     brand: ["vendor"],
     referencePage: "https://awakenos.vercel.app/downloads/{codename}",

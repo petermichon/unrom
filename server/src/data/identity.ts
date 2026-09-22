@@ -184,58 +184,129 @@ export function expandCodename(codename: string): string[] {
     .filter(Boolean);
 }
 
-// `codename_alt` is a loose field: it is often just a duplicate of `codename`,
-// and sometimes a vendor identifier (`OnePlus7TPro`) rather than a device. Only
-// tokens in this set name a real device variant, so only these are treated as
-// additional devices the entry covers.
-export const VARIANT_CODENAMES = new Set<string>([
-  "aliothin",
-  "bhima",
-  "courbetin",
-  "curtana",
-  "davinciin",
-  "excalibur",
-  "gram",
-  "haydnin",
-  "joyeuse",
-  "karna",
-  "lemon",
-  "m62",
-  "marblein",
-  "phoenixin",
-  "pomelo",
-  "sapphiren",
-  "skyin",
-  "sweetin",
-  "willow",
-]);
-
-/** Codenames an entry covers beyond its primary, filtered to real variants. */
-export function variantCodenames(
-  primary: string,
-  alt: string | null | undefined,
-): string[] {
-  if (!alt) return [];
-  return alt
-    .split("/")
-    .map((part) => part.trim())
-    .filter(
-      (part) =>
-        part !== "" &&
-        part.toLowerCase() !== primary.toLowerCase() &&
-        VARIANT_CODENAMES.has(part.toLowerCase()),
-    );
+// A compatibility group is the set of codenames a single build is valid for.
+// It is symmetric by construction: `TARGET_OTA_ASSERT_DEVICE := sweet,sweetin`
+// in the unified device tree means a build named either codename accepts both.
+// Groups below are verified from the build tree, so they do not depend on a
+// roster mentioning every member. A build named any member covers the group.
+export interface CoverageGroup {
+  vendor: string;
+  members: string[];
+  source: "verified" | "declared";
+  evidence: string;
 }
 
-// Device-level coverage verified from the build itself, for facts rosters do
-// not always repeat. `TARGET_OTA_ASSERT_DEVICE := sweet,sweetin` in the unified
-// `device_xiaomi_sweet` tree means a `sweet` build is valid on `sweetin` too
-// (confirmed in LineageOS, crDroid and Evolution X). Rosters that group the
-// codenames (RisingOS `sweet/sweetin`, AwakenOS/PixelOS `codename_alt`) declare
-// the same; this entry keeps it true if they stop. Keyed `vendor\0codename`.
-export const VERIFIED_COVERAGE: Record<string, string[]> = {
-  "xiaomi\0sweet": ["sweetin"],
-};
+export const VERIFIED_GROUPS: CoverageGroup[] = [
+  {
+    vendor: "xiaomi",
+    members: ["sweet", "sweetin"],
+    source: "verified",
+    evidence:
+      "crdroidandroid/android_device_xiaomi_sweet BoardConfig.mk: TARGET_OTA_ASSERT_DEVICE := sweet,sweetin",
+  },
+  {
+    vendor: "xiaomi",
+    members: ["mojito", "sunny"],
+    source: "verified",
+    evidence:
+      "crdroidandroid/android_device_xiaomi_mojito BoardConfig.mk: TARGET_OTA_ASSERT_DEVICE := mojito,sunny",
+  },
+  {
+    vendor: "xiaomi",
+    members: ["ginkgo", "willow"],
+    source: "verified",
+    evidence:
+      "crdroidandroid/android_device_xiaomi_ginkgo BoardConfig.mk: TARGET_OTA_ASSERT_DEVICE := ginkgo,willow",
+  },
+  {
+    vendor: "xiaomi",
+    members: ["vayu", "bhima"],
+    source: "verified",
+    evidence:
+      "crdroidandroid/android_device_xiaomi_vayu BoardConfig.mk: TARGET_OTA_ASSERT_DEVICE := vayu,bhima",
+  },
+  {
+    vendor: "xiaomi",
+    members: ["haydn", "haydnin"],
+    source: "verified",
+    evidence:
+      "crdroidandroid/android_device_xiaomi_haydn BoardConfig.mk: TARGET_OTA_ASSERT_DEVICE := haydn,haydnin",
+  },
+  {
+    vendor: "xiaomi",
+    members: ["alioth", "aliothin"],
+    source: "verified",
+    evidence:
+      "crdroidandroid/android_device_xiaomi_alioth BoardConfig.mk: TARGET_OTA_ASSERT_DEVICE := alioth,aliothin",
+  },
+  {
+    vendor: "xiaomi",
+    members: ["davinci", "davinciin"],
+    source: "verified",
+    evidence:
+      "crdroidandroid/android_device_xiaomi_davinci BoardConfig.mk: TARGET_OTA_ASSERT_DEVICE := davinci,davinciin",
+  },
+  {
+    vendor: "xiaomi",
+    members: ["sky", "skyin"],
+    source: "verified",
+    evidence:
+      "crdroidandroid/android_device_xiaomi_sky BoardConfig.mk: TARGET_OTA_ASSERT_DEVICE := sky, skyin",
+  },
+  {
+    vendor: "xiaomi",
+    members: ["marble", "marblein"],
+    source: "verified",
+    evidence:
+      "crdroidandroid/android_device_xiaomi_marble BoardConfig.mk: TARGET_OTA_ASSERT_DEVICE := marble,marblein",
+  },
+  {
+    vendor: "xiaomi",
+    members: ["phoenix", "phoenixin"],
+    source: "verified",
+    evidence:
+      "crdroidandroid/android_device_xiaomi_phoenix BoardConfig.mk: TARGET_OTA_ASSERT_DEVICE := phoenix,phoenixin",
+  },
+  {
+    vendor: "xiaomi",
+    members: ["surya", "karna"],
+    source: "verified",
+    evidence:
+      "crdroidandroid/android_device_xiaomi_surya BoardConfig.mk: TARGET_OTA_ASSERT_DEVICE := surya,karna",
+  },
+  {
+    vendor: "xiaomi",
+    members: ["miatoll", "curtana", "joyeuse", "excalibur", "gram"],
+    source: "verified",
+    evidence:
+      "crdroidandroid/android_device_xiaomi_miatoll BoardConfig.mk: TARGET_OTA_ASSERT_DEVICE := curtana,excalibur,gram,joyeuse,miatoll",
+  },
+  {
+    vendor: "xiaomi",
+    members: ["lime", "lemon", "pomelo", "citrus"],
+    source: "verified",
+    evidence:
+      "aospa-lime/android_device_xiaomi_lime BoardConfig.mk: TARGET_OTA_ASSERT_DEVICE := lime,lemon,pomelo,citrus",
+  },
+];
+
+// Groups a source declares (its roster groups the codenames) but whose build we
+// have not checked yet. Rosters that pack codenames as `a/b` are handled
+// automatically; these are declared through an alternate field.
+export const DECLARED_GROUPS: CoverageGroup[] = [
+  {
+    vendor: "xiaomi",
+    members: ["courbet", "courbetin"],
+    source: "declared",
+    evidence: "PixelOS codename_alt: courbet/courbetin",
+  },
+  {
+    vendor: "samsung",
+    members: ["f62", "m62"],
+    source: "declared",
+    evidence: "PixelOS codename_alt: f62/m62",
+  },
+];
 
 // Within a vendor, some sources use a different codename for the same device.
 // LineageOS uses `xmsirius` for the Xiaomi Mi 8 SE because `sirius` is Sony's
