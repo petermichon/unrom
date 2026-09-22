@@ -1,4 +1,4 @@
-import { useLoaderData } from "react-router";
+import { redirect, useLoaderData } from "react-router";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import DeviceRomsTable from "@/components/DeviceRomsTable";
 import { PageHeader } from "@/components/PageHeader";
@@ -7,12 +7,22 @@ import { fetchDevice } from "@/lib/data";
 import { SITE_URL, canonical } from "@/lib/seo";
 import type { Route } from "./+types/device";
 
+// An alternate codename (alias) resolves to the canonical device; redirect so
+// the URL and every generated link agree on one canonical address.
+async function loadDevice(params: { vendor: string; codename: string }) {
+  const device = await fetchDevice(params.vendor, params.codename);
+  if (device.vendor !== params.vendor || device.codename !== params.codename) {
+    throw redirect(`/devices/${device.vendor}/${device.codename}`, 301);
+  }
+  return { device };
+}
+
 export async function loader({ params }: Route.LoaderArgs) {
-  return { device: await fetchDevice(params.vendor, params.codename) };
+  return loadDevice(params);
 }
 
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
-  return { device: await fetchDevice(params.vendor, params.codename) };
+  return loadDevice(params);
 }
 
 export const meta: Route.MetaFunction = ({ loaderData }) => {
@@ -67,7 +77,11 @@ export default function DeviceRoute() {
           }
           description={`${device.vendorName} · Supported by ${
             device.roms.length
-          }${device.roms.length === 1 ? " ROM" : " ROMs"}`}
+          }${device.roms.length === 1 ? " ROM" : " ROMs"}${
+            device.aliases.length
+              ? ` · Also known as ${device.aliases.join(", ")}`
+              : ""
+          }`}
         />
       </div>
 

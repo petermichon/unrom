@@ -7,6 +7,7 @@ import { test } from "node:test";
 import Database from "better-sqlite3";
 
 import { buildDatabase } from "./build/database.ts";
+import { createApi } from "./data/queries.ts";
 import {
   EXCLUDED_CODENAMES,
   canonicalCodename,
@@ -191,6 +192,45 @@ test("shared raw references fall through to the reference page", () => {
     byCodename.get("fallback"),
     "https://example.com/pinned/fallback",
   );
+});
+
+test("alias codenames resolve to the canonical device", async () => {
+  const records = await parseAllSources();
+  const dir = mkdtempSync(join(tmpdir(), "unrom-test-"));
+  const dbPath = join(dir, "unrom.sqlite");
+
+  try {
+    const result = buildDatabase(records, dbPath);
+    const api = createApi(dbPath);
+
+    // RisingOS packs the Redmi Note 10 Pro as `sweet/sweetin`.
+    const alias = result.aliases.find((entry) => entry.alias === "sweetin");
+    assert.ok(alias, "sweetin alias missing");
+    assert.equal(alias.vendor, "xiaomi");
+    assert.equal(alias.codename, "sweet");
+
+    // The alternate codename is not a device of its own...
+    const xiaomi = api.listDevices(undefined, "xiaomi");
+    assert.equal(
+      xiaomi.some((device) => device.codename === "sweetin"),
+      false,
+    );
+
+    // ...but it resolves to the canonical device, which lists it as an alias.
+    const device = api.getDevice("xiaomi", "sweetin");
+    assert.equal(device?.codename, "sweet");
+    assert.ok(device?.aliases.includes("sweetin"));
+
+    // Search finds the device by its alternate codename.
+    assert.deepEqual(
+      api.listDevices("sweetin").map((entry) => entry.codename),
+      ["sweet"],
+    );
+
+    api.close();
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
 });
 
 test("cross-vendor collisions resolve to distinct devices", async () => {

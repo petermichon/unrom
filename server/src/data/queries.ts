@@ -11,7 +11,7 @@ import type {
   RomSupport,
 } from "@unrom/contract";
 
-import { devices, meta, romDevices, roms } from "../db/schema.ts";
+import { aliases, devices, meta, romDevices, roms } from "../db/schema.ts";
 import { vendorName } from "./identity.ts";
 
 // Order by the first letter/digit so leading punctuation (e.g. "/e/OS") does not
@@ -30,6 +30,33 @@ const deviceKey = (vendor: string, codename: string) => `${vendor}\0${codename}`
 export function createApi(dbPath: string) {
   const sqlite = new Database(dbPath, { readonly: true, fileMustExist: true });
   const db = drizzle(sqlite);
+
+  // Alternate codenames grouped by the canonical device they resolve to.
+  function aliasesByDevice(): Map<string, string[]> {
+    const map = new Map<string, string[]>();
+    for (const row of db.select().from(aliases).all()) {
+      const key = deviceKey(row.vendor, row.codename);
+      const list = map.get(key);
+      if (list) list.push(row.alias);
+      else map.set(key, [row.alias]);
+    }
+    for (const list of map.values()) list.sort();
+    return map;
+  }
+
+  // A canonical device row, looked up exactly.
+  function findDevice(vendor: string, codename: string): DeviceRow | undefined {
+    return db
+      .select()
+      .from(devices)
+      .where(
+        and(
+          eq(sql`lower(${devices.vendor})`, vendor.toLowerCase()),
+          eq(sql`lower(${devices.codename})`, codename.toLowerCase()),
+        ),
+      )
+      .get();
+  }
 
   function romNames(): Map<string, string> {
     return new Map(
@@ -74,11 +101,14 @@ export function createApi(dbPath: string) {
     }
     const needle = query?.trim();
     if (needle) {
+      const pattern = `%${needle.toLowerCase()}%`;
       filters.push(
         or(
           like(devices.codename, `%${needle}%`),
           like(sql`coalesce(${devices.name}, '')`, `%${needle}%`),
           like(sql`coalesce(${devices.vendor}, '')`, `%${needle}%`),
+          // Match a device by any of its alternate codenames.
+          sql`exists (select 1 from aliases a where a.vendor = ${devices.vendor} and a.codename = ${devices.codename} and lower(a.alias) like ${pattern})`,
         ),
       );
     }
@@ -92,29 +122,54 @@ export function createApi(dbPath: string) {
           .all()
       : db.select().from(devices).orderBy(asc(devices.codename)).all();
 
-    return rows.map((device) => ({
-      vendor: device.vendor,
-      vendorName: vendorName(device.vendor),
-      codename: device.codename,
-      name: device.name,
-      roms: (
-        chipsByDevice.get(deviceKey(device.vendor, device.codename)) ?? []
-      ).sort((a, b) => bySortKey(a.name, b.name)),
-    }));
+    const aliasMap = aliasesByDevice();
+    return rows.map((device) => {
+      const key = deviceKey(device.vendor, device.codename);
+      return {
+        vendor: device.vendor,
+        vendorName: vendorName(device.vendor),
+        codename: device.codename,
+        name: device.name,
+        aliases: aliasMap.get(key) ?? [],
+        roms: (chipsByDevice.get(key) ?? []).sort((a, b) =>
+          bySortKey(a.name, b.name),
+        ),
+      };
+    });
+  }
+
+  // Resolve an incoming `(vendor, codename)` to its canonical device, following
+  // one alias hop when the codename is an alternate.
+  function resolveDevice(
+    vendor: string,
+    codename: string,
+  ): { device: DeviceRow; aliases: string[] } | null {
+    const aliasMap = aliasesByDevice();
+
+    let device = findDevice(vendor, codename);
+    if (!device) {
+      const alias = db
+        .select()
+        .from(aliases)
+        .where(
+          and(
+            eq(sql`lower(${aliases.vendor})`, vendor.toLowerCase()),
+            eq(sql`lower(${aliases.alias})`, codename.toLowerCase()),
+          ),
+        )
+        .get();
+      if (alias) device = findDevice(alias.vendor, alias.codename);
+    }
+    if (!device) return null;
+
+    const key = deviceKey(device.vendor, device.codename);
+    return { device, aliases: aliasMap.get(key) ?? [] };
   }
 
   function getDevice(vendor: string, codename: string): DeviceDetail | null {
-    const device = db
-      .select()
-      .from(devices)
-      .where(
-        and(
-          eq(sql`lower(${devices.vendor})`, vendor.toLowerCase()),
-          eq(sql`lower(${devices.codename})`, codename.toLowerCase()),
-        ),
-      )
-      .get();
-    if (!device) return null;
+    const resolved = resolveDevice(vendor, codename);
+    if (!resolved) return null;
+    const { device, aliases: deviceAliases } = resolved;
 
     const names = romNames();
     const roms = db
@@ -135,6 +190,7 @@ export function createApi(dbPath: string) {
       vendorName: vendorName(device.vendor),
       codename: device.codename,
       name: device.name,
+      aliases: deviceAliases,
       roms,
     };
   }

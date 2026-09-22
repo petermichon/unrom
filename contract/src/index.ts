@@ -21,6 +21,7 @@ export interface DeviceDetail {
   vendorName: string;
   codename: string;
   name: string | null;
+  aliases: string[];
   roms: RomSupport[];
 }
 
@@ -34,6 +35,7 @@ export interface BrowseDevice {
   vendorName: string;
   codename: string;
   name: string | null;
+  aliases: string[];
   roms: RomChip[];
 }
 

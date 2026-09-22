@@ -18,6 +18,26 @@ test("home search also matches ROMs", async ({ page }) => {
   ).toBeVisible();
 });
 
+test("home search matches a device by an alternate codename", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page
+    .getByPlaceholder("Search by device name, codename, vendor, or ROM…")
+    .fill("sweetin");
+  await expect(
+    page.getByRole("option", { name: /Redmi Note 10 Pro/ }).first(),
+  ).toBeVisible();
+});
+
+test("an alias device URL redirects to the canonical device", async ({
+  page,
+}) => {
+  await page.goto("/devices/xiaomi/sweetin");
+  await page.waitForURL("**/devices/xiaomi/sweet");
+  await expect(page.getByText(/Also known as sweetin/)).toBeVisible();
+});
+
 test("home search says nothing was found for a bad query", async ({ page }) => {
   await page.goto("/");
   await page

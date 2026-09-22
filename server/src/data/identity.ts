@@ -186,10 +186,12 @@ export function expandCodename(codename: string): string[] {
 // Within a vendor, some sources use a different codename for the same device.
 // LineageOS uses `xmsirius` for the Xiaomi Mi 8 SE because `sirius` is Sony's
 // Xperia Z2; iodéOS uses `2e` for the Teracube 2e (2020 batch) that /e/OS calls
-// `zirconia`. Map `(vendor, codename)` → canonical.
+// `zirconia`; RisingOS packs the Redmi Note 10 Pro as `sweet/sweetin` while
+// every other source uses `sweet`. Map `(vendor, codename)` → canonical.
 const VENDOR_CODENAME_ALIASES: Record<string, string> = {
   "teracube\u00002e": "zirconia",
   "xiaomi\0sirius": "xmsirius",
+  "xiaomi\0sweetin": "sweet",
 };
 
 export function canonicalCodename(vendor: string, codename: string): string {

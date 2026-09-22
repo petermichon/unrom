@@ -15,7 +15,7 @@ import {
   vendorForName,
 } from "../data/identity.ts";
 import { generateDdl } from "../db/ddl.ts";
-import { devices, meta, romDevices, roms } from "../db/schema.ts";
+import { aliases, devices, meta, romDevices, roms } from "../db/schema.ts";
 import type { NormalizedRomDevice } from "../normalized.ts";
 
 export interface BuildResult {
@@ -153,7 +153,9 @@ export function buildDatabase(
     device.name ??= record.name;
     deviceMap.set(deviceKey, device);
 
-    if (part !== resolved) {
+    // Only record aliases that differ beyond casing: lookups are
+    // case-insensitive, so a casing variant is not a distinct codename.
+    if (part.toLowerCase() !== resolved.toLowerCase()) {
       aliasMap.set(`${vendor}\0${part}`, {
         vendor,
         alias: part,
@@ -194,6 +196,9 @@ export function buildDatabase(
     }
     for (const edge of edges) {
       tx.insert(romDevices).values(edge).run();
+    }
+    for (const alias of aliasRows) {
+      tx.insert(aliases).values(alias).run();
     }
     for (const [key, value] of metaRows) {
       tx.insert(meta).values({ key, value }).run();

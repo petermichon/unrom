@@ -76,7 +76,10 @@ export default function CommandPaletteDialog({ open, onOpenChange }: Props) {
               (device) =>
                 (device.name ?? "").toLowerCase().includes(needle) ||
                 device.codename.toLowerCase().includes(needle) ||
-                device.vendorName.toLowerCase().includes(needle),
+                device.vendorName.toLowerCase().includes(needle) ||
+                device.aliases.some((alias) =>
+                  alias.toLowerCase().includes(needle),
+                ),
             )
             .slice(0, DEVICE_LIMIT),
     [devices, needle],
