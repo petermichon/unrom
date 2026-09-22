@@ -13,6 +13,7 @@ import {
   expandCodename,
   vendorForBrand,
 } from "./data/identity.ts";
+import { createParser, isCitation, selectors } from "./sources/adapter.ts";
 import { parseKaliNetHunter } from "./sources/kali-nethunter.ts";
 import { ALLOWED_EMPTY_FILES, sources } from "./sources/registry.ts";
 import { listDataFiles, parseAllSources, validateSources } from "./validate.ts";
@@ -130,6 +131,66 @@ test("brands map to manufacturers", () => {
   assert.equal(vendorForBrand("ZUK"), "lenovo");
   assert.equal(vendorForBrand("LGE"), "lg");
   assert.equal(vendorForBrand(null), null);
+});
+
+test("reference gate rejects non-citation URLs", () => {
+  for (const url of [
+    "https://t.me/somegroup",
+    "https://telegram.me/somegroup",
+    "https://discord.gg/invite",
+    "https://example.com/build/rom.zip",
+    "https://www.pling.com/p/1234567/",
+    "#",
+    "not a url",
+    null,
+  ]) {
+    assert.equal(isCitation(url), false, `${url} should not be a citation`);
+  }
+
+  for (const url of [
+    "https://evolution-x.org/device/stone",
+    "https://xdaforums.com/t/rom-some-device.123/",
+    "https://wiki.lineageos.org/devices/stone/",
+  ]) {
+    assert.equal(isCitation(url), true, `${url} should be a citation`);
+  }
+});
+
+test("shared raw references fall through to the reference page", () => {
+  const parse = createParser({
+    id: "test",
+    romName: "Test",
+    file: "test.json",
+    select: selectors.array,
+    referenceUrl: ["thread", "source"],
+    referencePage: "https://example.com/{codename}",
+  });
+
+  const records = parse(
+    JSON.stringify([
+      { codename: "shared-a", thread: "https://example.com/one" },
+      { codename: "shared-b", thread: "https://example.com/one" },
+      { codename: "unique", thread: "https://xdaforums.com/t/unique.1/" },
+      { codename: "contact", thread: "https://t.me/group" },
+      {
+        codename: "fallback",
+        thread: "https://t.me/group",
+        source: "https://example.com/pinned/fallback",
+      },
+    ]),
+  );
+
+  const byCodename = new Map(
+    records.map((record) => [record.codename, record.referenceUrl]),
+  );
+  assert.equal(byCodename.get("shared-a"), "https://example.com/shared-a");
+  assert.equal(byCodename.get("shared-b"), "https://example.com/shared-b");
+  assert.equal(byCodename.get("unique"), "https://xdaforums.com/t/unique.1/");
+  assert.equal(byCodename.get("contact"), "https://example.com/contact");
+  assert.equal(
+    byCodename.get("fallback"),
+    "https://example.com/pinned/fallback",
+  );
 });
 
 test("cross-vendor collisions resolve to distinct devices", async () => {

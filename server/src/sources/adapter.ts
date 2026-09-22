@@ -53,6 +53,45 @@ function isObject(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
+// A reference must be a citation a human can open and check: the ROM's own page
+// or a device-specific thread. Contact links, download artifacts and store pages
+// are not citations. These are demoted to the source's deterministic
+// `referencePage` (class B) or left uncited (class C/D) instead.
+const CONTACT_HOSTS = new Set([
+  "t.me",
+  "telegram.me",
+  "telegram.dog",
+  "telegram.org",
+  "discord.com",
+  "discord.gg",
+]);
+
+export function isCitation(url: string | null): url is string {
+  if (!url) return false;
+
+  let parsed: URL;
+  try {
+    parsed = new URL(url);
+  } catch {
+    return false;
+  }
+  if (parsed.protocol !== "http:" && parsed.protocol !== "https:") return false;
+
+  const host = parsed.hostname.toLowerCase();
+  for (const blocked of CONTACT_HOSTS) {
+    if (host === blocked || host.endsWith(`.${blocked}`)) return false;
+  }
+  if (parsed.pathname.toLowerCase().endsWith(".zip")) return false;
+  if (
+    (host === "pling.com" || host === "www.pling.com") &&
+    parsed.pathname.startsWith("/p/")
+  ) {
+    return false;
+  }
+
+  return true;
+}
+
 export function str(value: unknown): string | null {
   if (typeof value === "string") {
     const trimmed = value.trim();
@@ -112,7 +151,15 @@ export function createParser(
   return (raw: string) => {
     const data: unknown = JSON.parse(raw);
     const entries = source.select(data);
-    const records: NormalizedRomDevice[] = [];
+
+    interface Draft {
+      codename: string;
+      name: string | null;
+      brand: string | null;
+      references: string[];
+    }
+
+    const drafts: Draft[] = [];
     const seen = new Set<string>();
 
     for (const entry of entries) {
@@ -124,31 +171,51 @@ export function createParser(
         if (seen.has(codename)) continue;
         seen.add(codename);
 
-        const referenceUrl =
-          pick(entry.device, source.referenceUrl) ??
-          (source.referencePage
-            ? source.referencePage.replace("{codename}", codename)
-            : null);
-
-        records.push(
-          normalizedRomDeviceSchema.parse({
-            romId: source.id,
-            romName: source.romName,
-            codename,
-            name:
-              source.nameCorrections?.[codename] ??
-              pick(entry.device, source.name ?? ["name"]),
-            brand:
-              pick(entry.device, source.brand ?? ["brand"]) ??
-              entry.group ??
-              null,
-            referenceUrl,
-          }),
-        );
+        drafts.push({
+          codename,
+          name:
+            source.nameCorrections?.[codename] ??
+            pick(entry.device, source.name ?? ["name"]),
+          brand:
+            pick(entry.device, source.brand ?? ["brand"]) ??
+            entry.group ??
+            null,
+          references: [
+            ...new Set(
+              (source.referenceUrl ?? [])
+                .map((key) => str(pluck(entry.device, key)))
+                .filter(isCitation),
+            ),
+          ],
+        });
       }
     }
 
-    return records;
+    // A raw URL is only a device-specific citation if it is unique to one
+    // record; a URL shared across devices is not device-specific.
+    const counts = new Map<string, number>();
+    for (const draft of drafts) {
+      for (const url of draft.references) {
+        counts.set(url, (counts.get(url) ?? 0) + 1);
+      }
+    }
+
+    return drafts.map((draft) => {
+      const citation = draft.references.find((url) => counts.get(url) === 1);
+
+      return normalizedRomDeviceSchema.parse({
+        romId: source.id,
+        romName: source.romName,
+        codename: draft.codename,
+        name: draft.name,
+        brand: draft.brand,
+        referenceUrl:
+          citation ??
+          (source.referencePage
+            ? source.referencePage.replace("{codename}", draft.codename)
+            : null),
+      });
+    });
   };
 }
 

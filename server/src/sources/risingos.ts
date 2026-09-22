@@ -4,6 +4,11 @@ import type { NormalizedRomDevice } from "../normalized.ts";
 const ROM_ID = "risingos";
 const ROM_NAME = "RisingOS";
 
+// The device list carries only maintainer contacts (Telegram/GitHub profiles),
+// which are not citations. Cite the pinned roster file the records came from.
+const REFERENCE =
+  "https://github.com/RisingOS-Revived/official_devices/blob/fifteen/devices.md";
+
 /**
  * risingos.md groups devices under `## <brand>` headings:
  * `- **Device (codename)** - [maintainer](url)`.
@@ -24,14 +29,12 @@ export function parseRisingOS(raw: string): NormalizedRomDevice[] {
     if (!entry) continue;
 
     const label = entry[1];
-    const extra = entry[2];
 
     const groups = [...label.matchAll(/\(([^)]+)\)/g)];
     const last = groups.at(-1)?.[1];
     if (!last) continue;
 
     const name = label.slice(0, label.lastIndexOf("(")).trim() || null;
-    const referenceUrl = extra.match(/\((https?:\/\/[^)]+)\)/)?.[1] ?? null;
 
     for (const rawCodename of last.split("/")) {
       const codename = rawCodename.trim();
@@ -45,7 +48,7 @@ export function parseRisingOS(raw: string): NormalizedRomDevice[] {
           codename,
           name,
           brand,
-          referenceUrl,
+          referenceUrl: REFERENCE,
         }),
       );
     }

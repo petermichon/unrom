@@ -48,8 +48,7 @@ const configs: DeviceSource[] = [
     select: selectors.devices("devices"),
     name: ["model"],
     brand: ["vendor"],
-    referencePage:
-      "https://github.com/Project-Awaken/official_devices/blob/ursa/devices.json",
+    referencePage: "https://awakenos.vercel.app/downloads/{codename}",
   },
   {
     id: "blissroms",
@@ -59,6 +58,7 @@ const configs: DeviceSource[] = [
     name: ["name"],
     brand: ["brand"],
     referenceUrl: ["supported_versions[].support_thread"],
+    referencePage: "https://blissroms.org/downloads/{codename}",
   },
   {
     id: "cherishos",
@@ -68,6 +68,7 @@ const configs: DeviceSource[] = [
     name: ["name"],
     brand: ["brand"],
     referenceUrl: ["downloadUrl"],
+    referencePage: "https://cherishos.com/devices/{codename}",
   },
   {
     id: "clover",
@@ -76,7 +77,7 @@ const configs: DeviceSource[] = [
     select: selectors.array,
     name: ["name"],
     brand: ["brand"],
-    referencePage: "https://thecloverproject.com/download?device={codename}",
+    referencePage: "https://thecloverproject.com/download/{codename}",
   },
   {
     id: "corvusos",
@@ -84,7 +85,9 @@ const configs: DeviceSource[] = [
     file: "corvusos.json",
     select: selectors.grouped(["Rom Generic", "Phh"]),
     name: ["device"],
-    referenceUrl: ["download"],
+    // The project's download host is dead; cite the pinned roster file.
+    referencePage:
+      "https://github.com/CorvusRom-Devices/jenkins/blob/main/devices.json",
   },
   {
     id: "crdroid",
@@ -102,6 +105,7 @@ const configs: DeviceSource[] = [
     select: selectors.array,
     name: ["displayName"],
     referenceUrl: ["reference", "url"],
+    referencePage: "https://derpfest.org/devices-index.json",
     // DerpFest's override data mislabels `lunaa` as "Motorola Moto G9"; the
     // codename is the Realme GT Master Edition (Moto G9 is `guamp`).
     nameCorrections: { lunaa: "Realme GT Master Edition" },
@@ -185,7 +189,6 @@ const configs: DeviceSource[] = [
     file: "projectinfinityx.json",
     select: selectors.array,
     name: ["devicemodel"],
-    referenceUrl: ["supportgroupurl"],
     referencePage: "https://projectinfinity-x.com/downloads/{codename}",
   },
   {
@@ -193,7 +196,8 @@ const configs: DeviceSource[] = [
     romName: "Project PixelAge",
     file: "projectpixelage.json",
     select: selectors.array,
-    referenceUrl: ["url"],
+    referencePage:
+      "https://sourceforge.net/projects/projectpixelage/files/{codename}/",
   },
 ];
 

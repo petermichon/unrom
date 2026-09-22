@@ -1,8 +1,13 @@
-import { buildRecord, str } from "./adapter.ts";
+import { buildRecord, isCitation, str } from "./adapter.ts";
 import type { NormalizedRomDevice } from "../normalized.ts";
 
 const ROM_ID = "evolutionx";
 const ROM_NAME = "Evolution X";
+
+// `evolution-x.org/device/<codename>` is the official per-device page for every
+// device in the roster except `stone`, which has no page and falls back to its
+// device-specific XDA thread.
+const UNPUBLISHED = new Set(["stone"]);
 
 /** The Evolution X fetcher stores one build object per device. */
 export function parseEvolutionX(raw: string): NormalizedRomDevice[] {
@@ -20,6 +25,13 @@ export function parseEvolutionX(raw: string): NormalizedRomDevice[] {
     if (!codename || seen.has(codename)) continue;
     seen.add(codename);
 
+    const fallback = str(entry.forum) ?? str(entry.download);
+    const referenceUrl = UNPUBLISHED.has(codename)
+      ? isCitation(fallback)
+        ? fallback
+        : null
+      : `https://evolution-x.org/device/${codename}`;
+
     records.push(
       buildRecord({
         romId: ROM_ID,
@@ -27,7 +39,7 @@ export function parseEvolutionX(raw: string): NormalizedRomDevice[] {
         codename,
         name: str(entry.device),
         brand: str(entry.oem),
-        referenceUrl: str(entry.forum) ?? str(entry.download),
+        referenceUrl,
       }),
     );
   }

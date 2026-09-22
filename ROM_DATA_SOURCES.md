@@ -208,52 +208,65 @@ This file tracks the data collection status for various custom Android ROMs.
 
 ## Per-device references
 
-Every edge should cite a **device-specific** source a human can open and check:
-the ROM's own page for that device. A project homepage or a download link is not
-a citation. Coverage per source:
+Every edge should cite the **best human-verifiable source** for the claim that
+the ROM supports that device. In order of preference:
+
+1. the ROM's own per-device page,
+2. a device-specific thread (e.g. an XDA thread),
+3. a pinned deep link to the exact file/commit the record came from.
+
+Provenance (the URL a fetcher happened to read) is a tiebreaker, not the
+headline: a raw URL is used only when it is itself a good citation.
 
 - **A — URL already in the raw data.** The fetcher receives a device-specific
-  URL; it must be emitted as the reference (some fields are downloads or
-  contact links, not citations).
+  URL and it is a citation. A URL is _not_ a citation when it is a contact link
+  (Telegram, Discord), a download artifact or store page (`.zip`, pling), a
+  maintainer profile, or shared across devices; such a source falls through to
+  B, then C, then D. A pure contact field (e.g. `supportgroupurl`) is never
+  picked.
 - **B — deterministic device page.** A per-device page exists and is derivable
-  from the codename (verified live).
+  from the codename (verified live, with a real 404 for unknown codenames).
 - **C — list-only.** No per-device page; cite a pinned deep link to the exact
   file/commit the record came from.
 - **D — no device-specific page.** Cite the source index if one exists and
   record it here as an exception.
 
-| Source             | Class | Reference                                                           |
-| ------------------ | ----- | ------------------------------------------------------------------- |
-| LineageOS          | A     | `wiki.lineageos.org/devices/<codename>/`                            |
-| Paranoid Android   | A/C   | `xda_thread`, else pinned `AOSPA/ota` devices file                  |
-| PixysOS            | A/B   | `supported_bases[].xda_thread`, else `pixysos.com/<codename>`       |
-| Evolution X        | A     | `forum` (fallback `download`)                                       |
-| BlissROMs          | A     | `supported_versions[].support_thread`                               |
-| Project Infinity X | A/B   | `projectinfinity-x.com/downloads/<codename>` (fallback Telegram)    |
-| CherishOS          | A     | `downloadUrl` (download, not a device page)                         |
-| CorvusOS           | D     | exception: site/download host dead; SourceForge root only           |
-| crDroid            | B     | `crdroid.net/<codename>/<major>` (site index), else pinned OTA JSON |
-| DerpFest           | C     | SourceForge `files/<codename>/`, else pinned `devices-index.json`   |
-| Lunaris AOSP       | A/C   | `forum`, else pinned OTA `builds/<codename>.json`                   |
-| PixelExtended      | A     | `forum_url`/`xda_thread`, else pinned OTA `builds/<codename>.json`  |
-| Project PixelAge   | A     | `url` (download, not a device page)                                 |
-| RisingOS           | A     | maintainer profile (weak)                                           |
-| PixelExperience    | B     | `download.pixelexperience.org/<codename>`                           |
-| PixelOS            | B     | `pixelos.net/download/<codename>`                                   |
-| Clover             | B     | `thecloverproject.com/download?device=<codename>`                   |
-| dotOS              | B     | `www.droidontime.com/devices/<codename>`                            |
-| /e/OS              | B     | `doc.e.foundation/devices/<codename>`                               |
-| Kenvyra            | B     | `Kenvyra/website/src/devices/<codename>.md`                         |
-| AICP               | C     | pinned `vendor_jenkins/aicp-build-targets`                          |
-| ArrowOS            | C     | pinned `arrow_infrastructure_devices/arrow.devices`                 |
-| Havoc-OS           | C     | pinned `Havoc-OS/Devices` devices file                              |
-| iodéOS             | C     | `iode.tech/iodeos-official-supported-devices` (index)               |
-| Kali NetHunter     | C     | pinned `kali-nethunter-kernels` devices.yml                         |
-| AwakenOS           | C     | pinned `Project-Awaken/official_devices` devices.json               |
-| DroidX-UI          | C     | pinned `DroidX-UI-Devices/vendor_droidxOTA` devices.json            |
-| Matrixx            | C     | pinned `Matrixx-Devices/official_devices` devices.json              |
-| AfterlifeOS        | C     | pinned `AfterlifeOS/device_afterlife_ota` devices.json              |
-| MistOS             | C     | pinned `MistOS-Devices/official_devices` buildDevices.json          |
+These rules are enforced globally by the adapter gate (`isCitation` in
+`server/src/sources/adapter.ts`): a raw reference is kept only when it passes
+the gate _and_ is unique to one device.
+
+| Source             | Class | Reference                                                                 |
+| ------------------ | ----- | ------------------------------------------------------------------------- |
+| LineageOS          | A     | `wiki.lineageos.org/devices/<codename>/`                                  |
+| Paranoid Android   | A/C   | `xda_thread`, else pinned `AOSPA/ota` devices file                        |
+| PixysOS            | A/B   | `supported_bases[].xda_thread`, else `pixysos.com/<codename>`             |
+| Evolution X        | B     | `evolution-x.org/device/<codename>`; `stone` → XDA thread                 |
+| BlissROMs          | A/B   | unique `support_thread` (XDA), else `blissroms.org/downloads/<codename>`  |
+| Project Infinity X | B     | `projectinfinity-x.com/downloads/<codename>`                              |
+| CherishOS          | B     | `cherishos.com/devices/<codename>`                                        |
+| CorvusOS           | C     | pinned `CorvusRom-Devices/jenkins` devices.json (download host dead)      |
+| crDroid            | B     | `crdroid.net/<codename>/<major>` (site index), else pinned OTA JSON       |
+| DerpFest           | C     | SourceForge `files/<codename>/`, else pinned `devices-index.json`         |
+| Lunaris AOSP       | C     | pinned OTA `builds/<codename>.json` (unique thread when present)          |
+| PixelExtended      | A/C   | unique `forum_url`/`xda_thread`, else pinned OTA `builds/<codename>.json` |
+| Project PixelAge   | C     | SourceForge `files/<codename>/`                                           |
+| RisingOS           | C     | pinned `RisingOS-Revived/official_devices` devices.md                     |
+| PixelExperience    | B     | `download.pixelexperience.org/<codename>`                                 |
+| PixelOS            | B     | `pixelos.net/download/<codename>`                                         |
+| Clover             | B     | `thecloverproject.com/download/<codename>`                                |
+| dotOS              | B     | `www.droidontime.com/devices/<codename>`                                  |
+| /e/OS              | B     | `doc.e.foundation/devices/<codename>`                                     |
+| Kenvyra            | B     | `kenvyra.xyz/devices/<codename>/`                                         |
+| AICP               | C     | pinned `vendor_jenkins/aicp-build-targets`                                |
+| ArrowOS            | C     | pinned `arrow_infrastructure_devices/arrow.devices`                       |
+| Havoc-OS           | C     | pinned `Havoc-OS/Devices` devices file                                    |
+| iodéOS             | C     | `iode.tech/iodeos-official-supported-devices` (index)                     |
+| Kali NetHunter     | C     | pinned `kali-nethunter-kernels` devices.yml                               |
+| AwakenOS           | B     | `awakenos.vercel.app/downloads/<codename>`                                |
+| DroidX-UI          | C     | pinned `DroidX-UI-Devices/vendor_droidxOTA` devices.json                  |
+| Matrixx            | C     | pinned `Matrixx-Devices/official_devices` devices.json                    |
+| AfterlifeOS        | C     | pinned `AfterlifeOS/device_afterlife_ota` devices.json                    |
+| MistOS             | C     | pinned `MistOS-Devices/official_devices` buildDevices.json                |
 
 ## Legend
 
