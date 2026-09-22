@@ -44,6 +44,8 @@ export interface BrowseDevice {
   /** Every canonical model name for this codename. */
   names: string[];
   aliases: string[];
+  /** Every codename one build is valid for, including this one. */
+  group: string[];
   roms: RomChip[];
 }
 

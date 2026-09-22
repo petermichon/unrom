@@ -202,6 +202,10 @@ export function createApi(dbPath: string) {
         name: device.name,
         names: parseNames(device.names),
         aliases: aliasMap.get(key) ?? [],
+        group: [
+          device.codename,
+          ...(coverage.variantsByMain.get(key) ?? []),
+        ].sort(),
         roms: chipsFor(key),
       };
     });

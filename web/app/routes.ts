@@ -4,6 +4,7 @@ export default [
   index("routes/home.tsx"),
   route("devices", "routes/devices.tsx"),
   route("devices/:vendor", "routes/vendor.tsx"),
+  route("registry", "routes/registry.tsx"),
   route("roms", "routes/roms.tsx"),
   route("data", "routes/data.tsx"),
   route("devices/:vendor/:codename", "routes/device.tsx"),

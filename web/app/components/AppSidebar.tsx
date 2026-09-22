@@ -1,5 +1,6 @@
 import {
   Asterisk,
+  Fingerprint,
   Home,
   Layers2,
   Smartphone,
@@ -81,6 +82,16 @@ export function AppSidebar() {
               >
                 <Layers2 />
                 <span>ROMs</span>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+            <SidebarMenuItem>
+              <SidebarMenuButton
+                tooltip="Registry"
+                isActive={isActive("/registry")}
+                render={<Link to="/registry" prefetch="viewport" />}
+              >
+                <Fingerprint />
+                <span>Registry</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
             <SidebarMenuItem>
