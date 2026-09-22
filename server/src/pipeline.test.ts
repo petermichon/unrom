@@ -267,6 +267,32 @@ test("compatibility groups share one build's coverage", async () => {
   }
 });
 
+test("canonical names come from the registry", async () => {
+  const records = await parseAllSources();
+  const dir = mkdtempSync(join(tmpdir(), "unrom-test-"));
+  const dbPath = join(dir, "unrom.sqlite");
+
+  try {
+    buildDatabase(records, dbPath);
+    const api = createApi(dbPath);
+
+    // One codename can name several models; the first is the display name.
+    const sweet = api.getDevice("xiaomi", "sweet");
+    assert.deepEqual(sweet?.names, [
+      "Redmi Note 10 Pro",
+      "Redmi Note 10 Pro Max",
+    ]);
+    assert.equal(sweet?.name, "Redmi Note 10 Pro");
+
+    // A device no roster names still gets its canonical name.
+    assert.equal(api.getDevice("xiaomi", "elish")?.name, "Xiaomi Pad 5 Pro");
+
+    api.close();
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 test("cross-vendor collisions resolve to distinct devices", async () => {
   const records = await parseAllSources();
   const dir = mkdtempSync(join(tmpdir(), "unrom-test-"));

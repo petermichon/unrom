@@ -10,7 +10,10 @@ export const devices = sqliteTable(
   {
     vendor: text("vendor").notNull(),
     codename: text("codename").notNull(),
+    // Compact display name (first canonical name).
     name: text("name"),
+    // JSON array of every canonical model name for this codename.
+    names: text("names"),
   },
   (table) => [primaryKey({ columns: [table.vendor, table.codename] })],
 );

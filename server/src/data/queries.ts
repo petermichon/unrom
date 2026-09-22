@@ -35,6 +35,18 @@ type RomRow = typeof roms.$inferSelect;
 
 const deviceKey = (vendor: string, codename: string) => `${vendor}\0${codename}`;
 
+function parseNames(value: string | null): string[] {
+  if (!value) return [];
+  try {
+    const parsed: unknown = JSON.parse(value);
+    return Array.isArray(parsed)
+      ? parsed.filter((name): name is string => typeof name === "string")
+      : [];
+  } catch {
+    return [];
+  }
+}
+
 export function createApi(dbPath: string) {
   const sqlite = new Database(dbPath, { readonly: true, fileMustExist: true });
   const db = drizzle(sqlite);
@@ -188,6 +200,7 @@ export function createApi(dbPath: string) {
         vendorName: vendorName(device.vendor),
         codename: device.codename,
         name: device.name,
+        names: parseNames(device.names),
         aliases: aliasMap.get(key) ?? [],
         roms: chipsFor(key),
       };
@@ -276,6 +289,7 @@ export function createApi(dbPath: string) {
       vendorName: vendorName(device.vendor),
       codename: device.codename,
       name: device.name,
+      names: parseNames(device.names),
       aliases: deviceAliases,
       // Every codename a single build covers, including this one.
       group: [

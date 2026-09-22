@@ -16,6 +16,7 @@ import {
   vendorForCodename,
   vendorForName,
 } from "../data/identity.ts";
+import { deviceNames } from "../data/registry.ts";
 import { generateDdl } from "../db/ddl.ts";
 import {
   aliases,
@@ -39,6 +40,7 @@ interface Device {
   vendor: string;
   codename: string;
   name: string | null;
+  names: string[] | null;
 }
 
 interface Edge {
@@ -93,7 +95,9 @@ function contentHash(
   for (const device of [...deviceMap.values()].sort((a, b) =>
     key(a.vendor, a.codename).localeCompare(key(b.vendor, b.codename)),
   )) {
-    hash.update(`d\0${device.vendor}\0${device.codename}\0${device.name ?? ""}\n`);
+    hash.update(
+      `d\0${device.vendor}\0${device.codename}\0${device.name ?? ""}\0${(device.names ?? []).join("|")}\n`,
+    );
   }
   for (const edge of [...edges].sort((a, b) =>
     `${a.romId}\0${key(a.vendor, a.codename)}`.localeCompare(
@@ -167,9 +171,14 @@ export function buildDatabase(
 
   const ensureDevice = (vendor: string, codename: string): void => {
     const key = `${vendor}\0${codename}`;
-    if (!deviceMap.has(key)) {
-      deviceMap.set(key, { vendor, codename, name: null });
-    }
+    if (deviceMap.has(key)) return;
+    const curated = deviceNames(vendor, codename);
+    deviceMap.set(key, {
+      vendor,
+      codename,
+      name: curated?.[0] ?? null,
+      names: curated ?? null,
+    });
   };
 
   // Union-find over device keys to build compatibility groups: the sets of
@@ -240,8 +249,18 @@ export function buildDatabase(
       vendor,
       codename: resolved,
       name: null,
+      names: null,
     };
-    device.name ??= record.name;
+    // The registry is authoritative; otherwise fall back to the first source
+    // name seen (the rosters are treated as codename-only where curated).
+    const curated = deviceNames(vendor, resolved);
+    if (curated) {
+      device.names = curated;
+      device.name = curated[0] ?? null;
+    } else if (!device.names && record.name) {
+      device.names = [record.name];
+      device.name = record.name;
+    }
     deviceMap.set(deviceKey, device);
 
     // Only record aliases that differ beyond casing: lookups are
@@ -336,7 +355,14 @@ export function buildDatabase(
       tx.insert(roms).values({ id, name }).run();
     }
     for (const device of deviceMap.values()) {
-      tx.insert(devices).values(device).run();
+      tx.insert(devices)
+        .values({
+          vendor: device.vendor,
+          codename: device.codename,
+          name: device.name,
+          names: device.names ? JSON.stringify(device.names) : null,
+        })
+        .run();
     }
     for (const edge of edges) {
       tx.insert(romDevices).values(edge).run();

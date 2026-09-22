@@ -75,6 +75,9 @@ export default function CommandPaletteDialog({ open, onOpenChange }: Props) {
             .filter(
               (device) =>
                 (device.name ?? "").toLowerCase().includes(needle) ||
+                device.names.some((name) =>
+                  name.toLowerCase().includes(needle),
+                ) ||
                 device.codename.toLowerCase().includes(needle) ||
                 device.vendorName.toLowerCase().includes(needle) ||
                 device.aliases.some((alias) =>

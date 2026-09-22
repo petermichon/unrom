@@ -23,6 +23,8 @@ export interface DeviceDetail {
   vendorName: string;
   codename: string;
   name: string | null;
+  /** Every canonical model name for this codename. */
+  names: string[];
   aliases: string[];
   /** Every codename a single build is valid for, including this one. */
   group: string[];
@@ -39,6 +41,8 @@ export interface BrowseDevice {
   vendorName: string;
   codename: string;
   name: string | null;
+  /** Every canonical model name for this codename. */
+  names: string[];
   aliases: string[];
   roms: RomChip[];
 }

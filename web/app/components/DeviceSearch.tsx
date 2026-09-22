@@ -32,6 +32,7 @@ const VENDOR_LIMIT = 10;
 function matchesDevice(device: BrowseDevice, query: string): boolean {
   return (
     (device.name ?? "").toLowerCase().includes(query) ||
+    device.names.some((name) => name.toLowerCase().includes(query)) ||
     device.codename.toLowerCase().includes(query) ||
     device.vendorName.toLowerCase().includes(query) ||
     device.aliases.some((alias) => alias.toLowerCase().includes(query))

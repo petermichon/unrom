@@ -54,7 +54,9 @@ export default function DevicesTable({ devices }: Props) {
       {
         id: "search",
         accessorFn: (row) =>
-          [row.name, row.codename, row.vendor].filter(Boolean).join(" "),
+          [row.name, ...row.names, row.codename, row.vendor]
+            .filter(Boolean)
+            .join(" "),
         filterFn: "includesString",
         enableSorting: false,
         enableHiding: false,
