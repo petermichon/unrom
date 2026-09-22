@@ -43,14 +43,24 @@ export default function DeviceRomsTable({ roms }: Props) {
         ),
         sortingFn: (a, b) => bySortKey(a.original.name, b.original.name),
         cell: ({ row }) => (
-          <Link
-            to={`/roms/${row.original.id}`}
-            prefetch="intent"
-            title={row.original.name}
-            className="w-fit max-w-full truncate font-medium hover:underline"
-          >
-            {row.original.name}
-          </Link>
+          <span className="flex min-w-0 items-center gap-2">
+            <Link
+              to={`/roms/${row.original.id}`}
+              prefetch="intent"
+              title={row.original.name}
+              className="w-fit max-w-full truncate font-medium hover:underline"
+            >
+              {row.original.name}
+            </Link>
+            {row.original.inheritedFrom && (
+              <span
+                className="shrink-0 text-xs text-muted-foreground"
+                title={`Supports this device via its ${row.original.inheritedFrom} build`}
+              >
+                via {row.original.inheritedFrom}
+              </span>
+            )}
+          </span>
         ),
       },
       {

@@ -1,6 +1,6 @@
 import { normalizedRomDeviceSchema } from "../normalized.ts";
 import type { NormalizedRomDevice } from "../normalized.ts";
-import { expandCodename } from "../data/identity.ts";
+import { expandCodename, variantCodenames } from "../data/identity.ts";
 
 export type RawDevice = Record<string, unknown>;
 
@@ -20,6 +20,8 @@ export interface DeviceSource {
   file: string;
   select: (data: unknown) => DeviceEntry[];
   codename?: string[];
+  /** Alternate codenames the same entry covers (e.g. `codename_alt`). */
+  codenameAlt?: string[];
   name?: string[];
   brand?: string[];
   referenceUrl?: string[];
@@ -37,6 +39,7 @@ export interface RecordInput {
   name?: string | null;
   brand?: string | null;
   referenceUrl?: string | null;
+  reportedCodename?: string | null;
 }
 
 /** Build a validated record, filling the optional fields with defaults. */
@@ -157,6 +160,7 @@ export function createParser(
       name: string | null;
       brand: string | null;
       references: string[];
+      reportedCodename: string;
     }
 
     const drafts: Draft[] = [];
@@ -167,7 +171,16 @@ export function createParser(
         entry.codename ?? pick(entry.device, source.codename ?? ["codename"]);
       if (!rawCodename) continue;
 
-      for (const codename of expandCodename(rawCodename)) {
+      // One entry may cover several variants: either packed into the codename
+      // (`sweet/sweetin`) or listed in an alternate field.
+      const parts = expandCodename(rawCodename);
+      const primary = parts[0];
+      const alt = pick(entry.device, source.codenameAlt);
+      const covered = [
+        ...new Set([...parts, ...variantCodenames(primary, alt)]),
+      ];
+
+      for (const codename of covered) {
         if (seen.has(codename)) continue;
         seen.add(codename);
 
@@ -187,6 +200,7 @@ export function createParser(
                 .filter(isCitation),
             ),
           ],
+          reportedCodename: primary,
         });
       }
     }
@@ -214,6 +228,7 @@ export function createParser(
           (source.referencePage
             ? source.referencePage.replace("{codename}", draft.codename)
             : null),
+        reportedCodename: draft.reportedCodename,
       });
     });
   };

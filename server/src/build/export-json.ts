@@ -10,6 +10,7 @@ const payload = {
   devices: api.listDevices(),
   roms: api.listRoms(),
   mappings: api.listMappings(),
+  variants: api.listVariants(),
 };
 
 api.close();

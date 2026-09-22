@@ -8,6 +8,7 @@ import {
   CANONICAL_CODENAMES,
   EXCLUDED_CODENAMES,
   UNKNOWN_VENDOR,
+  VERIFIED_COVERAGE,
   canonicalCodename,
   expandCodename,
   vendorForBrand,
@@ -15,7 +16,14 @@ import {
   vendorForName,
 } from "../data/identity.ts";
 import { generateDdl } from "../db/ddl.ts";
-import { aliases, devices, meta, romDevices, roms } from "../db/schema.ts";
+import {
+  aliases,
+  deviceVariants,
+  devices,
+  meta,
+  romDevices,
+  roms,
+} from "../db/schema.ts";
 import type { NormalizedRomDevice } from "../normalized.ts";
 
 export interface BuildResult {
@@ -37,12 +45,22 @@ interface Edge {
   vendor: string;
   codename: string;
   referenceUrl: string | null;
+  // The main codename whose build covers this device, when the source grouped
+  // it with a variant (e.g. a `sweetin` edge reported under `sweet`).
+  reportedCodename: string | null;
 }
 
 interface Alias {
   vendor: string;
   alias: string;
   codename: string;
+}
+
+interface Coverage {
+  vendor: string;
+  codename: string;
+  variantCodename: string;
+  source: "declared" | "verified";
 }
 
 interface Prepared {
@@ -62,6 +80,7 @@ function contentHash(
   romMap: Map<string, string>,
   deviceMap: Map<string, Device>,
   edges: Edge[],
+  coverage: Coverage[],
 ): string {
   const hash = createHash("sha256");
   const key = (vendor: string, codename: string) => `${vendor}\0${codename}`;
@@ -80,7 +99,16 @@ function contentHash(
     ),
   )) {
     hash.update(
-      `e\0${edge.romId}\0${edge.vendor}\0${edge.codename}\0${edge.referenceUrl ?? ""}\n`,
+      `e\0${edge.romId}\0${edge.vendor}\0${edge.codename}\0${edge.referenceUrl ?? ""}\0${edge.reportedCodename ?? ""}\n`,
+    );
+  }
+  for (const row of [...coverage].sort((a, b) =>
+    key(a.vendor, `${a.codename}\0${a.variantCodename}`).localeCompare(
+      key(b.vendor, `${b.codename}\0${b.variantCodename}`),
+    ),
+  )) {
+    hash.update(
+      `v\0${row.vendor}\0${row.codename}\0${row.variantCodename}\0${row.source}\n`,
     );
   }
 
@@ -134,6 +162,14 @@ export function buildDatabase(
   const romMap = new Map<string, string>();
   const edgeMap = new Map<string, Edge>();
   const aliasMap = new Map<string, Alias>();
+  const coverageMap = new Map<string, Coverage>();
+
+  const ensureDevice = (vendor: string, codename: string): void => {
+    const key = `${vendor}\0${codename}`;
+    if (!deviceMap.has(key)) {
+      deviceMap.set(key, { vendor, codename, name: null });
+    }
+  };
 
   for (const { record, part, canonical, vendor: reported } of prepared) {
     romMap.set(record.romId, record.romName);
@@ -169,13 +205,48 @@ export function buildDatabase(
       vendor,
       codename: resolved,
       referenceUrl: null,
+      reportedCodename: null,
     };
     edge.referenceUrl ??= record.referenceUrl;
+    // A covering entry (a variant reported under a different main codename)
+    // records that main. A rename resolves to the same device, so it does not.
+    if (record.reportedCodename) {
+      const main = canonicalCodename(
+        vendor,
+        canonicalCasing(record.reportedCodename),
+      );
+      if (main !== resolved) {
+        edge.reportedCodename ??= main;
+        coverageMap.set(`${vendor}\0${main}\0${resolved}`, {
+          vendor,
+          codename: main,
+          variantCodename: resolved,
+          source: "declared",
+        });
+      }
+    }
     edgeMap.set(key, edge);
+  }
+
+  // Verified coverage is authoritative and does not depend on a roster
+  // mentioning the variant; make sure both codenames are real devices.
+  for (const [key, variants] of Object.entries(VERIFIED_COVERAGE)) {
+    const [vendor, main] = key.split("\0");
+    for (const variant of variants) {
+      ensureDevice(vendor, main);
+      ensureDevice(vendor, variant);
+      coverageMap.set(`${vendor}\0${main}\0${variant}`, {
+        vendor,
+        codename: main,
+        variantCodename: variant,
+        source: "verified",
+      });
+    }
   }
 
   const edges = [...edgeMap.values()];
   const aliasRows = [...aliasMap.values()];
+  const coverageRows = [...coverageMap.values()];
 
   // SOURCE_DATE_EPOCH makes rebuilds deterministic (reproducible builds).
   const generatedAt = process.env.SOURCE_DATE_EPOCH
@@ -183,7 +254,7 @@ export function buildDatabase(
     : new Date().toISOString();
   const metaRows: Array<[string, string]> = [
     ["generatedAt", generatedAt],
-    ["contentHash", contentHash(romMap, deviceMap, edges)],
+    ["contentHash", contentHash(romMap, deviceMap, edges, coverageRows)],
   ];
 
   // One transaction: all-or-nothing, and far faster than per-row commits.
@@ -199,6 +270,9 @@ export function buildDatabase(
     }
     for (const alias of aliasRows) {
       tx.insert(aliases).values(alias).run();
+    }
+    for (const coverage of coverageRows) {
+      tx.insert(deviceVariants).values(coverage).run();
     }
     for (const [key, value] of metaRows) {
       tx.insert(meta).values({ key, value }).run();

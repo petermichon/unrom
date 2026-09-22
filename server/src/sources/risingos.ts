@@ -35,10 +35,14 @@ export function parseRisingOS(raw: string): NormalizedRomDevice[] {
     if (!last) continue;
 
     const name = label.slice(0, label.lastIndexOf("(")).trim() || null;
+    const parts = last
+      .split("/")
+      .map((part) => part.trim())
+      .filter(Boolean);
+    const primary = parts[0];
 
-    for (const rawCodename of last.split("/")) {
-      const codename = rawCodename.trim();
-      if (!codename || seen.has(codename)) continue;
+    for (const codename of parts) {
+      if (seen.has(codename)) continue;
       seen.add(codename);
 
       records.push(
@@ -49,6 +53,7 @@ export function parseRisingOS(raw: string): NormalizedRomDevice[] {
           name,
           brand,
           referenceUrl: REFERENCE,
+          reportedCodename: primary,
         }),
       );
     }

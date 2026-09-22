@@ -4,6 +4,7 @@ import { drizzle } from "drizzle-orm/better-sqlite3";
 import type {
   BrowseDevice,
   DeviceDetail,
+  DeviceVariant,
   Mapping,
   Meta,
   RomChip,
@@ -11,7 +12,14 @@ import type {
   RomSupport,
 } from "@unrom/contract";
 
-import { aliases, devices, meta, romDevices, roms } from "../db/schema.ts";
+import {
+  aliases,
+  deviceVariants,
+  devices,
+  meta,
+  romDevices,
+  roms,
+} from "../db/schema.ts";
 import { vendorName } from "./identity.ts";
 
 // Order by the first letter/digit so leading punctuation (e.g. "/e/OS") does not
@@ -68,12 +76,47 @@ export function createApi(dbPath: string) {
     );
   }
 
-  function toRomSupport(edge: Edge, names: Map<string, string>): RomSupport {
+  function toRomSupport(
+    edge: Edge,
+    names: Map<string, string>,
+    inheritedFrom: string | null = null,
+  ): RomSupport {
     return {
       id: edge.romId,
       name: names.get(edge.romId) ?? edge.romId,
       referenceUrl: edge.referenceUrl,
+      inheritedFrom,
     };
+  }
+
+  // Device-level coverage: which build targets cover which variants.
+  function deviceCoverage(): {
+    variantsByMain: Map<string, string[]>;
+    mainsByVariant: Map<string, string[]>;
+  } {
+    const variantsByMain = new Map<string, string[]>();
+    const mainsByVariant = new Map<string, string[]>();
+    const push = (map: Map<string, string[]>, key: string, value: string) => {
+      const list = map.get(key);
+      if (list) list.push(value);
+      else map.set(key, [value]);
+    };
+
+    for (const row of db.select().from(deviceVariants).all()) {
+      push(
+        variantsByMain,
+        deviceKey(row.vendor, row.codename),
+        row.variantCodename,
+      );
+      push(
+        mainsByVariant,
+        deviceKey(row.vendor, row.variantCodename),
+        deviceKey(row.vendor, row.codename),
+      );
+    }
+    for (const list of variantsByMain.values()) list.sort();
+    for (const list of mainsByVariant.values()) list.sort();
+    return { variantsByMain, mainsByVariant };
   }
 
   function listDevices(query?: string, vendor?: string): BrowseDevice[] {
@@ -123,6 +166,21 @@ export function createApi(dbPath: string) {
       : db.select().from(devices).orderBy(asc(devices.codename)).all();
 
     const aliasMap = aliasesByDevice();
+    const coverage = deviceCoverage();
+    // A variant is supported by every ROM that builds its covering target, so
+    // the list count matches the detail page.
+    const chipsFor = (key: string): RomChip[] => {
+      const chips = [...(chipsByDevice.get(key) ?? [])];
+      for (const mainKey of coverage.mainsByVariant.get(key) ?? []) {
+        for (const chip of chipsByDevice.get(mainKey) ?? []) {
+          if (!chips.some((existing) => existing.id === chip.id)) {
+            chips.push(chip);
+          }
+        }
+      }
+      return chips.sort((a, b) => bySortKey(a.name, b.name));
+    };
+
     return rows.map((device) => {
       const key = deviceKey(device.vendor, device.codename);
       return {
@@ -131,9 +189,7 @@ export function createApi(dbPath: string) {
         codename: device.codename,
         name: device.name,
         aliases: aliasMap.get(key) ?? [],
-        roms: (chipsByDevice.get(key) ?? []).sort((a, b) =>
-          bySortKey(a.name, b.name),
-        ),
+        roms: chipsFor(key),
       };
     });
   }
@@ -172,7 +228,7 @@ export function createApi(dbPath: string) {
     const { device, aliases: deviceAliases } = resolved;
 
     const names = romNames();
-    const roms = db
+    const direct = db
       .select()
       .from(romDevices)
       .where(
@@ -181,9 +237,39 @@ export function createApi(dbPath: string) {
           eq(romDevices.codename, device.codename),
         ),
       )
-      .all()
-      .map((edge) => toRomSupport(edge, names))
-      .sort((a, b) => bySortKey(a.name, b.name));
+      .all();
+
+    // A variant is covered by another codename's builds (e.g. `sweetin` by
+    // `sweet`); it inherits that target's ROMs. Coverage is a fact about the
+    // build, sourced in `device_variants`, not inferred from one roster.
+    const coverage = deviceCoverage();
+    const key = deviceKey(device.vendor, device.codename);
+    const mains = coverage.mainsByVariant.get(key) ?? [];
+    const seenRoms = new Set(direct.map((edge) => edge.romId));
+    const inherited: Array<{ edge: Edge; from: string }> = [];
+    for (const mainKey of mains) {
+      const [mainVendor, mainCodename] = mainKey.split("\0");
+      const mainEdges = db
+        .select()
+        .from(romDevices)
+        .where(
+          and(
+            eq(romDevices.vendor, mainVendor),
+            eq(romDevices.codename, mainCodename),
+          ),
+        )
+        .all();
+      for (const edge of mainEdges) {
+        if (seenRoms.has(edge.romId)) continue;
+        seenRoms.add(edge.romId);
+        inherited.push({ edge, from: mainCodename });
+      }
+    }
+
+    const roms = [
+      ...direct.map((edge) => toRomSupport(edge, names)),
+      ...inherited.map(({ edge, from }) => toRomSupport(edge, names, from)),
+    ].sort((a, b) => bySortKey(a.name, b.name));
 
     return {
       vendor: device.vendor,
@@ -191,6 +277,8 @@ export function createApi(dbPath: string) {
       codename: device.codename,
       name: device.name,
       aliases: deviceAliases,
+      variantOf: mains.length === 1 ? mains[0].split("\0")[1] : null,
+      variants: coverage.variantsByMain.get(key) ?? [],
       roms,
     };
   }
@@ -200,57 +288,91 @@ export function createApi(dbPath: string) {
     edges: Edge[],
     deviceByKey: Map<string, DeviceRow>,
     romCountByDevice: Map<string, number>,
+    variantsByMain: Map<string, string[]>,
   ): RomDetail {
-    return {
-      id: rom.id,
-      name: rom.name,
-      deviceCount: edges.length,
-      devices: edges
-        .map((edge) => {
-          const key = deviceKey(edge.vendor, edge.codename);
-          const device = deviceByKey.get(key);
-          return {
-            vendor: edge.vendor,
-            codename: edge.codename,
-            name: device?.name ?? null,
-            romCount: romCountByDevice.get(key) ?? 0,
-          };
-        })
-        .sort((a, b) =>
-          sortKey(a.name ?? a.codename).localeCompare(
-            sortKey(b.name ?? b.codename),
-          ),
-        ),
+    const devices: RomDetail["devices"] = [];
+    const seen = new Set<string>();
+    const add = (vendor: string, codename: string) => {
+      const key = deviceKey(vendor, codename);
+      if (seen.has(key)) return;
+      seen.add(key);
+      const device = deviceByKey.get(key);
+      devices.push({
+        vendor,
+        codename,
+        name: device?.name ?? null,
+        romCount: romCountByDevice.get(key) ?? 0,
+      });
     };
+
+    // A build covers its target and every variant that target covers.
+    for (const edge of edges) {
+      add(edge.vendor, edge.codename);
+      for (const variant of variantsByMain.get(
+        deviceKey(edge.vendor, edge.codename),
+      ) ?? []) {
+        add(edge.vendor, variant);
+      }
+    }
+    devices.sort((a, b) =>
+      sortKey(a.name ?? a.codename).localeCompare(
+        sortKey(b.name ?? b.codename),
+      ),
+    );
+
+    return { id: rom.id, name: rom.name, deviceCount: devices.length, devices };
   }
 
   function indexes(): {
     deviceByKey: Map<string, DeviceRow>;
     romCountByDevice: Map<string, number>;
     edgesByRom: Map<string, Edge[]>;
+    variantsByMain: Map<string, string[]>;
   } {
     const deviceRows = db.select().from(devices).all();
     const edges = db.select().from(romDevices).all();
+    const coverage = deviceCoverage();
 
     const deviceByKey = new Map(
       deviceRows.map((d) => [deviceKey(d.vendor, d.codename), d]),
     );
-    const romCountByDevice = new Map<string, number>();
     const edgesByRom = new Map<string, Edge[]>();
+    const romsByDevice = new Map<string, Set<string>>();
 
     for (const edge of edges) {
       const key = deviceKey(edge.vendor, edge.codename);
-      romCountByDevice.set(key, (romCountByDevice.get(key) ?? 0) + 1);
+      const roms = romsByDevice.get(key);
+      if (roms) roms.add(edge.romId);
+      else romsByDevice.set(key, new Set([edge.romId]));
       const list = edgesByRom.get(edge.romId);
       if (list) list.push(edge);
       else edgesByRom.set(edge.romId, [edge]);
     }
 
-    return { deviceByKey, romCountByDevice, edgesByRom };
+    // A variant is supported by every ROM that builds its covering target.
+    for (const [variantKey, mainKeys] of coverage.mainsByVariant) {
+      const roms = romsByDevice.get(variantKey) ?? new Set<string>();
+      for (const mainKey of mainKeys) {
+        for (const id of romsByDevice.get(mainKey) ?? []) roms.add(id);
+      }
+      romsByDevice.set(variantKey, roms);
+    }
+
+    const romCountByDevice = new Map(
+      [...romsByDevice].map(([key, roms]) => [key, roms.size]),
+    );
+
+    return {
+      deviceByKey,
+      romCountByDevice,
+      edgesByRom,
+      variantsByMain: coverage.variantsByMain,
+    };
   }
 
   function listRoms(): RomDetail[] {
-    const { deviceByKey, romCountByDevice, edgesByRom } = indexes();
+    const { deviceByKey, romCountByDevice, edgesByRom, variantsByMain } =
+      indexes();
     return db
       .select()
       .from(roms)
@@ -261,6 +383,7 @@ export function createApi(dbPath: string) {
           edgesByRom.get(rom.id) ?? [],
           deviceByKey,
           romCountByDevice,
+          variantsByMain,
         ),
       )
       .sort((a, b) => bySortKey(a.name, b.name));
@@ -274,14 +397,20 @@ export function createApi(dbPath: string) {
       .get();
     if (!rom) return null;
 
-    const { deviceByKey, romCountByDevice } = indexes();
+    const { deviceByKey, romCountByDevice, variantsByMain } = indexes();
     const edges = db
       .select()
       .from(romDevices)
       .where(eq(romDevices.romId, rom.id))
       .all();
 
-    return buildRom(rom, edges, deviceByKey, romCountByDevice);
+    return buildRom(
+      rom,
+      edges,
+      deviceByKey,
+      romCountByDevice,
+      variantsByMain,
+    );
   }
 
   function listMappings(): Mapping[] {
@@ -313,8 +442,27 @@ export function createApi(dbPath: string) {
           romId: edge.romId,
           romName: names.get(edge.romId) ?? edge.romId,
           referenceUrl: edge.referenceUrl,
+          reportedCodename: edge.reportedCodename,
         };
       });
+  }
+
+  function listVariants(): DeviceVariant[] {
+    return db
+      .select()
+      .from(deviceVariants)
+      .orderBy(
+        asc(deviceVariants.vendor),
+        asc(deviceVariants.codename),
+        asc(deviceVariants.variantCodename),
+      )
+      .all()
+      .map((row) => ({
+        vendor: row.vendor,
+        codename: row.codename,
+        variantCodename: row.variantCodename,
+        source: row.source,
+      }));
   }
 
   function getMeta(): Meta {
@@ -338,6 +486,7 @@ export function createApi(dbPath: string) {
     listRoms,
     getRom,
     listMappings,
+    listVariants,
     getMeta,
     close: () => sqlite.close(),
   };

@@ -14,6 +14,8 @@ export interface RomSupport {
   id: string;
   name: string;
   referenceUrl: string | null;
+  /** Set when the ROM supports this device via a covering build target. */
+  inheritedFrom: string | null;
 }
 
 export interface DeviceDetail {
@@ -22,6 +24,10 @@ export interface DeviceDetail {
   codename: string;
   name: string | null;
   aliases: string[];
+  /** The main codename whose builds cover this device, if it is a variant. */
+  variantOf: string | null;
+  /** Codename variants this device's builds cover. */
+  variants: string[];
   roms: RomSupport[];
 }
 
@@ -49,6 +55,13 @@ export interface RomDetail extends RomSummary {
   devices: DeviceSummary[];
 }
 
+export interface DeviceVariant {
+  vendor: string;
+  codename: string;
+  variantCodename: string;
+  source: string;
+}
+
 export interface Mapping {
   vendor: string;
   vendorName: string;
@@ -57,4 +70,5 @@ export interface Mapping {
   romId: string;
   romName: string;
   referenceUrl: string | null;
+  reportedCodename: string | null;
 }

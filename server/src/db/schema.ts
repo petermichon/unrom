@@ -22,10 +22,34 @@ export const romDevices = sqliteTable(
     vendor: text("vendor").notNull(),
     codename: text("codename").notNull(),
     referenceUrl: text("reference_url"),
+    reportedCodename: text("reported_codename"),
   },
   (table) => [
     primaryKey({ columns: [table.romId, table.vendor, table.codename] }),
     index("rom_devices_device_idx").on(table.vendor, table.codename),
+  ],
+);
+
+// Device-level coverage: a build target (`codename`) also covers a hardware
+// variant (`variantCodename`). `source` is `verified` (checked in the build
+// tree) or `declared` (a source grouped the codenames). Variant pages inherit
+// the main's ROMs, so coverage is a fact about the build, not one roster.
+export const deviceVariants = sqliteTable(
+  "device_variants",
+  {
+    vendor: text("vendor").notNull(),
+    codename: text("codename").notNull(),
+    variantCodename: text("variant_codename").notNull(),
+    source: text("source").notNull(),
+  },
+  (table) => [
+    primaryKey({
+      columns: [table.vendor, table.codename, table.variantCodename],
+    }),
+    index("device_variants_variant_idx").on(
+      table.vendor,
+      table.variantCodename,
+    ),
   ],
 );
 
@@ -54,4 +78,11 @@ export const meta = sqliteTable("meta", {
 // disposable, rebuildable artifact, so its DDL is generated from these table
 // definitions in `ddl.ts` rather than maintained here by hand or tracked with
 // migrations. New tables must be added to `tables` below.
-export const tables = [roms, devices, romDevices, aliases, meta] as const;
+export const tables = [
+  roms,
+  devices,
+  romDevices,
+  aliases,
+  deviceVariants,
+  meta,
+] as const;

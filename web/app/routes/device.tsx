@@ -75,13 +75,20 @@ export default function DeviceRoute() {
               {device.codename}
             </Badge>
           }
-          description={`${device.vendorName} · Supported by ${
-            device.roms.length
-          }${device.roms.length === 1 ? " ROM" : " ROMs"}${
+          description={[
+            `${device.vendorName} · Supported by ${device.roms.length}${
+              device.roms.length === 1 ? " ROM" : " ROMs"
+            }`,
+            device.variantOf ? `Variant of ${device.variantOf}` : null,
+            device.variants.length
+              ? `Also covers ${device.variants.join(", ")}`
+              : null,
             device.aliases.length
-              ? ` · Also known as ${device.aliases.join(", ")}`
-              : ""
-          }`}
+              ? `Also known as ${device.aliases.join(", ")}`
+              : null,
+          ]
+            .filter(Boolean)
+            .join(" · ")}
         />
       </div>
 

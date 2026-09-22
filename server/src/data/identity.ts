@@ -161,16 +161,17 @@ export const EXCLUDED_CODENAMES = new Set<string>([
 
 export const UNKNOWN_VENDOR = "unknown";
 
-// Some sources pack several codenames into one entry with "/". Where a part is
-// not a device of its own, map the entry to the real codename(s) instead of
-// creating a phantom device. Anything unlisted is split on "/".
+// Some sources pack several codenames into one entry with "/", because one
+// build covers several variants (e.g. `ginkgo/willow` = Redmi Note 8 / 8T).
+// Every part is a device of its own, so keep them all. Only tokens that are not
+// codenames (`in`, a region marker in `raphael/in`) are dropped.
 const COMBINED_CODENAMES: Record<string, string[]> = {
-  "ginkgo/willow": ["ginkgo"],
-  "haydnin/haydn": ["haydn"],
+  "ginkgo/willow": ["ginkgo", "willow"],
+  "haydnin/haydn": ["haydnin", "haydn"],
   "mojito/sunny": ["mojito", "sunny"],
   "raphael/in": ["raphael"],
-  "sapphire/sapphiren": ["sapphire"],
-  "vayu/bhima": ["vayu"],
+  "sapphire/sapphiren": ["sapphire", "sapphiren"],
+  "vayu/bhima": ["vayu", "bhima"],
 };
 
 export function expandCodename(codename: string): string[] {
@@ -183,15 +184,67 @@ export function expandCodename(codename: string): string[] {
     .filter(Boolean);
 }
 
+// `codename_alt` is a loose field: it is often just a duplicate of `codename`,
+// and sometimes a vendor identifier (`OnePlus7TPro`) rather than a device. Only
+// tokens in this set name a real device variant, so only these are treated as
+// additional devices the entry covers.
+export const VARIANT_CODENAMES = new Set<string>([
+  "aliothin",
+  "bhima",
+  "courbetin",
+  "curtana",
+  "davinciin",
+  "excalibur",
+  "gram",
+  "haydnin",
+  "joyeuse",
+  "karna",
+  "lemon",
+  "m62",
+  "marblein",
+  "phoenixin",
+  "pomelo",
+  "sapphiren",
+  "skyin",
+  "sweetin",
+  "willow",
+]);
+
+/** Codenames an entry covers beyond its primary, filtered to real variants. */
+export function variantCodenames(
+  primary: string,
+  alt: string | null | undefined,
+): string[] {
+  if (!alt) return [];
+  return alt
+    .split("/")
+    .map((part) => part.trim())
+    .filter(
+      (part) =>
+        part !== "" &&
+        part.toLowerCase() !== primary.toLowerCase() &&
+        VARIANT_CODENAMES.has(part.toLowerCase()),
+    );
+}
+
+// Device-level coverage verified from the build itself, for facts rosters do
+// not always repeat. `TARGET_OTA_ASSERT_DEVICE := sweet,sweetin` in the unified
+// `device_xiaomi_sweet` tree means a `sweet` build is valid on `sweetin` too
+// (confirmed in LineageOS, crDroid and Evolution X). Rosters that group the
+// codenames (RisingOS `sweet/sweetin`, AwakenOS/PixelOS `codename_alt`) declare
+// the same; this entry keeps it true if they stop. Keyed `vendor\0codename`.
+export const VERIFIED_COVERAGE: Record<string, string[]> = {
+  "xiaomi\0sweet": ["sweetin"],
+};
+
 // Within a vendor, some sources use a different codename for the same device.
 // LineageOS uses `xmsirius` for the Xiaomi Mi 8 SE because `sirius` is Sony's
 // Xperia Z2; iodéOS uses `2e` for the Teracube 2e (2020 batch) that /e/OS calls
-// `zirconia`; RisingOS packs the Redmi Note 10 Pro as `sweet/sweetin` while
-// every other source uses `sweet`. Map `(vendor, codename)` → canonical.
+// `zirconia`. A rename is not a variant: the codenames denote the same device,
+// so the edges merge. Map `(vendor, codename)` → canonical.
 const VENDOR_CODENAME_ALIASES: Record<string, string> = {
   "teracube\u00002e": "zirconia",
   "xiaomi\0sirius": "xmsirius",
-  "xiaomi\0sweetin": "sweet",
 };
 
 export function canonicalCodename(vendor: string, codename: string): string {
