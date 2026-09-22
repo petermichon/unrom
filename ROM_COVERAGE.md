@@ -70,6 +70,7 @@ Index of Android ROM projects from
 - ❌ Fluid OS
 - ❌ Fork LineageOS
 - ❌ fortuneOS
+- ❌ FortuneOS-CAF
 - ❌ Freaky OS
 - ❌ Fusion OS
 - ❌ GenesisOS
@@ -83,7 +84,7 @@ Index of Android ROM projects from
 - 🟢 iodéOS
 - ❌ Ion OS
 - ❌ IronOS Project
-- ❌ Kang OS
+- ❌ Kang OS (incl. Kang-OS-R)
 - ❌ Komodo OS
 - ❌ Krypton Open Source Project
 - ❌ Legion OS
@@ -101,14 +102,16 @@ Index of Android ROM projects from
 - 🟢 Mist OS
 - ❌ MoKee ROM
 - ❌ MSM Xtended
+- ❌ NavaDroid
 - 🟢 Nethunter OS
 - ❌ Nitrogen OS
-- ❌ Nusantara Project
+- ❌ Nusantara Project (both orgs)
 - ❌ Octavi OS
 - ❌ Omni ROM
 - ❌ OrionOS
 - ❌ PalladiumOS
 - 🟢 Paranoid Android
+- ❌ PenguinOS
 - ❌ PhoenixAOSP
 - ❌ Pixel Blaster OS
 - ❌ Pixel Dust
@@ -178,4 +181,5 @@ Index of Android ROM projects from
 - ❌ Xen AOSP
 - ❌ Xenon HD
 - ❌ YAAP AOSP
+- ❌ Yukina Supremacy
 - ❌ ZeusOS
