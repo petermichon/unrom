@@ -184,6 +184,12 @@ export function expandCodename(codename: string): string[] {
     .filter(Boolean);
 }
 
+const CODENAME_PATTERN = /^[A-Za-z0-9][A-Za-z0-9._-]*$/;
+
+export function isValidCodename(codename: string): boolean {
+  return CODENAME_PATTERN.test(codename);
+}
+
 // A compatibility group is the set of codenames a single build is valid for.
 // It is symmetric by construction: `TARGET_OTA_ASSERT_DEVICE := sweet,sweetin`
 // in the unified device tree means a build named either codename accepts both.

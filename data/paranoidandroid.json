@@ -2,7 +2,7 @@
      "devices": [
           {
                "name": "Zenfone 9",
-               "codename": "AI2202_QLC",
+               "codename": "davinci",
                "manufacturer": "Asus",
                "active": true,
                "maintainers": [

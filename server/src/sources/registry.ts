@@ -85,6 +85,7 @@ const configs: DeviceSource[] = [
     file: "corvusos.json",
     select: selectors.grouped(["Rom Generic", "Phh"]),
     name: ["device"],
+    brandCorrections: { payton: "Motorola" },
     // The project's download host is dead; cite the pinned roster file.
     referencePage:
       "https://github.com/CorvusRom-Devices/jenkins/blob/main/devices.json",
@@ -162,6 +163,7 @@ const configs: DeviceSource[] = [
     select: selectors.devices("devices"),
     name: ["name"],
     brand: ["manufacturer"],
+    codenameCorrections: { davinci: "AI2202_QLC" },
     referenceUrl: ["xda_thread"],
     referencePage: "https://github.com/AOSPA/ota/blob/master/devices",
   },

@@ -28,6 +28,8 @@ export interface DeviceSource {
   referencePage?: string;
   /** Correct display names where upstream mislabels a codename. */
   nameCorrections?: Record<string, string>;
+  codenameCorrections?: Record<string, string>;
+  brandCorrections?: Record<string, string>;
 }
 
 export interface RecordInput {
@@ -171,7 +173,9 @@ export function createParser(
 
       // An entry may pack several codenames (`sweet/sweetin`); each is a
       // device, and the first is the codename the roster keys the entry by.
-      const parts = expandCodename(rawCodename);
+      const parts = expandCodename(rawCodename).map(
+        (part) => source.codenameCorrections?.[part] ?? part,
+      );
       const primary = parts[0];
 
       for (const codename of parts) {
@@ -184,6 +188,7 @@ export function createParser(
             source.nameCorrections?.[codename] ??
             pick(entry.device, source.name ?? ["name"]),
           brand:
+            source.brandCorrections?.[codename] ??
             pick(entry.device, source.brand ?? ["brand"]) ??
             entry.group ??
             null,

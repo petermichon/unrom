@@ -12,6 +12,7 @@ import {
   VERIFIED_GROUPS,
   canonicalCodename,
   expandCodename,
+  isValidCodename,
   vendorForBrand,
   vendorForCodename,
   vendorForName,
@@ -154,6 +155,7 @@ export function buildDatabase(
     for (const part of expandCodename(record.codename)) {
       // Emulator images and unified build targets are not devices.
       if (EXCLUDED_CODENAMES.has(part.trim().toLowerCase())) continue;
+      if (!isValidCodename(part)) continue;
       const canonical = canonicalCasing(part);
       prepared.push({ record, part, canonical, vendor: reportedVendor });
       if (reportedVendor) {

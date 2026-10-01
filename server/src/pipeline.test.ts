@@ -12,6 +12,7 @@ import {
   EXCLUDED_CODENAMES,
   canonicalCodename,
   expandCodename,
+  isValidCodename,
   vendorForBrand,
 } from "./data/identity.ts";
 import { createParser, isCitation, selectors } from "./sources/adapter.ts";
@@ -195,6 +196,39 @@ test("shared raw references fall through to the reference page", () => {
     byCodename.get("fallback"),
     "https://example.com/pinned/fallback",
   );
+});
+
+test("source corrections fix upstream mislabels", () => {
+  const parse = createParser({
+    id: "test",
+    romName: "Test",
+    file: "test.json",
+    select: selectors.array,
+    brand: ["brand"],
+    codenameCorrections: { davinci: "AI2202_QLC" },
+    brandCorrections: { payton: "Motorola" },
+  });
+
+  const records = parse(
+    JSON.stringify([
+      { codename: "davinci", brand: "Asus", name: "Zenfone 9" },
+      { codename: "payton", brand: "Xiaomi", name: "Moto X4" },
+    ]),
+  );
+
+  assert.deepEqual(
+    records.map((record) => [record.codename, record.brand]),
+    [
+      ["AI2202_QLC", "Asus"],
+      ["payton", "Motorola"],
+    ],
+  );
+});
+
+test("malformed codenames are rejected", () => {
+  assert.equal(isValidCodename("X1 - (6781)"), false);
+  assert.equal(isValidCodename("AI2202_QLC"), true);
+  assert.equal(isValidCodename("davinci"), true);
 });
 
 test("renamed codenames resolve to the canonical device", async () => {
