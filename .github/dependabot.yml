@@ -12,8 +12,17 @@ updates:
         patterns: ["*"]
         update-types: ["minor", "patch"]
     # TanStack Table v9 is a breaking migration; revisit deliberately.
+    # eslint 10 / TypeScript 7 are ahead of the peer graph: eslint-plugin-jsx-a11y
+    # caps at eslint 9 and typescript-eslint at TypeScript <6.1. Upgrade once they
+    # catch up.
     ignore:
       - dependency-name: "@tanstack/react-table"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "eslint"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@eslint/js"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "typescript"
         update-types: ["version-update:semver-major"]
 
   - package-ecosystem: github-actions
