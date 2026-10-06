@@ -655,9 +655,9 @@
 - eva:
     model  : Huawei P9
     images :
-      - id     : eva-los
-        name   : Huawei P9 (LineageOS 16.0)
-        android: pie
+      - id     : eva-ultra
+        name   : Huawei P9 (EMUI8/LineageOS 16.0)
+        android: oreo
     kernels:
       - id          : eva-emui
         description : Huawei P9 for EMUI
@@ -683,6 +683,18 @@
             author     : vvvbbbcz
             source     : 'git clone https://gitlab.com/vvvbbbcz/android_kernel_huawei_hi3650.git -b upstream'
             features   : [HID, Injection, RTL88XXAU]
+      - id          : eva-ultra
+        description : Huawei P9 for EMUI8/LineageOS16
+        devicenames : eva
+        kernelstring: NetHunter Ultra Kernel For Huawei P9
+        arch        : arm64
+        versions    :
+          - android    : oreo
+            linux      : 4.04
+            description: EMUI8/LineageOS16
+            author     : apk0mix5900
+            source     : 'git clone https://github.com/apk0mix5900/android_kernel_huawei_hi3650'
+            features   : [BT_RFCOMM, INTERNAL_BT, RTL_BT, HID-4, BadUSB, Injection, Nexmon, Nexmon-Kernel-Injector, RTL8187, RTL8192CU, RTL8xxxU, RTL8812AU, RTL8814AU, RTL88XXAU, ATH9K_HTC, CARL9170, ATH6KL_USB, RT2500USB, RT73USB, RT2800USB, MT7601U, ZD1211RW, HACKRF, RTL-SDR, AIRSPY, NFS, RNDIS, CDC_ECM, USB_SERIAL, CH341, CP210X, CAN, CDROM]
 - flo:
     model  : Google Nexus 7 (2013)
     kernels:
@@ -3411,3 +3423,37 @@
             author     : notatallnic189
             source     : 'git clone https://github.com/notatallnic189/whyred-nethunter-kernel -b main'
             features   : [HID, Injection, RTL8812AU]
+- milanf:
+    model  : Motorola Moto G Stylus 5G (2022)
+    images :
+      - id     : milanf-los
+        name   : Moto G Stylus 5G (2022) (LineageOS 23.2)
+        android: sixteen
+        rootfs : full
+    kernels:
+      - id          : milanf-los
+        description : Moto G Stylus 5G (2022) for LineageOS 23.2
+        kernelstring: NetHunter Kernel for Moto G Stylus 5G (2022)
+        devicenames : milanf,XT2215-1,XT2215-3,XT2215-4
+        arch        : arm64
+        ramdisk     : auto
+        resolution  : 1080x2460
+        block       : /dev/block/bootdevice/by-name/boot
+        version     : 5.4.302
+        modules     : 0
+        slot_device : 1
+        versions    :
+          - android    : sixteen
+            linux      : 5.4.302
+            description: LineageOS 23.2 (Android 16)
+            author     : TigerClips1
+            source     : 'git clone https://github.com/TigerClips1/kali-nethunter-milanf-kernel -b nethunter'
+            features   : [
+              SYSVIPC, ATH6KL, CARL9170, MT7601U, ZD1211RW, ZD1201, HID, BadUSB,
+              Injection, CDROM, mac80211, USBMon, IPSET, NFS, CAN, SLCAN, BTUSB,
+              BT_RFCOMM, UART H4, RT2800USB, RT2500USB, RT73USB, ATH9K_HTC, MT76,
+              RTL8xxxU, RTL8187, RTL8192CU, RTL8188EUS, RTW88XXAU, SDR, RTL-SDR,
+              AIRSPY, HACKRF AND MSI2500, CH341, CP210X, F81232, FTDI, PL2303,
+              ARK3116, MCT_U232, BELKIN, TI, CYPRESS_M8, KEYSPAN, CDC_ACM,
+              QMI_WWAN, CDC_MBIM, RNDIS, CDC_ECM, HLCAN
+            ]
