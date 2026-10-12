@@ -135,6 +135,9 @@ test("brands map to manufacturers", () => {
   assert.equal(vendorForBrand("realme"), "realme");
   assert.equal(vendorForBrand("ZUK"), "lenovo");
   assert.equal(vendorForBrand("LGE"), "lg");
+  assert.equal(vendorForBrand("Amazon"), "amazon");
+  assert.equal(vendorForBrand("SDMC"), "sdmc");
+  assert.equal(vendorForBrand("Ulefone"), "ulefone");
   assert.equal(vendorForBrand(null), null);
 });
 
