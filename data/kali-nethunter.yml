@@ -2666,11 +2666,11 @@
     model  : Xiaomi Mi 9 Lite / CC9
     images :
       - id     : pyxis-los
-        name   : Xiaomi Mi 9 Lite / CC9 (LineageOS 21)
-        android: fourteen
+        name   : Xiaomi Mi 9 Lite / CC9 (LineageOS 22.2)
+        android: fifteen
     kernels:
       - id          : pyxis-los
-        description : Xiaomi Mi 9 Lite / CC9 for LineageOS 21
+        description : Xiaomi Mi 9 Lite / CC9 for LineageOS 22.2
         kernelstring: NetHunter kernel for Xiaomi Mi 9 Lite / CC9
         arch        : arm64
         devicenames : pyxis
@@ -2683,6 +2683,12 @@
             description: LineageOS 21
             author     : yesimxev
             source     : 'git clone https://github.com/yesimxev/android_kernel_xiaomi_sdm710 -b lineage-21'
+          - android    : fifteen
+            linux      : 4.9
+            description: LineageOS 22.2
+            author     : yesimxev
+            source     : 'git clone https://github.com/yesimxev/android_kernel_xiaomi_sdm710 -b lineage-22.2'
+            features   : [BT_RFCOMM, HID-4, Injection, QCACLD Injection, RTL88XXAU, RTL8188EUS, UB500, NFS, CAN]
 - r8q:
     model  : Samsung Galaxy S20 FE 5G (Snapdragon)
     images :
@@ -3178,13 +3184,6 @@
             features   : [HID, Injection, Nexmon, RTL8812AU]
 - ticwatchpro:
     model  : TicWatch Pro / Pro 4G/LTE / Pro 2020
-    images :
-      - id     : ticwatchpro
-        name   : TicWatch Pro / Pro 4G/LTE / Pro 2020 (Wear OS)
-        android: wearos
-        rootfs : nano
-        docs   : "https://www.kali.org/docs/nethunter/installing-nethunter-on-the-ticwatch-pro/"
-        note   : "Uses nano rootfs"
     kernels:
       - id          : ticwatchpro
         description : TicWatch Pro for Wear OS
