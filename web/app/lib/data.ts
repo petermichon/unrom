@@ -3,6 +3,7 @@ import type {
   DeviceDetail,
   Mapping,
   Meta,
+  RegistryEntry,
   RomDetail,
 } from "@/lib/types";
 
@@ -59,6 +60,10 @@ export function fetchDevice(
   return get<DeviceDetail>(
     `/api/devices/${encodeURIComponent(vendor)}/${encodeURIComponent(codename)}`,
   );
+}
+
+export function fetchRegistry(): Promise<RegistryEntry[]> {
+  return get<RegistryEntry[]>("/api/registry");
 }
 
 export function fetchRoms(): Promise<RomDetail[]> {

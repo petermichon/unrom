@@ -49,6 +49,7 @@ for (const path of [
   "/api/meta",
   "/api/devices",
   "/api/devices/*",
+  "/api/registry",
   "/api/roms",
   "/api/roms/*",
   "/api/data",
@@ -88,6 +89,7 @@ app.get("/api", (c) =>
       "GET /api/meta",
       "GET /api/devices?q=&vendor=",
       "GET /api/devices/:vendor/:codename",
+      "GET /api/registry?q=&vendor=",
       "GET /api/roms",
       "GET /api/roms/:id",
       "GET /api/data",
@@ -121,6 +123,15 @@ app.get("/api/devices/:vendor/:codename", (c) => {
     ? c.json(device)
     : c.json({ error: `device not found: ${vendor}/${codename}` }, 404);
 });
+
+app.get("/api/registry", (c) =>
+  c.json(
+    api.listRegistry(
+      c.req.query("q") ?? undefined,
+      c.req.query("vendor") ?? undefined,
+    ),
+  ),
+);
 
 app.get("/api/roms", (c) => c.json(api.listRoms()));
 

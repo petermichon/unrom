@@ -1,4 +1,4 @@
-import { Fragment, useMemo } from "react";
+import { useMemo } from "react";
 import type { ColumnDef } from "@tanstack/react-table";
 import { Link } from "react-router";
 import { DataTable } from "@/components/data-table/data-table";
@@ -11,68 +11,38 @@ import { DataTableToolbar } from "@/components/data-table/data-table-toolbar";
 import { DataTableViewOptions } from "@/components/data-table/data-table-view-options";
 import { SearchInput } from "@/components/SearchInput";
 import { Button } from "@/components/ui/button";
-import type { BrowseDevice } from "@/lib/types";
+import type { RegistryEntry } from "@/lib/types";
 
-const MOBILE_HIDDEN = new Set(["names", "aliases", "group"]);
+const MOBILE_HIDDEN = new Set(["names"]);
 const columnClassName = (id: string) =>
   MOBILE_HIDDEN.has(id) ? "hidden md:table-cell" : undefined;
 
 interface Props {
-  devices: BrowseDevice[];
+  entries: RegistryEntry[];
 }
 
-function Codenames({ vendor, values }: { vendor: string; values: string[] }) {
-  if (values.length === 0) {
-    return <span className="text-muted-foreground">—</span>;
-  }
-  return (
-    <span className="font-mono text-xs text-muted-foreground whitespace-normal break-words">
-      {values.map((codename, index) => (
-        <Fragment key={codename}>
-          {index > 0 ? ", " : ""}
-          <Link
-            to={`/devices/${vendor}/${codename}`}
-            prefetch="intent"
-            className="hover:text-foreground hover:underline"
-          >
-            {codename}
-          </Link>
-        </Fragment>
-      ))}
-    </span>
-  );
-}
-
-export default function RegistryTable({ devices }: Props) {
+export default function RegistryTable({ entries }: Props) {
   const vendorOptions = useMemo<FacetOption[]>(() => {
     const counts = new Map<string, { name: string; count: number }>();
-    for (const device of devices) {
-      const entry = counts.get(device.vendor) ?? {
-        name: device.vendorName,
+    for (const entry of entries) {
+      const item = counts.get(entry.vendor) ?? {
+        name: entry.vendorName,
         count: 0,
       };
-      entry.count++;
-      counts.set(device.vendor, entry);
+      item.count++;
+      counts.set(entry.vendor, item);
     }
     return [...counts]
       .sort(([, a], [, b]) => a.name.localeCompare(b.name))
-      .map(([value, entry]) => ({ label: entry.name, value }));
-  }, [devices]);
+      .map(([value, item]) => ({ label: item.name, value }));
+  }, [entries]);
 
-  const columns = useMemo<ColumnDef<BrowseDevice>[]>(
+  const columns = useMemo<ColumnDef<RegistryEntry>[]>(
     () => [
       {
         id: "search",
         accessorFn: (row) =>
-          [
-            row.name,
-            ...row.names,
-            row.codename,
-            row.vendor,
-            row.vendorName,
-            ...row.aliases,
-            ...row.group,
-          ]
+          [row.name, ...row.names, row.codename, row.vendor, row.vendorName]
             .filter(Boolean)
             .join(" "),
         filterFn: "includesString",
@@ -100,14 +70,36 @@ export default function RegistryTable({ devices }: Props) {
           value.includes(row.original.vendor),
       },
       {
+        id: "codename",
+        accessorFn: (row) => row.codename,
+        meta: { title: "Codename" },
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title="Codename" />
+        ),
+        cell: ({ row }) =>
+          row.original.supported ? (
+            <Link
+              to={`/devices/${row.original.vendor}/${row.original.codename}`}
+              prefetch="intent"
+              className="font-mono text-xs text-muted-foreground hover:text-foreground hover:underline"
+            >
+              {row.original.codename}
+            </Link>
+          ) : (
+            <span className="font-mono text-xs text-muted-foreground">
+              {row.original.codename}
+            </span>
+          ),
+      },
+      {
         id: "device",
         accessorFn: (row) => row.name ?? row.codename,
         meta: { title: "Device" },
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="Device" />
         ),
-        cell: ({ row }) => (
-          <div className="flex min-w-0 flex-col">
+        cell: ({ row }) =>
+          row.original.supported ? (
             <Link
               to={`/devices/${row.original.vendor}/${row.original.codename}`}
               prefetch="intent"
@@ -115,11 +107,11 @@ export default function RegistryTable({ devices }: Props) {
             >
               {row.original.name ?? row.original.codename}
             </Link>
-            <span className="truncate font-mono text-xs text-muted-foreground">
-              {row.original.codename}
+          ) : (
+            <span className="block truncate font-medium">
+              {row.original.name ?? row.original.codename}
             </span>
-          </div>
-        ),
+          ),
       },
       {
         id: "names",
@@ -137,38 +129,6 @@ export default function RegistryTable({ devices }: Props) {
           </span>
         ),
       },
-      {
-        id: "aliases",
-        accessorFn: (row) => row.aliases.join(" "),
-        meta: { title: "Renames" },
-        enableSorting: false,
-        header: ({ column }) => (
-          <DataTableColumnHeader column={column} title="Renames" />
-        ),
-        cell: ({ row }) => (
-          <Codenames
-            vendor={row.original.vendor}
-            values={row.original.aliases}
-          />
-        ),
-      },
-      {
-        id: "group",
-        accessorFn: (row) => row.group.join(" "),
-        meta: { title: "Compatibility" },
-        enableSorting: false,
-        header: ({ column }) => (
-          <DataTableColumnHeader column={column} title="Compatibility" />
-        ),
-        cell: ({ row }) => (
-          <Codenames
-            vendor={row.original.vendor}
-            values={row.original.group.filter(
-              (codename) => codename !== row.original.codename,
-            )}
-          />
-        ),
-      },
     ],
     [],
   );
@@ -176,7 +136,7 @@ export default function RegistryTable({ devices }: Props) {
   return (
     <DataTable
       columns={columns}
-      data={devices}
+      data={entries}
       columnClassName={columnClassName}
       tableClassName="min-w-[36rem]"
       initialState={{

@@ -7,6 +7,7 @@ import type {
   DeviceVariant,
   Mapping,
   Meta,
+  RegistryEntry,
   RomChip,
   RomDetail,
   RomSupport,
@@ -17,6 +18,7 @@ import {
   deviceVariants,
   devices,
   meta,
+  registry,
   romDevices,
   roms,
 } from "../db/schema.ts";
@@ -391,6 +393,47 @@ export function createApi(dbPath: string) {
     };
   }
 
+  // The curated registry, independent of source coverage.
+  function listRegistry(query?: string, vendor?: string): RegistryEntry[] {
+    const needle = query?.trim().toLowerCase();
+    const supported = new Set(
+      db
+        .select({ vendor: devices.vendor, codename: devices.codename })
+        .from(devices)
+        .all()
+        .map((row) => deviceKey(row.vendor, row.codename)),
+    );
+    return db
+      .select()
+      .from(registry)
+      .all()
+      .map((row) => ({
+        vendor: row.vendor,
+        vendorName: vendorName(row.vendor),
+        codename: row.codename,
+        name: row.name,
+        names: parseNames(row.names),
+        supported: supported.has(deviceKey(row.vendor, row.codename)),
+      }))
+      .filter((entry) => !vendor || entry.vendor === vendor)
+      .filter(
+        (entry) =>
+          !needle ||
+          [
+            entry.vendor,
+            entry.vendorName,
+            entry.codename,
+            entry.name ?? "",
+            ...entry.names,
+          ].some((value) => value.toLowerCase().includes(needle)),
+      )
+      .sort(
+        (a, b) =>
+          bySortKey(a.vendorName, b.vendorName) ||
+          a.codename.localeCompare(b.codename),
+      );
+  }
+
   function listRoms(): RomDetail[] {
     const { deviceByKey, romCountByDevice, edgesByRom, variantsByMain } =
       indexes();
@@ -505,6 +548,7 @@ export function createApi(dbPath: string) {
   return {
     listDevices,
     getDevice,
+    listRegistry,
     listRoms,
     getRom,
     listMappings,

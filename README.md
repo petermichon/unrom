@@ -51,6 +51,10 @@ docker compose -f deploy/compose.yaml run --rm data npm run ingest --workspace s
 docker compose -f deploy/compose.yaml run --rm data
 ```
 
+Each build also writes `server/dist/registry-report.json`: source-reported names
+for uncurated devices (candidates), conflicts where sources disagree, and
+per-vendor coverage. Use it to grow the curated registry incrementally.
+
 ### Production (CI/CD)
 
 - **CI** (`.github/workflows/ci.yml`) — typechecks on every push/PR, and on
@@ -96,6 +100,7 @@ GET /api/health                   → { ok: true }
 GET /api/meta                     → { generatedAt, contentHash }
 GET /api/devices?q=&vendor=       → BrowseDevice[]
 GET /api/devices/:vendor/:codename → DeviceDetail | 404
+GET /api/registry?q=&vendor=      → RegistryEntry[]
 GET /api/roms                     → RomDetail[]
 GET /api/roms/:id                 → RomDetail | 404
 GET /api/data                     → Mapping[]

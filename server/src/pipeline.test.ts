@@ -15,6 +15,7 @@ import {
   isValidCodename,
   vendorForBrand,
 } from "./data/identity.ts";
+import { DEVICE_NAMES } from "./data/registry.ts";
 import { createParser, isCitation, selectors } from "./sources/adapter.ts";
 import { parseKaliNetHunter } from "./sources/kali-nethunter.ts";
 import { ALLOWED_EMPTY_FILES, sources } from "./sources/registry.ts";
@@ -323,6 +324,70 @@ test("canonical names come from the registry", async () => {
 
     // A device no roster names still gets its canonical name.
     assert.equal(api.getDevice("xiaomi", "elish")?.name, "Xiaomi Pad 5 Pro");
+
+    api.close();
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("the registry exposes every curated entry", async () => {
+  const records = await parseAllSources();
+  const dir = mkdtempSync(join(tmpdir(), "unrom-test-"));
+  const dbPath = join(dir, "unrom.sqlite");
+
+  try {
+    const built = buildDatabase(records, dbPath);
+    const api = createApi(dbPath);
+
+    const entries = api.listRegistry();
+    assert.equal(entries.length, Object.keys(DEVICE_NAMES).length);
+
+    // The curation report covers every device that is not curated.
+    const report = built.registryReport;
+    assert.equal(report.summary.registryEntries, entries.length);
+    assert.equal(
+      report.summary.curated + report.summary.fallback + report.summary.unnamed,
+      report.summary.devices,
+    );
+    assert.equal(report.summary.devices, built.deviceCount);
+    assert.equal(
+      report.candidates.length,
+      report.summary.devices - report.summary.curated,
+    );
+    assert.equal(
+      report.candidates.some((candidate) => candidate.codename === "sweet"),
+      false,
+      "curated devices are not candidates",
+    );
+    for (const conflict of report.conflicts) {
+      assert.ok(conflict.sources.length > 1);
+      assert.ok(
+        new Set(conflict.sources.map((source) => source.name)).size > 1,
+      );
+    }
+
+    const sweet = entries.find(
+      (entry) => entry.vendor === "xiaomi" && entry.codename === "sweet",
+    );
+    assert.deepEqual(sweet?.names, [
+      "Redmi Note 10 Pro",
+      "Redmi Note 10 Pro Max",
+    ]);
+    assert.equal(sweet?.name, "Redmi Note 10 Pro");
+    assert.equal(sweet?.supported, true);
+
+    // Lookup works in both directions through the search filter.
+    assert.deepEqual(
+      api.listRegistry("sweetin").map((entry) => entry.codename),
+      ["sweetin"],
+    );
+    assert.deepEqual(
+      api.listRegistry(undefined, "xiaomi").map((entry) => entry.vendor),
+      Array(entries.filter((entry) => entry.vendor === "xiaomi").length).fill(
+        "xiaomi",
+      ),
+    );
 
     api.close();
   } finally {

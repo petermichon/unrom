@@ -3,7 +3,7 @@ import { useLoaderData } from "react-router";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { PageHeader } from "@/components/PageHeader";
 import RegistryTable from "@/components/RegistryTable";
-import { fetchDevices } from "@/lib/data";
+import { fetchRegistry } from "@/lib/data";
 import { canonical } from "@/lib/seo";
 
 export const meta: MetaFunction = () => [
@@ -11,21 +11,21 @@ export const meta: MetaFunction = () => [
   {
     name: "description",
     content:
-      "Look up a device codename by model name, or a model name by codename, with renames and compatibility groups.",
+      "Look up a curated device model name by vendor and codename, or the reverse.",
   },
   canonical("/registry"),
 ];
 
 export async function loader() {
-  return { devices: await fetchDevices() };
+  return { entries: await fetchRegistry() };
 }
 
 export async function clientLoader() {
-  return { devices: await fetchDevices() };
+  return { entries: await fetchRegistry() };
 }
 
 export default function RegistryRoute() {
-  const { devices } = useLoaderData<typeof loader>();
+  const { entries } = useLoaderData<typeof loader>();
 
   return (
     <div className="flex flex-col gap-6">
@@ -35,10 +35,10 @@ export default function RegistryRoute() {
 
       <PageHeader
         title="Registry"
-        description="Every codename and the model names it maps to, with renames and compatibility groups."
+        description="Curated vendor and codename to model name mappings."
       />
 
-      <RegistryTable devices={devices} />
+      <RegistryTable entries={entries} />
     </div>
   );
 }

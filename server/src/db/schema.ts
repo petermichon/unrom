@@ -57,6 +57,19 @@ export const deviceVariants = sqliteTable(
   ],
 );
 
+// Curated `(vendor, codename)` → model name mappings, independent of whether a
+// source currently reports the device.
+export const registry = sqliteTable(
+  "registry",
+  {
+    vendor: text("vendor").notNull(),
+    codename: text("codename").notNull(),
+    name: text("name"),
+    names: text("names"),
+  },
+  (table) => [primaryKey({ columns: [table.vendor, table.codename] })],
+);
+
 // Alternate codenames that resolve to a canonical `(vendor, codename)` device.
 // Kept as a table (not just a build-time artifact) so the API can resolve alias
 // URLs and search them.
@@ -85,6 +98,7 @@ export const meta = sqliteTable("meta", {
 export const tables = [
   roms,
   devices,
+  registry,
   romDevices,
   aliases,
   deviceVariants,

@@ -4,7 +4,14 @@ import { buildDatabase } from "./database.ts";
 import { generateDdl } from "../db/ddl.ts";
 import { normalizedRomDeviceSchema } from "../normalized.ts";
 import type { NormalizedRomDevice } from "../normalized.ts";
-import { DB_PATH, ALIASES_PATH, DIST_DIR, NDJSON_PATH, SCHEMA_SQL_PATH } from "../paths.ts";
+import {
+  ALIASES_PATH,
+  DB_PATH,
+  DIST_DIR,
+  NDJSON_PATH,
+  REGISTRY_REPORT_PATH,
+  SCHEMA_SQL_PATH,
+} from "../paths.ts";
 
 const raw = await readFile(NDJSON_PATH, "utf8");
 const records: NormalizedRomDevice[] = raw
@@ -26,7 +33,20 @@ await writeFile(
   "utf8"
 );
 
+// Curation backlog: source names for uncurated devices, with conflicts flagged
+// so the registry can be grown incrementally.
+await writeFile(
+  REGISTRY_REPORT_PATH,
+  JSON.stringify(result.registryReport, null, 2) + "\n",
+  "utf8"
+);
+
+const report = result.registryReport.summary;
 console.log(
   `Built ${DB_PATH}\n  ${result.romCount} ROM(s), ${result.deviceCount} device(s), ` +
-    `${result.edgeCount} edge(s), ${result.aliases.length} alias(es)`
+    `${result.edgeCount} edge(s), ${result.registryCount} registry entr(ies), ` +
+    `${result.aliases.length} alias(es)\n` +
+    `  Registry: ${report.curated} curated, ${report.fallback} fallback, ` +
+    `${report.unnamed} unnamed, ${report.conflicts} conflict(s) ` +
+    `→ ${REGISTRY_REPORT_PATH}`
 );

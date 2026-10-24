@@ -16,14 +16,16 @@ import {
   vendorForBrand,
   vendorForCodename,
   vendorForName,
+  vendorName,
 } from "../data/identity.ts";
-import { deviceNames } from "../data/registry.ts";
+import { DEVICE_NAMES, deviceNames } from "../data/registry.ts";
 import { generateDdl } from "../db/ddl.ts";
 import {
   aliases,
   deviceVariants,
   devices,
   meta,
+  registry,
   romDevices,
   roms,
 } from "../db/schema.ts";
@@ -33,8 +35,48 @@ export interface BuildResult {
   romCount: number;
   deviceCount: number;
   edgeCount: number;
+  registryCount: number;
+  registryReport: RegistryReport;
   aliases: Alias[];
   generatedAt: string;
+}
+
+export interface RegistryNameSource {
+  name: string;
+  romIds: string[];
+}
+
+export interface RegistryCandidate {
+  vendor: string;
+  vendorName: string;
+  codename: string;
+  /** The name the dataset currently falls back to, if any. */
+  name: string | null;
+  /** Distinct names reported by sources, most-cited first. */
+  sources: RegistryNameSource[];
+  conflict: boolean;
+}
+
+export interface RegistryCoverage {
+  vendor: string;
+  vendorName: string;
+  curated: number;
+  fallback: number;
+  unnamed: number;
+}
+
+export interface RegistryReport {
+  summary: {
+    devices: number;
+    registryEntries: number;
+    curated: number;
+    fallback: number;
+    unnamed: number;
+    conflicts: number;
+  };
+  candidates: RegistryCandidate[];
+  conflicts: RegistryCandidate[];
+  coverage: RegistryCoverage[];
 }
 
 interface Device {
@@ -58,6 +100,13 @@ interface Alias {
   vendor: string;
   alias: string;
   codename: string;
+}
+
+interface RegistryRow {
+  vendor: string;
+  codename: string;
+  name: string;
+  names: string;
 }
 
 interface Coverage {
@@ -86,6 +135,7 @@ function contentHash(
   deviceMap: Map<string, Device>,
   edges: Edge[],
   coverage: Coverage[],
+  registryRows: RegistryRow[],
 ): string {
   const hash = createHash("sha256");
   const key = (vendor: string, codename: string) => `${vendor}\0${codename}`;
@@ -109,6 +159,13 @@ function contentHash(
       `e\0${edge.romId}\0${edge.vendor}\0${edge.codename}\0${edge.referenceUrl ?? ""}\0${edge.reportedCodename ?? ""}\n`,
     );
   }
+  for (const row of [...registryRows].sort((a, b) =>
+    key(a.vendor, a.codename).localeCompare(key(b.vendor, b.codename)),
+  )) {
+    hash.update(
+      `n\0${row.vendor}\0${row.codename}\0${row.name}\0${row.names}\n`,
+    );
+  }
   for (const row of [...coverage].sort((a, b) =>
     key(a.vendor, `${a.codename}\0${a.variantCodename}`).localeCompare(
       key(b.vendor, `${b.codename}\0${b.variantCodename}`),
@@ -120,6 +177,93 @@ function contentHash(
   }
 
   return hash.digest("hex").slice(0, 16);
+}
+
+// Source names per device: key → exact name → ROM ids that reported it.
+type SourceNames = Map<string, Map<string, Set<string>>>;
+
+function buildRegistryReport(
+  deviceMap: Map<string, Device>,
+  sourceNames: SourceNames,
+): RegistryReport {
+  const normalized = (value: string) =>
+    value.trim().replace(/\s+/g, " ").toLowerCase();
+
+  const candidates: RegistryCandidate[] = [];
+  const coverage = new Map<string, RegistryCoverage>();
+
+  for (const device of deviceMap.values()) {
+    const key = `${device.vendor}\0${device.codename}`;
+    const curated = deviceNames(device.vendor, device.codename) !== null;
+    const names = sourceNames.get(key);
+
+    const row = coverage.get(device.vendor) ?? {
+      vendor: device.vendor,
+      vendorName: vendorName(device.vendor),
+      curated: 0,
+      fallback: 0,
+      unnamed: 0,
+    };
+    if (curated) {
+      row.curated++;
+    } else if (names && names.size > 0) {
+      row.fallback++;
+    } else {
+      row.unnamed++;
+    }
+    coverage.set(device.vendor, row);
+
+    if (curated) continue;
+
+    const sources: RegistryNameSource[] = [...(names ?? [])]
+      .map(([name, romIds]) => ({ name, romIds: [...romIds].sort() }))
+      .sort(
+        (a, b) =>
+          b.romIds.length - a.romIds.length || a.name.localeCompare(b.name),
+      );
+    const distinct = new Set(sources.map((source) => normalized(source.name)));
+
+    candidates.push({
+      vendor: device.vendor,
+      vendorName: vendorName(device.vendor),
+      codename: device.codename,
+      name: names ? ([...names.keys()][0] ?? null) : null,
+      sources,
+      conflict: distinct.size > 1,
+    });
+  }
+
+  candidates.sort(
+    (a, b) =>
+      a.vendorName.localeCompare(b.vendorName) ||
+      a.vendor.localeCompare(b.vendor) ||
+      a.codename.localeCompare(b.codename),
+  );
+  const conflicts = candidates.filter((candidate) => candidate.conflict);
+
+  return {
+    summary: {
+      devices: deviceMap.size,
+      registryEntries: Object.keys(DEVICE_NAMES).length,
+      curated: [...coverage.values()].reduce((sum, row) => sum + row.curated, 0),
+      fallback: [...coverage.values()].reduce(
+        (sum, row) => sum + row.fallback,
+        0,
+      ),
+      unnamed: [...coverage.values()].reduce(
+        (sum, row) => sum + row.unnamed,
+        0,
+      ),
+      conflicts: conflicts.length,
+    },
+    candidates,
+    conflicts,
+    coverage: [...coverage.values()].sort(
+      (a, b) =>
+        a.vendorName.localeCompare(b.vendorName) ||
+        a.vendor.localeCompare(b.vendor),
+    ),
+  };
 }
 
 /** Build the disposable SQLite database from normalized records. */
@@ -170,6 +314,7 @@ export function buildDatabase(
   const romMap = new Map<string, string>();
   const edgeMap = new Map<string, Edge>();
   const aliasMap = new Map<string, Alias>();
+  const sourceNames: SourceNames = new Map();
 
   const ensureDevice = (vendor: string, codename: string): void => {
     const key = `${vendor}\0${codename}`;
@@ -265,6 +410,14 @@ export function buildDatabase(
     }
     deviceMap.set(deviceKey, device);
 
+    if (record.name) {
+      const names = sourceNames.get(deviceKey) ?? new Map<string, Set<string>>();
+      const romIds = names.get(record.name) ?? new Set<string>();
+      romIds.add(record.romId);
+      names.set(record.name, romIds);
+      sourceNames.set(deviceKey, names);
+    }
+
     // Only record aliases that differ beyond casing: lookups are
     // case-insensitive, so a casing variant is not a distinct codename.
     if (part.toLowerCase() !== resolved.toLowerCase()) {
@@ -342,13 +495,34 @@ export function buildDatabase(
   const edges = [...edgeMap.values()];
   const aliasRows = [...aliasMap.values()];
 
+  // The curated registry is independent of source coverage: every entry ships,
+  // even when no roster currently names the device.
+  const registryRows: RegistryRow[] = Object.entries(DEVICE_NAMES)
+    .map(([key, names]) => {
+      const [vendor, codename] = key.split("\0");
+      return {
+        vendor,
+        codename,
+        name: names[0] ?? codename,
+        names: JSON.stringify(names),
+      };
+    })
+    .sort((a, b) =>
+      `${a.vendor}\0${a.codename}`.localeCompare(`${b.vendor}\0${b.codename}`),
+    );
+
+  const registryReport = buildRegistryReport(deviceMap, sourceNames);
+
   // SOURCE_DATE_EPOCH makes rebuilds deterministic (reproducible builds).
   const generatedAt = process.env.SOURCE_DATE_EPOCH
     ? new Date(Number(process.env.SOURCE_DATE_EPOCH) * 1000).toISOString()
     : new Date().toISOString();
   const metaRows: Array<[string, string]> = [
     ["generatedAt", generatedAt],
-    ["contentHash", contentHash(romMap, deviceMap, edges, coverageRows)],
+    [
+      "contentHash",
+      contentHash(romMap, deviceMap, edges, coverageRows, registryRows),
+    ],
   ];
 
   // One transaction: all-or-nothing, and far faster than per-row commits.
@@ -365,6 +539,9 @@ export function buildDatabase(
           names: device.names ? JSON.stringify(device.names) : null,
         })
         .run();
+    }
+    for (const row of registryRows) {
+      tx.insert(registry).values(row).run();
     }
     for (const edge of edges) {
       tx.insert(romDevices).values(edge).run();
@@ -386,6 +563,8 @@ export function buildDatabase(
     romCount: romMap.size,
     deviceCount: deviceMap.size,
     edgeCount: edges.length,
+    registryCount: registryRows.length,
+    registryReport,
     aliases: aliasRows,
     generatedAt,
   };

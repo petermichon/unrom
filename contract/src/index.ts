@@ -31,6 +31,18 @@ export interface DeviceDetail {
   roms: RomSupport[];
 }
 
+/** A curated `(vendor, codename)` → model name mapping. */
+export interface RegistryEntry {
+  vendor: string;
+  vendorName: string;
+  codename: string;
+  name: string | null;
+  /** Every curated model name for this codename. */
+  names: string[];
+  /** Whether the device appears in the current ROM coverage data. */
+  supported: boolean;
+}
+
 export interface RomChip {
   id: string;
   name: string;
