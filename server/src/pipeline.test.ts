@@ -331,6 +331,42 @@ test("canonical names come from the registry", async () => {
   }
 });
 
+test("devices outside the registry stay unnamed", () => {
+  const dir = mkdtempSync(join(tmpdir(), "unrom-test-"));
+  const dbPath = join(dir, "unrom.sqlite");
+
+  try {
+    const built = buildDatabase(
+      [
+        {
+          romId: "test",
+          romName: "Test ROM",
+          codename: "uncurateddevice",
+          name: "Source Model Name",
+          brand: null,
+          referenceUrl: null,
+          reportedCodename: null,
+        },
+      ],
+      dbPath,
+    );
+
+    const db = new Database(dbPath, { readonly: true });
+    const device = db
+      .prepare("select name, names from devices where codename = ?")
+      .get("uncurateddevice") as { name: string | null; names: string | null };
+    assert.equal(device.name, null);
+    assert.equal(device.names, null);
+
+    // The report still surfaces the source name as a curation candidate.
+    assert.equal(built.registryReport.summary.sourceNamed, 1);
+    assert.equal(built.registryReport.summary.unnamed, 0);
+    assert.equal(built.registryReport.candidates[0]?.name, "Source Model Name");
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 test("the registry exposes every curated entry", async () => {
   const records = await parseAllSources();
   const dir = mkdtempSync(join(tmpdir(), "unrom-test-"));
@@ -347,7 +383,9 @@ test("the registry exposes every curated entry", async () => {
     const report = built.registryReport;
     assert.equal(report.summary.registryEntries, entries.length);
     assert.equal(
-      report.summary.curated + report.summary.fallback + report.summary.unnamed,
+      report.summary.curated +
+        report.summary.sourceNamed +
+        report.summary.unnamed,
       report.summary.devices,
     );
     assert.equal(report.summary.devices, built.deviceCount);

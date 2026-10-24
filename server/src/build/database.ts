@@ -64,7 +64,7 @@ export interface RegistryCoverage {
   vendor: string;
   vendorName: string;
   curated: number;
-  fallback: number;
+  sourceNamed: number;
   unnamed: number;
 }
 
@@ -73,7 +73,7 @@ export interface RegistryReport {
     devices: number;
     registryEntries: number;
     curated: number;
-    fallback: number;
+    sourceNamed: number;
     unnamed: number;
     conflicts: number;
     suspicious: number;
@@ -220,13 +220,13 @@ function buildRegistryReport(
       vendor: device.vendor,
       vendorName: vendorName(device.vendor),
       curated: 0,
-      fallback: 0,
+      sourceNamed: 0,
       unnamed: 0,
     };
     if (curated) {
       row.curated++;
     } else if (names && names.size > 0) {
-      row.fallback++;
+      row.sourceNamed++;
     } else {
       row.unnamed++;
     }
@@ -268,8 +268,8 @@ function buildRegistryReport(
       devices: deviceMap.size,
       registryEntries: Object.keys(DEVICE_NAMES).length,
       curated: [...coverage.values()].reduce((sum, row) => sum + row.curated, 0),
-      fallback: [...coverage.values()].reduce(
-        (sum, row) => sum + row.fallback,
+      sourceNamed: [...coverage.values()].reduce(
+        (sum, row) => sum + row.sourceNamed,
         0,
       ),
       unnamed: [...coverage.values()].reduce(
@@ -422,15 +422,12 @@ export function buildDatabase(
       name: null,
       names: null,
     };
-    // The registry is authoritative; otherwise fall back to the first source
-    // name seen (the rosters are treated as codename-only where curated).
+    // Names come only from the curated registry. Uncurated devices stay
+    // unnamed (the UI shows the codename) until they are added.
     const curated = deviceNames(vendor, resolved);
     if (curated) {
       device.names = curated;
       device.name = curated[0] ?? null;
-    } else if (!device.names && record.name) {
-      device.names = [record.name];
-      device.name = record.name;
     }
     deviceMap.set(deviceKey, device);
 

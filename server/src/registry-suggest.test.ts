@@ -23,7 +23,7 @@ const report: RegistryReport = {
     devices: 3,
     registryEntries: 1,
     curated: 0,
-    fallback: 2,
+    sourceNamed: 2,
     unnamed: 1,
     conflicts: 1,
     suspicious: 1,

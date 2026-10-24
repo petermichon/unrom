@@ -46,7 +46,7 @@ console.log(
   `Built ${DB_PATH}\n  ${result.romCount} ROM(s), ${result.deviceCount} device(s), ` +
     `${result.edgeCount} edge(s), ${result.registryCount} registry entr(ies), ` +
     `${result.aliases.length} alias(es)\n` +
-    `  Registry: ${report.curated} curated, ${report.fallback} fallback, ` +
+    `  Registry: ${report.curated} curated, ${report.sourceNamed} source-named, ` +
     `${report.unnamed} unnamed, ${report.conflicts} conflict(s), ` +
     `${report.suspicious} suspicious → ${REGISTRY_REPORT_PATH}`
 );
