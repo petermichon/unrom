@@ -133,6 +133,17 @@ export const DEVICE_NAMES: Record<string, string[]> = {
   "htc\0t6": ["HTC One Max (GSM)"],
   "htc\0t6vzw": ["HTC One Max (Verizon)"],
 
+  "huawei\0anne": ["Huawei P20 Lite"],
+  "huawei\0berkeley": ["Honor View 10"],
+  "huawei\0charlotte": ["Huawei P20 Pro"],
+  "huawei\0che10": ["Honor 4X (China Telecom)"],
+  "huawei\0cherry": ["Honor 4"],
+  "huawei\0eva": ["Huawei P9"],
+  "huawei\0figo": ["Huawei P Smart"],
+  "huawei\0kiwi": ["Honor 5X"],
+  "huawei\0mt2": ["Huawei Ascend Mate 2 4G"],
+  "huawei\0vienna": ["Huawei P9 Plus"],
+
   "lenovo\0A6020": ["Lenovo Vibe K5"],
   "lenovo\0ham": ["Lenovo ZUK Z1"],
   "lenovo\0heart": ["Lenovo Z5 Pro GT"],
@@ -300,9 +311,32 @@ export const DEVICE_NAMES: Record<string, string[]> = {
   "murena\0one": ["Murena One"],
   "murena\0two": ["Murena Two"],
 
+  "nokia\0B2N": ["Nokia 7 Plus"],
+  "nokia\0DRG": ["Nokia 6.1 Plus"],
+  "nokia\0es2": ["Nokia 3.1"],
   "nokia\0NB1": ["Nokia 8"],
+  "nokia\0PL2": ["Nokia 6.1"],
+  "nokia\0PNX_sprout": ["Nokia 8.1"],
 
+  "nothing\0asteroids": ["Nothing Phone (3a) / (3a) Pro"],
+  "nothing\0Pacman": ["Nothing Phone (2a)"],
+  "nothing\0PacmanPro": ["Nothing Phone (2a) Plus"],
+  "nothing\0phone1": ["Nothing Phone (1)"],
+  "nothing\0phone2": ["Nothing Phone (2)"],
+  "nothing\0Pong": ["Nothing Phone (2)"],
+  "nothing\0Spacewar": ["Nothing Phone (1)"],
+  "nothing\0Tetris": ["CMF Phone 1"],
+
+  "nubia\0nx512j": ["Nubia Z9 Max"],
+  "nubia\0nx563j": ["Nubia Z17"],
+  "nubia\0nx606j": ["Nubia Z18"],
+  "nubia\0nx609j": ["Nubia Red Magic"],
+  "nubia\0nx611j": ["Nubia Z18 Mini"],
   "nubia\0nx616j": ["Nubia X"],
+  "nubia\0nx619j": ["Nubia Red Magic Mars"],
+  "nubia\0nx651j": ["Nubia Play 5G"],
+  "nubia\0nx659j": ["Nubia Red Magic 5G (Global)"],
+  "nubia\0TP1803": ["Nubia Mini 5G"],
 
   "nvidia\0foster": ["NVIDIA Shield TV (2015 / 2015 Pro / 2017 / 2019 Pro) (Android TV)"],
   "nvidia\0foster_tab": ["NVIDIA Shield TV (2015 / 2015 Pro / 2017 / 2019 Pro) (Tablet)"],
@@ -380,7 +414,13 @@ export const DEVICE_NAMES: Record<string, string[]> = {
   "oneplus\0xueying": ["OnePlus Open"],
   "oneplus\0ziti": ["OnePlus Nord CE 3 5G"],
 
+  "oppo\0a37": ["OPPO A37 (2016)"],
+  "oppo\0f1f": ["OPPO F1 (International)"],
+  "oppo\0find7": ["OPPO Find 7a"],
   "oppo\0n3": ["OPPO N3"],
+  "oppo\0r5": ["OPPO R5 (International)"],
+  "oppo\0r7plus": ["OPPO R7 Plus (International)"],
+  "oppo\0r7sf": ["OPPO R7s (International)"],
 
   "razer\0aura": ["Razer Phone 2"],
   "razer\0cheryl": ["Razer Phone"],
@@ -826,6 +866,12 @@ export const DEVICE_NAMES: Record<string, string[]> = {
   "xiaomi\0zeus": ["Xiaomi 12 Pro"],
   "xiaomi\0zizhan": ["Xiaomi MIX Fold 2"],
   "xiaomi\0zorn": ["POCO F7 Pro"],
+
+  "zte\0ailsa_ii": ["ZTE Axon 7"],
+  "zte\0akershus": ["ZTE Axon 9 Pro"],
+  "zte\0axon7": ["ZTE Axon 7"],
+  "zte\0jasmine": ["ZTE AT&T Trek 2 HD"],
+  "zte\0tulip": ["ZTE Axon 7 Mini"],
 };
 
 /** Canonical names for a device, or null when it is not curated yet. */
