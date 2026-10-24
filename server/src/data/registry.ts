@@ -6,7 +6,11 @@
 // the value is a list; the first is the compact display name. Keep entries
 // alphabetical by codename within a vendor.
 export const DEVICE_NAMES: Record<string, string[]> = {
+  "10or\0G": ["10.or G"],
+
   "amazon\0sunstone": ["Fire Max 11"],
+
+  "ark\0peach": ["ARK Benefit A3"],
 
   "asus\0AI2202": ["Asus Zenfone 9"],
   "asus\0AI2202_QLC": ["Asus Zenfone 9"],
@@ -38,6 +42,12 @@ export const DEVICE_NAMES: Record<string, string[]> = {
   "ayn\0odin2thor": ["Thor"],
   "ayn\0odin3": ["Odin 3"],
 
+  "bananapi\0m5": ["Banana Pi M5 (S905X3, eMMC only) (Android TV)"],
+  "bananapi\0m5_tab": ["Banana Pi M5 (S905X3, eMMC only) (Tablet)"],
+
+  "bluefox\0Aura_A1": ["Bluefox Aura A1"],
+  "bluefox\0NX1": ["Bluefox NX1"],
+
   "bq\0bardock": ["Aquaris X"],
   "bq\0bardockpro": ["Aquaris X Pro"],
   "bq\0chaozu": ["Aquaris U"],
@@ -51,11 +61,25 @@ export const DEVICE_NAMES: Record<string, string[]> = {
 
   "brax\0brax3": ["Brax3"],
 
+  "droidlogic\0ohm": ["DroidLogic Developer Kit (S905X4-B/K)"],
+
+  "dynalink\0wade": ["Dynalink TV Box 4K (2021)"],
+
+  "essential\0mata": ["Essential PH-1"],
+
   "fairphone\0FP2": ["Fairphone 2"],
   "fairphone\0FP3": ["Fairphone 3"],
   "fairphone\0FP4": ["Fairphone 4"],
   "fairphone\0FP5": ["Fairphone 5"],
   "fairphone\0FP6": ["The Fairphone (Gen. 6)"],
+
+  "freebox\0nicepool": ["Freebox Pop / TV (Broadcom Wi-Fi/Bluetooth)"],
+  "freebox\0nicepool_rtk": ["Freebox Pop / TV (Realtek Wi-Fi/Bluetooth)"],
+
+  "fxtec\0pro1": ["F(x)tec Pro¹"],
+  "fxtec\0pro1x": ["F(x)tec Pro¹ X"],
+
+  "genric\0gsi": ["Generic System Image (TrebleDroid)"],
 
   "gigaset\0GS290": ["Gigaset GS290"],
   "gigaset\0GS6_Venus": ["Gigaset GS6", "Gigaset GS6 Pro"],
@@ -120,6 +144,9 @@ export const DEVICE_NAMES: Record<string, string[]> = {
   "google\0toroplus": ["Galaxy Nexus (LTE, Sprint)"],
   "google\0walleye": ["Pixel 2"],
 
+  "hardkernel\0odroidc4": ["HardKernel ODROID-C4 (S905X3, eMMC only) (Android TV)"],
+  "hardkernel\0odroidc4_tab": ["HardKernel ODROID-C4 (S905X3, eMMC only) (Tablet)"],
+
   "htc\0hiae": ["HTC One A9"],
   "htc\0hima": ["HTC One M9"],
   "htc\0himaul": ["HTC One M9 (GSM)"],
@@ -143,6 +170,17 @@ export const DEVICE_NAMES: Record<string, string[]> = {
   "huawei\0kiwi": ["Honor 5X"],
   "huawei\0mt2": ["Huawei Ascend Mate 2 4G"],
   "huawei\0vienna": ["Huawei P9 Plus"],
+
+  "infinix\0X678B": ["Infinix Note 30 Pro"],
+  "infinix\0X6833B": ["Infinix Note 30"],
+
+  "itel\0S666LN": ["Itel RS4"],
+
+  "jiayu\0jiayus3a": ["Jiayu S3 Advanced"],
+
+  "leeco\0s2": ["LeEco Le 2", "LeEco Le S3"],
+  "leeco\0x2": ["LeEco Le Max 2"],
+  "leeco\0zl1": ["LeEco Le Pro3"],
 
   "lenovo\0A6020": ["Lenovo Vibe K5"],
   "lenovo\0ham": ["Lenovo ZUK Z1"],
@@ -219,6 +257,15 @@ export const DEVICE_NAMES: Record<string, string[]> = {
   "lg\0w7": ["L90"],
   "lg\0winglm": ["Wing"],
 
+  "meizu\0m1852": ["Meizu X8"],
+  "meizu\0m1872": ["Meizu 16X"],
+  "meizu\0m1882": ["Meizu 16th"],
+
+  "micromax\0yogurt": ["Micromax IN Note 1 / IN1"],
+
+  "mobvoi\0catfish": ["Mobvoi TicWatch Pro / Pro 4G/LTE / Pro 2020"],
+  "mobvoi\0rubyfish": ["Mobvoi TicWatch Pro 3 GPS/LTE / Pro 3 Ultra GPS/LTE"],
+
   "motorola\0addison": ["Moto Z Play"],
   "motorola\0ahannah": ["Moto E5 Plus"],
   "motorola\0albus": ["Moto Z2 Play"],
@@ -277,6 +324,7 @@ export const DEVICE_NAMES: Record<string, string[]> = {
   "motorola\0miami": ["Moto Edge 30 Neo"],
   "motorola\0milanf": ["Moto G Stylus 5G (2022)"],
   "motorola\0montana": ["Moto G5s"],
+  "motorola\0mumba": ["Moto G57 Power", "Moto G100s (China)"],
   "motorola\0nairo": ["Moto G 5G Plus"],
   "motorola\0nash": ["Moto Z2 Force"],
   "motorola\0nio": ["Moto G100"],
@@ -310,6 +358,11 @@ export const DEVICE_NAMES: Record<string, string[]> = {
 
   "murena\0one": ["Murena One"],
   "murena\0two": ["Murena Two"],
+
+  "nextbit\0ether": ["Nextbit Robin"],
+
+  "nintendo\0nx": ["Nintendo Switch v1 (Android TV)"],
+  "nintendo\0nx_tab": ["Nintendo Switch v1 (Tablet)"],
 
   "nokia\0B2N": ["Nokia 7 Plus"],
   "nokia\0DRG": ["Nokia 6.1 Plus"],
@@ -422,6 +475,18 @@ export const DEVICE_NAMES: Record<string, string[]> = {
   "oppo\0r7plus": ["OPPO R7 Plus (International)"],
   "oppo\0r7sf": ["OPPO R7s (International)"],
 
+  "osom\0pyrite": ["OSOM OV1"],
+
+  "planetcomputers\0geminipda": ["Planet Computers Gemini PDA"],
+
+  "qualcomm\0lahaina": ["Qualcomm QRD SM8350"],
+  "qualcomm\0lito": ["Qualcomm QRD SM72xx"],
+
+  "radxa\0radxa0": ["Radxa Zero (S905Y2, eMMC only) (Android TV)"],
+  "radxa\0radxa0_tab": ["Radxa Zero (S905Y2, eMMC only) (Tablet)"],
+  "radxa\0radxa02": ["Radxa Zero 2 (S905D3, eMMC only) (Android TV)"],
+  "radxa\0radxa02_tab": ["Radxa Zero 2 (S905D3, eMMC only) (Tablet)"],
+
   "razer\0aura": ["Razer Phone 2"],
   "razer\0cheryl": ["Razer Phone"],
   "razer\0nicole": ["Razer Edge 5G"],
@@ -429,6 +494,7 @@ export const DEVICE_NAMES: Record<string, string[]> = {
   "realme\0bale": ["Realme GT Neo6"],
   "realme\0bitra": ["Realme GT Neo 2"],
   "realme\0bladerunner": ["Realme X50 Pro 5G"],
+  "realme\0bladerunner_48m": ["Realme X50 Pro Player Edition"],
   "realme\0CPH1859": ["Realme 1"],
   "realme\0cupidr": ["Realme GT 5G"],
   "realme\0ferrari": ["Realme GT 2 Pro"],
@@ -468,6 +534,7 @@ export const DEVICE_NAMES: Record<string, string[]> = {
   "realme\0x3": ["Realme X3", "Realme X3 SuperZoom"],
 
   "retroid\0RP6": ["Retroid Pocket 6"],
+  "retroid\0RPN": ["Retroid Pocket Nova"],
 
   "samsung\0a10": ["Galaxy A10"],
   "samsung\0a14x": ["Galaxy A14 5G"],
@@ -631,7 +698,14 @@ export const DEVICE_NAMES: Record<string, string[]> = {
   "samsung\0zerolte": ["Galaxy S6 Edge"],
   "samsung\0zeroltexx": ["Galaxy S6 Edge"],
 
+  "sdmc\0tifa": ["SDMC DV9135"],
+
+  "shift\0axolotl": ["SHIFT6mq"],
+  "shift\0otter": ["SHIFTphone 8.0"],
+
   "smartisan\0trident": ["Smartisan R1"],
+
+  "solana\0ingot": ["Solana Saga"],
 
   "sony\0akari": ["Xperia XZ2"],
   "sony\0akatsuki": ["Xperia XZ3"],
@@ -682,10 +756,26 @@ export const DEVICE_NAMES: Record<string, string[]> = {
   "sony\0z3c": ["Xperia Z3 Compact"],
   "sony\0z3dual": ["Xperia Z3 Dual"],
 
+  "tecno\0LH7n": ["TECNO Pova 5"],
+  "tecno\0LH8n": ["TECNO Pova 5 Pro 5G"],
+
   "teracube\0emerald": ["Teracube 2e (2021)"],
+  "teracube\0v7101o": ["Teracube One"],
   "teracube\0zirconia": ["Teracube 2e (2020)"],
 
+  "ulefone\0armor34plus": ["Ulefone Armor 34+"],
+
   "volla\0mimir": ["Volla Tablet"],
+
+  "vsmart\0casuarina": ["Vsmart Joy 3"],
+
+  "walmart\0dopinder": ["onn. TV Box 4K (2021)"],
+
+  "wileyfox\0crackling": ["Wileyfox Swift"],
+  "wileyfox\0kipper": ["Wileyfox Storm"],
+  "wileyfox\0marmite": ["Wileyfox Swift 2", "Wileyfox Swift 2 Plus", "Wileyfox Swift 2X"],
+
+  "wingtech\0wt88047": ["Wingtech Redmi 2"],
 
   "xiaomi\0agate": ["Xiaomi 11T"],
   "xiaomi\0alioth": ["POCO F3", "Xiaomi Mi 11X", "Redmi K40"],
@@ -866,6 +956,14 @@ export const DEVICE_NAMES: Record<string, string[]> = {
   "xiaomi\0zeus": ["Xiaomi 12 Pro"],
   "xiaomi\0zizhan": ["Xiaomi MIX Fold 2"],
   "xiaomi\0zorn": ["POCO F7 Pro"],
+
+  "yandex\0Amber": ["Yandex Phone"],
+
+  "yu\0jalebi": ["YU Yunique"],
+  "yu\0lettuce": ["YU Yuphoria"],
+  "yu\0tomato": ["YU Yureka"],
+
+  "zinwa\0Q25": ["Zinwa Q25 Pro"],
 
   "zte\0ailsa_ii": ["ZTE Axon 7"],
   "zte\0akershus": ["ZTE Axon 9 Pro"],
