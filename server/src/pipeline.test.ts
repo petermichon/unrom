@@ -356,6 +356,17 @@ test("the registry exposes every curated entry", async () => {
       report.summary.devices - report.summary.curated,
     );
     assert.equal(
+      report.summary.suspicious,
+      report.candidates.filter((candidate) => candidate.suspicious).length,
+    );
+    for (const candidate of report.candidates) {
+      assert.equal(
+        candidate.suspicious,
+        candidate.issues.length > 0,
+        `${candidate.vendor}/${candidate.codename}`,
+      );
+    }
+    assert.equal(
       report.candidates.some((candidate) => candidate.codename === "sweet"),
       false,
       "curated devices are not candidates",

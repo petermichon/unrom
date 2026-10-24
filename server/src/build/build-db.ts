@@ -47,6 +47,6 @@ console.log(
     `${result.edgeCount} edge(s), ${result.registryCount} registry entr(ies), ` +
     `${result.aliases.length} alias(es)\n` +
     `  Registry: ${report.curated} curated, ${report.fallback} fallback, ` +
-    `${report.unnamed} unnamed, ${report.conflicts} conflict(s) ` +
-    `→ ${REGISTRY_REPORT_PATH}`
+    `${report.unnamed} unnamed, ${report.conflicts} conflict(s), ` +
+    `${report.suspicious} suspicious → ${REGISTRY_REPORT_PATH}`
 );

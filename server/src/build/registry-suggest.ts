@@ -4,9 +4,6 @@ import { pathToFileURL } from "node:url";
 import type { RegistryCandidate, RegistryReport } from "./database.ts";
 import { REGISTRY_REPORT_PATH } from "../paths.ts";
 
-const normalize = (value: string) =>
-  value.trim().replace(/\s+/g, " ").toLowerCase();
-
 const key = (entry: RegistryCandidate) =>
   `${entry.vendor}\\0${entry.codename}`;
 
@@ -30,18 +27,17 @@ export function formatVendor(report: RegistryReport, vendor: string): string {
 
   const safe: RegistryCandidate[] = [];
   const conflicts: RegistryCandidate[] = [];
-  const nameless: RegistryCandidate[] = [];
+  const review: RegistryCandidate[] = [];
 
   for (const entry of rows) {
     if (entry.conflict) conflicts.push(entry);
-    else if (!entry.name || normalize(entry.name) === normalize(entry.codename))
-      nameless.push(entry);
+    else if (entry.suspicious) review.push(entry);
     else safe.push(entry);
   }
 
   const lines = [
     `// ${rows[0].vendorName} (${vendor}): ${safe.length} ready, ` +
-      `${conflicts.length} conflict(s), ${nameless.length} without a model name.`,
+      `${conflicts.length} conflict(s), ${review.length} need review.`,
   ];
 
   if (safe.length > 0) {
@@ -67,11 +63,16 @@ export function formatVendor(report: RegistryReport, vendor: string): string {
     }
   }
 
-  if (nameless.length > 0) {
+  if (review.length > 0) {
     lines.push("");
-    lines.push("  // No usable model name reported:");
-    for (const entry of nameless) {
-      lines.push(`  // "${key(entry)}"`);
+    lines.push("  // Needs review: the reported name is not usable as-is.");
+    for (const entry of review) {
+      lines.push(
+        `  // ${entry.codename}: ${JSON.stringify(entry.name)} (${entry.issues.join(", ")})`,
+      );
+      lines.push(
+        `  // "${key(entry)}": ${JSON.stringify([entry.name ?? entry.codename])},`,
+      );
     }
   }
 

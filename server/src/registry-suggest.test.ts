@@ -14,6 +14,8 @@ const conflict = {
     { name: "ROG 2", romIds: ["blissroms"] },
   ],
   conflict: true,
+  suspicious: false,
+  issues: [],
 };
 
 const report: RegistryReport = {
@@ -24,6 +26,7 @@ const report: RegistryReport = {
     fallback: 2,
     unnamed: 1,
     conflicts: 1,
+    suspicious: 1,
   },
   candidates: [
     {
@@ -33,6 +36,8 @@ const report: RegistryReport = {
       name: "Fire Max 11",
       sources: [{ name: "Fire Max 11", romIds: ["lineageos"] }],
       conflict: false,
+      suspicious: false,
+      issues: [],
     },
     conflict,
     {
@@ -42,6 +47,8 @@ const report: RegistryReport = {
       name: "X00T",
       sources: [{ name: "X00T", romIds: ["lineageos"] }],
       conflict: false,
+      suspicious: true,
+      issues: ["same as codename"],
     },
   ],
   conflicts: [conflict],
@@ -57,6 +64,7 @@ test("suggestions emit ready entries and keep conflicts commented", () => {
   assert.match(asus, /"ROG Phone 2"/);
   assert.match(asus, /"ROG 2"/);
   assert.match(asus, /\/\/ "asus\\0X00T"/);
+  assert.match(asus, /same as codename/);
   assert.doesNotMatch(asus, /^  "asus/m);
 });
 

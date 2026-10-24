@@ -55,6 +55,9 @@ export interface RegistryCandidate {
   /** Distinct names reported by sources, most-cited first. */
   sources: RegistryNameSource[];
   conflict: boolean;
+  /** A name that is unlikely to be a usable model name. */
+  suspicious: boolean;
+  issues: string[];
 }
 
 export interface RegistryCoverage {
@@ -73,6 +76,7 @@ export interface RegistryReport {
     fallback: number;
     unnamed: number;
     conflicts: number;
+    suspicious: number;
   };
   candidates: RegistryCandidate[];
   conflicts: RegistryCandidate[];
@@ -182,6 +186,21 @@ function contentHash(
 // Source names per device: key → exact name → ROM ids that reported it.
 type SourceNames = Map<string, Map<string, Set<string>>>;
 
+// Names that pass a uniqueness check can still be useless (e.g. a source
+// reporting a Fairphone's name as "2"). Flag them for human review instead of
+// offering them as ready-to-paste.
+function nameIssues(name: string, codename: string): string[] {
+  const normalized = (value: string) =>
+    value.trim().replace(/\s+/g, " ").toLowerCase();
+  const issues: string[] = [];
+  if (!/\p{L}/u.test(name)) issues.push("no model words");
+  if (name.replace(/\s+/g, "").length <= 2) issues.push("too short");
+  if (normalized(name) === normalized(codename)) {
+    issues.push("same as codename");
+  }
+  return issues;
+}
+
 function buildRegistryReport(
   deviceMap: Map<string, Device>,
   sourceNames: SourceNames,
@@ -222,14 +241,17 @@ function buildRegistryReport(
           b.romIds.length - a.romIds.length || a.name.localeCompare(b.name),
       );
     const distinct = new Set(sources.map((source) => normalized(source.name)));
+    const name = names ? ([...names.keys()][0] ?? null) : null;
 
     candidates.push({
       vendor: device.vendor,
       vendorName: vendorName(device.vendor),
       codename: device.codename,
-      name: names ? ([...names.keys()][0] ?? null) : null,
+      name,
       sources,
       conflict: distinct.size > 1,
+      suspicious: name !== null && nameIssues(name, device.codename).length > 0,
+      issues: name === null ? [] : nameIssues(name, device.codename),
     });
   }
 
@@ -255,6 +277,8 @@ function buildRegistryReport(
         0,
       ),
       conflicts: conflicts.length,
+      suspicious: candidates.filter((candidate) => candidate.suspicious)
+        .length,
     },
     candidates,
     conflicts,
