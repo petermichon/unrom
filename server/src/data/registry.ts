@@ -6,7 +6,34 @@
 // the value is a list; the first is the compact display name. Keep entries
 // alphabetical by codename within a vendor.
 export const DEVICE_NAMES: Record<string, string[]> = {
+  "amazon\0sunstone": ["Fire Max 11"],
+
+  "ayn\0odin_m0": ["Odin (M0)"],
+  "ayn\0odin_m2": ["Odin (M2)"],
+  "ayn\0odin2": ["Odin 2"],
+  "ayn\0odin2mini": ["Odin 2 Mini"],
+  "ayn\0odin2portal": ["Odin 2 Portal"],
+  "ayn\0odin2thor": ["Thor"],
+  "ayn\0odin3": ["Odin 3"],
+
+  "bq\0bardock": ["Aquaris X"],
+  "bq\0bardockpro": ["Aquaris X Pro"],
+  "bq\0chaozu": ["Aquaris U"],
+  "bq\0gohan": ["Aquaris X5 Plus"],
+  "bq\0paella": ["Aquaris X5"],
+  "bq\0piccolo": ["Aquaris M5"],
+  "bq\0tenshi": ["Aquaris U Plus"],
+  "bq\0vegetalte": ["Aquaris E5 4G"],
+  "bq\0zangya": ["Aquaris X2"],
+  "bq\0zangyapro": ["Aquaris X2 Pro"],
+
   "brax\0brax3": ["Brax3"],
+
+  "fairphone\0FP2": ["Fairphone 2"],
+  "fairphone\0FP3": ["Fairphone 3"],
+  "fairphone\0FP4": ["Fairphone 4"],
+  "fairphone\0FP5": ["Fairphone 5"],
+  "fairphone\0FP6": ["The Fairphone (Gen. 6)"],
 
   "gigaset\0GS290": ["Gigaset GS290"],
   "gigaset\0GS6_Venus": ["Gigaset GS6", "Gigaset GS6 Pro"],
@@ -15,6 +42,10 @@ export const DEVICE_NAMES: Record<string, string[]> = {
   "murena\0two": ["Murena Two"],
 
   "oneplus\0ziti": ["OnePlus Nord CE 3 5G"],
+
+  "razer\0aura": ["Razer Phone 2"],
+  "razer\0cheryl": ["Razer Phone"],
+  "razer\0nicole": ["Razer Edge 5G"],
 
   "samsung\0f62": ["Galaxy F62"],
   "samsung\0m62": ["Galaxy M62"],
