@@ -145,7 +145,7 @@ This file tracks the data collection status for various custom Android ROMs.
 | Pixel Blaster OS            | AOSP | ❌ Discontinued | ⚠️ Website  | Org says AOSP-based; repos last active Mar 2024; no devices.json found.                                                                 |
 | Pixel Dust                  | AOSP | ❌ Discontinued | ❌ No data  | PixelDust Project X; last device commit Aug 2024, core source idle since ~2021.                                                         |
 | PixelPlusUI                 | AOSP | ⚠️ Unclear      | ⚠️ GitHub   | Last commit Feb 2023 (3+ years ago), stuck on Android 13; requires fetching 48 individual device JSON files                             |
-| Pixel Project               | AOSP | ❌ Discontinued | ⚠️ GitHub   | Org archived Mar 5 2026; official_devices has devices.json; last commit Nov 2025.                                                       |
+| The Pixel Project           | AOSP | ❌ Discontinued | ⚠️ GitHub   | Org archived Mar 5 2026; official_devices has devices.json; last commit Nov 2025.                                                       |
 | POSP                        | AOSP | ⚠️ Unclear      | ⚠️ GitHub   | 181+ individual device repositories; last builds 2021-2022 (Android 11/13 era), no centralized device list                              |
 | Project 404                 | AOSP | ✅ Active       | ⚠️ Website  | Manifest and vendor repos updated May 24 2026; AOSP experiments; no JSON list.                                                          |
 | Project Arcana              | AOSP | ❌ Discontinued | ⚠️ GitHub   | Org marked [EOL]; last commits 2022; site lists ~24 devices; AEX-derived.                                                               |

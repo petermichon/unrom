@@ -116,7 +116,7 @@ Index of Android ROM projects from
 - ❌ Pixel Blaster OS
 - ❌ Pixel Dust
 - 🟢 Pixel Experience
-- ❌ Pixel Project
+- ❌ The Pixel Project
 - 🟢 PixelExtended ROM
 - 🟢 PixelOS
 - ❌ PixelPlusUI
