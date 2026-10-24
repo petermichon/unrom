@@ -174,9 +174,9 @@ export function DataTable<TData, TValue>({
               </TableRow>
             ))}
           </TableHeader>
-          <TableBody>
-            {table.getRowModel().rows.length ? (
-              table.getRowModel().rows.map((row) => (
+          {table.getRowModel().rows.length > 0 && (
+            <TableBody>
+              {table.getRowModel().rows.map((row) => (
                 <TableRow key={row.id}>
                   {row.getVisibleCells().map((cell) => (
                     <TableCell
@@ -190,26 +190,23 @@ export function DataTable<TData, TValue>({
                     </TableCell>
                   ))}
                 </TableRow>
-              ))
-            ) : (
-              <TableRow>
-                <TableCell colSpan={columns.length} className="h-48">
-                  <Empty className="border-0">
-                    <EmptyHeader>
-                      <EmptyMedia variant="icon">
-                        <SearchX />
-                      </EmptyMedia>
-                      <EmptyTitle>No results</EmptyTitle>
-                      <EmptyDescription>
-                        Try adjusting your search or filters.
-                      </EmptyDescription>
-                    </EmptyHeader>
-                  </Empty>
-                </TableCell>
-              </TableRow>
-            )}
-          </TableBody>
+              ))}
+            </TableBody>
+          )}
         </Table>
+        {table.getRowModel().rows.length === 0 && (
+          <Empty className="h-48 border-0">
+            <EmptyHeader>
+              <EmptyMedia variant="icon">
+                <SearchX />
+              </EmptyMedia>
+              <EmptyTitle>No results</EmptyTitle>
+              <EmptyDescription>
+                Try adjusting your search or filters.
+              </EmptyDescription>
+            </EmptyHeader>
+          </Empty>
+        )}
       </div>
 
       <DataTablePagination table={table} />
