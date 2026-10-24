@@ -841,6 +841,7 @@ export const DEVICE_NAMES: Record<string, string[]> = {
   "xiaomi\0duchamp": ["POCO X6 Pro 5G", "Redmi K70E"],
   "xiaomi\0earth": ["Redmi 12C"],
   "xiaomi\0elish": ["Xiaomi Pad 5 Pro"],
+  "xiaomi\0eos": ["Redmi 10 (Global, NFC)", "Redmi 10 2022"],
   "xiaomi\0equuleus": ["Mi 8 Pro"],
   "xiaomi\0everpal": [
     "Redmi Note 11T 5G",
