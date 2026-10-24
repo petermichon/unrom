@@ -111,6 +111,7 @@ Index of Android ROM projects from
 - ❌ OrionOS
 - ❌ PalladiumOS
 - 🟢 Paranoid Android
+- ❌ The Parasite Project
 - ❌ PenguinOS
 - ❌ PhoenixAOSP
 - ❌ Pixel Blaster OS
@@ -120,6 +121,7 @@ Index of Android ROM projects from
 - 🟢 PixelExtended ROM
 - 🟢 PixelOS
 - ❌ PixelPlusUI
+- ❌ PixelStar
 - 🟢 Pixys OS
 - ❌ POSP
 - ❌ Project 404

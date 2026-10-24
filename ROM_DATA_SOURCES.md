@@ -46,7 +46,7 @@ This file tracks the data collection status for various custom Android ROMs.
 | PixysOS            | AOSP | ⚠️ Unclear     | ✅ GitHub     | Core repos last updated July 2024 (2 years old); devices list may be outdated                                                                                |
 | Project Infinity X | AOSP | ✅ Active      | ✅ GitHub API | Individual device JSON files via GitHub API; fetched with a two-stage fetch                                                                                  |
 | Project PixelAge   | AOSP | ✅ Active      | ✅ GitHub API | Individual device JSON files via GitHub API; 15 devices on Android 15, A16 WIP                                                                               |
-| RisingOS           | AOSP | ✅ Active      | ✅ GitHub     |                                                                                                                                                              |
+| RisingOS           | AOSP | ✅ Active      | ✅ GitHub     | Active upstream: RisingOS-Revived (95 repos, pushes Oct 2026); RisingTechOSS is an Android 14 backup mirror. Device list in official_devices devices.md      |
 
 ### Not Implemented
 
@@ -141,11 +141,13 @@ This file tracks the data collection status for various custom Android ROMs.
 | OmniROM                     | AOSP | ❌ Discontinued | ⚠️ Website  | Project officially closed in 2026 (started 2013); website shows "We are closed" announcement                                            |
 | OrionOS                     | AOSP | ❌ Discontinued | ⚠️ GitHub   | README states LineageOS/crDroid base; OTA repo last commit Apr 2025; site orionos.tech/device.                                          |
 | PalladiumOS                 | AOSP | ❌ Discontinued | ⚠️ GitHub   | Source idle since Dec 2023, OTA last Feb 2024; palladiumos.org offline.                                                                 |
+| The Parasite Project        | AOSP | ✅ Active       | ⚠️ GitHub   | Active core/frameworks (pushes Jan 2026); device_manifests is a StatiXOS fork, no centralized device list                               |
 | PhoenixAOSP                 | AOSP | ❌ Discontinued | ❌ No data  | "Phoenix Android 13 ROM"; all repos incl. vendor last updated Dec 2023.                                                                 |
 | Pixel Blaster OS            | AOSP | ❌ Discontinued | ⚠️ Website  | Org says AOSP-based; repos last active Mar 2024; no devices.json found.                                                                 |
 | Pixel Dust                  | AOSP | ❌ Discontinued | ❌ No data  | PixelDust Project X; last device commit Aug 2024, core source idle since ~2021.                                                         |
 | PixelPlusUI                 | AOSP | ⚠️ Unclear      | ⚠️ GitHub   | Last commit Feb 2023 (3+ years ago), stuck on Android 13; requires fetching 48 individual device JSON files                             |
 | The Pixel Project           | AOSP | ❌ Discontinued | ⚠️ GitHub   | Org archived Mar 5 2026; official_devices has devices.json; last commit Nov 2025.                                                       |
+| PixelStar                   | AOSP | ❌ Discontinued | ⚠️ GitHub   | Org and repos archived by early 2025; official_devices has JSON but the project is dormant                                              |
 | POSP                        | AOSP | ⚠️ Unclear      | ⚠️ GitHub   | 181+ individual device repositories; last builds 2021-2022 (Android 11/13 era), no centralized device list                              |
 | Project 404                 | AOSP | ✅ Active       | ⚠️ Website  | Manifest and vendor repos updated May 24 2026; AOSP experiments; no JSON list.                                                          |
 | Project Arcana              | AOSP | ❌ Discontinued | ⚠️ GitHub   | Org marked [EOL]; last commits 2022; site lists ~24 devices; AEX-derived.                                                               |
