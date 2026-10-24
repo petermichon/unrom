@@ -374,8 +374,6 @@ export const DEVICE_NAMES: Record<string, string[]> = {
   "nothing\0asteroids": ["Nothing Phone (3a) / (3a) Pro"],
   "nothing\0Pacman": ["Nothing Phone (2a)"],
   "nothing\0PacmanPro": ["Nothing Phone (2a) Plus"],
-  "nothing\0phone1": ["Nothing Phone (1)"],
-  "nothing\0phone2": ["Nothing Phone (2)"],
   "nothing\0Pong": ["Nothing Phone (2)"],
   "nothing\0Spacewar": ["Nothing Phone (1)"],
   "nothing\0Tetris": ["CMF Phone 1"],
