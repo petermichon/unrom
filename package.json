@@ -25,6 +25,7 @@
     "test:e2e": "playwright test",
     "ingest": "npm run ingest --workspace server",
     "build:data": "npm run build:data --workspace server",
+    "registry:suggest": "npm run registry:suggest --workspace server",
     "api": "npm run start --workspace server"
   },
   "allowScripts": {

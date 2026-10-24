@@ -53,7 +53,12 @@ docker compose -f deploy/compose.yaml run --rm data
 
 Each build also writes `server/dist/registry-report.json`: source-reported names
 for uncurated devices (candidates), conflicts where sources disagree, and
-per-vendor coverage. Use it to grow the curated registry incrementally.
+per-vendor coverage. Use it to grow the curated registry incrementally:
+
+```sh
+npm run registry:suggest            # list vendors with candidate counts
+npm run registry:suggest -- asus    # paste-ready entries for one vendor
+```
 
 ### Production (CI/CD)
 
