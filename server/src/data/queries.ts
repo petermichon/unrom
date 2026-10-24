@@ -29,13 +29,15 @@ import { vendorName } from "./identity.ts";
 const sortKey = (value: string): string =>
   value.replace(/^[^\p{L}\p{N}]+/u, "").toLowerCase();
 
-const bySortKey = (a: string, b: string) => sortKey(a).localeCompare(sortKey(b));
+const bySortKey = (a: string, b: string) =>
+  sortKey(a).localeCompare(sortKey(b));
 
 type Edge = typeof romDevices.$inferSelect;
 type DeviceRow = typeof devices.$inferSelect;
 type RomRow = typeof roms.$inferSelect;
 
-const deviceKey = (vendor: string, codename: string) => `${vendor}\0${codename}`;
+const deviceKey = (vendor: string, codename: string) =>
+  `${vendor}\0${codename}`;
 
 function parseNames(value: string | null): string[] {
   if (!value) return [];
@@ -468,13 +470,7 @@ export function createApi(dbPath: string) {
       .where(eq(romDevices.romId, rom.id))
       .all();
 
-    return buildRom(
-      rom,
-      edges,
-      deviceByKey,
-      romCountByDevice,
-      variantsByMain,
-    );
+    return buildRom(rom, edges, deviceByKey, romCountByDevice, variantsByMain);
   }
 
   function listMappings(): Mapping[] {

@@ -4,8 +4,7 @@ import { pathToFileURL } from "node:url";
 import type { RegistryCandidate, RegistryReport } from "./database.ts";
 import { REGISTRY_REPORT_PATH } from "../paths.ts";
 
-const key = (entry: RegistryCandidate) =>
-  `${entry.vendor}\\0${entry.codename}`;
+const key = (entry: RegistryCandidate) => `${entry.vendor}\\0${entry.codename}`;
 
 function findVendor(report: RegistryReport, name: string): string | null {
   const needle = name.trim().toLowerCase();
@@ -49,7 +48,9 @@ export function formatVendor(report: RegistryReport, vendor: string): string {
 
   if (conflicts.length > 0) {
     lines.push("");
-    lines.push("  // Conflicts: sources disagree. Pick one name and uncomment.");
+    lines.push(
+      "  // Conflicts: sources disagree. Pick one name and uncomment.",
+    );
     for (const entry of conflicts) {
       lines.push(`  // ${entry.codename}:`);
       for (const source of entry.sources) {
@@ -135,7 +136,9 @@ async function main(): Promise<void> {
 
   const vendor = findVendor(report, requested);
   if (!vendor) {
-    console.error(`Unknown vendor: ${requested}. Run without an argument to list.`);
+    console.error(
+      `Unknown vendor: ${requested}. Run without an argument to list.`,
+    );
     process.exitCode = 1;
     return;
   }

@@ -114,7 +114,11 @@ const byHost = new Map<
 >();
 for (const { url } of references) {
   const host = hostOf(url);
-  const entry = byHost.get(host) ?? { records: 0, urls: new Set(), sample: url };
+  const entry = byHost.get(host) ?? {
+    records: 0,
+    urls: new Set(),
+    sample: url,
+  };
   entry.records++;
   entry.urls.add(url);
   byHost.set(host, entry);
@@ -154,7 +158,10 @@ function health(report: HostReport): Health {
   return "live";
 }
 
-const classified = reports.map((report) => ({ report, health: health(report) }));
+const classified = reports.map((report) => ({
+  report,
+  health: health(report),
+}));
 const pick = (kind: Health) =>
   classified
     .filter((entry) => entry.health === kind)

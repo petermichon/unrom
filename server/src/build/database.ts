@@ -267,7 +267,10 @@ function buildRegistryReport(
     summary: {
       devices: deviceMap.size,
       registryEntries: Object.keys(DEVICE_NAMES).length,
-      curated: [...coverage.values()].reduce((sum, row) => sum + row.curated, 0),
+      curated: [...coverage.values()].reduce(
+        (sum, row) => sum + row.curated,
+        0,
+      ),
       sourceNamed: [...coverage.values()].reduce(
         (sum, row) => sum + row.sourceNamed,
         0,
@@ -277,8 +280,7 @@ function buildRegistryReport(
         0,
       ),
       conflicts: conflicts.length,
-      suspicious: candidates.filter((candidate) => candidate.suspicious)
-        .length,
+      suspicious: candidates.filter((candidate) => candidate.suspicious).length,
     },
     candidates,
     conflicts,
@@ -432,7 +434,8 @@ export function buildDatabase(
     deviceMap.set(deviceKey, device);
 
     if (record.name) {
-      const names = sourceNames.get(deviceKey) ?? new Map<string, Set<string>>();
+      const names =
+        sourceNames.get(deviceKey) ?? new Map<string, Set<string>>();
       const romIds = names.get(record.name) ?? new Set<string>();
       romIds.add(record.romId);
       names.set(record.name, romIds);

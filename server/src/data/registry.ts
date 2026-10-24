@@ -144,8 +144,12 @@ export const DEVICE_NAMES: Record<string, string[]> = {
   "google\0toroplus": ["Galaxy Nexus (LTE, Sprint)"],
   "google\0walleye": ["Pixel 2"],
 
-  "hardkernel\0odroidc4": ["HardKernel ODROID-C4 (S905X3, eMMC only) (Android TV)"],
-  "hardkernel\0odroidc4_tab": ["HardKernel ODROID-C4 (S905X3, eMMC only) (Tablet)"],
+  "hardkernel\0odroidc4": [
+    "HardKernel ODROID-C4 (S905X3, eMMC only) (Android TV)",
+  ],
+  "hardkernel\0odroidc4_tab": [
+    "HardKernel ODROID-C4 (S905X3, eMMC only) (Tablet)",
+  ],
 
   "htc\0hiae": ["HTC One A9"],
   "htc\0hima": ["HTC One M9"],
@@ -389,8 +393,12 @@ export const DEVICE_NAMES: Record<string, string[]> = {
   "nubia\0nx659j": ["Nubia Red Magic 5G (Global)"],
   "nubia\0TP1803": ["Nubia Mini 5G"],
 
-  "nvidia\0foster": ["NVIDIA Shield TV (2015 / 2015 Pro / 2017 / 2019 Pro) (Android TV)"],
-  "nvidia\0foster_tab": ["NVIDIA Shield TV (2015 / 2015 Pro / 2017 / 2019 Pro) (Tablet)"],
+  "nvidia\0foster": [
+    "NVIDIA Shield TV (2015 / 2015 Pro / 2017 / 2019 Pro) (Android TV)",
+  ],
+  "nvidia\0foster_tab": [
+    "NVIDIA Shield TV (2015 / 2015 Pro / 2017 / 2019 Pro) (Tablet)",
+  ],
   "nvidia\0mdarcy": ["NVIDIA Shield TV 2019 Pro (Android TV)"],
   "nvidia\0mdarcy_tab": ["NVIDIA Shield TV 2019 Pro (Tablet)"],
   "nvidia\0porg": ["NVIDIA Jetson Nano (Android TV)"],
@@ -508,7 +516,14 @@ export const DEVICE_NAMES: Record<string, string[]> = {
   "realme\0porsche": ["Realme GT 2"],
   "realme\0r2p": ["Realme 2 Pro"],
   "realme\0r5x": ["Realme 5", "Realme 5i", "Realme 5s"],
-  "realme\0RM6785": ["Realme 6", "Realme 6i", "Realme 6s", "Realme 7", "Realme Narzo 20 Pro", "Realme Narzo 30 4G"],
+  "realme\0RM6785": [
+    "Realme 6",
+    "Realme 6i",
+    "Realme 6s",
+    "Realme 7",
+    "Realme Narzo 20 Pro",
+    "Realme Narzo 30 4G",
+  ],
   "realme\0RMX1801": ["Realme 2 Pro"],
   "realme\0RMX1851": ["Realme 3 Pro"],
   "realme\0rmx1911": ["Realme 5", "Realme 5i", "Realme 5s"],
@@ -771,7 +786,11 @@ export const DEVICE_NAMES: Record<string, string[]> = {
 
   "wileyfox\0crackling": ["Wileyfox Swift"],
   "wileyfox\0kipper": ["Wileyfox Storm"],
-  "wileyfox\0marmite": ["Wileyfox Swift 2", "Wileyfox Swift 2 Plus", "Wileyfox Swift 2X"],
+  "wileyfox\0marmite": [
+    "Wileyfox Swift 2",
+    "Wileyfox Swift 2 Plus",
+    "Wileyfox Swift 2X",
+  ],
 
   "wingtech\0wt88047": ["Wingtech Redmi 2"],
 
@@ -787,9 +806,20 @@ export const DEVICE_NAMES: Record<string, string[]> = {
   "xiaomi\0begonia": ["Redmi Note 8 Pro"],
   "xiaomi\0beryllium": ["POCO F1"],
   "xiaomi\0bhima": ["POCO X3 Pro (India)"],
-  "xiaomi\0blossom": ["Redmi 9A", "Redmi 9C", "Redmi 9i", "Redmi 9AT", "Redmi 10A"],
+  "xiaomi\0blossom": [
+    "Redmi 9A",
+    "Redmi 9C",
+    "Redmi 9i",
+    "Redmi 9AT",
+    "Redmi 10A",
+  ],
   "xiaomi\0breeze": ["POCO M6 Plus 5G", "Redmi 13 5G"],
-  "xiaomi\0camellia": ["POCO M3 Pro 5G", "Redmi Note 10T 5G", "Redmi Note 10 5G", "Redmi Note 11 SE"],
+  "xiaomi\0camellia": [
+    "POCO M3 Pro 5G",
+    "Redmi Note 10T 5G",
+    "Redmi Note 10 5G",
+    "Redmi Note 11 SE",
+  ],
   "xiaomi\0cancro": ["Mi 3", "Mi 4"],
   "xiaomi\0capricorn": ["Mi 5s"],
   "xiaomi\0cas": ["Mi 10 Ultra"],
@@ -812,7 +842,11 @@ export const DEVICE_NAMES: Record<string, string[]> = {
   "xiaomi\0earth": ["Redmi 12C"],
   "xiaomi\0elish": ["Xiaomi Pad 5 Pro"],
   "xiaomi\0equuleus": ["Mi 8 Pro"],
-  "xiaomi\0everpal": ["Redmi Note 11T 5G", "Redmi Note 11S 5G", "POCO M4 Pro 5G"],
+  "xiaomi\0everpal": [
+    "Redmi Note 11T 5G",
+    "Redmi Note 11S 5G",
+    "POCO M4 Pro 5G",
+  ],
   "xiaomi\0excalibur": ["Redmi Note 9 Pro Max"],
   "xiaomi\0fire": ["Redmi 12 4G"],
   "xiaomi\0fleur": ["Redmi Note 11S", "POCO M4 Pro 4G"],
@@ -902,7 +936,11 @@ export const DEVICE_NAMES: Record<string, string[]> = {
   "xiaomi\0rosy": ["Redmi 5"],
   "xiaomi\0rova": ["Redmi 4A", "Redmi 5A"],
   "xiaomi\0ruby": ["Redmi Note 12 Pro 5G"],
-  "xiaomi\0rubyx": ["Redmi Note 12 Pro 5G", "Redmi Note 12 Pro+ 5G", "Redmi Note 12 Discovery Edition"],
+  "xiaomi\0rubyx": [
+    "Redmi Note 12 Pro 5G",
+    "Redmi Note 12 Pro+ 5G",
+    "Redmi Note 12 Discovery Edition",
+  ],
   "xiaomi\0sagit": ["Mi 6"],
   "xiaomi\0sakura": ["Redmi 6 Pro"],
   "xiaomi\0santoni": ["Redmi 4X"],
@@ -941,14 +979,24 @@ export const DEVICE_NAMES: Record<string, string[]> = {
   "xiaomi\0vela": ["Mi CC9 Meitu Edition"],
   "xiaomi\0venus": ["Mi 11"],
   "xiaomi\0vermeer": ["POCO F6 Pro", "Redmi K70"],
-  "xiaomi\0veux": ["POCO X4 Pro 5G", "Redmi Note 11 Pro 5G", "Redmi Note 11 Pro+ 5G", "Redmi Note 11E Pro"],
+  "xiaomi\0veux": [
+    "POCO X4 Pro 5G",
+    "Redmi Note 11 Pro 5G",
+    "Redmi Note 11 Pro+ 5G",
+    "Redmi Note 11E Pro",
+  ],
   "xiaomi\0vili": ["Xiaomi 11T Pro"],
   "xiaomi\0vince": ["Redmi 5 Plus", "Redmi Note 5"],
   "xiaomi\0violet": ["Redmi Note 7 Pro"],
   "xiaomi\0wayne": ["Mi 6X"],
   "xiaomi\0whyred": ["Redmi Note 5 Pro", "Redmi Note 5"],
   "xiaomi\0willow": ["Redmi Note 8T"],
-  "xiaomi\0xaga": ["POCO X4 GT", "Redmi K50i", "Redmi Note 11T Pro", "Redmi Note 11T Pro+"],
+  "xiaomi\0xaga": [
+    "POCO X4 GT",
+    "Redmi K50i",
+    "Redmi Note 11T Pro",
+    "Redmi Note 11T Pro+",
+  ],
   "xiaomi\0xmsirius": ["Mi 8 SE"],
   "xiaomi\0ysl": ["Redmi S2", "Redmi Y2"],
   "xiaomi\0zeus": ["Xiaomi 12 Pro"],
@@ -971,9 +1019,6 @@ export const DEVICE_NAMES: Record<string, string[]> = {
 };
 
 /** Canonical names for a device, or null when it is not curated yet. */
-export function deviceNames(
-  vendor: string,
-  codename: string,
-): string[] | null {
+export function deviceNames(vendor: string, codename: string): string[] | null {
   return DEVICE_NAMES[`${vendor}\0${codename}`] ?? null;
 }

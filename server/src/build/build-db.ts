@@ -30,7 +30,7 @@ const result = buildDatabase(records, DB_PATH);
 await writeFile(
   ALIASES_PATH,
   JSON.stringify(result.aliases, null, 2) + "\n",
-  "utf8"
+  "utf8",
 );
 
 // Curation backlog: source names for uncurated devices, with conflicts flagged
@@ -38,7 +38,7 @@ await writeFile(
 await writeFile(
   REGISTRY_REPORT_PATH,
   JSON.stringify(result.registryReport, null, 2) + "\n",
-  "utf8"
+  "utf8",
 );
 
 const report = result.registryReport.summary;
@@ -48,5 +48,5 @@ console.log(
     `${result.aliases.length} alias(es)\n` +
     `  Registry: ${report.curated} curated, ${report.sourceNamed} source-named, ` +
     `${report.unnamed} unnamed, ${report.conflicts} conflict(s), ` +
-    `${report.suspicious} suspicious → ${REGISTRY_REPORT_PATH}`
+    `${report.suspicious} suspicious → ${REGISTRY_REPORT_PATH}`,
 );

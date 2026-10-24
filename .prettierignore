@@ -1,10 +1,10 @@
 node_modules/
-build/
+web/build/
 dist/
 coverage/
 .react-router/
 playwright-report/
 test-results/
 package-lock.json
-data/
+/data/
 web/app/components/ui/

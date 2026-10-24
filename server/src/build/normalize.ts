@@ -20,7 +20,7 @@ for (const source of sources) {
   } catch (error) {
     failures++;
     console.error(
-      `✗ ${source.file}: ${error instanceof Error ? error.message : error}`
+      `✗ ${source.file}: ${error instanceof Error ? error.message : error}`,
     );
   }
 }
@@ -30,7 +30,7 @@ await writeFile(
   NDJSON_PATH,
   records.map((record) => JSON.stringify(record)).join("\n") +
     (records.length ? "\n" : ""),
-  "utf8"
+  "utf8",
 );
 
 console.log(`\n${records.length} normalized record(s) → ${NDJSON_PATH}`);
