@@ -66,6 +66,8 @@ export const registry = sqliteTable(
     codename: text("codename").notNull(),
     name: text("name"),
     names: text("names"),
+    confidence: text("confidence").notNull(),
+    sources: text("sources").notNull(),
   },
   (table) => [primaryKey({ columns: [table.vendor, table.codename] })],
 );

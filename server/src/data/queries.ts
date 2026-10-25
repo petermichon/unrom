@@ -416,6 +416,8 @@ export function createApi(dbPath: string) {
         name: row.name,
         names: parseNames(row.names),
         supported: supported.has(deviceKey(row.vendor, row.codename)),
+        confidence: row.confidence as RegistryEntry["confidence"],
+        sources: parseNames(row.sources),
       }))
       .filter((entry) => !vendor || entry.vendor === vendor)
       .filter(

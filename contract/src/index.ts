@@ -32,6 +32,9 @@ export interface DeviceDetail {
 }
 
 /** A curated `(vendor, codename)` → model name mapping. */
+export type RegistryConfidence =
+  "verified" | "inferred" | "manual" | "unverified";
+
 export interface RegistryEntry {
   vendor: string;
   vendorName: string;
@@ -41,6 +44,10 @@ export interface RegistryEntry {
   names: string[];
   /** Whether the device appears in the current ROM coverage data. */
   supported: boolean;
+  /** How well source data backs the curated names. */
+  confidence: RegistryConfidence;
+  /** ROM ids whose reported names match the curated names. */
+  sources: string[];
 }
 
 export interface RomChip {

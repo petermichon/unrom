@@ -425,6 +425,20 @@ test("the registry exposes every curated entry", async () => {
     ]);
     assert.equal(sweet?.name, "Redmi Note 10 Pro");
     assert.equal(sweet?.supported, true);
+    assert.ok(sweet?.sources.length);
+    assert.ok(
+      ["verified", "inferred", "manual", "unverified"].includes(
+        sweet?.confidence ?? "",
+      ),
+    );
+
+    // Registry-only entries are unverified and have no sources.
+    const eos = entries.find(
+      (entry) => entry.vendor === "xiaomi" && entry.codename === "eos",
+    );
+    assert.equal(eos?.supported, false);
+    assert.equal(eos?.confidence, "unverified");
+    assert.deepEqual(eos?.sources, []);
 
     // Lookup works in both directions through the search filter.
     assert.deepEqual(

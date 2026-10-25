@@ -13,7 +13,7 @@ import { SearchInput } from "@/components/SearchInput";
 import { Button } from "@/components/ui/button";
 import type { RegistryEntry } from "@/lib/types";
 
-const MOBILE_HIDDEN = new Set(["names"]);
+const MOBILE_HIDDEN = new Set(["names", "confidence"]);
 const columnClassName = (id: string) =>
   MOBILE_HIDDEN.has(id) ? "hidden md:table-cell" : undefined;
 
@@ -112,6 +112,34 @@ export default function RegistryTable({ entries }: Props) {
               {row.original.name ?? row.original.codename}
             </span>
           ),
+      },
+      {
+        id: "confidence",
+        accessorFn: (row) => row.confidence,
+        meta: { title: "Confidence" },
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title="Confidence" />
+        ),
+        cell: ({ row }) => {
+          const labels = {
+            verified: "Verified",
+            inferred: "Inferred",
+            manual: "Manual",
+            unverified: "Unverified",
+          } as const;
+          return (
+            <span
+              className="text-muted-foreground"
+              title={
+                row.original.sources.length > 0
+                  ? `Sources: ${row.original.sources.join(", ")}`
+                  : undefined
+              }
+            >
+              {labels[row.original.confidence]}
+            </span>
+          );
+        },
       },
       {
         id: "names",

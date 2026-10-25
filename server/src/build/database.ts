@@ -111,6 +111,8 @@ interface RegistryRow {
   codename: string;
   name: string;
   names: string;
+  confidence: string;
+  sources: string;
 }
 
 interface Coverage {
@@ -167,7 +169,7 @@ function contentHash(
     key(a.vendor, a.codename).localeCompare(key(b.vendor, b.codename)),
   )) {
     hash.update(
-      `n\0${row.vendor}\0${row.codename}\0${row.name}\0${row.names}\n`,
+      `n\0${row.vendor}\0${row.codename}\0${row.name}\0${row.names}\0${row.confidence}\0${row.sources}\n`,
     );
   }
   for (const row of [...coverage].sort((a, b) =>
@@ -181,6 +183,40 @@ function contentHash(
   }
 
   return hash.digest("hex").slice(0, 16);
+}
+
+function normalizeName(value: string): string {
+  return value.trim().replace(/\s+/g, " ").toLowerCase();
+}
+
+// How well the source rosters back a curated entry's names.
+function registryProvenance(
+  names: string[],
+  sourceNames: Map<string, Set<string>> | undefined,
+): { confidence: string; sources: string[] } {
+  if (!sourceNames || sourceNames.size === 0) {
+    return { confidence: "unverified", sources: [] };
+  }
+
+  const curated = new Set(names.map(normalizeName));
+  const romIds = new Set<string>();
+  let displayMatch = false;
+
+  for (const [sourceName, ids] of sourceNames) {
+    if (curated.has(normalizeName(sourceName))) {
+      for (const romId of ids) romIds.add(romId);
+    }
+    if (names[0] && normalizeName(sourceName) === normalizeName(names[0])) {
+      displayMatch = true;
+    }
+  }
+
+  const sources = [...romIds].sort();
+  if (sources.length === 0) return { confidence: "manual", sources };
+  if (displayMatch && sources.length >= 2) {
+    return { confidence: "verified", sources };
+  }
+  return { confidence: "inferred", sources };
 }
 
 // Source names per device: key → exact name → ROM ids that reported it.
@@ -524,11 +560,14 @@ export function buildDatabase(
   const registryRows: RegistryRow[] = Object.entries(DEVICE_NAMES)
     .map(([key, names]) => {
       const [vendor, codename] = key.split("\0");
+      const provenance = registryProvenance(names, sourceNames.get(key));
       return {
         vendor,
         codename,
         name: names[0] ?? codename,
         names: JSON.stringify(names),
+        confidence: provenance.confidence,
+        sources: JSON.stringify(provenance.sources),
       };
     })
     .sort((a, b) =>
