@@ -323,6 +323,7 @@ export const DECLARED_GROUPS: CoverageGroup[] = [
 // `zirconia`. A rename is not a variant: the codenames denote the same device,
 // so the edges merge. Map `(vendor, codename)` → canonical.
 const VENDOR_CODENAME_ALIASES: Record<string, string> = {
+  "huawei\0HWMRD-M1": "madrid",
   "nothing\0phone1": "Spacewar",
   "nothing\0phone2": "Pong",
   "teracube\u00002e": "zirconia",

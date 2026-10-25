@@ -172,6 +172,7 @@ export const DEVICE_NAMES: Record<string, string[]> = {
   "huawei\0eva": ["Huawei P9"],
   "huawei\0figo": ["Huawei P Smart"],
   "huawei\0kiwi": ["Honor 5X"],
+  "huawei\0madrid": ["Huawei Y6 (2019)"],
   "huawei\0mt2": ["Huawei Ascend Mate 2 4G"],
   "huawei\0vienna": ["Huawei P9 Plus"],
 
