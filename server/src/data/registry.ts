@@ -871,6 +871,7 @@ export const DEVICE_NAMES: Record<string, string[]> = {
   "xiaomi\0ishtar": ["Xiaomi 13 Ultra"],
   "xiaomi\0jasmine_sprout": ["Mi A2"],
   "xiaomi\0jason": ["Mi Note 3"],
+  "xiaomi\0jaws": ["Xiaomi TV Box S (2nd Gen)"],
   "xiaomi\0joyeuse": ["Redmi Note 9 Pro"],
   "xiaomi\0juice": ["POCO M3", "Redmi 9T"],
   "xiaomi\0karna": ["POCO X3 (India)"],
