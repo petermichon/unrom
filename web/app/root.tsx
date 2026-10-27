@@ -68,6 +68,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
         <Links />
+        <script
+          defer
+          src="https://stats.unrom.com/script.js"
+          data-website-id="d94ac089-b728-4feb-9833-bab08f629ad5"
+        />
       </head>
       <body className="min-h-svh bg-background text-foreground antialiased selection:bg-brand/30">
         <a
