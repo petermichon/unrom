@@ -1,5 +1,5 @@
 import { Fragment } from "react";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -8,6 +8,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import { breadcrumbLd, serializeJsonLd } from "@/lib/seo";
 
 export interface Crumb {
   label: string;
@@ -15,8 +16,16 @@ export interface Crumb {
 }
 
 export function Breadcrumbs({ items }: { items: Crumb[] }) {
+  const { pathname } = useLocation();
+
   return (
     <Breadcrumb>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: serializeJsonLd(breadcrumbLd(items, pathname)),
+        }}
+      />
       <BreadcrumbList>
         {items.map((item, index) => (
           <Fragment key={`${item.label}-${index}`}>

@@ -4,7 +4,15 @@ import DeviceRomsTable from "@/components/DeviceRomsTable";
 import { PageHeader } from "@/components/PageHeader";
 import { Badge } from "@/components/ui/badge";
 import { fetchDevice } from "@/lib/data";
-import { SITE_URL, canonical } from "@/lib/seo";
+import {
+  SITE_URL,
+  errorMeta,
+  itemListLd,
+  modifiedMeta,
+  pageMeta,
+  summarizeNames,
+  updatedAtFromMatches,
+} from "@/lib/seo";
 import type { Route } from "./+types/device";
 
 // An alternate codename (alias) resolves to the canonical device; redirect so
@@ -25,26 +33,46 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   return loadDevice(params);
 }
 
-export const meta: Route.MetaFunction = ({ loaderData }) => {
+export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
   const device = loaderData?.device;
-  if (!device) return [{ title: "Device not found — unrom" }];
+  if (error || !device) return errorMeta("Device not found — unrom");
 
+  const updatedAt = updatedAtFromMatches(matches);
   const name = device.name ?? device.codename;
+  const description = `The ${name} (${device.codename}) by ${device.vendorName} is supported by ${device.roms.length} custom ${
+    device.roms.length === 1 ? "ROM" : "ROMs"
+  }, including ${summarizeNames(
+    device.roms.map((rom) => rom.name),
+    3,
+  )}.`;
+
   return [
-    { title: `${name} — unrom` },
-    {
-      name: "description",
-      content: `Custom ROMs and operating systems that support the ${name} (${device.codename}).`,
-    },
-    canonical(`/devices/${device.vendor}/${device.codename}`),
+    ...pageMeta({
+      title: `${name} (${device.codename}) — unrom`,
+      description,
+      path: `/devices/${device.vendor}/${device.codename}`,
+    }),
+    ...modifiedMeta(updatedAt),
     {
       "script:ld+json": {
         "@context": "https://schema.org",
         "@type": "Product",
         name,
+        description,
+        model: device.codename,
         url: `${SITE_URL}/devices/${device.vendor}/${device.codename}`,
         brand: { "@type": "Brand", name: device.vendorName },
+        ...(updatedAt ? { dateModified: updatedAt } : {}),
       },
+    },
+    {
+      "script:ld+json": itemListLd(
+        `${name} supported ROMs`,
+        device.roms.map((rom) => ({
+          name: rom.name,
+          path: `/roms/${rom.id}`,
+        })),
+      ),
     },
   ];
 };

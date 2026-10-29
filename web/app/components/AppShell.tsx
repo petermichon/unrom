@@ -13,16 +13,20 @@ import { Button } from "@/components/ui/button";
 
 interface Props {
   updatedAt?: string;
+  updatedAtIso?: string;
   children: ReactNode;
 }
 
-export default function AppShell({ updatedAt, children }: Props) {
+export default function AppShell({ updatedAt, updatedAtIso, children }: Props) {
   return (
     <TooltipProvider>
       <SidebarProvider>
         <AppSidebar />
         <SidebarInset>
-          <header className="sticky top-0 z-10 flex h-14 shrink-0 items-center gap-3 border-b border-border/60 bg-background/80 px-4 backdrop-blur">
+          <header
+            data-nosnippet
+            className="sticky top-0 z-10 flex h-14 shrink-0 items-center gap-3 border-b border-border/60 bg-background/80 px-4 backdrop-blur"
+          >
             <SidebarTrigger />
             <div className="ml-auto flex items-center gap-2">
               <Button
@@ -49,7 +53,12 @@ export default function AppShell({ updatedAt, children }: Props) {
             <div className="mx-auto w-full max-w-4xl">{children}</div>
           </div>
           <footer className="border-t border-border/60 px-4 py-6 text-xs text-muted-foreground sm:px-6">
-            Last updated {updatedAt ?? "—"}
+            Last updated{" "}
+            {updatedAtIso ? (
+              <time dateTime={updatedAtIso}>{updatedAt ?? "—"}</time>
+            ) : (
+              (updatedAt ?? "—")
+            )}
           </footer>
         </SidebarInset>
       </SidebarProvider>

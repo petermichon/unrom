@@ -132,6 +132,7 @@ export default function RomsTable({ roms }: { roms: RomDetail[] }) {
       columns={columns}
       data={roms}
       tableClassName="min-w-[40rem]"
+      renderAllRows
       initialState={{
         columnVisibility: { search: false },
         sorting: [{ id: "deviceCount", desc: true }],

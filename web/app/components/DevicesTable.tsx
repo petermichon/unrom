@@ -24,9 +24,13 @@ const columnClassName = (id: string) =>
 
 interface Props {
   devices: BrowseDevice[];
+  renderAllRows?: boolean;
 }
 
-export default function DevicesTable({ devices }: Props) {
+export default function DevicesTable({
+  devices,
+  renderAllRows = false,
+}: Props) {
   // How many devices each ROM supports, so a device's ROMs can be listed with
   // the widest-reaching first (LineageOS, /e/OS, PixelExperience, …).
   const romPopularity = useMemo(() => {
@@ -189,6 +193,7 @@ export default function DevicesTable({ devices }: Props) {
       data={devices}
       columnClassName={columnClassName}
       tableClassName="min-w-[40rem]"
+      renderAllRows={renderAllRows}
       initialState={{
         columnVisibility: { search: false },
         sorting: [{ id: "roms", desc: true }],

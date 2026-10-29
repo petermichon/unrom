@@ -40,6 +40,12 @@ interface Props<TData, TValue> {
   toolbar?: (table: TanStackTable<TData>) => ReactNode;
   columnClassName?: (columnId: string) => string | undefined;
   tableClassName?: string;
+  /**
+   * Render every filtered row into the HTML and hide the ones outside the
+   * current page. Crawlers and no-JS readers then see the full dataset, while
+   * the table still paginates for interactive use.
+   */
+  renderAllRows?: boolean;
   initialState?: {
     columnVisibility?: VisibilityState;
     columnFilters?: ColumnFiltersState;
@@ -94,6 +100,7 @@ export function DataTable<TData, TValue>({
   toolbar,
   columnClassName,
   tableClassName,
+  renderAllRows = false,
   initialState,
   columnFilters: controlledFilters,
   onColumnFiltersChange,
@@ -149,6 +156,13 @@ export function DataTable<TData, TValue>({
       columnClassName?.(columnId),
     ) || undefined;
 
+  const visibleRows = table.getRowModel().rows;
+  const renderedRows = renderAllRows
+    ? table.getPrePaginationRowModel().rows
+    : visibleRows;
+  const pageStart = pagination.pageIndex * pagination.pageSize;
+  const pageEnd = pageStart + pagination.pageSize;
+
   return (
     <div className="flex flex-col gap-4">
       {toolbar?.(table)}
@@ -174,10 +188,15 @@ export function DataTable<TData, TValue>({
               </TableRow>
             ))}
           </TableHeader>
-          {table.getRowModel().rows.length > 0 && (
+          {visibleRows.length > 0 && (
             <TableBody>
-              {table.getRowModel().rows.map((row) => (
-                <TableRow key={row.id}>
+              {renderedRows.map((row, index) => (
+                <TableRow
+                  key={row.id}
+                  hidden={
+                    renderAllRows && (index < pageStart || index >= pageEnd)
+                  }
+                >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell
                       key={cell.id}
@@ -194,7 +213,7 @@ export function DataTable<TData, TValue>({
             </TableBody>
           )}
         </Table>
-        {table.getRowModel().rows.length === 0 && (
+        {visibleRows.length === 0 && (
           <Empty className="h-48 border-0">
             <EmptyHeader>
               <EmptyMedia variant="icon">

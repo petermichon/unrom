@@ -3,19 +3,44 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import DevicesTable from "@/components/DevicesTable";
 import { PageHeader } from "@/components/PageHeader";
 import { fetchDevices } from "@/lib/data";
-import { canonical } from "@/lib/seo";
+import {
+  errorMeta,
+  itemListLd,
+  modifiedMeta,
+  pageMeta,
+  summarizeNames,
+  updatedAtFromMatches,
+} from "@/lib/seo";
 import type { Route } from "./+types/vendor";
 
-export const meta: Route.MetaFunction = ({ loaderData }) => {
-  if (!loaderData) return [{ title: "Vendor not found — unrom" }];
-  const { vendor, vendorName } = loaderData;
+export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
+  if (error || !loaderData) return errorMeta("Vendor not found — unrom");
+  const { vendor, vendorName, devices } = loaderData;
+  const updatedAt = updatedAtFromMatches(matches);
+  const romCount = new Set(
+    devices.flatMap((device) => device.roms.map((rom) => rom.id)),
+  ).size;
   return [
-    { title: `${vendorName} devices — unrom` },
+    ...pageMeta({
+      title: `${vendorName} devices — unrom`,
+      description: `${devices.length} ${vendorName} device${
+        devices.length === 1 ? "" : "s"
+      } across ${romCount} custom ROM${romCount === 1 ? "" : "s"}, including ${summarizeNames(
+        devices.map((device) => device.name ?? device.codename),
+        3,
+      )}. Browse codenames and API access.`,
+      path: `/devices/${vendor}`,
+    }),
+    ...modifiedMeta(updatedAt),
     {
-      name: "description",
-      content: `Every ${vendorName} device and the custom ROMs that support it.`,
+      "script:ld+json": itemListLd(
+        `${vendorName} devices`,
+        devices.map((device) => ({
+          name: device.name ?? device.codename,
+          path: `/devices/${device.vendor}/${device.codename}`,
+        })),
+      ),
     },
-    canonical(`/devices/${vendor}`),
   ];
 };
 
@@ -55,11 +80,14 @@ export default function VendorRoute() {
         title={vendorName}
         description={`${devices.length} device${
           devices.length === 1 ? "" : "s"
-        } across ${romCount} ROM${romCount === 1 ? "" : "s"}.`}
+        } across ${romCount} ROM${romCount === 1 ? "" : "s"}, including ${summarizeNames(
+          devices.map((device) => device.name ?? device.codename),
+          3,
+        )}.`}
         endpoint={`/api/devices?vendor=${vendor}`}
       />
 
-      <DevicesTable devices={devices} />
+      <DevicesTable devices={devices} renderAllRows />
     </div>
   );
 }

@@ -106,6 +106,7 @@ export default function DeviceRomsTable({ roms }: Props) {
       columns={columns}
       data={roms}
       columnClassName={columnClassName}
+      renderAllRows
       tableClassName="min-w-[36rem]"
       initialState={{
         columnVisibility: { search: false },

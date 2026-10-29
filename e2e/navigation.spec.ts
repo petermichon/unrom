@@ -5,7 +5,7 @@ import { expect, test } from "@playwright/test";
 // it must not trigger a loader `.data` request or an `/api/*` fetch.
 test("repeat client navigations do not hit the network", async ({ page }) => {
   // The harness does not proxy /api; forward client fetches to the API server.
-  await page.route("**/api/**", async (route) => {
+  await page.route("http://127.0.0.1:3001/api/**", async (route) => {
     const url = new URL(route.request().url());
     url.protocol = "http:";
     url.host = "127.0.0.1:3000";
@@ -16,7 +16,9 @@ test("repeat client navigations do not hit the network", async ({ page }) => {
   const network: string[] = [];
   page.on("request", (request) => {
     const url = request.url();
-    if (url.includes(".data") || url.includes("/api/")) network.push(url);
+    if (url.includes(".data") || url.startsWith("http://127.0.0.1:3001/api/")) {
+      network.push(url);
+    }
   });
 
   const paths = ["/devices", "/roms", "/data", "/"];

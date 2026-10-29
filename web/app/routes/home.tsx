@@ -1,19 +1,30 @@
-import type { MetaFunction } from "react-router";
 import { useLoaderData } from "react-router";
 import { useMemo } from "react";
 import DeviceSearch from "@/components/DeviceSearch";
 import { fetchDevices } from "@/lib/data";
-import { canonical } from "@/lib/seo";
+import {
+  errorMeta,
+  modifiedMeta,
+  pageMeta,
+  updatedAtFromMatches,
+} from "@/lib/seo";
+import type { Route } from "./+types/home";
 
-export const meta: MetaFunction = () => [
-  { title: "unrom — the open database for device–ROM compatibility" },
-  {
-    name: "description",
-    content:
-      "Search by device name, codename, vendor, or ROM to find supported devices and custom ROMs.",
-  },
-  canonical("/"),
-];
+export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
+  if (error) return errorMeta();
+  const devices = loaderData?.devices ?? [];
+  const romCount = new Set(
+    devices.flatMap((device) => device.roms.map((rom) => rom.id)),
+  ).size;
+  return [
+    ...pageMeta({
+      title: "unrom — the open database for device–ROM compatibility",
+      description: `${devices.length} devices and ${romCount} custom ROMs. Search by device name, codename, vendor, or ROM to see what supports it.`,
+      path: "/",
+    }),
+    ...modifiedMeta(updatedAtFromMatches(matches)),
+  ];
+};
 
 export async function loader() {
   return { devices: await fetchDevices() };

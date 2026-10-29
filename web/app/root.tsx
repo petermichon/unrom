@@ -6,6 +6,7 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  data,
   useLoaderData,
   useRouteLoaderData,
 } from "react-router";
@@ -18,12 +19,33 @@ import { Button } from "@/components/ui/button";
 import { fetchMeta } from "@/lib/data";
 
 export async function loader() {
-  return { updatedAt: (await fetchMeta()).generatedAt };
+  const meta = await fetchMeta();
+  const generatedAt = new Date(meta.generatedAt);
+  return data(
+    {
+      updatedAt: meta.generatedAt,
+      contentHash: meta.contentHash,
+    },
+    {
+      headers: {
+        // HTML changes only when the baked dataset changes.
+        "cache-control": "public, max-age=0, must-revalidate",
+        "last-modified": Number.isNaN(generatedAt.getTime())
+          ? new Date().toUTCString()
+          : generatedAt.toUTCString(),
+        etag: `"${meta.contentHash}"`,
+      },
+    },
+  );
 }
 
 export async function clientLoader() {
   return { updatedAt: (await fetchMeta()).generatedAt };
 }
+
+// Propagate the loader's validators to every document response.
+export const headers: Route.HeadersFunction = ({ loaderHeaders }) =>
+  loaderHeaders;
 
 function formatDate(iso: string): string {
   const date = new Date(iso);
@@ -100,7 +122,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 export default function App() {
   const { updatedAt } = useLoaderData<typeof loader>();
   return (
-    <AppShell updatedAt={formatDate(updatedAt)}>
+    <AppShell updatedAt={formatDate(updatedAt)} updatedAtIso={updatedAt}>
       <Outlet />
     </AppShell>
   );
@@ -120,7 +142,10 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
       : "An unexpected error occurred.";
 
   return (
-    <AppShell updatedAt={data ? formatDate(data.updatedAt) : undefined}>
+    <AppShell
+      updatedAt={data ? formatDate(data.updatedAt) : undefined}
+      updatedAtIso={data?.updatedAt}
+    >
       <div className="flex flex-col gap-4">
         <p className="font-mono text-sm text-muted-foreground">
           {isRouteErrorResponse(error) ? error.status : "Error"}

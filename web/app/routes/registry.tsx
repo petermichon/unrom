@@ -1,20 +1,41 @@
-import type { MetaFunction } from "react-router";
 import { useLoaderData } from "react-router";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { PageHeader } from "@/components/PageHeader";
 import RegistryTable from "@/components/RegistryTable";
 import { fetchRegistry } from "@/lib/data";
-import { canonical } from "@/lib/seo";
+import {
+  errorMeta,
+  itemListLd,
+  modifiedMeta,
+  pageMeta,
+  updatedAtFromMatches,
+} from "@/lib/seo";
+import type { Route } from "./+types/registry";
 
-export const meta: MetaFunction = () => [
-  { title: "Registry — unrom" },
-  {
-    name: "description",
-    content:
-      "Look up a curated device model name by vendor and codename, or the reverse.",
-  },
-  canonical("/registry"),
-];
+export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
+  if (error) return errorMeta();
+  const entries = loaderData?.entries ?? [];
+  const updatedAt = updatedAtFromMatches(matches);
+  const supported = entries.filter((entry) => entry.supported);
+
+  return [
+    ...pageMeta({
+      title: "Registry — unrom",
+      description: `${entries.length} curated vendor and codename to model name mappings, with provenance and confidence. Look up a device name in either direction.`,
+      path: "/registry",
+    }),
+    ...modifiedMeta(updatedAt),
+    {
+      "script:ld+json": itemListLd(
+        "Supported devices",
+        supported.map((entry) => ({
+          name: entry.name ?? entry.codename,
+          path: `/devices/${entry.vendor}/${entry.codename}`,
+        })),
+      ),
+    },
+  ];
+};
 
 export async function loader() {
   return { entries: await fetchRegistry() };
@@ -26,6 +47,7 @@ export async function clientLoader() {
 
 export default function RegistryRoute() {
   const { entries } = useLoaderData<typeof loader>();
+  const supported = entries.filter((entry) => entry.supported).length;
 
   return (
     <div className="flex flex-col gap-6">
@@ -35,7 +57,7 @@ export default function RegistryRoute() {
 
       <PageHeader
         title="Registry"
-        description="Curated vendor and codename to model name mappings."
+        description={`${entries.length} curated model names, ${supported} of them on supported devices.`}
       />
 
       <RegistryTable entries={entries} />
