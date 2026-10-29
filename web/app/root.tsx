@@ -94,6 +94,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           defer
           src="https://stats.unrom.com/script.js"
           data-website-id="d94ac089-b728-4feb-9833-bab08f629ad5"
+          data-domains="unrom.com"
         />
       </head>
       <body className="min-h-svh bg-background text-foreground antialiased selection:bg-brand/30">
