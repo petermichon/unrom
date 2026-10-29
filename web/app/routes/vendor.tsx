@@ -1,4 +1,4 @@
-import { useLoaderData } from "react-router";
+import { redirect, useLoaderData } from "react-router";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import DevicesTable from "@/components/DevicesTable";
 import { PageHeader } from "@/components/PageHeader";
@@ -48,6 +48,11 @@ async function load(vendor: string) {
   const devices = await fetchDevices(vendor);
   if (devices.length === 0) {
     throw new Response("Not found", { status: 404 });
+  }
+  // The API matches vendors case-insensitively; redirect to the canonical
+  // (lowercase) vendor so aliases do not become duplicate, self-canonical URLs.
+  if (devices[0].vendor !== vendor) {
+    throw redirect(`/devices/${encodeURIComponent(devices[0].vendor)}`, 301);
   }
   return { vendor, vendorName: devices[0].vendorName, devices };
 }

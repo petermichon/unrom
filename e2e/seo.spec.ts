@@ -78,6 +78,16 @@ test("sitemap lists canonical pages with a trustworthy lastmod", async ({
   expect(xml).toContain("<lastmod>");
 });
 
+test("vendor aliases redirect to the canonical lowercase URL", async ({
+  request,
+}) => {
+  const response = await request.get("/devices/Lenovo", {
+    maxRedirects: 0,
+  });
+  expect(response.status()).toBe(301);
+  expect(response.headers()["location"]).toBe("/devices/lenovo");
+});
+
 test("error pages are not indexable", async ({ page }) => {
   for (const path of [
     "/does-not-exist",
