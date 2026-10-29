@@ -1,0 +1,5 @@
+#!/bin/sh
+# GitHub Actions only publishes images; tests run locally. Skip with
+# `git push --no-verify` if needed.
+set -e
+npm run verify

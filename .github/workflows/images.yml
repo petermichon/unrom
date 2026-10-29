@@ -1,55 +1,28 @@
-name: CI
+name: Images
 
+# Tests and typechecks run locally (`npm run verify` / `npm run verify:all`);
+# GitHub Actions only builds and publishes the deploy images.
 on:
   push:
     branches: [main]
-  pull_request:
+    paths-ignore:
+      - "**/*.md"
+      - "LICENSE"
+      - "DATA_LICENSE"
+      - "DCO"
   workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: ci-${{ github.ref }}
+  group: images-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
-  check:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        # Lowest supported (per `engines`) and the version the images pin.
-        node-version: ["22.18", "24"]
-    steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: npm
-      - run: npm ci
-      - run: npm run check
-      - run: npm run lint
-      - run: npm run format:check
-      - run: npm run test
-
-  e2e:
-    needs: check
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-      - uses: actions/setup-node@v7
-        with:
-          node-version: 24
-          cache: npm
-      - run: npm ci
-      - run: npx playwright install --with-deps chromium
-      - run: npm run test:e2e
-
   images:
-    # Build and publish on main pushes and manual runs, but not on PRs.
-    if: github.event_name != 'pull_request'
-    needs: check
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     permissions:
       contents: read
       packages: write

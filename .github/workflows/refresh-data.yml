@@ -68,10 +68,10 @@ jobs:
             echo "changed=false" >> "$GITHUB_OUTPUT"
           fi
 
-      # Pushes made with GITHUB_TOKEN do not trigger workflows, so start CI
-      # explicitly; it rebuilds the images and freshdock deploys them.
+      # Pushes made with GITHUB_TOKEN do not trigger workflows, so start the
+      # image build explicitly; it rebuilds and freshdock deploys the new data.
       - name: Rebuild images
         if: steps.commit.outputs.changed == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh workflow run ci.yml --ref main
+        run: gh workflow run images.yml --ref main

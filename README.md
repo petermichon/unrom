@@ -60,18 +60,21 @@ npm run registry:suggest            # list vendors with candidate counts
 npm run registry:suggest -- asus    # paste-ready entries for one vendor
 ```
 
-### Production (CI/CD)
+### Production (image publishing)
 
-- **CI** (`.github/workflows/ci.yml`) — typechecks on every push/PR, and on
-  `main` builds and publishes `ghcr.io/<owner>/unrom-api` and `unrom-web`
-  tagged with the commit SHA and `latest`.
+- **Images** (`.github/workflows/images.yml`) — on pushes to `main` (docs-only
+  changes are skipped) and manual runs, builds and publishes
+  `ghcr.io/<owner>/unrom-api` and `unrom-web` tagged with the commit SHA and
+  `latest`. Tests and typechecks are local: `npm run verify`; use
+  `npm run verify:all` to include e2e.
 - **Deploy is pull-based** — the server runs [freshdock](https://github.com/Turbootzz/freshdock)
-  (`--profile deploy`), which recreates `api`/`web` when CI publishes a new
-  image. No SSH credentials or inbound access; healthchecks gate updates and
+  (`--profile deploy`), which recreates `api`/`web` when a new image is
+  published. No SSH credentials or inbound access; healthchecks gate updates and
   roll back a broken image. `git pull` is only needed when the compose file or
   Caddyfile changes.
 - **Refresh data** (`.github/workflows/refresh-data.yml`) — nightly, fetches
-  new source snapshots, commits `data/`, and triggers CI so fresh images ship.
+  new source snapshots, commits `data/`, and triggers the image build so fresh
+  data ships.
 
 Server bootstrap:
 

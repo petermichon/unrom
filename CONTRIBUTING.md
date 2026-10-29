@@ -36,12 +36,23 @@ have the right to submit the contribution under the project's licenses.
 3. Keep `data/` immutable — never hand-edit it; change the fetcher instead.
 4. Add the source to `ATTRIBUTION.md`.
 
-## Before opening a PR
+## Before pushing
+
+GitHub Actions only publishes images; tests and typechecks run locally. Enable
+the repository's pre-push hook once per clone:
 
 ```sh
-npm run format      # format all files with Prettier
-npm run check       # typecheck all workspaces
-npm run build:data  # normalize + build SQLite + export JSON
+npm run hooks
 ```
+
+It runs `npm run verify` (typecheck, lint, format check, unit tests) on every
+push. The browser suite covers UI, SEO, and accessibility; run it before larger
+or UI-changing work:
+
+```sh
+npm run verify:all
+```
+
+Use `npm run build:data` if you want to rebuild the dataset and exports locally.
 
 Report wrong mappings via an issue rather than editing generated artifacts.
