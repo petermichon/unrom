@@ -114,6 +114,8 @@ export default function DeviceSearch({ devices, roms, examples = [] }: Props) {
       >
         <CommandInput
           ref={inputRef}
+          seamless
+          className="text-base"
           aria-label="Search devices, vendors, and ROMs"
           placeholder="Search by device name, codename, vendor, or ROM…"
           value={query}
@@ -197,7 +199,7 @@ export default function DeviceSearch({ devices, roms, examples = [] }: Props) {
         </CommandList>
       </Command>
 
-      {examples.length > 0 && (
+      {examples.length > 0 && (needle === "" || noResults) && (
         <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
           <span>Try:</span>
           {examples.map((example) => (

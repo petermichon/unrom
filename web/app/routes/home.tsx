@@ -36,7 +36,7 @@ export async function clientLoader() {
   return { devices: await fetchDevices() };
 }
 
-const EXAMPLES = ["Redmi Note 7", "vayu", "Nothing", "LineageOS"];
+const EXAMPLES = ["Pixel 9", "beryllium", "Xiaomi", "LineageOS"];
 
 export default function Home() {
   const { devices } = useLoaderData<typeof loader>();

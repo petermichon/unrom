@@ -68,11 +68,21 @@ function CommandDialog({
 
 function CommandInput({
   className,
+  seamless = false,
   ...props
-}: React.ComponentProps<typeof CommandPrimitive.Input>) {
+}: React.ComponentProps<typeof CommandPrimitive.Input> & {
+  /** Blend into the surrounding surface instead of drawing its own field. */
+  seamless?: boolean;
+}) {
   return (
-    <div data-slot="command-input-wrapper" className="p-1 pb-0">
-      <InputGroup className="h-8! rounded-lg! border-input/30 bg-input/30 shadow-none! *:data-[slot=input-group-addon]:pl-2!">
+    <div data-slot="command-input-wrapper" className="p-1">
+      <InputGroup
+        className={cn(
+          "h-8! rounded-lg! border-input/30 bg-input/30 shadow-none! *:data-[slot=input-group-addon]:pl-2!",
+          seamless &&
+            "h-10! rounded-none! border-0! bg-transparent! shadow-none! ring-0! has-[[data-slot=input-group-control]:focus-visible]:ring-0! dark:bg-transparent!",
+        )}
+      >
         <CommandPrimitive.Input
           data-slot="command-input"
           className={cn(

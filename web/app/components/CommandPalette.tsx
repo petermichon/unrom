@@ -32,7 +32,9 @@ export default function CommandPalette() {
       >
         <Search className="size-4" />
         <span className="hidden sm:inline">Search</span>
-        <Kbd className="hidden sm:inline-flex">⌘K</Kbd>
+        <Kbd className="hidden bg-transparent! px-0! text-muted-foreground! sm:inline-flex">
+          ⌘K
+        </Kbd>
       </Button>
 
       {open && (

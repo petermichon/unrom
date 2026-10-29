@@ -64,13 +64,32 @@ test("home search shows matching vendors", async ({ page }) => {
 
 test("clicking an example fills the search", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Search for vayu" }).click();
+  await page.getByRole("button", { name: "Search for beryllium" }).click();
   await expect(
     page.getByPlaceholder("Search by device name, codename, vendor, or ROM…"),
-  ).toHaveValue("vayu");
+  ).toHaveValue("beryllium");
   await expect(
-    page.getByRole("option", { name: /POCO X3 Pro/ }).first(),
+    page.getByRole("option", { name: /POCO F1/ }).first(),
   ).toBeVisible();
+});
+
+test("example chips show when idle or when nothing matches", async ({
+  page,
+}) => {
+  await page.goto("/");
+  const example = page.getByRole("button", { name: "Search for Pixel 9" });
+  const input = page.getByPlaceholder(
+    "Search by device name, codename, vendor, or ROM…",
+  );
+
+  await expect(example).toBeVisible();
+
+  await input.fill("pixel");
+  await expect(example).toBeHidden();
+
+  await input.fill("zzzzzz");
+  await expect(page.getByText("No matches found.")).toBeVisible();
+  await expect(example).toBeVisible();
 });
 
 test("command palette shows matches while typing", async ({ page }) => {

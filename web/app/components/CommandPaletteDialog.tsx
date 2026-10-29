@@ -130,6 +130,8 @@ export default function CommandPaletteDialog({ open, onOpenChange }: Props) {
     >
       <Command shouldFilter={false}>
         <CommandInput
+          seamless
+          className="text-base"
           aria-label="Search devices, vendors, and ROMs"
           placeholder="Search devices, vendors, and ROMs…"
           value={query}
