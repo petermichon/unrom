@@ -18,8 +18,8 @@ export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
   ).size;
   return [
     ...pageMeta({
-      title: "unrom — the open database for device–ROM compatibility",
-      description: `${devices.length} devices and ${romCount} custom ROMs. Search by device name, codename, vendor, or ROM to see what supports it.`,
+      title: "unrom — find the custom ROMs that support your device",
+      description: `The open database for device–ROM compatibility. ${devices.length} devices and ${romCount} custom ROMs — search by name, codename, vendor, or ROM.`,
       path: "/",
     }),
     ...modifiedMeta(updatedAtFromMatches(matches)),
@@ -57,11 +57,11 @@ export default function Home() {
     <section className="flex flex-col gap-8">
       <div className="flex flex-col gap-3">
         <h1 className="font-heading text-4xl font-semibold tracking-tight text-balance">
-          The open database for device–ROM compatibility
+          Find the custom ROMs that support your device
         </h1>
         <p className="text-muted-foreground">
-          Search by device name, codename, vendor, or ROM to see what supports
-          it.
+          The open database for device–ROM compatibility. Search by device name,
+          codename, vendor, or ROM to see what supports it.
         </p>
         <p className="text-sm text-muted-foreground">
           Tracking <span className="text-foreground">{devices.length}</span>{" "}
