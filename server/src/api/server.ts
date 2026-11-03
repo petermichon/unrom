@@ -3,11 +3,13 @@ import { join } from "node:path";
 
 import { serve } from "@hono/node-server";
 import { Hono } from "hono";
+import { cors } from "hono/cors";
 import { etag } from "hono/etag";
 import type { Context } from "hono";
 
 import { createApi } from "../data/queries.ts";
 import { DB_PATH, DIST_DIR } from "../paths.ts";
+import { openapi } from "./openapi.ts";
 
 const PORT = Number(process.env.PORT ?? 3000);
 const HOST = process.env.HOST ?? "127.0.0.1";
@@ -24,6 +26,24 @@ try {
 }
 
 const app = new Hono();
+
+// The API is read-only and public, so any origin may read it. This lives here
+// rather than in the reverse proxy so self-hosters get the same behaviour
+// whether or not they run Caddy in front.
+app.use(
+  "*",
+  cors({
+    origin: "*",
+    allowMethods: ["GET", "HEAD", "OPTIONS"],
+    exposeHeaders: [
+      "ETag",
+      "Last-Modified",
+      "Content-Disposition",
+      "Content-Length",
+    ],
+    maxAge: 86400,
+  }),
+);
 
 // The dataset only changes on redeploy, so serve a short fresh window and then
 // let clients reuse the cached copy while revalidating in the background. This
@@ -86,6 +106,7 @@ app.get("/api", (c) =>
     name: "unrom api",
     endpoints: [
       "GET /api/health",
+      "GET /api/openapi.json",
       "GET /api/meta",
       "GET /api/devices?q=&vendor=",
       "GET /api/devices/:vendor/:codename",
@@ -102,6 +123,11 @@ app.get("/api", (c) =>
 app.get("/api/health", (c) => {
   c.header("cache-control", "no-store");
   return c.json({ ok: true });
+});
+
+app.get("/api/openapi.json", (c) => {
+  c.header("cache-control", "public, max-age=3600");
+  return c.json(openapi);
 });
 
 app.get("/api/meta", (c) => c.json(api.getMeta()));

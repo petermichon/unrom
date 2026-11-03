@@ -7,6 +7,48 @@ export const OG_IMAGE = `${SITE_URL}/og.png`;
 const SITE_DESCRIPTION =
   "The open database for device–ROM compatibility: every custom ROM and the devices it supports.";
 
+const ODBL_URL = "https://opendatacommons.org/licenses/odbl/1-0/";
+
+/**
+ * The dataset itself, described with `Dataset` so search engines can treat it
+ * as open data rather than just another web page. The exports are the same
+ * ones the API serves, which is what makes the license claim verifiable.
+ */
+function datasetNode(): Record<string, unknown> {
+  return {
+    "@type": "Dataset",
+    "@id": `${SITE_URL}/#dataset`,
+    name: "unrom — device–ROM compatibility database",
+    description: SITE_DESCRIPTION,
+    url: SITE_URL,
+    license: ODBL_URL,
+    isAccessibleForFree: true,
+    creator: { "@id": `${SITE_URL}/#organization` },
+    publisher: { "@id": `${SITE_URL}/#organization` },
+    keywords: [
+      "Android",
+      "custom ROM",
+      "device compatibility",
+      "LineageOS",
+      "AOSP",
+    ],
+    distribution: [
+      {
+        "@type": "DataDownload",
+        name: "JSON export",
+        contentUrl: `${SITE_URL}/api/export/json`,
+        encodingFormat: "application/json",
+      },
+      {
+        "@type": "DataDownload",
+        name: "SQLite export",
+        contentUrl: `${SITE_URL}/api/export/sqlite`,
+        encodingFormat: "application/vnd.sqlite3",
+      },
+    ],
+  };
+}
+
 /** Site-wide identity, emitted on every page. */
 function siteGraph(): Record<string, unknown> {
   return {
@@ -28,6 +70,7 @@ function siteGraph(): Record<string, unknown> {
         url: SITE_URL,
         logo: `${SITE_URL}/favicon.svg`,
       },
+      datasetNode(),
     ],
   };
 }

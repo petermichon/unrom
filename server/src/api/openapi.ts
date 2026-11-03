@@ -1,0 +1,453 @@
+/**
+ * OpenAPI 3.1 description of the unrom API.
+ *
+ * Every shape here mirrors `@unrom/contract` — that package stays the single
+ * source of truth for the DTOs, and this document is the machine-readable view
+ * of it so clients (and their generators) do not have to reverse-engineer the
+ * endpoints from the README.
+ */
+
+const nullableString = { type: ["string", "null"] };
+
+const errorSchema = {
+  type: "object",
+  required: ["error"],
+  properties: {
+    error: { type: "string" },
+  },
+};
+
+const romChipSchema = {
+  type: "object",
+  required: ["id", "name"],
+  properties: {
+    id: { type: "string" },
+    name: { type: "string" },
+  },
+};
+
+const romSupportSchema = {
+  type: "object",
+  required: ["id", "name", "referenceUrl", "inheritedFrom"],
+  properties: {
+    id: { type: "string" },
+    name: { type: "string" },
+    referenceUrl: { ...nullableString, format: "uri" },
+    inheritedFrom: {
+      ...nullableString,
+      description:
+        "Set when the ROM supports this device via a covering build target.",
+    },
+  },
+};
+
+const deviceSummarySchema = {
+  type: "object",
+  required: ["vendor", "codename", "name", "romCount"],
+  properties: {
+    vendor: { type: "string" },
+    codename: { type: "string" },
+    name: nullableString,
+    romCount: { type: "integer", minimum: 0 },
+  },
+};
+
+const browseDeviceSchema = {
+  type: "object",
+  required: [
+    "vendor",
+    "vendorName",
+    "codename",
+    "name",
+    "names",
+    "aliases",
+    "group",
+    "roms",
+  ],
+  properties: {
+    vendor: { type: "string" },
+    vendorName: { type: "string" },
+    codename: { type: "string" },
+    name: { ...nullableString, description: "Primary marketing name." },
+    names: {
+      type: "array",
+      items: { type: "string" },
+      description: "Every canonical model name for this codename.",
+    },
+    aliases: {
+      type: "array",
+      items: { type: "string" },
+      description: "Alternate codenames that resolve to this device.",
+    },
+    group: {
+      type: "array",
+      items: { type: "string" },
+      description: "Every codename a single build is valid for.",
+    },
+    roms: { type: "array", items: { $ref: "#/components/schemas/RomChip" } },
+  },
+};
+
+const deviceDetailSchema = {
+  type: "object",
+  required: [
+    "vendor",
+    "vendorName",
+    "codename",
+    "name",
+    "names",
+    "aliases",
+    "group",
+    "roms",
+  ],
+  properties: {
+    vendor: { type: "string" },
+    vendorName: { type: "string" },
+    codename: { type: "string" },
+    name: nullableString,
+    names: { type: "array", items: { type: "string" } },
+    aliases: { type: "array", items: { type: "string" } },
+    group: { type: "array", items: { type: "string" } },
+    roms: {
+      type: "array",
+      items: { $ref: "#/components/schemas/RomSupport" },
+    },
+  },
+};
+
+const registryEntrySchema = {
+  type: "object",
+  required: [
+    "vendor",
+    "vendorName",
+    "codename",
+    "name",
+    "names",
+    "supported",
+    "confidence",
+    "sources",
+  ],
+  properties: {
+    vendor: { type: "string" },
+    vendorName: { type: "string" },
+    codename: { type: "string" },
+    name: nullableString,
+    names: { type: "array", items: { type: "string" } },
+    supported: {
+      type: "boolean",
+      description:
+        "Whether the device appears in the current ROM coverage data.",
+    },
+    confidence: {
+      type: "string",
+      enum: ["verified", "inferred", "manual", "unverified"],
+      description: "How well source data backs the curated names.",
+    },
+    sources: {
+      type: "array",
+      items: { type: "string" },
+      description: "ROM ids whose reported names match the curated names.",
+    },
+  },
+};
+
+const romDetailSchema = {
+  type: "object",
+  required: ["id", "name", "deviceCount", "devices"],
+  properties: {
+    id: { type: "string" },
+    name: { type: "string" },
+    deviceCount: { type: "integer", minimum: 0 },
+    devices: {
+      type: "array",
+      items: { $ref: "#/components/schemas/DeviceSummary" },
+    },
+  },
+};
+
+const mappingSchema = {
+  type: "object",
+  required: [
+    "vendor",
+    "vendorName",
+    "codename",
+    "deviceName",
+    "romId",
+    "romName",
+    "referenceUrl",
+    "reportedCodename",
+  ],
+  properties: {
+    vendor: { type: "string" },
+    vendorName: { type: "string" },
+    codename: { type: "string" },
+    deviceName: nullableString,
+    romId: { type: "string" },
+    romName: { type: "string" },
+    referenceUrl: { ...nullableString, format: "uri" },
+    reportedCodename: nullableString,
+  },
+};
+
+const jsonResponse = (schema: unknown) => ({
+  description: "Successful response.",
+  content: { "application/json": { schema } },
+});
+
+const searchParameters = [
+  {
+    name: "q",
+    in: "query",
+    required: false,
+    description: "Case-insensitive substring match on name or codename.",
+    schema: { type: "string" },
+  },
+  {
+    name: "vendor",
+    in: "query",
+    required: false,
+    description: "Exact vendor id, e.g. `google`.",
+    schema: { type: "string" },
+  },
+];
+
+const notFound = {
+  description: "No entity matches the requested key.",
+  content: {
+    "application/json": {
+      schema: { $ref: "#/components/schemas/Error" },
+    },
+  },
+};
+
+export const openapi = {
+  openapi: "3.1.0",
+  info: {
+    title: "unrom API",
+    version: "1.0.0",
+    summary: "Open database for device–ROM compatibility.",
+    description:
+      "Which custom Android ROMs support which devices. Every response is " +
+      "the same JSON the web app renders, and the full dataset is available " +
+      "as JSON or SQLite exports. Data is licensed ODbL-1.0; code is AGPL-3.0-only.",
+    license: {
+      name: "ODbL-1.0",
+      url: "https://opendatacommons.org/licenses/odbl/1-0/",
+    },
+  },
+  externalDocs: {
+    description: "Source repository",
+    url: "https://github.com/petermichon/unrom",
+  },
+  servers: [{ url: "/", description: "This host" }],
+  tags: [
+    { name: "meta", description: "Health and dataset freshness." },
+    { name: "devices", description: "Devices and their ROM support." },
+    { name: "roms", description: "ROMs and the devices they support." },
+    { name: "registry", description: "Curated device name mappings." },
+    { name: "data", description: "Flat mappings and bulk exports." },
+  ],
+  paths: {
+    "/api": {
+      get: {
+        tags: ["meta"],
+        summary: "List the available endpoints",
+        operationId: "getApiIndex",
+        responses: {
+          200: jsonResponse({
+            type: "object",
+            required: ["name", "endpoints"],
+            properties: {
+              name: { type: "string" },
+              endpoints: { type: "array", items: { type: "string" } },
+            },
+          }),
+        },
+      },
+    },
+    "/api/health": {
+      get: {
+        tags: ["meta"],
+        summary: "Liveness probe",
+        operationId: "getHealth",
+        responses: {
+          200: jsonResponse({
+            type: "object",
+            required: ["ok"],
+            properties: { ok: { type: "boolean" } },
+          }),
+        },
+      },
+    },
+    "/api/meta": {
+      get: {
+        tags: ["meta"],
+        summary: "Dataset freshness",
+        description:
+          "`contentHash` changes whenever the baked dataset changes, so it " +
+          "doubles as a cheap ETag for clients.",
+        operationId: "getMeta",
+        responses: {
+          200: jsonResponse({ $ref: "#/components/schemas/Meta" }),
+        },
+      },
+    },
+    "/api/devices": {
+      get: {
+        tags: ["devices"],
+        summary: "Browse devices",
+        description:
+          "Returns every device matching the filters. Without parameters the " +
+          "whole dataset is returned in one response.",
+        operationId: "listDevices",
+        parameters: [...searchParameters],
+        responses: {
+          200: jsonResponse({
+            type: "array",
+            items: { $ref: "#/components/schemas/BrowseDevice" },
+          }),
+        },
+      },
+    },
+    "/api/devices/{vendor}/{codename}": {
+      get: {
+        tags: ["devices"],
+        summary: "Get one device with its ROM support",
+        operationId: "getDevice",
+        parameters: [
+          {
+            name: "vendor",
+            in: "path",
+            required: true,
+            schema: { type: "string" },
+          },
+          {
+            name: "codename",
+            in: "path",
+            required: true,
+            schema: { type: "string" },
+          },
+        ],
+        responses: {
+          200: jsonResponse({ $ref: "#/components/schemas/DeviceDetail" }),
+          404: notFound,
+        },
+      },
+    },
+    "/api/registry": {
+      get: {
+        tags: ["registry"],
+        summary: "Browse curated name mappings",
+        operationId: "listRegistry",
+        parameters: [...searchParameters],
+        responses: {
+          200: jsonResponse({
+            type: "array",
+            items: { $ref: "#/components/schemas/RegistryEntry" },
+          }),
+        },
+      },
+    },
+    "/api/roms": {
+      get: {
+        tags: ["roms"],
+        summary: "List ROMs",
+        description: "Includes the devices each ROM supports.",
+        operationId: "listRoms",
+        responses: {
+          200: jsonResponse({
+            type: "array",
+            items: { $ref: "#/components/schemas/RomDetail" },
+          }),
+        },
+      },
+    },
+    "/api/roms/{id}": {
+      get: {
+        tags: ["roms"],
+        summary: "Get one ROM",
+        operationId: "getRom",
+        parameters: [
+          {
+            name: "id",
+            in: "path",
+            required: true,
+            schema: { type: "string" },
+          },
+        ],
+        responses: {
+          200: jsonResponse({ $ref: "#/components/schemas/RomDetail" }),
+          404: notFound,
+        },
+      },
+    },
+    "/api/data": {
+      get: {
+        tags: ["data"],
+        summary: "Flat device–ROM mappings",
+        description:
+          "One row per (device, ROM) pair, with provenance for each edge.",
+        operationId: "listMappings",
+        responses: {
+          200: jsonResponse({
+            type: "array",
+            items: { $ref: "#/components/schemas/Mapping" },
+          }),
+        },
+      },
+    },
+    "/api/export/json": {
+      get: {
+        tags: ["data"],
+        summary: "Download the full dataset as JSON",
+        operationId: "exportJson",
+        responses: {
+          200: {
+            description: "Dataset attachment.",
+            content: {
+              "application/json": { schema: { type: "object" } },
+            },
+          },
+        },
+      },
+    },
+    "/api/export/sqlite": {
+      get: {
+        tags: ["data"],
+        summary: "Download the full dataset as SQLite",
+        operationId: "exportSqlite",
+        responses: {
+          200: {
+            description: "SQLite database attachment.",
+            content: {
+              "application/vnd.sqlite3": {
+                schema: { type: "string", format: "binary" },
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+  components: {
+    schemas: {
+      Error: errorSchema,
+      Meta: {
+        type: "object",
+        required: ["generatedAt", "contentHash"],
+        properties: {
+          generatedAt: { type: "string", format: "date-time" },
+          contentHash: { type: "string" },
+        },
+      },
+      RomChip: romChipSchema,
+      RomSupport: romSupportSchema,
+      DeviceSummary: deviceSummarySchema,
+      BrowseDevice: browseDeviceSchema,
+      DeviceDetail: deviceDetailSchema,
+      RegistryEntry: registryEntrySchema,
+      RomDetail: romDetailSchema,
+      Mapping: mappingSchema,
+    },
+  },
+};
