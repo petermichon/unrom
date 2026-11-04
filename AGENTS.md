@@ -21,3 +21,19 @@ scope — no features, polish, or infrastructure for their own sake.
 - The **data + API is the product**. The frontend is a neutral access layer whose job is to make the data viewable and usable.
 - The **backend data and API must remain fully independent** of the frontend and are the **priority**.
 - The **frontend is always second**: it must never become a dependency of the data pipeline, and work on it should not block or reshape the data/API.
+
+## Beta policy
+
+**While in beta, nothing public is a compatibility promise.** Routes, URLs, query
+params, UI components, export filenames, and vendor/device ids may be renamed or
+removed outright — no aliases, redirects, deprecation windows, or shims. Prefer
+the clean shape over the compatible one.
+
+Three things are exceptions, because they were never compatibility:
+
+- **Canonical redirects** (e.g. case normalization) stay: they prevent duplicate
+  self-canonical URLs, which is correctness, not legacy support.
+- **`contract/` response shapes are frozen.** Changing one is a versioning
+  decision, not a cleanup.
+- **`data/` is permanent raw provenance.** Never rewrite snapshots to make a
+  refactor or removal easier; fix the normalizer instead.
