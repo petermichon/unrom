@@ -123,7 +123,7 @@ export function pageMeta({
 
 /** Titles for error states; always keep them out of the index. */
 export function errorMeta(
-  title = "Something went wrong — unrom",
+  title = "Something went wrong | unrom",
 ): MetaDescriptor[] {
   return [{ title }, { name: "robots", content: "noindex" }];
 }

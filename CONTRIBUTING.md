@@ -39,8 +39,8 @@ have the right to submit the contribution under the project's licenses.
 ## Typography
 
 - Brand name is always lowercase: `unrom`, including at the start of a sentence.
-- Use a spaced em dash (`—`) to separate a page or item name from the brand in
-  titles, e.g. `Devices — unrom`.
+- Separate the page name from the brand with a spaced pipe (`|`) in titles,
+  e.g. `Devices | unrom`.
 - Use an en dash (`–`) for compounds, e.g. `device–ROM`.
 - Use neither in code, filenames, or exported data.
 

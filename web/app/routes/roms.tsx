@@ -24,7 +24,7 @@ export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
 
   return [
     ...pageMeta({
-      title: "ROMs — unrom",
+      title: "ROMs | unrom",
       description: `${roms.length} custom ROMs covering ${deviceCount} devices. Browse every Android ROM and the devices it supports, with API access.`,
       path: "/roms",
     }),

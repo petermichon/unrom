@@ -35,7 +35,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
 
 export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
   const device = loaderData?.device;
-  if (error || !device) return errorMeta("Device not found — unrom");
+  if (error || !device) return errorMeta("Device not found | unrom");
 
   const updatedAt = updatedAtFromMatches(matches);
   const name = device.name ?? device.codename;
@@ -48,7 +48,7 @@ export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
 
   return [
     ...pageMeta({
-      title: `${name} (${device.codename}) — unrom`,
+      title: `${name} (${device.codename}) | unrom`,
       description,
       path: `/devices/${device.vendor}/${device.codename}`,
     }),

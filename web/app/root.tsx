@@ -75,8 +75,8 @@ export const meta: Route.MetaFunction = ({ error }) => {
   return [
     {
       title: notFound
-        ? "Page not found — unrom"
-        : "Something went wrong — unrom",
+        ? "Page not found | unrom"
+        : "Something went wrong | unrom",
     },
     { name: "robots", content: "noindex" },
   ];

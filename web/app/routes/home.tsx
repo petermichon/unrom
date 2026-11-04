@@ -18,7 +18,7 @@ export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
   ).size;
   return [
     ...pageMeta({
-      title: "unrom — find the custom ROMs that support your device",
+      title: "Find the custom ROMs that support your device | unrom",
       description: `The open database for device–ROM compatibility. ${devices.length} devices and ${romCount} custom ROMs — search by name, codename, vendor, or ROM.`,
       path: "/",
     }),

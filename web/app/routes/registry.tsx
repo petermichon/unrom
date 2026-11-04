@@ -20,7 +20,7 @@ export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
 
   return [
     ...pageMeta({
-      title: "Registry — unrom",
+      title: "Registry | unrom",
       description: `${entries.length} curated vendor and codename to model name mappings, with provenance and confidence. Look up a device name in either direction.`,
       path: "/registry",
     }),

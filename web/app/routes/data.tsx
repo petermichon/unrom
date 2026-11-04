@@ -25,7 +25,7 @@ export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
 
   return [
     ...pageMeta({
-      title: "Data — unrom",
+      title: "Data | unrom",
       description,
       path: "/data",
     }),

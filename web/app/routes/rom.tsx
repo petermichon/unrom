@@ -24,7 +24,7 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
 
 export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
   const rom = loaderData?.rom;
-  if (error || !rom) return errorMeta("ROM not found — unrom");
+  if (error || !rom) return errorMeta("ROM not found | unrom");
 
   const updatedAt = updatedAtFromMatches(matches);
   const vendorCount = new Set(rom.devices.map((device) => device.vendor)).size;
@@ -37,7 +37,7 @@ export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
 
   return [
     ...pageMeta({
-      title: `${rom.name} — unrom`,
+      title: `${rom.name} | unrom`,
       description,
       path: `/roms/${rom.id}`,
     }),
