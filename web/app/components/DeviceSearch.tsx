@@ -191,11 +191,14 @@ export default function DeviceSearch({ devices, roms, examples = [] }: Props) {
               ))}
             </CommandGroup>
           )}
-          {truncated && (
-            <div className="px-3 py-2 text-xs text-muted-foreground">
-              Showing top matches — refine your search.
-            </div>
-          )}
+          {/* Persistent live region so screen readers announce truncation. */}
+          <div role="status">
+            {truncated && (
+              <div className="px-3 py-2 text-xs text-muted-foreground">
+                Showing top matches. Refine your search.
+              </div>
+            )}
+          </div>
         </CommandList>
       </Command>
 
