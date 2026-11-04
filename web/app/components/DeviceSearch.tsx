@@ -9,6 +9,7 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
+import { deviceHaystack, matchesAll, tokenize } from "@/lib/search";
 import type { BrowseDevice, RomChip } from "@/lib/types";
 
 interface Props {
@@ -29,21 +30,11 @@ const DEVICE_LIMIT = 50;
 const ROM_LIMIT = 20;
 const VENDOR_LIMIT = 10;
 
-function matchesDevice(device: BrowseDevice, query: string): boolean {
-  return (
-    (device.name ?? "").toLowerCase().includes(query) ||
-    device.names.some((name) => name.toLowerCase().includes(query)) ||
-    device.codename.toLowerCase().includes(query) ||
-    device.vendorName.toLowerCase().includes(query) ||
-    device.aliases.some((alias) => alias.toLowerCase().includes(query))
-  );
-}
-
 export default function DeviceSearch({ devices, roms, examples = [] }: Props) {
   const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
   const [query, setQuery] = useState("");
-  const needle = query.trim().toLowerCase();
+  const terms = useMemo(() => tokenize(query), [query]);
 
   const vendors = useMemo<VendorResult[]>(() => {
     const map = new Map<string, VendorResult>();
@@ -63,7 +54,7 @@ export default function DeviceSearch({ devices, roms, examples = [] }: Props) {
 
   const { deviceResults, deviceTotal, romResults, romTotal, vendorResults } =
     useMemo(() => {
-      if (needle === "")
+      if (terms.length === 0)
         return {
           deviceResults: [],
           deviceTotal: 0,
@@ -73,15 +64,16 @@ export default function DeviceSearch({ devices, roms, examples = [] }: Props) {
         };
 
       const deviceMatches = devices.filter((device) =>
-        matchesDevice(device, needle),
+        matchesAll(deviceHaystack(device), terms),
       );
       const romMatches = roms.filter((rom) =>
-        rom.name.toLowerCase().includes(needle),
+        matchesAll(rom.name.toLowerCase(), terms),
       );
-      const vendorMatches = vendors.filter(
-        (vendor) =>
-          vendor.vendorName.toLowerCase().includes(needle) ||
-          vendor.vendor.toLowerCase().includes(needle),
+      const vendorMatches = vendors.filter((vendor) =>
+        matchesAll(
+          `${vendor.vendor} ${vendor.vendorName}`.toLowerCase(),
+          terms,
+        ),
       );
 
       return {
@@ -91,10 +83,10 @@ export default function DeviceSearch({ devices, roms, examples = [] }: Props) {
         romTotal: romMatches.length,
         vendorResults: vendorMatches.slice(0, VENDOR_LIMIT),
       };
-    }, [devices, roms, vendors, needle]);
+    }, [devices, roms, vendors, terms]);
 
   const noResults =
-    needle !== "" &&
+    terms.length > 0 &&
     deviceTotal === 0 &&
     romTotal === 0 &&
     vendorResults.length === 0;
@@ -202,7 +194,7 @@ export default function DeviceSearch({ devices, roms, examples = [] }: Props) {
         </CommandList>
       </Command>
 
-      {examples.length > 0 && (needle === "" || noResults) && (
+      {examples.length > 0 && (terms.length === 0 || noResults) && (
         <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
           <span>Try:</span>
           {examples.map((example) => (

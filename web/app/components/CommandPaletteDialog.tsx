@@ -10,6 +10,7 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { fetchDevices, fetchRoms } from "@/lib/data";
+import { deviceHaystack, matchesAll, tokenize } from "@/lib/search";
 import type { BrowseDevice, RomChip } from "@/lib/types";
 
 interface Props {
@@ -51,7 +52,7 @@ export default function CommandPaletteDialog({ open, onOpenChange }: Props) {
     };
   }, [open, devices.length]);
 
-  const needle = query.trim().toLowerCase();
+  const terms = useMemo(() => tokenize(query), [query]);
   const vendors = useMemo<VendorResult[]>(() => {
     const map = new Map<string, VendorResult>();
     for (const device of devices) {
@@ -69,45 +70,35 @@ export default function CommandPaletteDialog({ open, onOpenChange }: Props) {
   }, [devices]);
   const deviceMatches = useMemo(
     () =>
-      needle === ""
+      terms.length === 0
         ? []
         : devices
-            .filter(
-              (device) =>
-                (device.name ?? "").toLowerCase().includes(needle) ||
-                device.names.some((name) =>
-                  name.toLowerCase().includes(needle),
-                ) ||
-                device.codename.toLowerCase().includes(needle) ||
-                device.vendorName.toLowerCase().includes(needle) ||
-                device.aliases.some((alias) =>
-                  alias.toLowerCase().includes(needle),
-                ),
-            )
+            .filter((device) => matchesAll(deviceHaystack(device), terms))
             .slice(0, DEVICE_LIMIT),
-    [devices, needle],
+    [devices, terms],
   );
   const romMatches = useMemo(
     () =>
-      needle === ""
+      terms.length === 0
         ? []
         : roms
-            .filter((rom) => rom.name.toLowerCase().includes(needle))
+            .filter((rom) => matchesAll(rom.name.toLowerCase(), terms))
             .slice(0, ROM_LIMIT),
-    [roms, needle],
+    [roms, terms],
   );
   const vendorMatches = useMemo(
     () =>
-      needle === ""
+      terms.length === 0
         ? []
         : vendors
-            .filter(
-              (vendor) =>
-                vendor.vendorName.toLowerCase().includes(needle) ||
-                vendor.vendor.toLowerCase().includes(needle),
+            .filter((vendor) =>
+              matchesAll(
+                `${vendor.vendor} ${vendor.vendorName}`.toLowerCase(),
+                terms,
+              ),
             )
             .slice(0, VENDOR_LIMIT),
-    [vendors, needle],
+    [vendors, terms],
   );
 
   const go = (href: string) => {
@@ -116,7 +107,7 @@ export default function CommandPaletteDialog({ open, onOpenChange }: Props) {
   };
 
   const noResults =
-    needle !== "" &&
+    terms.length > 0 &&
     deviceMatches.length === 0 &&
     romMatches.length === 0 &&
     vendorMatches.length === 0;
