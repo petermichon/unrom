@@ -39,6 +39,14 @@ type RomRow = typeof roms.$inferSelect;
 const deviceKey = (vendor: string, codename: string) =>
   `${vendor}\0${codename}`;
 
+/**
+ * Lowercased search terms; every one must match. Bounded so a pathological
+ * query cannot build unbounded SQL.
+ */
+function searchTerms(query: string): string[] {
+  return query.toLowerCase().split(/\s+/).filter(Boolean).slice(0, 8);
+}
+
 function parseNames(value: string | null): string[] {
   if (!value) return [];
   try {
@@ -160,14 +168,19 @@ export function createApi(dbPath: string) {
     }
     const needle = query?.trim();
     if (needle) {
-      const pattern = `%${needle.toLowerCase()}%`;
+      const terms = searchTerms(needle);
       filters.push(
-        or(
-          like(devices.codename, `%${needle}%`),
-          like(sql`coalesce(${devices.name}, '')`, `%${needle}%`),
-          like(sql`coalesce(${devices.vendor}, '')`, `%${needle}%`),
-          // Match a device by any of its alternate codenames.
-          sql`exists (select 1 from aliases a where a.vendor = ${devices.vendor} and a.codename = ${devices.codename} and lower(a.alias) like ${pattern})`,
+        and(
+          ...terms.map((term) => {
+            const pattern = `%${term}%`;
+            return or(
+              like(devices.codename, pattern),
+              like(sql`coalesce(${devices.name}, '')`, pattern),
+              like(sql`coalesce(${devices.vendor}, '')`, pattern),
+              // Match a device by any of its alternate codenames.
+              sql`exists (select 1 from aliases a where a.vendor = ${devices.vendor} and a.codename = ${devices.codename} and lower(a.alias) like ${pattern})`,
+            );
+          }),
         ),
       );
     }
@@ -398,6 +411,7 @@ export function createApi(dbPath: string) {
   // The curated registry, independent of source coverage.
   function listRegistry(query?: string, vendor?: string): RegistryEntry[] {
     const needle = query?.trim().toLowerCase();
+    const terms = needle ? searchTerms(needle) : [];
     const supported = new Set(
       db
         .select({ vendor: devices.vendor, codename: devices.codename })
@@ -422,14 +436,16 @@ export function createApi(dbPath: string) {
       .filter((entry) => !vendor || entry.vendor === vendor)
       .filter(
         (entry) =>
-          !needle ||
-          [
-            entry.vendor,
-            entry.vendorName,
-            entry.codename,
-            entry.name ?? "",
-            ...entry.names,
-          ].some((value) => value.toLowerCase().includes(needle)),
+          terms.length === 0 ||
+          terms.every((term) =>
+            [
+              entry.vendor,
+              entry.vendorName,
+              entry.codename,
+              entry.name ?? "",
+              ...entry.names,
+            ].some((value) => value.toLowerCase().includes(term)),
+          ),
       )
       .sort(
         (a, b) =>
