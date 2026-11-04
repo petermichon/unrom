@@ -36,6 +36,14 @@ have the right to submit the contribution under the project's licenses.
 3. Keep `data/` immutable — never hand-edit it; change the fetcher instead.
 4. Add the source to `ATTRIBUTION.md`.
 
+## Typography
+
+- Brand name is always lowercase: `unrom`, including at the start of a sentence.
+- Use a spaced em dash (`—`) to separate a page or item name from the brand in
+  titles, e.g. `Devices — unrom`.
+- Use an en dash (`–`) for compounds, e.g. `device–ROM`.
+- Use neither in code, filenames, or exported data.
+
 ## Before pushing
 
 GitHub Actions only publishes images; tests and typechecks run locally. Enable
