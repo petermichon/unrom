@@ -55,6 +55,9 @@ export interface RomChip {
   name: string;
 }
 
+/** Whether the project still ships builds. */
+export type RomStatus = "active" | "discontinued" | "unknown";
+
 export interface BrowseDevice {
   vendor: string;
   vendorName: string;
@@ -71,6 +74,7 @@ export interface BrowseDevice {
 export interface RomSummary {
   id: string;
   name: string;
+  status: RomStatus;
   deviceCount: number;
 }
 

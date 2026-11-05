@@ -10,6 +10,7 @@ import type {
   RegistryEntry,
   RomChip,
   RomDetail,
+  RomStatus,
   RomSupport,
 } from "@unrom/contract";
 
@@ -358,7 +359,13 @@ export function createApi(dbPath: string) {
       ),
     );
 
-    return { id: rom.id, name: rom.name, deviceCount: devices.length, devices };
+    return {
+      id: rom.id,
+      name: rom.name,
+      status: rom.status as RomStatus,
+      deviceCount: devices.length,
+      devices,
+    };
   }
 
   function indexes(): {
@@ -470,7 +477,9 @@ export function createApi(dbPath: string) {
           variantsByMain,
         ),
       )
-      .sort((a, b) => bySortKey(a.name, b.name));
+      .sort(
+        (a, b) => b.deviceCount - a.deviceCount || bySortKey(a.name, b.name),
+      );
   }
 
   function getRom(id: string): RomDetail | null {

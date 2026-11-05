@@ -7,7 +7,15 @@ import { DataTableToolbar } from "@/components/data-table/data-table-toolbar";
 import { DataTableViewOptions } from "@/components/data-table/data-table-view-options";
 import { SearchInput } from "@/components/SearchInput";
 import { Button } from "@/components/ui/button";
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty";
 import type { DeviceSummary } from "@/lib/types";
+import { PackageOpen } from "lucide-react";
 
 const MOBILE_HIDDEN = new Set(["codename"]);
 const columnClassName = (id: string) =>
@@ -69,6 +77,23 @@ export default function RomDevicesTable({ devices }: Props) {
     ],
     [],
   );
+
+  if (devices.length === 0) {
+    return (
+      <Empty className="h-64">
+        <EmptyHeader>
+          <EmptyMedia variant="icon">
+            <PackageOpen />
+          </EmptyMedia>
+          <EmptyTitle>No device data yet</EmptyTitle>
+          <EmptyDescription>
+            unrom tracks this ROM but holds no build data for it. Discontinued
+            projects often lose their device list.
+          </EmptyDescription>
+        </EmptyHeader>
+      </Empty>
+    );
+  }
 
   return (
     <DataTable

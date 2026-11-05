@@ -51,6 +51,29 @@ export default function RomsTable({ roms }: { roms: RomDetail[] }) {
         ),
       },
       {
+        accessorKey: "status",
+        meta: { title: "Status" },
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title="Status" />
+        ),
+        cell: ({ row }) => {
+          const status = row.original.status;
+          return (
+            <span
+              className={
+                status === "active" ? undefined : "text-muted-foreground"
+              }
+            >
+              {status === "active"
+                ? "Active"
+                : status === "discontinued"
+                  ? "Discontinued"
+                  : "Unknown"}
+            </span>
+          );
+        },
+      },
+      {
         accessorKey: "deviceCount",
         meta: { title: "Devices" },
         header: ({ column }) => (
@@ -63,8 +86,11 @@ export default function RomsTable({ roms }: { roms: RomDetail[] }) {
               to={`/roms/${row.original.id}`}
               prefetch="intent"
               className="w-fit max-w-full text-muted-foreground hover:text-foreground hover:underline"
+              title={
+                count === 0 ? "No device data in unrom yet" : `${count} devices`
+              }
             >
-              {count}
+              {count === 0 ? "—" : count}
             </Link>
           );
         },
@@ -85,6 +111,11 @@ export default function RomsTable({ roms }: { roms: RomDetail[] }) {
           // A bounded preview of the most cross-compatible devices; the full
           // list lives on the ROM page.
           const PreviewLimit = 12;
+          if (row.original.devices.length === 0) {
+            return (
+              <span className="text-muted-foreground">No device data yet</span>
+            );
+          }
           const sorted = [...row.original.devices].sort(
             (a, b) =>
               b.romCount - a.romCount ||

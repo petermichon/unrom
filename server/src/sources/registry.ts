@@ -15,6 +15,7 @@ import { parseRisingOS } from "./risingos.ts";
 
 export interface SourceAdapter {
   id: string;
+  romName: string;
   file: string;
   parse: (raw: string) => NormalizedRomDevice[];
 }
@@ -205,42 +206,83 @@ const configs: DeviceSource[] = [
 
 // Sources whose raw shape does not fit the config adapter.
 const specialSources: SourceAdapter[] = [
-  { id: "pixelos", file: "pixelos.json", parse: parsePixelOS },
-  { id: "aicp", file: "aicp.txt", parse: parseAICP },
-  { id: "arrowos", file: "arrowos.txt", parse: parseArrowOS },
-  { id: "havocos", file: "havocos.txt", parse: parseHavocOS },
-  { id: "risingos", file: "risingos.md", parse: parseRisingOS },
-  { id: "kenvyra", file: "kenvyra.json", parse: parseKenvyra },
+  {
+    id: "pixelos",
+    romName: "PixelOS",
+    file: "pixelos.json",
+    parse: parsePixelOS,
+  },
+  { id: "aicp", romName: "AICP", file: "aicp.txt", parse: parseAICP },
+  {
+    id: "arrowos",
+    romName: "ArrowOS",
+    file: "arrowos.txt",
+    parse: parseArrowOS,
+  },
+  {
+    id: "havocos",
+    romName: "Havoc-OS",
+    file: "havocos.txt",
+    parse: parseHavocOS,
+  },
+  {
+    id: "risingos",
+    romName: "RisingOS",
+    file: "risingos.md",
+    parse: parseRisingOS,
+  },
+  {
+    id: "kenvyra",
+    romName: "Kenvyra",
+    file: "kenvyra.json",
+    parse: parseKenvyra,
+  },
   {
     id: "kali-nethunter",
+    romName: "Kali NetHunter",
     file: "kali-nethunter.yml",
     parse: parseKaliNetHunter,
   },
-  { id: "lineageos", file: "lineageos.json", parse: parseLineageOS },
-  { id: "evolutionx", file: "evolutionx.json", parse: parseEvolutionX },
-  { id: "iode", file: "iode.json", parse: parseIode },
+  {
+    id: "lineageos",
+    romName: "LineageOS",
+    file: "lineageos.json",
+    parse: parseLineageOS,
+  },
+  {
+    id: "evolutionx",
+    romName: "Evolution X",
+    file: "evolutionx.json",
+    parse: parseEvolutionX,
+  },
+  { id: "iode", romName: "iodéOS", file: "iode.json", parse: parseIode },
   {
     id: "eos",
+    romName: "/e/OS",
     file: "eos-v1-s.yml",
     parse: createEosParser(),
   },
   {
     id: "eos",
+    romName: "/e/OS",
     file: "eos-v1-t.yml",
     parse: createEosParser(),
   },
   {
     id: "eos",
+    romName: "/e/OS",
     file: "eos-a14.yml",
     parse: createEosParser(),
   },
   {
     id: "eos",
+    romName: "/e/OS",
     file: "eos-a15.yml",
     parse: createEosParser(),
   },
   {
     id: "eos",
+    romName: "/e/OS",
     file: "eos-a16.yml",
     parse: createEosParser(),
   },
@@ -250,6 +292,7 @@ export const sources: SourceAdapter[] = [
   ...specialSources,
   ...configs.map((config) => ({
     id: config.id,
+    romName: config.romName,
     file: config.file,
     parse: createParser(config),
   })),

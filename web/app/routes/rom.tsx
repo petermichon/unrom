@@ -12,7 +12,28 @@ import {
   summarizeNames,
   updatedAtFromMatches,
 } from "@/lib/seo";
+import type { RomDetail } from "@/lib/types";
 import type { Route } from "./+types/rom";
+
+/** A ROM we track can have no builds in the dataset (discontinued projects). */
+function romDescription(rom: RomDetail): string {
+  const discontinued =
+    rom.status === "discontinued" ? " Discontinued upstream." : "";
+
+  if (rom.deviceCount === 0) {
+    return `No device builds in the unrom dataset yet.${discontinued}`;
+  }
+
+  const vendorCount = new Set(rom.devices.map((device) => device.vendor)).size;
+  const names = summarizeNames(
+    rom.devices.map((device) => device.name ?? device.codename),
+    3,
+  );
+
+  return `Supports ${rom.deviceCount} ${
+    rom.deviceCount === 1 ? "device" : "devices"
+  } across ${vendorCount} vendor${vendorCount === 1 ? "" : "s"}, including ${names}.${discontinued}`;
+}
 
 export async function loader({ params }: Route.LoaderArgs) {
   return { rom: await fetchRom(params.id) };
@@ -27,13 +48,7 @@ export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
   if (error || !rom) return errorMeta("ROM not found | unrom");
 
   const updatedAt = updatedAtFromMatches(matches);
-  const vendorCount = new Set(rom.devices.map((device) => device.vendor)).size;
-  const description = `${rom.name} supports ${rom.deviceCount} ${
-    rom.deviceCount === 1 ? "device" : "devices"
-  } across ${vendorCount} vendor${vendorCount === 1 ? "" : "s"}, including ${summarizeNames(
-    rom.devices.map((device) => device.name ?? device.codename),
-    3,
-  )}. Browse every supported device and codename.`;
+  const description = romDescription(rom);
 
   return [
     ...pageMeta({
@@ -70,13 +85,7 @@ export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
 export default function RomRoute() {
   const { rom } = useLoaderData<typeof loader>();
 
-  const vendorCount = new Set(rom.devices.map((device) => device.vendor)).size;
-  const description = `Supports ${rom.deviceCount}${
-    rom.deviceCount === 1 ? " device" : " devices"
-  } across ${vendorCount} vendor${vendorCount === 1 ? "" : "s"}, including ${summarizeNames(
-    rom.devices.map((device) => device.name ?? device.codename),
-    3,
-  )}.`;
+  const description = romDescription(rom);
 
   return (
     <div className="flex flex-col gap-8">

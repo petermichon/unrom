@@ -153,11 +153,21 @@ const registryEntrySchema = {
 
 const romDetailSchema = {
   type: "object",
-  required: ["id", "name", "deviceCount", "devices"],
+  required: ["id", "name", "status", "deviceCount", "devices"],
   properties: {
     id: { type: "string" },
     name: { type: "string" },
-    deviceCount: { type: "integer", minimum: 0 },
+    status: {
+      type: "string",
+      enum: ["active", "discontinued", "unknown"],
+      description: "Whether the project still ships builds upstream.",
+    },
+    deviceCount: {
+      type: "integer",
+      minimum: 0,
+      description:
+        "Devices currently in the dataset; 0 for a ROM we track but hold no build data for.",
+    },
     devices: {
       type: "array",
       items: { $ref: "#/components/schemas/DeviceSummary" },

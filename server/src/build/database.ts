@@ -19,6 +19,8 @@ import {
   vendorName,
 } from "../data/identity.ts";
 import { DEVICE_NAMES, deviceNames } from "../data/registry.ts";
+import { ROMS } from "../data/roms.ts";
+import type { RomCatalogEntry } from "../data/roms.ts";
 import { generateDdl } from "../db/ddl.ts";
 import {
   aliases,
@@ -137,7 +139,7 @@ function soleVendor(vendors: Set<string> | undefined): string | null {
 // A stable digest of the dataset, independent of row insertion order and build
 // time. Consumers can use it to detect a content change without diffing.
 function contentHash(
-  romMap: Map<string, string>,
+  romMap: Map<string, RomCatalogEntry>,
   deviceMap: Map<string, Device>,
   edges: Edge[],
   coverage: Coverage[],
@@ -146,8 +148,8 @@ function contentHash(
   const hash = createHash("sha256");
   const key = (vendor: string, codename: string) => `${vendor}\0${codename}`;
 
-  for (const [id, name] of [...romMap].sort(([a], [b]) => a.localeCompare(b))) {
-    hash.update(`r\0${id}\0${name}\n`);
+  for (const [id, rom] of [...romMap].sort(([a], [b]) => a.localeCompare(b))) {
+    hash.update(`r\0${id}\0${rom.name}\0${rom.status}\n`);
   }
   for (const device of [...deviceMap.values()].sort((a, b) =>
     key(a.vendor, a.codename).localeCompare(key(b.vendor, b.codename)),
@@ -373,7 +375,11 @@ export function buildDatabase(
   }
 
   const deviceMap = new Map<string, Device>();
-  const romMap = new Map<string, string>();
+  // Seeded from the curated catalog so ROMs with no current build target stay
+  // in the database; sources only fill in ids the catalog does not know yet.
+  const romMap = new Map<string, RomCatalogEntry>(
+    Object.entries(ROMS).map(([id, rom]) => [id, rom]),
+  );
   const edgeMap = new Map<string, Edge>();
   const aliasMap = new Map<string, Alias>();
   const sourceNames: SourceNames = new Map();
@@ -445,7 +451,13 @@ export function buildDatabase(
   };
 
   for (const { record, part, canonical, vendor: reported } of prepared) {
-    romMap.set(record.romId, record.romName);
+    romMap.set(
+      record.romId,
+      romMap.get(record.romId) ?? {
+        name: record.romName,
+        status: "unknown",
+      },
+    );
 
     const inherited =
       soleVendor(vendorsByCodename.get(canonical)) ??
@@ -590,8 +602,8 @@ export function buildDatabase(
 
   // One transaction: all-or-nothing, and far faster than per-row commits.
   db.transaction((tx) => {
-    for (const [id, name] of romMap) {
-      tx.insert(roms).values({ id, name }).run();
+    for (const [id, rom] of romMap) {
+      tx.insert(roms).values({ id, name: rom.name, status: rom.status }).run();
     }
     for (const device of deviceMap.values()) {
       tx.insert(devices)

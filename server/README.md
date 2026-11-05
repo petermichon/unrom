@@ -67,7 +67,7 @@ source of truth.
 
 | Table         | Purpose                                          |
 | ------------- | ------------------------------------------------ |
-| `roms`        | One row per ROM/OS (`id`, `name`)                |
+| `roms`        | One row per ROM/OS (`id`, `name`, `status`)      |
 | `devices`     | One row per `(vendor, codename)` device (`name`) |
 | `rom_devices` | The many-to-many edge (`reference_url`)          |
 | `meta`        | Snapshot metadata (`generatedAt`, `contentHash`) |
@@ -85,7 +85,7 @@ GET /api/health                   → { ok: true }
 GET /api/meta                     → { generatedAt, contentHash }
 GET /api/devices?q=pixel&vendor=  → BrowseDevice[]
 GET /api/devices/:vendor/:codename → DeviceDetail | 404
-GET /api/roms                     → RomDetail[]
+GET /api/roms                     → RomDetail[] (all catalogued ROMs, incl. 0-device)
 GET /api/roms/:id                 → RomDetail | 404
 GET /api/data                     → Mapping[]
 GET /api/export/json              → dist/unrom.json (attachment)

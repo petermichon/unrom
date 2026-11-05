@@ -3,6 +3,8 @@ import { sqliteTable, text, primaryKey, index } from "drizzle-orm/sqlite-core";
 export const roms = sqliteTable("roms", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
+  // "active" | "discontinued" | "unknown"; see `data/roms.ts`.
+  status: text("status").notNull(),
 });
 
 export const devices = sqliteTable(

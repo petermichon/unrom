@@ -1,60 +1,92 @@
 # ROM Coverage
 
 Index of Android ROM projects from
-[musabcel/android_rom_list](https://github.com/musabcel/android_rom_list).
+[musabcel/android_rom_list](https://github.com/musabcel/android_rom_list) and
+[devadigax/awesome-android-custom-rom](https://github.com/devadigax/awesome-android-custom-rom).
 🟢 = implemented · ❌ = evaluated, not implemented · unmarked = not yet evaluated.
+Implemented ROMs use unrom's canonical names.
+
+Out of scope: recoveries, root tools, GSIs and repacks, OEM stock skins.
 
 - ❌ 2by2 Project
-- ❌ Advanced XPerience OS
+- Abhix MIUI
+- AetheriaOS
+- AetherOS
+- ❌ Afterlife Project
+- 🟢 AfterlifeOS
 - 🟢 AICP
 - ❌ AIM ROM
+- Alch3myOS
 - ❌ AlphaDroid
 - ❌ AlrightOS
+- Altair ROM
 - ❌ AmogOS Rom
 - ❌ AmyROM
 - ❌ Ancient OS
+- Androidfuckery
 - ❌ AOKP
 - ❌ AOSDP
 - ❌ AOSiP
 - ❌ AOSP Extended
+- aospa-shadedark
 - ❌ Aquari OS
+- AquariumUI
 - ❌ ArfoxOS
-- 🟢 Arrow OS
+- 🟢 ArrowOS
+- ASCP
+- ASCP OSS
+- AstralOS Project
 - ❌ Atomic OS
 - ❌ AuroraDroid
+- AviumUI
+- 🟢 AwakenOS
+- AxionAOSP
+- ❌ AXP.OS
+- AyakaUI
 - ❌ BaikalOS
 - ❌ BananaDroid
 - ❌ BeastROMs
+- BenzeneOS
 - ❌ Benzo ROM
 - ❌ Bianca Project
 - ❌ Black Iron Project
-- 🟢 Bliss ROMs
+- 🟢 BlissROMs
 - ❌ Bootleggers ROM
 - ❌ BsdkOS
+- CaesiumOS
 - ❌ CAF Extended
 - ❌ CalyxOS
 - ❌ CandyRoms
 - ❌ Carbon ROM
 - ❌ CatalystOS
 - ❌ Cesium OS
-- 🟢 Cherish OS
+- chaoticOS
+- CharaROM
+- CharlieOS
+- 🟢 CherishOS
 - ❌ CipherOS
 - ❌ Citrus CAF
+- 🟢 Clover
 - ❌ ClownUI
 - ❌ Colt OS
 - ❌ ConquerOS
-- 🟢 Corvus ROM
+- CortenaOS
+- 🟢 CorvusOS
 - ❌ Cosmic OS
-- 🟢 CrDroid
+- 🟢 crDroid
+- crDroid X
+- ❌ CyanogenMod
 - ❌ Cygnus ROM
 - ❌ Cypher OS
-- 🟢 Derpfest
+- DarwinAOSP
+- 🟢 DerpFest
 - ❌ Descendant X
 - ❌ Dirty Unicorns
 - ❌ DivestOS
-- 🟢 Dot OS
+- 🟢 dotOS
 - 🟢 DroidX-UI
-- 🟢 eFoundation
+- 🟢 /e/OS
+- Edith-AOSP
 - ❌ EliteRoms
 - ❌ ElytraOS
 - ❌ Eternity OS
@@ -64,91 +96,134 @@ Index of Android ROM projects from
 - ❌ Evervolv
 - 🟢 Evolution X
 - ❌ ExTHmUI
+- FeatherOS
+- Ferrum OS
 - ❌ FireHound
 - ❌ Flamingo OS
 - ❌ Floko ROM
+- Fluent-AOSP
 - ❌ Fluid OS
 - ❌ Fork LineageOS
 - ❌ fortuneOS
-- ❌ FortuneOS-CAF
 - ❌ Freaky OS
+- Frosty
+- Fundamental OS
 - ❌ Fusion OS
 - ❌ GenesisOS
 - ❌ GhostOS
+- Good4Nothing-AOSP
 - ❌ GrapheneOS
+- Halcyon - Calla Lily
 - ❌ Halcyon Project
 - ❌ Halogen OS
-- 🟢 Havoc OS
+- HaloUI
+- 🟢 Havoc-OS
 - ❌ HentaiOS
+- HertzifyOS
 - ❌ HyconOS
+- Hyper Mint
+- HyperArt
+- HyperIN
+- HyperOS Reborn
+- HyperVN
+- HyperVoltron
+- IchthysOS
 - 🟢 iodéOS
 - ❌ Ion OS
 - ❌ IronOS Project
-- ❌ Kang OS (incl. Kang-OS-R)
+- 🟢 Kali NetHunter
+- ❌ Kang OS
+- 🟢 Kenvyra
+- KleeUI
 - ❌ Komodo OS
 - ❌ Krypton Open Source Project
 - ❌ Legion OS
 - ❌ LessAOSP
 - ❌ LightningFastRom
-- 🟢 Lineage OS
+- LightningOS AOSP
+- 🟢 LineageOS
+- LineageOS x CLO
+- LineageOS-Ext
 - ❌ Liquid Remix
+- ❌ LiquidSmooth
 - ❌ LLuvia OS
 - ❌ LMODroid
+- LOS Modified
+- LumineDroid
 - 🟢 Lunaris AOSP
 - ❌ LunarUI
 - ❌ Magnus OS
 - ❌ Mallu OS
+- 🟢 Matrixx
 - ❌ Miku UI
-- 🟢 Mist OS
+- 🟢 MistOS
+- MIUI ONE OS
+- MIUI Pro
+- MIUI TR
 - ❌ MoKee ROM
 - ❌ MSM Xtended
+- nasgoros
 - ❌ NavaDroid
-- 🟢 Nethunter OS
+- Neoteric-OS
+- NervAOSP
 - ❌ Nitrogen OS
-- ❌ Nusantara Project (both orgs)
+- Nucleus OS
+- ❌ Nusantara Project
 - ❌ Octavi OS
 - ❌ Omni ROM
 - ❌ OrionOS
 - ❌ PalladiumOS
 - 🟢 Paranoid Android
-- ❌ The Parasite Project
 - ❌ PenguinOS
 - ❌ PhoenixAOSP
 - ❌ Pixel Blaster OS
 - ❌ Pixel Dust
 - 🟢 Pixel Experience
-- ❌ The Pixel Project
-- 🟢 PixelExtended ROM
+- PixelBuilds
+- 🟢 PixelExtended
+- PixelLines
 - 🟢 PixelOS
+- PixelOS-CLO
+- PixelOS-GM
 - ❌ PixelPlusUI
 - ❌ PixelStar
-- 🟢 Pixys OS
+- 🟢 PixysOS
 - ❌ POSP
 - ❌ Project 404
 - ❌ Project Arcana
-- 🟢 Project Awaken
 - ❌ Project Blaze
+- Project CiRCLE
 - ❌ Project Elixir
+- Project Flare
 - 🟢 Project Infinity X
 - ❌ Project Kaleidoscope
 - ❌ Project Kasumi
 - ❌ Project Lighthouse
-- 🟢 Project Matrixx
 - ❌ Project Mushroom
+- Project Nirwana
+- 🟢 Project PixelAge
 - ❌ Project Radiant
 - ❌ Project Sakura
+- Project Shinkai
 - ❌ Project Streak
 - ❌ Project Titanium
 - ❌ Project Zephyrus
 - ❌ ProjectEverest
 - ❌ Proton AOSP
+- Pulse-OS
+- Raven AOSP
+- RealizeUI
 - ❌ ReloadedOS
+- ❌ Replicant
 - ❌ Resurrection Remix OS
 - ❌ ResurrectionRemix-Revived
 - ❌ Revenge OS
 - ❌ RevOS
+- ❌ RiceDroid
 - 🟢 RisingOS
 - ❌ RohieOS
+- RuriseOS
+- rwiceAOSP
 - ❌ Scorpion ROM
 - ❌ SerasaOS
 - ❌ ShapeShift OS
@@ -161,16 +236,22 @@ Index of Android ROM projects from
 - ❌ Spice OS
 - ❌ Stag OS
 - ❌ StatiX OS
+- SunOS Project
 - ❌ Superior OS
 - ❌ Syberia OS
 - ❌ TenXOS
 - ❌ Tequila OS
+- The Diva Project
 - ❌ The Kraken Project
+- ❌ The Parasite Project
+- ❌ The Pixel Project
 - ❌ The Styx Project
 - ❌ The XPerience Project
 - ❌ Tipsy OS
 - ❌ Toxyc OS
-- ❌ UlimateOS
+- ❌ UltimateOS
+- UOTAN OS
+- uwuAOSP
 - ❌ Validus OS
 - ❌ Viper OS
 - ❌ VoidUI
@@ -182,6 +263,8 @@ Index of Android ROM projects from
 - ❌ Xdroid OS
 - ❌ Xen AOSP
 - ❌ Xenon HD
+- ❌ xiaomi.eu
 - ❌ YAAP AOSP
+- YAAPex
 - ❌ Yukina Supremacy
 - ❌ ZeusOS
