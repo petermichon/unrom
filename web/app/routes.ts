@@ -10,4 +10,5 @@ export default [
   route("roms/:id", "routes/rom.tsx"),
   route("sitemap.xml", "routes/sitemap.ts"),
   route("robots.txt", "routes/robots.ts"),
+  route("*", "routes/not-found.tsx"),
 ] satisfies RouteConfig;
