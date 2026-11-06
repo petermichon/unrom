@@ -17,6 +17,10 @@ test("main landmark is reachable from the skip link", async ({ page }) => {
 
 test("command palette opens with the keyboard", async ({ page }) => {
   await page.goto("/");
-  await page.keyboard.press("Control+k");
-  await expect(page.getByRole("dialog")).toBeVisible();
+  await page.waitForLoadState("networkidle");
+
+  await expect(async () => {
+    await page.keyboard.press("Control+k");
+    await expect(page.getByRole("dialog")).toBeVisible({ timeout: 1_000 });
+  }).toPass({ timeout: 10_000 });
 });

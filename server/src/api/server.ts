@@ -132,6 +132,8 @@ app.get("/api/openapi.json", (c) => {
 
 app.get("/api/meta", (c) => c.json(api.getMeta()));
 
+app.get("/api/search", (c) => c.json(api.search(c.req.query("q") ?? "")));
+
 app.get("/api/devices", (c) => {
   const query = c.req.query("q") ?? undefined;
   const vendor = c.req.query("vendor") ?? undefined;

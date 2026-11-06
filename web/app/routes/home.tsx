@@ -1,10 +1,9 @@
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
 import { Link, useLoaderData } from "react-router";
 import DeviceRow from "@/components/DeviceRow";
 import DeviceSearch from "@/components/DeviceSearch";
-import { fetchDevices, fetchRoms, seedDevices } from "@/lib/data";
+import { fetchDevices, fetchRoms } from "@/lib/data";
 import { deviceName } from "@/lib/devices";
-import type { RomSearchEntry } from "@/lib/search";
 import {
   errorMeta,
   modifiedMeta,
@@ -12,45 +11,39 @@ import {
   updatedAtFromMatches,
 } from "@/lib/seo";
 import { bySortKey } from "@/lib/sort";
-import type { RomDetail } from "@/lib/types";
 import type { Route } from "./+types/home";
-
-function toRomSearchEntry(rom: RomDetail): RomSearchEntry {
-  return {
-    id: rom.id,
-    name: rom.name,
-    deviceCount: rom.deviceCount,
-    haystack: [
-      rom.name,
-      ...rom.devices.flatMap((device) => [device.name ?? "", device.codename]),
-    ]
-      .join(" ")
-      .toLowerCase(),
-  };
-}
 
 async function load() {
   const [devices, roms] = await Promise.all([fetchDevices(), fetchRoms()]);
+  const topDevices = [...devices]
+    .sort(
+      (a, b) =>
+        b.roms.length - a.roms.length ||
+        bySortKey(deviceName(a), deviceName(b)),
+    )
+    .slice(0, 6);
+
   return {
-    devices,
-    roms: [...roms]
-      .sort(
-        (a, b) => b.deviceCount - a.deviceCount || bySortKey(a.name, b.name),
-      )
-      .map(toRomSearchEntry),
+    counts: {
+      devices: devices.length,
+      brands: new Set(devices.map((device) => device.vendor)).size,
+      roms: roms.length,
+      coveredRoms: roms.filter((rom) => rom.deviceCount > 0).length,
+    },
+    topDevices,
   };
 }
 
 export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
   if (error) return errorMeta();
-  const devices = loaderData?.devices ?? [];
-  const roms = loaderData?.roms ?? [];
-  const brands = new Set(devices.map((device) => device.vendor)).size;
-  const covered = roms.filter((rom) => rom.deviceCount > 0).length;
+  const counts = loaderData?.counts;
+
   return [
     ...pageMeta({
       title: "Find the custom ROMs that support your device | unrom",
-      description: `The open database for device–ROM compatibility: ${devices.length} devices, ${brands} brands and ${roms.length} custom ROMs (${covered} with device data) Search by device, codename, brand, or ROM.`,
+      description: counts
+        ? `The open database for device–ROM compatibility: ${counts.devices} devices, ${counts.brands} brands and ${counts.roms} custom ROMs (${counts.coveredRoms} with device data). Search by device, codename, brand, or ROM.`
+        : "The open database for device–ROM compatibility.",
       path: "/",
     }),
     ...modifiedMeta(updatedAtFromMatches(matches)),
@@ -61,8 +54,7 @@ export async function loader() {
   return load();
 }
 
-// Same data as the server loader, but read from the client-side cache on
-// navigation so transitions never hit the network again.
+// The summary is small and cached client-side; search itself is server-side.
 export async function clientLoader() {
   return load();
 }
@@ -70,52 +62,31 @@ export async function clientLoader() {
 const EXAMPLES = ["Pixel 9", "beryllium", "Xiaomi", "LineageOS"];
 
 export default function Home() {
-  const { devices, roms } = useLoaderData<typeof loader>();
+  const { counts, topDevices } = useLoaderData<typeof loader>();
 
-  useEffect(() => {
-    seedDevices(devices);
-  }, [devices]);
-
-  const brands = useMemo(
-    () => new Set(devices.map((device) => device.vendor)).size,
-    [devices],
+  const sections = useMemo(
+    () => [
+      {
+        to: "/devices",
+        title: "Devices",
+        count: counts.devices,
+        note: "A–Z directory",
+      },
+      {
+        to: "/brands",
+        title: "Brands",
+        count: counts.brands,
+        note: "Ranked by ROM coverage",
+      },
+      {
+        to: "/roms",
+        title: "ROMs",
+        count: counts.roms,
+        note: `${counts.coveredRoms} with device data`,
+      },
+    ],
+    [counts],
   );
-  const covered = useMemo(
-    () => roms.filter((rom) => rom.deviceCount > 0).length,
-    [roms],
-  );
-  const topDevices = useMemo(
-    () =>
-      [...devices]
-        .sort(
-          (a, b) =>
-            b.roms.length - a.roms.length ||
-            bySortKey(deviceName(a), deviceName(b)),
-        )
-        .slice(0, 6),
-    [devices],
-  );
-
-  const sections = [
-    {
-      to: "/devices",
-      title: "Devices",
-      count: devices.length,
-      note: "A–Z directory",
-    },
-    {
-      to: "/brands",
-      title: "Brands",
-      count: brands,
-      note: "Ranked by ROM coverage",
-    },
-    {
-      to: "/roms",
-      title: "ROMs",
-      count: roms.length,
-      note: `${covered} with device data`,
-    },
-  ];
 
   return (
     <section className="flex flex-col gap-8">
@@ -128,14 +99,16 @@ export default function Home() {
           codename, brand, or ROM to see what supports it.
         </p>
         <p className="text-sm text-muted-foreground">
-          Tracking <span className="text-foreground">{devices.length}</span>{" "}
-          devices across <span className="text-foreground">{brands}</span>{" "}
-          brands and <span className="text-foreground">{roms.length}</span> ROMs
-          — <span className="text-foreground">{covered}</span> with device data.
+          Tracking <span className="text-foreground">{counts.devices}</span>{" "}
+          devices across{" "}
+          <span className="text-foreground">{counts.brands}</span> brands and{" "}
+          <span className="text-foreground">{counts.roms}</span> ROMs —{" "}
+          <span className="text-foreground">{counts.coveredRoms}</span> with
+          device data.
         </p>
       </div>
 
-      <DeviceSearch devices={devices} roms={roms} examples={EXAMPLES} />
+      <DeviceSearch examples={EXAMPLES} />
 
       <ul className="grid gap-3 sm:grid-cols-3">
         {sections.map((section) => (

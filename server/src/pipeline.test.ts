@@ -331,6 +331,46 @@ test("canonical names come from the registry", async () => {
   }
 });
 
+test("search groups devices, brands and ROMs", async () => {
+  const records = await parseAllSources();
+  const dir = mkdtempSync(join(tmpdir(), "unrom-test-"));
+  const dbPath = join(dir, "unrom.sqlite");
+
+  try {
+    buildDatabase(records, dbPath);
+    const api = createApi(dbPath);
+
+    const empty = api.search("   ");
+    assert.deepEqual(empty.totals, { devices: 0, brands: 0, roms: 0 });
+
+    const sweet = api.search("sweet");
+    assert.ok(sweet.devices.length > 0);
+    assert.ok(sweet.devices.some((device) => device.codename === "sweet"));
+    assert.ok(sweet.roms.length > 0);
+    assert.ok(sweet.roms.every((rom) => rom.deviceCount > 0));
+    assert.ok(
+      sweet.devices.every((device) =>
+        [device.name ?? "", device.codename, device.vendor]
+          .join(" ")
+          .toLowerCase()
+          .includes("sweet"),
+      ),
+    );
+
+    const xiaomi = api.search("xiaomi");
+    assert.ok(xiaomi.brands.some((brand) => brand.vendor === "xiaomi"));
+
+    const catalogue = api.search("alphadroid");
+    assert.equal(catalogue.totals.devices, 0);
+    assert.equal(catalogue.roms[0]?.name, "AlphaDroid");
+    assert.equal(catalogue.roms[0]?.deviceCount, 0);
+
+    api.close();
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 test("registry-only devices ship with zero ROMs", () => {
   const dir = mkdtempSync(join(tmpdir(), "unrom-test-"));
   const dbPath = join(dir, "unrom.sqlite");

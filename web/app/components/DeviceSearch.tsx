@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -8,93 +8,30 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import {
-  deviceHaystack,
-  matchesAll,
-  tokenize,
-  type RomSearchEntry,
-} from "@/lib/search";
-import { byDirectoryName } from "@/lib/sort";
-import type { BrowseDevice } from "@/lib/types";
+import { tokenize } from "@/lib/search";
+import { useSearch } from "@/lib/use-search";
 
 interface Props {
-  devices: BrowseDevice[];
-  roms: RomSearchEntry[];
   examples?: string[];
 }
 
-interface VendorResult {
-  vendor: string;
-  vendorName: string;
-  deviceCount: number;
-}
-
-// cmdk renders and measures every item, so with hundreds of records we filter
-// ourselves and only render the top matches.
-const DEVICE_LIMIT = 50;
-const ROM_LIMIT = 20;
-const VENDOR_LIMIT = 10;
-
-export default function DeviceSearch({ devices, roms, examples = [] }: Props) {
+export default function DeviceSearch({ examples = [] }: Props) {
   const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
   const [query, setQuery] = useState("");
-  const terms = useMemo(() => tokenize(query), [query]);
-
-  const vendors = useMemo<VendorResult[]>(() => {
-    const map = new Map<string, VendorResult>();
-    for (const device of devices) {
-      const entry = map.get(device.vendor) ?? {
-        vendor: device.vendor,
-        vendorName: device.vendorName,
-        deviceCount: 0,
-      };
-      entry.deviceCount++;
-      map.set(device.vendor, entry);
-    }
-    return [...map.values()].sort((a, b) =>
-      byDirectoryName(a.vendorName, b.vendorName),
-    );
-  }, [devices]);
-
-  const { deviceResults, deviceTotal, romResults, romTotal, vendorResults } =
-    useMemo(() => {
-      if (terms.length === 0)
-        return {
-          deviceResults: [],
-          deviceTotal: 0,
-          romResults: [],
-          romTotal: 0,
-          vendorResults: [],
-        };
-
-      const deviceMatches = devices.filter((device) =>
-        matchesAll(deviceHaystack(device), terms),
-      );
-      const romMatches = roms.filter((rom) => matchesAll(rom.haystack, terms));
-      const vendorMatches = vendors.filter((vendor) =>
-        matchesAll(
-          `${vendor.vendor} ${vendor.vendorName}`.toLowerCase(),
-          terms,
-        ),
-      );
-
-      return {
-        deviceResults: deviceMatches.slice(0, DEVICE_LIMIT),
-        deviceTotal: deviceMatches.length,
-        romResults: romMatches.slice(0, ROM_LIMIT),
-        romTotal: romMatches.length,
-        vendorResults: vendorMatches.slice(0, VENDOR_LIMIT),
-      };
-    }, [devices, roms, vendors, terms]);
+  const { data, loading } = useSearch(query);
+  const terms = tokenize(query);
 
   const noResults =
     terms.length > 0 &&
-    deviceTotal === 0 &&
-    romTotal === 0 &&
-    vendorResults.length === 0;
+    !loading &&
+    data.totals.devices === 0 &&
+    data.totals.brands === 0 &&
+    data.totals.roms === 0;
   const truncated =
-    deviceTotal > deviceResults.length || romTotal > romResults.length;
+    data.totals.devices > data.devices.length ||
+    data.totals.brands > data.brands.length ||
+    data.totals.roms > data.roms.length;
 
   const tryExample = (example: string) => {
     setQuery(example);
@@ -117,34 +54,34 @@ export default function DeviceSearch({ devices, roms, examples = [] }: Props) {
           onValueChange={setQuery}
         />
         <CommandList className="max-h-[26rem]">
-          {vendorResults.length > 0 && (
+          {data.brands.length > 0 && (
             <CommandGroup heading="Brands">
-              {vendorResults.map((vendor) => (
+              {data.brands.map((brand) => (
                 <CommandItem
-                  key={`vendor-${vendor.vendor}`}
-                  value={`vendor-${vendor.vendor}`}
-                  onSelect={() => navigate(`/devices/${vendor.vendor}`)}
+                  key={`brand-${brand.vendor}`}
+                  value={`brand-${brand.vendor}`}
+                  onSelect={() => navigate(`/devices/${brand.vendor}`)}
                   className="gap-3"
                 >
                   <span className="flex min-w-0 flex-1 flex-col">
                     <span className="truncate font-medium">
-                      {vendor.vendorName}
+                      {brand.vendorName}
                     </span>
                   </span>
                   <Badge
                     variant="outline"
                     className="shrink-0 text-[11px] font-normal text-muted-foreground"
                   >
-                    {vendor.deviceCount}{" "}
-                    {vendor.deviceCount === 1 ? "device" : "devices"}
+                    {brand.deviceCount}{" "}
+                    {brand.deviceCount === 1 ? "device" : "devices"}
                   </Badge>
                 </CommandItem>
               ))}
             </CommandGroup>
           )}
-          {deviceResults.length > 0 && (
+          {data.devices.length > 0 && (
             <CommandGroup heading="Devices">
-              {deviceResults.map((device) => (
+              {data.devices.map((device) => (
                 <CommandItem
                   key={`device-${device.vendor}-${device.codename}`}
                   value={`device-${device.vendor}-${device.codename}`}
@@ -172,9 +109,9 @@ export default function DeviceSearch({ devices, roms, examples = [] }: Props) {
               ))}
             </CommandGroup>
           )}
-          {romResults.length > 0 && (
+          {data.roms.length > 0 && (
             <CommandGroup heading="ROMs">
-              {romResults.map((rom) => (
+              {data.roms.map((rom) => (
                 <CommandItem
                   key={`rom-${rom.id}`}
                   value={`rom-${rom.id}`}
@@ -201,10 +138,15 @@ export default function DeviceSearch({ devices, roms, examples = [] }: Props) {
         <div role="status" aria-live="polite">
           {terms.length > 0 && (
             <span className="sr-only">
-              {deviceTotal} {deviceTotal === 1 ? "device" : "devices"},{" "}
-              {vendorResults.length}{" "}
-              {vendorResults.length === 1 ? "brand" : "brands"}, {romTotal}{" "}
-              {romTotal === 1 ? "ROM" : "ROMs"}
+              {loading
+                ? "Searching"
+                : `${data.totals.devices} ${
+                    data.totals.devices === 1 ? "device" : "devices"
+                  }, ${data.totals.brands} ${
+                    data.totals.brands === 1 ? "brand" : "brands"
+                  }, ${data.totals.roms} ${
+                    data.totals.roms === 1 ? "ROM" : "ROMs"
+                  }`}
             </span>
           )}
           {truncated && (

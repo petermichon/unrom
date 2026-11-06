@@ -267,6 +267,55 @@ const deviceListParameters = [
   },
 ];
 
+const brandSummarySchema = {
+  type: "object",
+  required: ["vendor", "vendorName", "deviceCount"],
+  properties: {
+    vendor: { type: "string" },
+    vendorName: { type: "string" },
+    deviceCount: { type: "integer", minimum: 0 },
+  },
+};
+
+const romSummarySchema = {
+  type: "object",
+  required: ["id", "name", "status", "deviceCount"],
+  properties: {
+    id: { type: "string" },
+    name: { type: "string" },
+    status: { type: "string", enum: ["active", "discontinued", "unknown"] },
+    deviceCount: { type: "integer", minimum: 0 },
+  },
+};
+
+const searchResponseSchema = {
+  type: "object",
+  required: ["devices", "brands", "roms", "totals"],
+  properties: {
+    devices: {
+      type: "array",
+      items: { $ref: "#/components/schemas/BrowseDevice" },
+    },
+    brands: {
+      type: "array",
+      items: { $ref: "#/components/schemas/BrandSummary" },
+    },
+    roms: {
+      type: "array",
+      items: { $ref: "#/components/schemas/RomSummary" },
+    },
+    totals: {
+      type: "object",
+      required: ["devices", "brands", "roms"],
+      properties: {
+        devices: { type: "integer", minimum: 0 },
+        brands: { type: "integer", minimum: 0 },
+        roms: { type: "integer", minimum: 0 },
+      },
+    },
+  },
+};
+
 const notFound = {
   description: "No entity matches the requested key.",
   content: {
@@ -280,7 +329,7 @@ export const openapi = {
   openapi: "3.1.0",
   info: {
     title: "unrom API",
-    version: "1.2.0",
+    version: "1.3.0",
     summary: "Open database for device–ROM compatibility.",
     description:
       "Which custom Android ROMs support which devices. Every response is " +
@@ -399,6 +448,30 @@ export const openapi = {
         },
       },
     },
+    "/api/search": {
+      get: {
+        tags: ["search"],
+        summary: "Grouped search over devices, brands and ROMs",
+        description:
+          "Caps results (20 devices, 10 brands, 20 ROMs) and reports totals " +
+          "for each group.",
+        operationId: "search",
+        parameters: [
+          {
+            name: "q",
+            in: "query",
+            required: false,
+            description: "Search terms; every term must match.",
+            schema: { type: "string" },
+          },
+        ],
+        responses: {
+          200: jsonResponse({
+            $ref: "#/components/schemas/SearchResponse",
+          }),
+        },
+      },
+    },
     "/api/registry": {
       get: {
         tags: ["registry"],
@@ -509,6 +582,9 @@ export const openapi = {
       RomSupport: romSupportSchema,
       DeviceSummary: deviceSummarySchema,
       BrowseDevice: browseDeviceSchema,
+      BrandSummary: brandSummarySchema,
+      RomSummary: romSummarySchema,
+      SearchResponse: searchResponseSchema,
       DeviceDetail: deviceDetailSchema,
       RegistryEntry: registryEntrySchema,
       RomDetail: romDetailSchema,

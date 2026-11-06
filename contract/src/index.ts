@@ -84,6 +84,24 @@ export interface RomSummary {
   deviceCount: number;
 }
 
+export interface BrandSummary {
+  vendor: string;
+  vendorName: string;
+  deviceCount: number;
+}
+
+/** Grouped, capped results for the home and command-palette searches. */
+export interface SearchResponse {
+  devices: BrowseDevice[];
+  brands: BrandSummary[];
+  roms: RomSummary[];
+  totals: {
+    devices: number;
+    brands: number;
+    roms: number;
+  };
+}
+
 export interface RomDetail extends RomSummary {
   devices: DeviceSummary[];
 }

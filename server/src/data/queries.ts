@@ -2,6 +2,7 @@ import Database from "better-sqlite3";
 import { and, asc, eq, like, or, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/better-sqlite3";
 import type {
+  BrandSummary,
   BrowseDevice,
   DeviceDetail,
   DeviceVariant,
@@ -11,7 +12,9 @@ import type {
   RomChip,
   RomDetail,
   RomStatus,
+  RomSummary,
   RomSupport,
+  SearchResponse,
 } from "@unrom/contract";
 
 import {
@@ -560,6 +563,117 @@ export function createApi(dbPath: string) {
       );
   }
 
+  function search(query: string): SearchResponse {
+    const q = query.trim();
+    if (!q) {
+      return {
+        devices: [],
+        brands: [],
+        roms: [],
+        totals: { devices: 0, brands: 0, roms: 0 },
+      };
+    }
+
+    const terms = searchTerms(q);
+    const matches = (value: string) => {
+      const lower = value.toLowerCase();
+      return terms.every((term) => lower.includes(term));
+    };
+
+    const deviceResults = listDevicesPage({ query: q, limit: 20 });
+    const deviceTotal = countDevices({ query: q });
+
+    const vendorCounts = db
+      .select({
+        vendor: devices.vendor,
+        count: sql<number>`count(*)`,
+      })
+      .from(devices)
+      .groupBy(devices.vendor)
+      .all()
+      .map((row) => ({
+        vendor: row.vendor,
+        vendorName: vendorName(row.vendor),
+        deviceCount: Number(row.count),
+      }))
+      .filter((brand) => matches(`${brand.vendor} ${brand.vendorName}`));
+    const brandTotal = vendorCounts.length;
+    const brands: BrandSummary[] = [...vendorCounts]
+      .sort(
+        (a, b) =>
+          b.deviceCount - a.deviceCount ||
+          bySortKey(a.vendorName, b.vendorName),
+      )
+      .slice(0, 10);
+
+    const deviceCountByRom = new Map<string, number>();
+    for (const row of db
+      .select({
+        romId: romDevices.romId,
+        count: sql<number>`count(*)`,
+      })
+      .from(romDevices)
+      .groupBy(romDevices.romId)
+      .all()) {
+      deviceCountByRom.set(row.romId, Number(row.count));
+    }
+
+    // ROMs also match by supported device names/codenames.
+    const haystackByRom = new Map<string, string>();
+    for (const row of db
+      .select({
+        romId: romDevices.romId,
+        name: devices.name,
+        codename: devices.codename,
+      })
+      .from(romDevices)
+      .innerJoin(
+        devices,
+        and(
+          eq(romDevices.vendor, devices.vendor),
+          eq(romDevices.codename, devices.codename),
+        ),
+      )
+      .all()) {
+      const current = haystackByRom.get(row.romId) ?? "";
+      haystackByRom.set(
+        row.romId,
+        `${current} ${row.name ?? ""} ${row.codename}`.toLowerCase(),
+      );
+    }
+
+    const romMatches: RomSummary[] = db
+      .select()
+      .from(roms)
+      .all()
+      .filter((rom) =>
+        matches(`${rom.name} ${haystackByRom.get(rom.id) ?? ""}`),
+      )
+      .map((rom) => ({
+        id: rom.id,
+        name: rom.name,
+        status: rom.status as RomStatus,
+        deviceCount: deviceCountByRom.get(rom.id) ?? 0,
+      }));
+    const romTotal = romMatches.length;
+    const matchedRoms = [...romMatches]
+      .sort(
+        (a, b) => b.deviceCount - a.deviceCount || bySortKey(a.name, b.name),
+      )
+      .slice(0, 20);
+
+    return {
+      devices: deviceResults,
+      brands,
+      roms: matchedRoms,
+      totals: {
+        devices: deviceTotal,
+        brands: brandTotal,
+        roms: romTotal,
+      },
+    };
+  }
+
   function getRom(id: string): RomDetail | null {
     const rom = db
       .select()
@@ -654,6 +768,7 @@ export function createApi(dbPath: string) {
     listRegistry,
     listRoms,
     getRom,
+    search,
     listMappings,
     listVariants,
     getMeta,

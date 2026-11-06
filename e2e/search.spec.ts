@@ -1,5 +1,16 @@
 import { expect, test } from "@playwright/test";
 
+// Home and the command palette call the search API; forward it to the server.
+test.beforeEach(async ({ page }) => {
+  await page.route("**/api/**", async (route) => {
+    const url = new URL(route.request().url());
+    url.protocol = "http:";
+    url.host = "127.0.0.1:3000";
+    const response = await route.fetch({ url: url.toString() });
+    await route.fulfill({ response });
+  });
+});
+
 test("home search shows matching devices while typing", async ({ page }) => {
   await page.goto("/");
   await page
@@ -112,18 +123,15 @@ test("example chips show when idle or when nothing matches", async ({
 });
 
 test("command palette shows matches while typing", async ({ page }) => {
-  // The palette's search index is fetched client-side from /api; in production
-  // Caddy and in dev Vite proxy it, but this harness does not, so proxy here.
-  await page.route("**/api/**", async (route) => {
-    const url = new URL(route.request().url());
-    url.protocol = "http:";
-    url.host = "127.0.0.1:3000";
-    const response = await route.fetch({ url: url.toString() });
-    await route.fulfill({ response });
-  });
-
   await page.goto("/");
-  await page.keyboard.press("Control+k");
-  await page.getByPlaceholder("Search devices, brands, and ROMs…").fill("poco");
+  await page.waitForLoadState("networkidle");
+
+  const input = page.getByPlaceholder("Search devices, brands, and ROMs…");
+  await expect(async () => {
+    await page.keyboard.press("Control+k");
+    await expect(input).toBeVisible({ timeout: 1_000 });
+  }).toPass({ timeout: 10_000 });
+
+  await input.fill("poco");
   await expect(page.getByRole("option").first()).toBeVisible();
 });

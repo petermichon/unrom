@@ -1,5 +1,5 @@
 import { Asterisk, Menu } from "lucide-react";
-import { useEffect, type ReactNode } from "react";
+import type { ReactNode } from "react";
 import { Link, NavLink } from "react-router";
 import CommandPalette from "@/components/CommandPalette";
 import { ExportMenu } from "@/components/ExportMenu";
@@ -154,21 +154,6 @@ function MobileMenu() {
 }
 
 export default function AppShell({ updatedAt, updatedAtIso, children }: Props) {
-  // Warm both catalogue queries once the page is idle so the nav links never
-  // wait on a clientLoader fetch.
-  useEffect(() => {
-    const preload = () => {
-      void fetchDevices();
-      void fetchRoms();
-    };
-    if (typeof window.requestIdleCallback === "function") {
-      const id = window.requestIdleCallback(preload, { timeout: 2500 });
-      return () => window.cancelIdleCallback(id);
-    }
-    const id = window.setTimeout(preload, 1500);
-    return () => window.clearTimeout(id);
-  }, []);
-
   return (
     <TooltipProvider>
       <div className="flex min-h-svh flex-col bg-background">
