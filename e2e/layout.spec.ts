@@ -21,13 +21,12 @@ test("home search field is vertically centered in its frame", async ({
 });
 
 test("menu options use a pointer cursor", async ({ page }) => {
-  await page.goto("/devices");
+  await page.goto("/");
   await page.waitForLoadState("networkidle");
-  await page.getByRole("button", { name: "Confidence" }).click();
+  await page.getByRole("button", { name: "Export the dataset" }).click();
 
-  const option = page.getByRole("option", {
-    name: "Verified",
-    exact: true,
+  const option = page.getByRole("menuitem", {
+    name: "Download SQLite database",
   });
   await expect(option).toBeVisible();
   expect(await option.evaluate((el) => getComputedStyle(el).cursor)).toBe(

@@ -57,6 +57,33 @@ test("client navigation renders the destination table", async ({ page }) => {
   await expect(page.getByRole("link", { name: "LineageOS" })).toBeVisible();
 });
 
+test("the devices index is an A-Z directory", async ({ page }) => {
+  await page.goto("/devices");
+
+  await expect(page.getByRole("heading", { name: "Devices" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "X" })).toBeVisible();
+  await expect(
+    page.getByRole("link", { name: /Redmi Note 10 Pro/ }).first(),
+  ).toBeVisible();
+});
+
+test("device search reveals the no-ROM tier", async ({ page }) => {
+  await page.goto("/devices");
+  await page.waitForLoadState("networkidle");
+  await page.getByLabel("Filter devices").fill("madrid");
+
+  await expect(page.getByRole("link", { name: /Huawei Y6/ })).toBeVisible();
+  await expect(page.getByRole("status")).toHaveText("1 of 902 devices");
+});
+
+test("the devices index filters by brand", async ({ page }) => {
+  await page.goto("/devices");
+  await page.waitForLoadState("networkidle");
+  await page.getByLabel("Filter by brand").selectOption("samsung");
+
+  await expect(page.getByRole("status")).toHaveText("161 of 902 devices");
+});
+
 test("the ROMs index separates covered from catalogue", async ({ page }) => {
   await page.goto("/roms");
 

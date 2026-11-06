@@ -2,6 +2,9 @@ import AxeBuilder from "@axe-core/playwright";
 import type { Page } from "@playwright/test";
 import { expect, test } from "@playwright/test";
 
+// The full devices directory (900+ rows) takes axe well past the default.
+test.describe.configure({ timeout: 90_000 });
+
 // WCAG success criteria only; axe's "best-practice" heuristics (e.g. landmark
 // region rules) are not failures.
 const WCAG_TAGS = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"];

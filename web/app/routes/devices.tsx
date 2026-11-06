@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useLoaderData } from "react-router";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import DevicesTable from "@/components/DevicesTable";
+import DevicesDirectory from "@/components/DevicesDirectory";
 import { PageHeader } from "@/components/PageHeader";
 import { fetchDevices, seedDevices } from "@/lib/data";
 import {
@@ -33,10 +33,12 @@ export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
     {
       "script:ld+json": itemListLd(
         "Devices",
-        devices.map((device) => ({
-          name: device.name ?? device.codename,
-          path: `/devices/${device.vendor}/${device.codename}`,
-        })),
+        devices
+          .filter((device) => device.roms.length > 0)
+          .map((device) => ({
+            name: device.name ?? device.codename,
+            path: `/devices/${device.vendor}/${device.codename}`,
+          })),
       ),
     },
   ];
@@ -72,7 +74,7 @@ export default function DevicesRoute() {
         endpoint="/api/devices"
       />
 
-      <DevicesTable devices={devices} />
+      <DevicesDirectory devices={devices} />
     </div>
   );
 }

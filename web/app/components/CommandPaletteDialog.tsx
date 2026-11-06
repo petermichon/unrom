@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/command";
 import { fetchDevices, fetchRoms } from "@/lib/data";
 import { deviceHaystack, matchesAll, tokenize } from "@/lib/search";
-import { byBrandName } from "@/lib/sort";
+import { byDirectoryName } from "@/lib/sort";
 import type { BrowseDevice, RomChip } from "@/lib/types";
 
 interface Props {
@@ -65,7 +65,7 @@ export default function CommandPaletteDialog({ open, onOpenChange }: Props) {
       map.set(device.vendor, entry);
     }
     return [...map.values()].sort((a, b) =>
-      byBrandName(a.vendorName, b.vendorName),
+      byDirectoryName(a.vendorName, b.vendorName),
     );
   }, [devices]);
   const deviceMatches = useMemo(

@@ -16,7 +16,9 @@ export async function loader() {
     ...[...new Set(devices.map((device) => device.vendor))].map(
       (vendor) => `/devices/${vendor}`,
     ),
-    ...devices.map((device) => `/devices/${device.vendor}/${device.codename}`),
+    ...devices
+      .filter((device) => device.roms.length > 0)
+      .map((device) => `/devices/${device.vendor}/${device.codename}`),
     ...roms
       .filter((rom) => rom.deviceCount > 0)
       .map((rom) => `/roms/${rom.id}`),

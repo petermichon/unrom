@@ -10,7 +10,7 @@ import {
   CommandList,
 } from "@/components/ui/command";
 import { deviceHaystack, matchesAll, tokenize } from "@/lib/search";
-import { byBrandName } from "@/lib/sort";
+import { byDirectoryName } from "@/lib/sort";
 import type { BrowseDevice, RomChip } from "@/lib/types";
 
 interface Props {
@@ -49,7 +49,7 @@ export default function DeviceSearch({ devices, roms, examples = [] }: Props) {
       map.set(device.vendor, entry);
     }
     return [...map.values()].sort((a, b) =>
-      byBrandName(a.vendorName, b.vendorName),
+      byDirectoryName(a.vendorName, b.vendorName),
     );
   }, [devices]);
 

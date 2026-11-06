@@ -10,7 +10,7 @@ export function bySortKey(a: string, b: string): number {
 
 // Brands read as a directory: letters A-Z first, numeric names (e.g. 10.or)
 // last, the way contact lists group them.
-export function byBrandName(a: string, b: string): number {
+export function byDirectoryName(a: string, b: string): number {
   const letterGroup = (value: string) =>
     /^\p{L}/u.test(sortKey(value)) ? 0 : 1;
   return letterGroup(a) - letterGroup(b) || bySortKey(a, b);

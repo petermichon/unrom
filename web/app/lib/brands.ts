@@ -1,5 +1,5 @@
 import type { BrowseDevice } from "@/lib/types";
-import { byBrandName } from "@/lib/sort";
+import { byDirectoryName } from "@/lib/sort";
 
 export interface Brand {
   vendor: string;
@@ -31,6 +31,6 @@ export function brandRanking(devices: BrowseDevice[]): Brand[] {
     (a, b) =>
       b.withRoms - a.withRoms ||
       b.deviceCount - a.deviceCount ||
-      byBrandName(a.vendorName, b.vendorName),
+      byDirectoryName(a.vendorName, b.vendorName),
   );
 }

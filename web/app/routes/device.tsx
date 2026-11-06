@@ -57,6 +57,9 @@ export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
       path: `/devices/${device.vendor}/${device.codename}`,
     }),
     ...modifiedMeta(updatedAt),
+    ...(device.roms.length === 0
+      ? [{ name: "robots", content: "noindex" }]
+      : []),
     {
       "script:ld+json": {
         "@context": "https://schema.org",
