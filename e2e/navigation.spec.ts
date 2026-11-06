@@ -61,15 +61,20 @@ test("the brands index links to a brand", async ({ page }) => {
   await page.goto("/brands");
 
   await expect(page.getByRole("heading", { name: "Brands" })).toBeVisible();
-  await expect(
-    page.getByRole("heading", { name: "Most devices" }),
-  ).toBeVisible();
-  await expect(
-    page.getByText("Ranked by devices with ROM data — not popularity."),
-  ).toBeVisible();
-  await expect(
-    page.getByRole("link", { name: /Xiaomi/ }).first(),
-  ).toHaveAttribute("href", "/devices/xiaomi");
+  await expect(page.getByRole("link", { name: /Xiaomi/ })).toHaveAttribute(
+    "href",
+    "/devices/xiaomi",
+  );
+});
+
+test("the brands filter narrows the list", async ({ page }) => {
+  await page.goto("/brands");
+  await page.waitForLoadState("networkidle");
+  await page.getByLabel("Filter brands").fill("sams");
+
+  await expect(page.getByRole("link", { name: /Samsung/ })).toBeVisible();
+  await expect(page.getByRole("link", { name: /Xiaomi/ })).toHaveCount(0);
+  await expect(page.getByRole("status")).toHaveText("1 of 66 brands");
 });
 
 test("the mobile menu exposes navigation", async ({ page }) => {

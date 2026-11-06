@@ -1,8 +1,9 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link, useLoaderData } from "react-router";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { PageHeader } from "@/components/PageHeader";
-import { brandGroups, brandRanking, type Brand } from "@/lib/brands";
+import { SearchInput } from "@/components/SearchInput";
+import { brandRanking, type Brand } from "@/lib/brands";
 import { fetchDevices, seedDevices } from "@/lib/data";
 import {
   errorMeta,
@@ -13,13 +14,10 @@ import {
 } from "@/lib/seo";
 import type { Route } from "./+types/brands";
 
-const FEATURED = 8;
-
 export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
   if (error) return errorMeta();
   const devices = loaderData?.devices ?? [];
   const brands = brandRanking(devices);
-  const directory = brandGroups(brands).flatMap((group) => group.brands);
   const withRoms = devices.filter((device) => device.roms.length > 0).length;
 
   return [
@@ -32,7 +30,7 @@ export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
     {
       "script:ld+json": itemListLd(
         "Brands",
-        directory.map((brand) => ({
+        brands.map((brand) => ({
           name: brand.vendorName,
           path: `/devices/${brand.vendor}`,
         })),
@@ -68,68 +66,66 @@ function BrandRow({ brand }: { brand: Brand }) {
 
 export default function BrandsRoute() {
   const { devices } = useLoaderData<typeof loader>();
+  const [query, setQuery] = useState("");
 
   useEffect(() => {
     seedDevices(devices);
   }, [devices]);
 
   const brands = useMemo(() => brandRanking(devices), [devices]);
-  const groups = useMemo(() => brandGroups(brands), [brands]);
-  const featured = brands.slice(0, FEATURED);
+  const needle = query.trim().toLowerCase();
+  const filtered = useMemo(
+    () =>
+      needle
+        ? brands.filter((brand) =>
+            brand.vendorName.toLowerCase().includes(needle),
+          )
+        : brands,
+    [brands, needle],
+  );
   const withRoms = devices.filter((device) => device.roms.length > 0).length;
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="flex flex-col gap-6">
       <Breadcrumbs items={[{ label: "Home", to: "/" }, { label: "Brands" }]} />
 
       <PageHeader
         title="Brands"
-        description={`${brands.length} brands and ${devices.length} devices, ${withRoms} with custom ROM data.`}
+        description={`${brands.length} brands and ${devices.length} devices, ${withRoms} with custom ROM data. Largest catalogues first.`}
         endpoint="/api/devices"
       />
 
-      <section aria-labelledby="most-devices" className="flex flex-col gap-3">
-        <div className="flex flex-col gap-1">
-          <h2
-            id="most-devices"
-            className="font-heading text-lg font-semibold tracking-tight"
-          >
-            Most devices
-          </h2>
-          <p className="text-sm text-muted-foreground">
-            Ranked by devices with ROM data — not popularity.
-          </p>
-        </div>
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+        <SearchInput
+          id="brands-search"
+          value={query}
+          onValueChange={setQuery}
+          placeholder="Filter brands…"
+          ariaLabel="Filter brands"
+          className="max-w-md"
+        />
+        <p
+          role="status"
+          aria-live="polite"
+          className="text-sm text-muted-foreground tabular-nums"
+        >
+          {filtered.length} of {brands.length} brands
+        </p>
+      </div>
+
+      {filtered.length === 0 ? (
+        <p className="py-12 text-center text-sm text-muted-foreground">
+          No brands match “{query.trim()}”.
+        </p>
+      ) : (
         <ul className="grid gap-2 sm:grid-cols-2">
-          {featured.map((brand) => (
+          {filtered.map((brand) => (
             <li key={brand.vendor}>
               <BrandRow brand={brand} />
             </li>
           ))}
         </ul>
-      </section>
-
-      {groups.map((group) => (
-        <section
-          key={group.letter}
-          aria-labelledby={`brand-${group.letter}`}
-          className="flex flex-col gap-2"
-        >
-          <h2
-            id={`brand-${group.letter}`}
-            className="font-heading text-sm font-semibold text-muted-foreground"
-          >
-            {group.letter}
-          </h2>
-          <ul className="grid gap-2 sm:grid-cols-2">
-            {group.brands.map((brand) => (
-              <li key={brand.vendor}>
-                <BrandRow brand={brand} />
-              </li>
-            ))}
-          </ul>
-        </section>
-      ))}
+      )}
     </div>
   );
 }
