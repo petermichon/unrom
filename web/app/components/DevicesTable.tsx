@@ -80,9 +80,9 @@ export default function DevicesTable({
       },
       {
         accessorKey: "vendorName",
-        meta: { title: "Vendor" },
+        meta: { title: "Brand" },
         header: ({ column }) => (
-          <DataTableColumnHeader column={column} title="Vendor" />
+          <DataTableColumnHeader column={column} title="Brand" />
         ),
         cell: ({ row }) => (
           <Link

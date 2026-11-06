@@ -19,7 +19,7 @@ export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
   return [
     ...pageMeta({
       title: "Find the custom ROMs that support your device | unrom",
-      description: `The open database for device–ROM compatibility. ${devices.length} devices and ${romCount} custom ROMs — search by name, codename, vendor, or ROM.`,
+      description: `The open database for device–ROM compatibility. ${devices.length} devices and ${romCount} custom ROMs — search by name, codename, brand, or ROM.`,
       path: "/",
     }),
     ...modifiedMeta(updatedAtFromMatches(matches)),
@@ -65,7 +65,7 @@ export default function Home() {
         </h1>
         <p className="text-muted-foreground">
           The open database for device–ROM compatibility. Search by device name,
-          codename, vendor, or ROM to see what supports it.
+          codename, brand, or ROM to see what supports it.
         </p>
         <p className="text-sm text-muted-foreground">
           Tracking <span className="text-foreground">{devices.length}</span>{" "}

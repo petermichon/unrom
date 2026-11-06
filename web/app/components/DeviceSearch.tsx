@@ -108,15 +108,15 @@ export default function DeviceSearch({ devices, roms, examples = [] }: Props) {
           ref={inputRef}
           seamless
           className="text-base"
-          aria-label="Search devices, vendors, and ROMs"
-          placeholder="Search by device name, codename, vendor, or ROM…"
+          aria-label="Search devices, brands, and ROMs"
+          placeholder="Search by device name, codename, brand, or ROM…"
           value={query}
           onValueChange={setQuery}
         />
         <CommandList className="max-h-[26rem]">
           {noResults && <CommandEmpty>No matches found.</CommandEmpty>}
           {vendorResults.length > 0 && (
-            <CommandGroup heading="Vendors">
+            <CommandGroup heading="Brands">
               {vendorResults.map((vendor) => (
                 <CommandItem
                   key={`vendor-${vendor.vendor}`}

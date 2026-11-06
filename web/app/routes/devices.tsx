@@ -26,7 +26,7 @@ export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
   return [
     ...pageMeta({
       title: "Devices | unrom",
-      description: `${devices.length} devices from ${vendorCount} vendors, ${withRoms} with custom ROM builds across ${romIds.size} ROMs. Browse codenames, model names and API access.`,
+      description: `${devices.length} devices from ${vendorCount} brands, ${withRoms} with custom ROM builds across ${romIds.size} ROMs. Browse codenames, model names and API access.`,
       path: "/devices",
     }),
     ...modifiedMeta(updatedAt),
@@ -68,7 +68,7 @@ export default function DevicesRoute() {
 
       <PageHeader
         title="Devices"
-        description={`${devices.length} devices from ${vendorCount} vendors, ${withRoms} with custom ROM data across ${romCount} ROMs.`}
+        description={`${devices.length} devices from ${vendorCount} brands, ${withRoms} with custom ROM data across ${romCount} ROMs.`}
         endpoint="/api/devices"
       />
 

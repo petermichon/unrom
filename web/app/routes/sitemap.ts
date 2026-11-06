@@ -10,6 +10,7 @@ export async function loader() {
 
   const paths = [
     "/",
+    "/brands",
     "/devices",
     "/roms",
     ...[...new Set(devices.map((device) => device.vendor))].map(

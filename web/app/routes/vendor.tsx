@@ -14,7 +14,7 @@ import {
 import type { Route } from "./+types/vendor";
 
 export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
-  if (error || !loaderData) return errorMeta("Vendor not found | unrom");
+  if (error || !loaderData) return errorMeta("Brand not found | unrom");
   const { vendor, vendorName, devices } = loaderData;
   const updatedAt = updatedAtFromMatches(matches);
   const romCount = new Set(

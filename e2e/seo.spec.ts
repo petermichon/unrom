@@ -2,6 +2,7 @@ import { expect, test } from "@playwright/test";
 
 const PAGES = [
   "/",
+  "/brands",
   "/devices",
   "/roms",
   "/roms/projectinfinityx",
@@ -72,12 +73,13 @@ test("sitemap lists canonical pages with a trustworthy lastmod", async ({
 
   const xml = await response.text();
   expect(xml).toContain("<loc>https://unrom.com/</loc>");
+  expect(xml).toContain("<loc>https://unrom.com/brands</loc>");
   expect(xml).toContain("<loc>https://unrom.com/devices</loc>");
   expect(xml).not.toContain("<loc>https://unrom.com/registry</loc>");
   expect(xml).toContain("<lastmod>");
 });
 
-test("vendor aliases redirect to the canonical lowercase URL", async ({
+test("brand aliases redirect to the canonical lowercase URL", async ({
   request,
 }) => {
   const response = await request.get("/devices/Lenovo", {

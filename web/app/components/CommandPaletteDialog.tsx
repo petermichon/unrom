@@ -116,21 +116,21 @@ export default function CommandPaletteDialog({ open, onOpenChange }: Props) {
       open={open}
       onOpenChange={onOpenChange}
       title="Search unrom"
-      description="Find a device, vendor, or ROM"
+      description="Find a device, brand, or ROM"
     >
       <Command shouldFilter={false}>
         <CommandInput
           seamless
           className="text-base"
-          aria-label="Search devices, vendors, and ROMs"
-          placeholder="Search devices, vendors, and ROMs…"
+          aria-label="Search devices, brands, and ROMs"
+          placeholder="Search devices, brands, and ROMs…"
           value={query}
           onValueChange={setQuery}
         />
         <CommandList>
           {noResults && <CommandEmpty>No results found.</CommandEmpty>}
           {vendorMatches.length > 0 && (
-            <CommandGroup heading="Vendors">
+            <CommandGroup heading="Brands">
               {vendorMatches.map((vendor) => (
                 <CommandItem
                   key={`vendor-${vendor.vendor}`}

@@ -36,7 +36,7 @@ export default function CommandPalette() {
         onMouseEnter={preloadSearchData}
         onFocus={preloadSearchData}
         onTouchStart={preloadSearchData}
-        aria-label="Search devices, vendors, and ROMs"
+        aria-label="Search devices, brands, and ROMs"
         className="text-muted-foreground"
       >
         <Search className="size-4" />

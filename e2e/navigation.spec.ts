@@ -57,6 +57,16 @@ test("client navigation renders the destination table", async ({ page }) => {
   await expect(page.getByRole("link", { name: "LineageOS" })).toBeVisible();
 });
 
+test("the brands index links to a brand", async ({ page }) => {
+  await page.goto("/brands");
+
+  await expect(page.getByRole("heading", { name: "Brands" })).toBeVisible();
+  await expect(page.getByRole("link", { name: /Xiaomi/ })).toHaveAttribute(
+    "href",
+    "/devices/xiaomi",
+  );
+});
+
 test("the mobile menu exposes navigation", async ({ page }) => {
   await page.route("**/api/**", async (route) => {
     const url = new URL(route.request().url());
