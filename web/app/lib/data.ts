@@ -46,6 +46,11 @@ export function fetchDevices(vendor?: string): Promise<BrowseDevice[]> {
   return get<BrowseDevice[]>(`/api/devices${query}`);
 }
 
+/** Seed the browser cache with data already rendered by the server loader. */
+export function seedDevices(devices: BrowseDevice[]): void {
+  cache.set("/api/devices", devices);
+}
+
 export function fetchDevice(
   vendor: string,
   codename: string,
@@ -57,6 +62,11 @@ export function fetchDevice(
 
 export function fetchRoms(): Promise<RomDetail[]> {
   return get<RomDetail[]>("/api/roms");
+}
+
+/** Seed the browser cache with data already rendered by the server loader. */
+export function seedRoms(roms: RomDetail[]): void {
+  cache.set("/api/roms", roms);
 }
 
 export function fetchRom(id: string): Promise<RomDetail> {

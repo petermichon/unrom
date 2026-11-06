@@ -1,8 +1,9 @@
+import { useEffect } from "react";
 import { useLoaderData } from "react-router";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import DevicesTable from "@/components/DevicesTable";
 import { PageHeader } from "@/components/PageHeader";
-import { fetchDevices } from "@/lib/data";
+import { fetchDevices, seedDevices } from "@/lib/data";
 import {
   errorMeta,
   itemListLd,
@@ -51,6 +52,10 @@ export async function clientLoader() {
 
 export default function DevicesRoute() {
   const { devices } = useLoaderData<typeof loader>();
+
+  useEffect(() => {
+    seedDevices(devices);
+  }, [devices]);
   const vendorCount = new Set(devices.map((device) => device.vendor)).size;
   const withRoms = devices.filter((device) => device.roms.length > 0).length;
   const romCount = new Set(

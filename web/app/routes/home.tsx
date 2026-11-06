@@ -1,7 +1,7 @@
 import { useLoaderData } from "react-router";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import DeviceSearch from "@/components/DeviceSearch";
-import { fetchDevices } from "@/lib/data";
+import { fetchDevices, seedDevices } from "@/lib/data";
 import {
   errorMeta,
   modifiedMeta,
@@ -40,6 +40,10 @@ const EXAMPLES = ["Pixel 9", "beryllium", "Xiaomi", "LineageOS"];
 
 export default function Home() {
   const { devices } = useLoaderData<typeof loader>();
+
+  useEffect(() => {
+    seedDevices(devices);
+  }, [devices]);
 
   // Every ROM in the dataset supports at least one device, so the device chips
   // already carry the full, deduplicated ROM list — no extra fetch needed.

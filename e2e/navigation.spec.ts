@@ -42,6 +42,21 @@ test("repeat client navigations do not hit the network", async ({ page }) => {
   expect(network).toEqual([]);
 });
 
+test("client navigation renders the destination table", async ({ page }) => {
+  await page.route("**/api/**", async (route) => {
+    const url = new URL(route.request().url());
+    url.protocol = "http:";
+    url.host = "127.0.0.1:3000";
+    const response = await route.fetch({ url: url.toString() });
+    await route.fulfill({ response });
+  });
+
+  await page.goto("/");
+  await page.getByRole("link", { name: "ROMs" }).click();
+  await expect(page.getByRole("heading", { name: "ROMs" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "LineageOS" })).toBeVisible();
+});
+
 test("the mobile menu exposes navigation", async ({ page }) => {
   await page.route("**/api/**", async (route) => {
     const url = new URL(route.request().url());

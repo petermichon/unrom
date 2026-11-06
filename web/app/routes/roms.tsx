@@ -1,8 +1,9 @@
+import { useEffect } from "react";
 import { useLoaderData } from "react-router";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { PageHeader } from "@/components/PageHeader";
 import RomsTable from "@/components/RomsTable";
-import { fetchRoms } from "@/lib/data";
+import { fetchRoms, seedRoms } from "@/lib/data";
 import {
   errorMeta,
   itemListLd,
@@ -48,6 +49,10 @@ export async function clientLoader() {
 
 export default function RomsRoute() {
   const { roms } = useLoaderData<typeof loader>();
+
+  useEffect(() => {
+    seedRoms(roms);
+  }, [roms]);
   const deviceCount = new Set(
     roms.flatMap((rom) =>
       rom.devices.map((device) => `${device.vendor}/${device.codename}`),

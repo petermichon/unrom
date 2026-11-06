@@ -33,6 +33,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { DataTablePagination } from "@/components/data-table/data-table-pagination";
+import { useInitialDocument } from "@/lib/use-initial-document";
 
 interface Props<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -155,6 +156,46 @@ export function DataTable<TData, TValue>({
       columnId === "search" ? "w-0" : EQUAL_SHARE,
       columnClassName?.(columnId),
     ) || undefined;
+
+  // On client navigations, commit the surrounding page first and mount the
+  // table two frames later. The route then changes instantly instead of
+  // blocking on hundreds of rows. The first document keeps rendering
+  // immediately so SSR output and hydration still match.
+  const initialDocument = useInitialDocument();
+  const [tableReady, setTableReady] = useState(initialDocument);
+  useEffect(() => {
+    if (tableReady) return;
+    let done = false;
+    const finish = () => {
+      if (done) return;
+      done = true;
+      setTableReady(true);
+    };
+    // Two frames let the route paint first; the timer is the fallback for
+    // background tabs, where requestAnimationFrame does not run.
+    let inner = 0;
+    const outer = requestAnimationFrame(() => {
+      inner = requestAnimationFrame(finish);
+    });
+    const timer = window.setTimeout(finish, 100);
+    return () => {
+      cancelAnimationFrame(outer);
+      cancelAnimationFrame(inner);
+      window.clearTimeout(timer);
+    };
+  }, [tableReady]);
+
+  if (!tableReady) {
+    return (
+      <div className="flex flex-col gap-4">
+        {toolbar?.(table)}
+        <div
+          aria-hidden="true"
+          className="min-h-96 rounded-xl border border-border/60 bg-muted/10"
+        />
+      </div>
+    );
+  }
 
   const visibleRows = table.getRowModel().rows;
   const renderedRows = renderAllRows

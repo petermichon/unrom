@@ -1,5 +1,5 @@
 import { Asterisk, Menu } from "lucide-react";
-import type { ReactNode } from "react";
+import { useEffect, type ReactNode } from "react";
 import { Link, NavLink } from "react-router";
 import CommandPalette from "@/components/CommandPalette";
 import { ExportMenu } from "@/components/ExportMenu";
@@ -17,6 +17,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { fetchDevices, fetchRoms } from "@/lib/data";
 import { cn } from "@/lib/utils";
 
 interface Props {
@@ -26,18 +27,29 @@ interface Props {
 }
 
 const NAV_ITEMS = [
-  { to: "/devices", label: "Devices" },
-  { to: "/roms", label: "ROMs" },
+  { to: "/devices", label: "Devices", preload: fetchDevices },
+  { to: "/roms", label: "ROMs", preload: fetchRoms },
 ];
+
+type NavItem = (typeof NAV_ITEMS)[number];
 
 const GITHUB_URL = "https://github.com/petermichon/unrom";
 const ODBL_URL = "https://opendatacommons.org/licenses/odbl/1-0/";
 
-function TopNavLink({ to, children }: { to: string; children: ReactNode }) {
+function TopNavLink({ item }: { item: NavItem }) {
+  // Start the clientLoader's fetch before the click so navigation does not
+  // wait on the network.
+  const preload = () => {
+    void item.preload();
+  };
+
   return (
     <NavLink
-      to={to}
+      to={item.to}
       prefetch="viewport"
+      onMouseEnter={preload}
+      onFocus={preload}
+      onTouchStart={preload}
       className={({ isActive }) =>
         cn(
           "rounded-lg px-3 py-1.5 text-sm font-medium transition-colors",
@@ -47,14 +59,21 @@ function TopNavLink({ to, children }: { to: string; children: ReactNode }) {
         )
       }
     >
-      {children}
+      {item.label}
     </NavLink>
   );
 }
 
 function MobileMenu() {
   return (
-    <DropdownMenu>
+    <DropdownMenu
+      onOpenChange={(open) => {
+        if (open) {
+          void fetchDevices();
+          void fetchRoms();
+        }
+      }}
+    >
       <DropdownMenuTrigger
         render={
           <Button
@@ -145,6 +164,21 @@ function MobileMenu() {
 }
 
 export default function AppShell({ updatedAt, updatedAtIso, children }: Props) {
+  // Warm both catalogue queries once the page is idle so the nav links never
+  // wait on a clientLoader fetch.
+  useEffect(() => {
+    const preload = () => {
+      void fetchDevices();
+      void fetchRoms();
+    };
+    if (typeof window.requestIdleCallback === "function") {
+      const id = window.requestIdleCallback(preload, { timeout: 2500 });
+      return () => window.cancelIdleCallback(id);
+    }
+    const id = window.setTimeout(preload, 1500);
+    return () => window.clearTimeout(id);
+  }, []);
+
   return (
     <TooltipProvider>
       <div className="flex min-h-svh flex-col bg-background">
@@ -181,9 +215,7 @@ export default function AppShell({ updatedAt, updatedAtIso, children }: Props) {
               className="ml-2 hidden items-center gap-1 md:flex"
             >
               {NAV_ITEMS.map((item) => (
-                <TopNavLink key={item.to} to={item.to}>
-                  {item.label}
-                </TopNavLink>
+                <TopNavLink key={item.to} item={item} />
               ))}
             </nav>
 

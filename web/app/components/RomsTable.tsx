@@ -13,9 +13,14 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import { bySortKey } from "@/lib/sort";
+import { useInitialDocument } from "@/lib/use-initial-document";
 import type { RomDetail } from "@/lib/types";
 
 export default function RomsTable({ roms }: { roms: RomDetail[] }) {
+  // Full HTML for crawlers on first load; only the current page in the DOM on
+  // client navigations.
+  const renderAllRows = useInitialDocument();
+
   const columns = useMemo<ColumnDef<RomDetail>[]>(
     () => [
       {
@@ -163,7 +168,7 @@ export default function RomsTable({ roms }: { roms: RomDetail[] }) {
       columns={columns}
       data={roms}
       tableClassName="min-w-[40rem]"
-      renderAllRows
+      renderAllRows={renderAllRows}
       initialState={{
         columnVisibility: { search: false },
         sorting: [{ id: "deviceCount", desc: true }],

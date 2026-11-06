@@ -15,6 +15,7 @@ import {
   EmptyTitle,
 } from "@/components/ui/empty";
 import type { DeviceSummary } from "@/lib/types";
+import { useInitialDocument } from "@/lib/use-initial-document";
 import { PackageOpen } from "lucide-react";
 
 const MOBILE_HIDDEN = new Set(["codename"]);
@@ -26,6 +27,10 @@ interface Props {
 }
 
 export default function RomDevicesTable({ devices }: Props) {
+  // Full HTML for crawlers on first load; only the current page in the DOM on
+  // client navigations.
+  const renderAllRows = useInitialDocument();
+
   const columns = useMemo<ColumnDef<DeviceSummary>[]>(
     () => [
       {
@@ -100,7 +105,7 @@ export default function RomDevicesTable({ devices }: Props) {
       columns={columns}
       data={devices}
       columnClassName={columnClassName}
-      renderAllRows
+      renderAllRows={renderAllRows}
       tableClassName="min-w-[36rem]"
       initialState={{
         columnVisibility: { search: false },
