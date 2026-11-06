@@ -129,7 +129,7 @@ export default function DevicesDirectory({ devices }: Props) {
             <section
               key={group.letter}
               aria-labelledby={`devices-${group.letter}`}
-              className="scroll-mt-20"
+              className="scroll-mt-24"
             >
               <h2
                 id={`devices-${group.letter}`}

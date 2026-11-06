@@ -132,7 +132,7 @@ test("the brands filter narrows the list", async ({ page }) => {
   await expect(page.getByRole("status")).toHaveText("1 of 66 brands");
 });
 
-test("the mobile menu exposes navigation", async ({ page }) => {
+test("mobile shows sections outside the utility menu", async ({ page }) => {
   await page.route("**/api/**", async (route) => {
     const url = new URL(route.request().url());
     url.protocol = "http:";
@@ -144,11 +144,15 @@ test("the mobile menu exposes navigation", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 800 });
   await page.goto("/");
 
-  const menu = page.getByRole("button", { name: "Open menu" });
-  await expect(menu).toBeVisible();
-  await menu.click();
+  const sections = page.getByRole("navigation", { name: "Sections" });
+  await expect(sections.getByRole("link", { name: "Devices" })).toBeVisible();
 
-  await page.getByRole("menuitem", { name: "Devices" }).click();
+  const menu = page.getByRole("button", { name: "Open menu" });
+  await menu.click();
+  await expect(page.getByRole("menuitem", { name: "API index" })).toBeVisible();
+  await page.keyboard.press("Escape");
+
+  await sections.getByRole("link", { name: "Devices" }).click();
   await expect(page).toHaveURL(/\/devices$/);
   await expect(page.getByRole("heading", { name: "Devices" })).toBeVisible();
 });

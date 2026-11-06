@@ -89,17 +89,6 @@ function MobileMenu() {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-52">
         <DropdownMenuGroup>
-          {NAV_ITEMS.map((item) => (
-            <DropdownMenuItem
-              key={item.to}
-              render={<Link to={item.to} prefetch="viewport" />}
-            >
-              {item.label}
-            </DropdownMenuItem>
-          ))}
-        </DropdownMenuGroup>
-        <DropdownMenuSeparator />
-        <DropdownMenuGroup>
           <DropdownMenuLabel>Data</DropdownMenuLabel>
           <DropdownMenuItem
             render={
@@ -245,6 +234,14 @@ export default function AppShell({ updatedAt, updatedAtIso, children }: Props) {
               <MobileMenu />
             </div>
           </div>
+
+          <nav aria-label="Sections" className="md:hidden">
+            <div className="mx-auto flex w-full max-w-4xl items-center gap-1 px-4 pb-2 sm:px-6">
+              {NAV_ITEMS.map((item) => (
+                <TopNavLink key={item.to} item={item} />
+              ))}
+            </div>
+          </nav>
         </header>
 
         <main id="content" tabIndex={-1} className="flex-1 px-4 py-10 sm:px-6">
