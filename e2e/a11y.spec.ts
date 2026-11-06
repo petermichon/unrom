@@ -3,7 +3,7 @@ import type { Page } from "@playwright/test";
 import { expect, test } from "@playwright/test";
 
 // WCAG success criteria only; axe's "best-practice" heuristics (e.g. landmark
-// region rules around the third-party sidebar) are not failures.
+// region rules) are not failures.
 const WCAG_TAGS = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"];
 
 function analyze(page: Page) {

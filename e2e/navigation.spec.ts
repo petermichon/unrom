@@ -41,3 +41,24 @@ test("repeat client navigations do not hit the network", async ({ page }) => {
 
   expect(network).toEqual([]);
 });
+
+test("the mobile menu exposes navigation", async ({ page }) => {
+  await page.route("**/api/**", async (route) => {
+    const url = new URL(route.request().url());
+    url.protocol = "http:";
+    url.host = "127.0.0.1:3000";
+    const response = await route.fetch({ url: url.toString() });
+    await route.fulfill({ response });
+  });
+
+  await page.setViewportSize({ width: 390, height: 800 });
+  await page.goto("/");
+
+  const menu = page.getByRole("button", { name: "Open menu" });
+  await expect(menu).toBeVisible();
+  await menu.click();
+
+  await page.getByRole("menuitem", { name: "Devices" }).click();
+  await expect(page).toHaveURL(/\/devices$/);
+  await expect(page.getByRole("heading", { name: "Devices" })).toBeVisible();
+});
