@@ -106,7 +106,7 @@ Environment variables are documented in `.env.example`.
 ```
 GET /api/health                   → { ok: true }
 GET /api/meta                     → { generatedAt, contentHash }
-GET /api/devices?q=&vendor=       → BrowseDevice[]
+GET /api/devices?q=&vendor=&letter=&limit=&offset= → BrowseDevice[] (x-total-count)
 GET /api/devices/:vendor/:codename → DeviceDetail | 404
 GET /api/registry?q=&vendor=      → RegistryEntry[]
 GET /api/roms                     → RomDetail[]

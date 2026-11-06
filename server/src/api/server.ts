@@ -132,14 +132,35 @@ app.get("/api/openapi.json", (c) => {
 
 app.get("/api/meta", (c) => c.json(api.getMeta()));
 
-app.get("/api/devices", (c) =>
-  c.json(
-    api.listDevices(
-      c.req.query("q") ?? undefined,
-      c.req.query("vendor") ?? undefined,
-    ),
-  ),
-);
+app.get("/api/devices", (c) => {
+  const query = c.req.query("q") ?? undefined;
+  const vendor = c.req.query("vendor") ?? undefined;
+  const letter = c.req.query("letter")?.toUpperCase();
+  if (letter && !/^[A-Z#]$/.test(letter)) {
+    return c.json({ error: `invalid letter: ${letter}` }, 400);
+  }
+
+  const parse = (name: string): number | undefined => {
+    const raw = c.req.query(name);
+    if (raw === undefined) return undefined;
+    const value = Number(raw);
+    return Number.isInteger(value) ? value : Number.NaN;
+  };
+  const limit = parse("limit");
+  const offset = parse("offset");
+  if (
+    Number.isNaN(limit) ||
+    Number.isNaN(offset) ||
+    (limit !== undefined && (limit < 1 || limit > 200)) ||
+    (offset !== undefined && offset < 0)
+  ) {
+    return c.json({ error: "invalid pagination" }, 400);
+  }
+
+  const options = { query, vendor, letter, limit, offset };
+  c.header("x-total-count", String(api.countDevices(options)));
+  return c.json(api.listDevicesPage(options));
+});
 
 app.get("/api/devices/:vendor/:codename", (c) => {
   const vendor = c.req.param("vendor");

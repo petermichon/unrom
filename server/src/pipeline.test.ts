@@ -361,6 +361,61 @@ test("registry-only devices ship with zero ROMs", () => {
   }
 });
 
+test("device pages filter by letter and offset", async () => {
+  const records = await parseAllSources();
+  const dir = mkdtempSync(join(tmpdir(), "unrom-test-"));
+  const dbPath = join(dir, "unrom.sqlite");
+
+  try {
+    const built = buildDatabase(records, dbPath);
+    const api = createApi(dbPath);
+
+    const firstX = api.listDevicesPage({ letter: "X", limit: 5 });
+    assert.equal(firstX.length, 5);
+    assert.ok(
+      firstX.every((device) =>
+        (device.name ?? device.codename).toUpperCase().startsWith("X"),
+      ),
+    );
+
+    const xTotal = api.countDevices({ letter: "X" });
+    assert.ok(xTotal > 5);
+    assert.equal(api.listDevicesPage({ letter: "X" }).length, xTotal);
+
+    const secondX = api.listDevicesPage({
+      letter: "X",
+      limit: 5,
+      offset: 5,
+    });
+    assert.notDeepEqual(
+      firstX.map((device) => device.codename),
+      secondX.map((device) => device.codename),
+    );
+
+    const numeric = api.listDevicesPage({ letter: "#", limit: 5 });
+    assert.ok(numeric.length > 0);
+    assert.ok(
+      numeric.every(
+        (device) => !/^[A-Za-z]/.test(device.name ?? device.codename),
+      ),
+    );
+
+    assert.equal(
+      api.listDevicesPage({ vendor: "xiaomi" }).length,
+      api.countDevices({ vendor: "xiaomi" }),
+    );
+
+    // No limit keeps the previous full-list behaviour; the page size is capped.
+    assert.equal(api.listDevices().length, built.deviceCount);
+    assert.equal(api.listDevicesPage({ limit: 1000 }).length, 200);
+    assert.equal(api.listDevicesPage({ offset: 900 }).length, 2);
+
+    api.close();
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 test("devices outside the registry stay unnamed", () => {
   const dir = mkdtempSync(join(tmpdir(), "unrom-test-"));
   const dbPath = join(dir, "unrom.sqlite");

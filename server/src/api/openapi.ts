@@ -241,6 +241,32 @@ const searchParameters = [
   },
 ];
 
+const deviceListParameters = [
+  ...searchParameters,
+  {
+    name: "letter",
+    in: "query",
+    required: false,
+    description:
+      "Display-name initial, A-Z, or `#` for names starting with a digit.",
+    schema: { type: "string", pattern: "^[A-Z#]$" },
+  },
+  {
+    name: "limit",
+    in: "query",
+    required: false,
+    description: "Page size, 1-200. Omit for the full filtered list.",
+    schema: { type: "integer", minimum: 1, maximum: 200 },
+  },
+  {
+    name: "offset",
+    in: "query",
+    required: false,
+    description: "Rows to skip. Defaults to 0.",
+    schema: { type: "integer", minimum: 0 },
+  },
+];
+
 const notFound = {
   description: "No entity matches the requested key.",
   content: {
@@ -254,7 +280,7 @@ export const openapi = {
   openapi: "3.1.0",
   info: {
     title: "unrom API",
-    version: "1.1.0",
+    version: "1.2.0",
     summary: "Open database for device–ROM compatibility.",
     description:
       "Which custom Android ROMs support which devices. Every response is " +
@@ -327,15 +353,24 @@ export const openapi = {
         tags: ["devices"],
         summary: "Browse devices",
         description:
-          "Returns every device matching the filters. Without parameters the " +
-          "whole dataset is returned in one response.",
+          "Returns devices matching the filters. Use `limit`/`offset` and the " +
+          "`x-total-count` response header for paged browsing; without a limit " +
+          "the full filtered list is returned.",
         operationId: "listDevices",
-        parameters: [...searchParameters],
+        parameters: deviceListParameters,
         responses: {
-          200: jsonResponse({
-            type: "array",
-            items: { $ref: "#/components/schemas/BrowseDevice" },
-          }),
+          200: {
+            ...jsonResponse({
+              type: "array",
+              items: { $ref: "#/components/schemas/BrowseDevice" },
+            }),
+            headers: {
+              "x-total-count": {
+                description: "Total rows matching the filters, before paging.",
+                schema: { type: "integer", minimum: 0 },
+              },
+            },
+          },
         },
       },
     },

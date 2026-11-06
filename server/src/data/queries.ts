@@ -162,7 +162,63 @@ export function createApi(dbPath: string) {
     return { variantsByMain, mainsByVariant };
   }
 
-  function listDevices(query?: string, vendor?: string): BrowseDevice[] {
+  interface DeviceQuery {
+    query?: string;
+    vendor?: string;
+    /** Display-name initial: A-Z or `#` for numeric/punctuation names. */
+    letter?: string;
+    limit?: number;
+    offset?: number;
+  }
+
+  function deviceFilters(options: DeviceQuery) {
+    const filters = [];
+    if (options.vendor) {
+      filters.push(
+        eq(sql`lower(${devices.vendor})`, options.vendor.toLowerCase()),
+      );
+    }
+    const needle = options.query?.trim();
+    if (needle) {
+      const terms = searchTerms(needle);
+      filters.push(
+        and(
+          ...terms.map((term) => {
+            const pattern = `%${term}%`;
+            return or(
+              like(devices.codename, pattern),
+              like(sql`coalesce(${devices.name}, '')`, pattern),
+              like(sql`coalesce(${devices.vendor}, '')`, pattern),
+              // Match a device by any of its alternate codenames.
+              sql`exists (select 1 from aliases a where a.vendor = ${devices.vendor} and a.codename = ${devices.codename} and lower(a.alias) like ${pattern})`,
+            );
+          }),
+        ),
+      );
+    }
+    const letter = options.letter?.toUpperCase();
+    if (letter) {
+      const displayName = sql`coalesce(${devices.name}, ${devices.codename})`;
+      filters.push(
+        letter === "#"
+          ? sql`${displayName} NOT GLOB '[A-Za-z]*'`
+          : sql`upper(substr(${displayName}, 1, 1)) = ${letter}`,
+      );
+    }
+    return filters;
+  }
+
+  function countDevices(options: DeviceQuery = {}): number {
+    const filters = deviceFilters(options);
+    const row = db
+      .select({ count: sql<number>`count(*)` })
+      .from(devices)
+      .where(filters.length ? and(...filters) : undefined)
+      .get();
+    return Number(row?.count ?? 0);
+  }
+
+  function listDevicesPage(options: DeviceQuery = {}): BrowseDevice[] {
     const names = romNames();
 
     const chipsByDevice = new Map<string, RomChip[]>();
@@ -181,37 +237,25 @@ export function createApi(dbPath: string) {
       }
     }
 
-    const filters = [];
-    if (vendor) {
-      filters.push(eq(sql`lower(${devices.vendor})`, vendor.toLowerCase()));
-    }
-    const needle = query?.trim();
-    if (needle) {
-      const terms = searchTerms(needle);
-      filters.push(
-        and(
-          ...terms.map((term) => {
-            const pattern = `%${term}%`;
-            return or(
-              like(devices.codename, pattern),
-              like(sql`coalesce(${devices.name}, '')`, pattern),
-              like(sql`coalesce(${devices.vendor}, '')`, pattern),
-              // Match a device by any of its alternate codenames.
-              sql`exists (select 1 from aliases a where a.vendor = ${devices.vendor} and a.codename = ${devices.codename} and lower(a.alias) like ${pattern})`,
-            );
-          }),
-        ),
-      );
-    }
-
-    const rows = filters.length
-      ? db
-          .select()
-          .from(devices)
-          .where(and(...filters))
-          .orderBy(asc(devices.vendor), asc(devices.codename))
-          .all()
-      : db.select().from(devices).orderBy(asc(devices.codename)).all();
+    const filters = deviceFilters(options);
+    const displayName = sql`coalesce(${devices.name}, ${devices.codename})`;
+    const limit =
+      options.limit === undefined
+        ? undefined
+        : Math.min(Math.max(1, Math.trunc(options.limit)), 200);
+    const offset = Math.max(0, Math.trunc(options.offset ?? 0));
+    const rows = db
+      .select()
+      .from(devices)
+      .where(filters.length ? and(...filters) : undefined)
+      .orderBy(
+        asc(sql`lower(${displayName})`),
+        asc(devices.vendor),
+        asc(devices.codename),
+      )
+      .limit(limit ?? 1_000_000_000)
+      .offset(offset)
+      .all();
 
     const aliasMap = aliasesByDevice();
     const coverage = deviceCoverage();
@@ -247,6 +291,11 @@ export function createApi(dbPath: string) {
         confidence: provenance.get(key)?.confidence ?? null,
       };
     });
+  }
+
+  /** Backwards-compatible full-list lookup used by existing callers. */
+  function listDevices(query?: string, vendor?: string): BrowseDevice[] {
+    return listDevicesPage({ query, vendor });
   }
 
   // Resolve an incoming `(vendor, codename)` to its canonical device, following
@@ -599,6 +648,8 @@ export function createApi(dbPath: string) {
 
   return {
     listDevices,
+    listDevicesPage,
+    countDevices,
     getDevice,
     listRegistry,
     listRoms,
