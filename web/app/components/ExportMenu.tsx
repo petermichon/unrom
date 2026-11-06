@@ -1,4 +1,4 @@
-import { Download } from "lucide-react";
+import { Database, Download, FileJson } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -6,7 +6,6 @@ import {
   DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
@@ -33,8 +32,11 @@ export function ExportMenu() {
               />
             }
           >
+            <Database
+              aria-hidden="true"
+              className="size-4 text-muted-foreground"
+            />
             SQLite (.sqlite)
-            <DropdownMenuShortcut>→</DropdownMenuShortcut>
           </DropdownMenuItem>
           <DropdownMenuItem
             render={
@@ -45,8 +47,11 @@ export function ExportMenu() {
               />
             }
           >
+            <FileJson
+              aria-hidden="true"
+              className="size-4 text-muted-foreground"
+            />
             JSON (.json)
-            <DropdownMenuShortcut>→</DropdownMenuShortcut>
           </DropdownMenuItem>
         </DropdownMenuGroup>
       </DropdownMenuContent>
