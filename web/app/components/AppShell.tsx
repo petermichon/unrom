@@ -52,7 +52,7 @@ function TopNavLink({ item }: { item: NavItem }) {
       onTouchStart={preload}
       className={({ isActive }) =>
         cn(
-          "rounded-lg px-3 py-1.5 text-sm font-medium transition-colors",
+          "rounded-lg px-3 py-1.5 text-sm font-medium transition-colors outline-none focus-visible:ring-3 focus-visible:ring-ring/50",
           isActive
             ? "bg-muted text-foreground"
             : "text-muted-foreground hover:bg-muted/60 hover:text-foreground",
@@ -191,7 +191,7 @@ export default function AppShell({ updatedAt, updatedAtIso, children }: Props) {
               to="/"
               prefetch="viewport"
               aria-label="unrom home"
-              className="flex items-center gap-2 font-heading font-semibold tracking-tight transition-opacity hover:opacity-80"
+              className="flex items-center gap-2 rounded-lg font-heading font-semibold tracking-tight outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
             >
               <span
                 className="grid size-6 shrink-0 place-items-center rounded-md bg-brand text-brand-foreground"
