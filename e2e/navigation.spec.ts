@@ -63,63 +63,53 @@ test("client navigation renders the destination table", async ({ page }) => {
   await expect(page.getByRole("link", { name: "LineageOS" })).toBeVisible();
 });
 
-test("a brand page lists its devices by ROM count", async ({ page }) => {
+test("a brand page lists its devices", async ({ page }) => {
   await page.goto("/devices/xiaomi");
 
   await expect(page.getByRole("heading", { name: "Xiaomi" })).toBeVisible();
-  await expect(
-    page.getByRole("link", { name: /Redmi Note 10 Pro/ }).first(),
-  ).toBeVisible();
+  await expect(page.locator("a.device-row").first()).toBeVisible();
 });
 
-test("the devices index is an A-Z directory", async ({ page }) => {
+test("the devices index links to letter pages", async ({ page }) => {
   await page.goto("/devices");
 
   await expect(page.getByRole("heading", { name: "Devices" })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "X" })).toBeVisible();
-  await expect(
-    page.getByRole("link", { name: /Redmi Note 10 Pro/ }).first(),
-  ).toBeVisible();
+  await expect(page.locator('a[href="/devices/letter/a"]')).toBeVisible();
+  await expect(page.locator('a[href="/devices/letter/g"]')).toBeVisible();
 });
 
-test("device search finds a zero-ROM device", async ({ page }) => {
-  await page.goto("/devices");
-  await page.waitForLoadState("networkidle");
-  await expect(async () => {
-    await page.getByLabel("Filter devices").fill("madrid");
-    await expect(page.getByRole("status")).toHaveText("1 of 902 devices", {
-      timeout: 1_500,
-    });
-  }).toPass({ timeout: 10_000 });
+test("a letter page lists its devices", async ({ page }) => {
+  await page.goto("/devices/letter/h");
 
+  await expect(page.getByRole("heading", { name: "H devices" })).toBeVisible();
   await expect(page.getByRole("link", { name: /Huawei Y6/ })).toContainText(
     "0 ROMs",
   );
 });
 
-test("the devices index filters by brand", async ({ page }) => {
-  await page.goto("/devices");
-  await page.waitForLoadState("networkidle");
-  await expect(async () => {
-    await page.getByLabel("Filter by brand").selectOption("samsung");
-    await expect(page.getByRole("status")).toHaveText("161 of 902 devices", {
-      timeout: 1_500,
-    });
-  }).toPass({ timeout: 10_000 });
+test("a letter page paginates", async ({ page }) => {
+  await page.route("**/api/**", async (route) => {
+    const url = new URL(route.request().url());
+    url.protocol = "http:";
+    url.host = "127.0.0.1:3000";
+    const response = await route.fetch({ url: url.toString() });
+    await route.fulfill({ response });
+  });
+
+  await page.goto("/devices/letter/g");
+  await expect(page.getByText("Page 1 of 2")).toBeVisible();
+  await expect(page.locator("a.device-row")).toHaveCount(200);
+
+  await page.getByRole("link", { name: "Next" }).click();
+  await expect(page).toHaveURL(/\?page=2$/);
+  await expect(page.getByText("Page 2 of 2")).toBeVisible();
+  await expect(page.locator("a.device-row")).toHaveCount(3);
 });
 
-test("the devices index filters by ROM count", async ({ page }) => {
-  await page.goto("/devices");
-  await page.waitForLoadState("networkidle");
-
-  await expect(async () => {
-    await page.getByLabel("Filter by ROM count").selectOption("10");
-    await expect(page.getByRole("status")).toHaveText("67 of 902 devices", {
-      timeout: 1_500,
-    });
-  }).toPass({ timeout: 10_000 });
-
-  await expect(page.getByRole("link", { name: /Huawei Y6/ })).toHaveCount(0);
+test("uppercase letter URLs redirect to lowercase", async ({ page }) => {
+  await page.goto("/devices/letter/X");
+  await page.waitForURL("**/devices/letter/x");
+  await expect(page.getByRole("heading", { name: "X devices" })).toBeVisible();
 });
 
 test("the ROMs index separates covered from catalogue", async ({ page }) => {

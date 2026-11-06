@@ -1,4 +1,10 @@
-import type { BrowseDevice, DeviceDetail, Meta, RomDetail } from "@/lib/types";
+import type {
+  BrowseDevice,
+  DeviceDetail,
+  LetterSummary,
+  Meta,
+  RomDetail,
+} from "@/lib/types";
 
 // Server-side loaders reach the API directly; in the browser the app is
 // same-origin (Caddy proxies /api), so a relative path is used.
@@ -49,6 +55,34 @@ export function fetchDevices(vendor?: string): Promise<BrowseDevice[]> {
 /** Seed the browser cache with data already rendered by the server loader. */
 export function seedDevices(devices: BrowseDevice[]): void {
   cache.set("/api/devices", devices);
+}
+
+export function fetchDeviceLetters(): Promise<LetterSummary[]> {
+  return get<LetterSummary[]>("/api/devices/letters");
+}
+
+export async function fetchDevicesPage(options: {
+  letter?: string;
+  vendor?: string;
+  limit: number;
+  offset: number;
+}): Promise<{ devices: BrowseDevice[]; total: number }> {
+  const params = new URLSearchParams({
+    limit: String(options.limit),
+    offset: String(options.offset),
+  });
+  if (options.letter) params.set("letter", options.letter);
+  if (options.vendor) params.set("vendor", options.vendor);
+  const response = await fetch(`${apiBase()}/api/devices?${params}`);
+  if (!response.ok) {
+    throw new Response("API request failed: /api/devices", {
+      status: response.status,
+    });
+  }
+  return {
+    devices: (await response.json()) as BrowseDevice[],
+    total: Number(response.headers.get("x-total-count") ?? 0),
+  };
 }
 
 export function fetchDevice(

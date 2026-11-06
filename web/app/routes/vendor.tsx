@@ -1,13 +1,9 @@
-import { useMemo, useState } from "react";
-import { redirect, useLoaderData } from "react-router";
+import { Link, redirect, useLoaderData } from "react-router";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import DeviceRow from "@/components/DeviceRow";
 import { PageHeader } from "@/components/PageHeader";
-import { SearchInput } from "@/components/SearchInput";
+import { fetchDevicesPage } from "@/lib/data";
 import { deviceName } from "@/lib/devices";
-import { deviceHaystack, matchesAll, tokenize } from "@/lib/search";
-import { bySortKey } from "@/lib/sort";
-import { fetchDevices } from "@/lib/data";
 import {
   errorMeta,
   itemListLd,
@@ -18,82 +14,116 @@ import {
 } from "@/lib/seo";
 import type { Route } from "./+types/vendor";
 
+const PAGE_SIZE = 200;
+
 export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
   if (error || !loaderData) return errorMeta("Brand not found | unrom");
-  const { vendor, vendorName, devices } = loaderData;
+  const { vendor, vendorName, devices, total, page, pages } = loaderData;
   const updatedAt = updatedAtFromMatches(matches);
-  const romCount = new Set(
-    devices.flatMap((device) => device.roms.map((rom) => rom.id)),
-  ).size;
+  const description =
+    total === 0
+      ? `No ${vendorName} devices in the catalogue yet.`
+      : `${total} ${vendorName} device${total === 1 ? "" : "s"}${
+          pages > 1 ? `, page ${page} of ${pages}` : ""
+        }, including ${summarizeNames(devices.map(deviceName), 3, total)}.`;
+
   return [
     ...pageMeta({
       title: `${vendorName} devices | unrom`,
-      description: `${devices.length} ${vendorName} device${
-        devices.length === 1 ? "" : "s"
-      } across ${romCount} custom ROM${romCount === 1 ? "" : "s"}, including ${summarizeNames(
-        devices.map((device) => device.name ?? device.codename),
-        3,
-      )}. Browse codenames and API access.`,
-      path: `/devices/${vendor}`,
+      description,
+      path: `/devices/${vendor}${page > 1 ? `?page=${page}` : ""}`,
     }),
     ...modifiedMeta(updatedAt),
-    {
-      "script:ld+json": itemListLd(
-        `${vendorName} devices`,
-        devices
-          .filter((device) => device.roms.length > 0)
-          .map((device) => ({
-            name: deviceName(device),
-            path: `/devices/${device.vendor}/${device.codename}`,
-          })),
-      ),
-    },
+    ...(devices.length > 0
+      ? [
+          {
+            "script:ld+json": itemListLd(
+              `${vendorName} devices`,
+              devices.map((device) => ({
+                name: deviceName(device),
+                path: `/devices/${device.vendor}/${device.codename}`,
+              })),
+            ),
+          },
+        ]
+      : []),
   ];
 };
 
-async function load(vendor: string) {
-  const devices = await fetchDevices(vendor);
+async function load(vendor: string, request: URL) {
+  const page = Math.max(
+    1,
+    Math.trunc(Number(request.searchParams.get("page")) || 1),
+  );
+  const { devices, total } = await fetchDevicesPage({
+    vendor,
+    limit: PAGE_SIZE,
+    offset: (page - 1) * PAGE_SIZE,
+  });
   if (devices.length === 0) {
     throw new Response("Not found", { status: 404 });
   }
-  // The API matches vendors case-insensitively; redirect to the canonical
-  // (lowercase) vendor so aliases do not become duplicate, self-canonical URLs.
-  if (devices[0].vendor !== vendor) {
-    throw redirect(`/devices/${encodeURIComponent(devices[0].vendor)}`, 301);
+
+  const canonical = devices[0].vendor;
+  if (canonical !== vendor) {
+    throw redirect(
+      `/devices/${encodeURIComponent(canonical)}${request.search}`,
+      301,
+    );
   }
-  return { vendor, vendorName: devices[0].vendorName, devices };
+
+  const pages = Math.ceil(total / PAGE_SIZE);
+  if (page > pages) throw new Response("Not found", { status: 404 });
+
+  return {
+    vendor: canonical,
+    vendorName: devices[0].vendorName,
+    devices,
+    total,
+    page,
+    pages,
+  };
 }
 
-export async function loader({ params }: Route.LoaderArgs) {
-  return load(params.vendor);
+export async function loader({ params, request }: Route.LoaderArgs) {
+  return load(params.vendor, new URL(request.url));
 }
 
-export async function clientLoader({ params }: Route.ClientLoaderArgs) {
-  return load(params.vendor);
+export async function clientLoader({
+  params,
+  request,
+}: Route.ClientLoaderArgs) {
+  return load(params.vendor, new URL(request.url));
+}
+
+function pageHref(vendor: string, page: number): string {
+  const base = `/devices/${encodeURIComponent(vendor)}`;
+  return page > 1 ? `${base}?page=${page}` : base;
+}
+
+function PageLink({
+  vendor,
+  page,
+  children,
+}: {
+  vendor: string;
+  page: number;
+  children: string;
+}) {
+  return (
+    <Link
+      to={pageHref(vendor, page)}
+      prefetch="intent"
+      className="rounded-lg border border-border/60 px-3 py-2 text-sm font-medium outline-none transition-colors hover:border-foreground/20 hover:bg-muted/40 focus-visible:ring-3 focus-visible:ring-ring/50"
+    >
+      {children}
+    </Link>
+  );
 }
 
 export default function VendorRoute() {
-  const { vendor, vendorName, devices } = useLoaderData<typeof loader>();
-  const [query, setQuery] = useState("");
-  const romCount = new Set(
-    devices.flatMap((device) => device.roms.map((rom) => rom.id)),
-  ).size;
-
-  const ranked = useMemo(
-    () =>
-      [...devices].sort(
-        (a, b) =>
-          b.roms.length - a.roms.length ||
-          bySortKey(deviceName(a), deviceName(b)),
-      ),
-    [devices],
-  );
-  const filtered = useMemo(() => {
-    const terms = tokenize(query);
-    return terms.length === 0
-      ? ranked
-      : ranked.filter((device) => matchesAll(deviceHaystack(device), terms));
-  }, [ranked, query]);
+  const { vendor, vendorName, devices, total, page, pages } =
+    useLoaderData<typeof loader>();
 
   return (
     <div className="flex flex-col gap-6">
@@ -107,47 +137,45 @@ export default function VendorRoute() {
 
       <PageHeader
         title={vendorName}
-        description={`${devices.length} device${
-          devices.length === 1 ? "" : "s"
-        } across ${romCount} ROM${romCount === 1 ? "" : "s"}, including ${summarizeNames(
-          devices.map((device) => deviceName(device)),
-          3,
-        )}.`}
-        endpoint={`/api/devices?vendor=${vendor}`}
+        description={`${total} device${total === 1 ? "" : "s"}.`}
+        endpoint={`/api/devices?vendor=${vendor}&limit=${PAGE_SIZE}`}
       />
 
-      {devices.length > 20 && (
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-          <SearchInput
-            id="vendor-devices-search"
-            value={query}
-            onValueChange={setQuery}
-            placeholder="Filter this brand's devices…"
-            ariaLabel="Filter devices"
-            className="max-w-md"
-          />
-          <p
-            role="status"
-            aria-live="polite"
-            className="text-sm text-muted-foreground tabular-nums"
-          >
-            {filtered.length} of {devices.length} devices
-          </p>
-        </div>
-      )}
+      <ul className="flex flex-col">
+        {devices.map((device) => (
+          <li key={`${device.vendor}/${device.codename}`}>
+            <DeviceRow device={device} showBrand={false} />
+          </li>
+        ))}
+      </ul>
 
-      {filtered.length === 0 ? (
-        <p className="py-12 text-center text-sm text-muted-foreground">
-          No devices match.
-        </p>
-      ) : (
-        <ul className="flex flex-col">
-          {filtered.map((device) => (
-            <li key={`${device.vendor}/${device.codename}`}>
-              <DeviceRow device={device} showBrand={false} />
-            </li>
-          ))}
-        </ul>
+      {pages > 1 && (
+        <nav
+          aria-label="Pagination"
+          className="flex flex-wrap items-center justify-between gap-3 border-t border-border/60 pt-4"
+        >
+          {page > 1 ? (
+            <PageLink vendor={vendor} page={page - 1}>
+              Previous
+            </PageLink>
+          ) : (
+            <span className="px-3 py-2 text-sm text-muted-foreground/50">
+              Previous
+            </span>
+          )}
+          <span className="text-sm text-muted-foreground tabular-nums">
+            Page {page} of {pages}
+          </span>
+          {page < pages ? (
+            <PageLink vendor={vendor} page={page + 1}>
+              Next
+            </PageLink>
+          ) : (
+            <span className="px-3 py-2 text-sm text-muted-foreground/50">
+              Next
+            </span>
+          )}
+        </nav>
       )}
     </div>
   );

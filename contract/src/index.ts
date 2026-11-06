@@ -91,6 +91,12 @@ export interface BrandSummary {
 }
 
 /** Grouped, capped results for the home and command-palette searches. */
+export interface LetterSummary {
+  /** Uppercase letter, or `#` for names starting with a digit. */
+  letter: string;
+  deviceCount: number;
+}
+
 export interface SearchResponse {
   devices: BrowseDevice[];
   brands: BrandSummary[];

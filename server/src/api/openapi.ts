@@ -267,6 +267,15 @@ const deviceListParameters = [
   },
 ];
 
+const letterSummarySchema = {
+  type: "object",
+  required: ["letter", "deviceCount"],
+  properties: {
+    letter: { type: "string", pattern: "^[A-Z#]$" },
+    deviceCount: { type: "integer", minimum: 0 },
+  },
+};
+
 const brandSummarySchema = {
   type: "object",
   required: ["vendor", "vendorName", "deviceCount"],
@@ -329,7 +338,7 @@ export const openapi = {
   openapi: "3.1.0",
   info: {
     title: "unrom API",
-    version: "1.3.0",
+    version: "1.4.0",
     summary: "Open database for device–ROM compatibility.",
     description:
       "Which custom Android ROMs support which devices. Every response is " +
@@ -445,6 +454,19 @@ export const openapi = {
         responses: {
           200: jsonResponse({ $ref: "#/components/schemas/DeviceDetail" }),
           404: notFound,
+        },
+      },
+    },
+    "/api/devices/letters": {
+      get: {
+        tags: ["devices"],
+        summary: "Device counts by first letter",
+        operationId: "listDeviceLetters",
+        responses: {
+          200: jsonResponse({
+            type: "array",
+            items: { $ref: "#/components/schemas/LetterSummary" },
+          }),
         },
       },
     },
@@ -582,6 +604,7 @@ export const openapi = {
       RomSupport: romSupportSchema,
       DeviceSummary: deviceSummarySchema,
       BrowseDevice: browseDeviceSchema,
+      LetterSummary: letterSummarySchema,
       BrandSummary: brandSummarySchema,
       RomSummary: romSummarySchema,
       SearchResponse: searchResponseSchema,

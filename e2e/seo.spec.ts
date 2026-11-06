@@ -4,6 +4,7 @@ const PAGES = [
   "/",
   "/brands",
   "/devices",
+  "/devices/letter/x",
   "/roms",
   "/roms/projectinfinityx",
   "/devices/samsung/a52sxq",
@@ -75,6 +76,7 @@ test("sitemap lists canonical pages with a trustworthy lastmod", async ({
   expect(xml).toContain("<loc>https://unrom.com/</loc>");
   expect(xml).toContain("<loc>https://unrom.com/brands</loc>");
   expect(xml).toContain("<loc>https://unrom.com/devices</loc>");
+  expect(xml).toContain("<loc>https://unrom.com/devices/letter/x</loc>");
   expect(xml).toContain("<loc>https://unrom.com/roms/lineageos</loc>");
   expect(xml).not.toContain("<loc>https://unrom.com/roms/alphadroid</loc>");
   expect(xml).toContain("<loc>https://unrom.com/devices/xiaomi/sweet</loc>");

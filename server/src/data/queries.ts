@@ -6,6 +6,7 @@ import type {
   BrowseDevice,
   DeviceDetail,
   DeviceVariant,
+  LetterSummary,
   Mapping,
   Meta,
   RegistryEntry,
@@ -209,6 +210,32 @@ export function createApi(dbPath: string) {
       );
     }
     return filters;
+  }
+
+  function letterCounts(): LetterSummary[] {
+    const displayName = sql`coalesce(${devices.name}, ${devices.codename})`;
+    const rows = db
+      .select({
+        letter: sql<string>`upper(substr(${displayName}, 1, 1))`,
+        count: sql<number>`count(*)`,
+      })
+      .from(devices)
+      .groupBy(sql`upper(substr(${displayName}, 1, 1))`)
+      .all();
+
+    const counts = new Map<string, number>();
+    for (const row of rows) {
+      const letter = /^[A-Z]$/.test(row.letter) ? row.letter : "#";
+      counts.set(letter, (counts.get(letter) ?? 0) + Number(row.count));
+    }
+
+    return [...counts.entries()]
+      .map(([letter, deviceCount]) => ({ letter, deviceCount }))
+      .sort((a, b) => {
+        if (a.letter === "#") return 1;
+        if (b.letter === "#") return -1;
+        return a.letter.localeCompare(b.letter);
+      });
   }
 
   function countDevices(options: DeviceQuery = {}): number {
@@ -764,6 +791,7 @@ export function createApi(dbPath: string) {
     listDevices,
     listDevicesPage,
     countDevices,
+    letterCounts,
     getDevice,
     listRegistry,
     listRoms,

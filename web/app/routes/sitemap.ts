@@ -1,17 +1,27 @@
-import { fetchDevices, fetchMeta, fetchRoms } from "@/lib/data";
+import {
+  fetchDeviceLetters,
+  fetchDevices,
+  fetchMeta,
+  fetchRoms,
+} from "@/lib/data";
 import { SITE_URL } from "@/lib/seo";
 
 export async function loader() {
-  const [devices, roms, meta] = await Promise.all([
+  const [devices, roms, meta, letters] = await Promise.all([
     fetchDevices(),
     fetchRoms(),
     fetchMeta(),
+    fetchDeviceLetters(),
   ]);
 
   const paths = [
     "/",
     "/brands",
     "/devices",
+    ...letters.map(
+      (letter) =>
+        `/devices/letter/${letter.letter === "#" ? "0-9" : letter.letter.toLowerCase()}`,
+    ),
     "/roms",
     ...[...new Set(devices.map((device) => device.vendor))].map(
       (vendor) => `/devices/${vendor}`,
