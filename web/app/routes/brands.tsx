@@ -10,7 +10,7 @@ import {
   pageMeta,
   updatedAtFromMatches,
 } from "@/lib/seo";
-import { bySortKey } from "@/lib/sort";
+import { byBrandName } from "@/lib/sort";
 import type { Route } from "./+types/brands";
 
 interface Brand {
@@ -44,7 +44,7 @@ export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
               path: `/devices/${vendor}`,
             };
           })
-          .sort((a, b) => bySortKey(a.name, b.name)),
+          .sort((a, b) => byBrandName(a.name, b.name)),
       ),
     },
   ];
@@ -79,7 +79,7 @@ export default function BrandsRoute() {
       map.set(device.vendor, brand);
     }
     return [...map.values()].sort((a, b) =>
-      bySortKey(a.vendorName, b.vendorName),
+      byBrandName(a.vendorName, b.vendorName),
     );
   }, [devices]);
 
