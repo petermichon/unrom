@@ -48,7 +48,26 @@ test("home search says nothing was found for a bad query", async ({ page }) => {
   await page
     .getByPlaceholder("Search by device name, codename, brand, or ROM…")
     .fill("zzzzzzzz");
-  await expect(page.getByText("No matches found.")).toBeVisible();
+  await expect(page.getByText(/No matches for/)).toBeVisible();
+});
+
+test("home search finds a catalogue-only ROM", async ({ page }) => {
+  await page.goto("/");
+  await page
+    .getByPlaceholder("Search by device name, codename, brand, or ROM…")
+    .fill("alphadroid");
+
+  const rom = page.getByRole("option", { name: /AlphaDroid/ }).first();
+  await expect(rom).toBeVisible();
+  await expect(rom).toContainText("No device data");
+});
+
+test("home links to the three directories", async ({ page }) => {
+  await page.goto("/");
+
+  await expect(page.getByRole("link", { name: /Devices 902/ })).toBeVisible();
+  await expect(page.getByRole("link", { name: /Brands 66/ })).toBeVisible();
+  await expect(page.getByRole("link", { name: /ROMs 260/ })).toBeVisible();
 });
 
 test("home search shows matching brands", async ({ page }) => {
@@ -88,7 +107,7 @@ test("example chips show when idle or when nothing matches", async ({
   await expect(example).toBeHidden();
 
   await input.fill("zzzzzz");
-  await expect(page.getByText("No matches found.")).toBeVisible();
+  await expect(page.getByText(/No matches for/)).toBeVisible();
   await expect(example).toBeVisible();
 });
 

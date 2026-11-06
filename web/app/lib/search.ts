@@ -22,6 +22,14 @@ export function matchesAll(haystack: string, terms: string[]): boolean {
  * Everything a device can be found by. Terms may match different fields, so
  * `google pixel` finds the Pixel devices of the Google vendor.
  */
+export interface RomSearchEntry {
+  id: string;
+  name: string;
+  deviceCount: number;
+  /** Lowercased name plus every device the ROM supports. */
+  haystack: string;
+}
+
 export function deviceHaystack(device: BrowseDevice): string {
   return [
     device.name ?? "",

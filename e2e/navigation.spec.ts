@@ -52,8 +52,14 @@ test("client navigation renders the destination table", async ({ page }) => {
   });
 
   await page.goto("/");
-  await page.getByRole("link", { name: "ROMs" }).click();
-  await expect(page.getByRole("heading", { name: "ROMs" })).toBeVisible();
+  await page
+    .getByRole("navigation", { name: "Main" })
+    .getByRole("link", { name: "ROMs" })
+    .click();
+  await page.waitForURL("**/roms");
+  await expect(
+    page.getByRole("heading", { name: "ROMs", exact: true }),
+  ).toBeVisible();
   await expect(page.getByRole("link", { name: "LineageOS" })).toBeVisible();
 });
 

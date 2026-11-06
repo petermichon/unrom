@@ -1,21 +1,25 @@
 import { useMemo, useRef, useState } from "react";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { Badge } from "@/components/ui/badge";
 import {
   Command,
-  CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { deviceHaystack, matchesAll, tokenize } from "@/lib/search";
+import {
+  deviceHaystack,
+  matchesAll,
+  tokenize,
+  type RomSearchEntry,
+} from "@/lib/search";
 import { byDirectoryName } from "@/lib/sort";
-import type { BrowseDevice, RomChip } from "@/lib/types";
+import type { BrowseDevice } from "@/lib/types";
 
 interface Props {
   devices: BrowseDevice[];
-  roms: RomChip[];
+  roms: RomSearchEntry[];
   examples?: string[];
 }
 
@@ -67,9 +71,7 @@ export default function DeviceSearch({ devices, roms, examples = [] }: Props) {
       const deviceMatches = devices.filter((device) =>
         matchesAll(deviceHaystack(device), terms),
       );
-      const romMatches = roms.filter((rom) =>
-        matchesAll(rom.name.toLowerCase(), terms),
-      );
+      const romMatches = roms.filter((rom) => matchesAll(rom.haystack, terms));
       const vendorMatches = vendors.filter((vendor) =>
         matchesAll(
           `${vendor.vendor} ${vendor.vendorName}`.toLowerCase(),
@@ -115,7 +117,6 @@ export default function DeviceSearch({ devices, roms, examples = [] }: Props) {
           onValueChange={setQuery}
         />
         <CommandList className="max-h-[26rem]">
-          {noResults && <CommandEmpty>No matches found.</CommandEmpty>}
           {vendorResults.length > 0 && (
             <CommandGroup heading="Brands">
               {vendorResults.map((vendor) => (
@@ -178,15 +179,34 @@ export default function DeviceSearch({ devices, roms, examples = [] }: Props) {
                   key={`rom-${rom.id}`}
                   value={`rom-${rom.id}`}
                   onSelect={() => navigate(`/roms/${rom.id}`)}
+                  className="gap-3"
                 >
-                  {rom.name}
+                  <span className="truncate font-medium">{rom.name}</span>
+                  <Badge
+                    variant="outline"
+                    className="shrink-0 text-[11px] font-normal text-muted-foreground"
+                  >
+                    {rom.deviceCount === 0
+                      ? "No device data"
+                      : `${rom.deviceCount} ${
+                          rom.deviceCount === 1 ? "device" : "devices"
+                        }`}
+                  </Badge>
                 </CommandItem>
               ))}
             </CommandGroup>
           )}
         </CommandList>
-        {/* Persistent live region so screen readers announce truncation. */}
-        <div role="status">
+        {/* Persistent live region for result counts and truncation. */}
+        <div role="status" aria-live="polite">
+          {terms.length > 0 && (
+            <span className="sr-only">
+              {deviceTotal} {deviceTotal === 1 ? "device" : "devices"},{" "}
+              {vendorResults.length}{" "}
+              {vendorResults.length === 1 ? "brand" : "brands"}, {romTotal}{" "}
+              {romTotal === 1 ? "ROM" : "ROMs"}
+            </span>
+          )}
           {truncated && (
             <div className="px-3 py-2 text-xs text-muted-foreground">
               Showing top matches. Refine your search.
@@ -194,6 +214,24 @@ export default function DeviceSearch({ devices, roms, examples = [] }: Props) {
           )}
         </div>
       </Command>
+
+      {noResults && (
+        <p className="text-sm text-muted-foreground">
+          No matches for “{query.trim()}”. Try a codename, or browse{" "}
+          <Link to="/devices" className="text-foreground hover:underline">
+            devices
+          </Link>
+          ,{" "}
+          <Link to="/brands" className="text-foreground hover:underline">
+            brands
+          </Link>
+          , or{" "}
+          <Link to="/roms" className="text-foreground hover:underline">
+            ROMs
+          </Link>
+          .
+        </p>
+      )}
 
       {examples.length > 0 && (terms.length === 0 || noResults) && (
         <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
