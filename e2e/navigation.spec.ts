@@ -21,7 +21,7 @@ test("repeat client navigations do not hit the network", async ({ page }) => {
     }
   });
 
-  const paths = ["/devices", "/roms", "/registry", "/"];
+  const paths = ["/devices", "/roms", "/"];
   const link = (path: string) => page.locator(`a[href="${path}"]`).first();
 
   await page.goto("/");

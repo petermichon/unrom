@@ -396,6 +396,14 @@ export function buildDatabase(
     });
   };
 
+  // The registry is a device catalogue in its own right: every curated device
+  // ships even when no roster reports it, with a ROM count of zero. This is
+  // what lets /devices list devices before any ROM supports them.
+  for (const key of Object.keys(DEVICE_NAMES)) {
+    const [vendor, codename] = key.split("\0");
+    ensureDevice(vendor, codename);
+  }
+
   // Union-find over device keys to build compatibility groups: the sets of
   // codenames a single build is valid for. Verified groups come from the device
   // tree; a roster grouping (a combined codename) declares one.

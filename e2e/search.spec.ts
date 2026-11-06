@@ -32,7 +32,7 @@ test("a group member page lists the shared build coverage", async ({
   page,
 }) => {
   await page.goto("/devices/xiaomi/sweetin");
-  await expect(page.getByText(/Build covers sweet, sweetin/)).toBeVisible();
+  await expect(page.getByText("sweet, sweetin", { exact: true })).toBeVisible();
 });
 
 test("a renamed codename redirects to the canonical device", async ({
@@ -40,7 +40,7 @@ test("a renamed codename redirects to the canonical device", async ({
 }) => {
   await page.goto("/devices/xiaomi/sirius");
   await page.waitForURL("**/devices/xiaomi/xmsirius");
-  await expect(page.getByText(/Also known as sirius/)).toBeVisible();
+  await expect(page.getByText("sirius", { exact: true })).toBeVisible();
 });
 
 test("home search says nothing was found for a bad query", async ({ page }) => {

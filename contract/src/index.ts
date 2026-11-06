@@ -29,6 +29,10 @@ export interface DeviceDetail {
   /** Every codename a single build is valid for, including this one. */
   group: string[];
   roms: RomSupport[];
+  /** How well source data backs the curated names; null when uncurated. */
+  confidence: RegistryConfidence | null;
+  /** ROM ids whose reported names match the curated names. */
+  sources: string[];
 }
 
 /** A curated `(vendor, codename)` → model name mapping. */
@@ -69,6 +73,8 @@ export interface BrowseDevice {
   /** Every codename one build is valid for, including this one. */
   group: string[];
   roms: RomChip[];
+  /** How well source data backs the curated names; null when uncurated. */
+  confidence: RegistryConfidence | null;
 }
 
 export interface RomSummary {

@@ -17,6 +17,7 @@ export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
   const devices = loaderData?.devices ?? [];
   const updatedAt = updatedAtFromMatches(matches);
   const vendorCount = new Set(devices.map((device) => device.vendor)).size;
+  const withRoms = devices.filter((device) => device.roms.length > 0).length;
   const romIds = new Set(
     devices.flatMap((device) => device.roms.map((rom) => rom.id)),
   );
@@ -24,7 +25,7 @@ export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
   return [
     ...pageMeta({
       title: "Devices | unrom",
-      description: `${devices.length} devices from ${vendorCount} vendors, supported by ${romIds.size} custom ROMs. Browse codenames, model names and API access.`,
+      description: `${devices.length} devices from ${vendorCount} vendors, ${withRoms} with custom ROM builds across ${romIds.size} ROMs. Browse codenames, model names and API access.`,
       path: "/devices",
     }),
     ...modifiedMeta(updatedAt),
@@ -51,6 +52,7 @@ export async function clientLoader() {
 export default function DevicesRoute() {
   const { devices } = useLoaderData<typeof loader>();
   const vendorCount = new Set(devices.map((device) => device.vendor)).size;
+  const withRoms = devices.filter((device) => device.roms.length > 0).length;
   const romCount = new Set(
     devices.flatMap((device) => device.roms.map((rom) => rom.id)),
   ).size;
@@ -61,7 +63,7 @@ export default function DevicesRoute() {
 
       <PageHeader
         title="Devices"
-        description={`${devices.length} devices from ${vendorCount} vendors, supported by ${romCount} custom ROMs.`}
+        description={`${devices.length} devices from ${vendorCount} vendors, ${withRoms} with custom ROM data across ${romCount} ROMs.`}
         endpoint="/api/devices"
       />
 

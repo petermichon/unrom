@@ -1,11 +1,18 @@
 import { useMemo } from "react";
 import type { ColumnDef } from "@tanstack/react-table";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, PackageOpen } from "lucide-react";
 import { Link } from "react-router";
 import { DataTable } from "@/components/data-table/data-table";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { DataTableToolbar } from "@/components/data-table/data-table-toolbar";
 import { DataTableViewOptions } from "@/components/data-table/data-table-view-options";
+import {
+  Empty,
+  EmptyDescription,
+  EmptyHeader,
+  EmptyMedia,
+  EmptyTitle,
+} from "@/components/ui/empty";
 import { SearchInput } from "@/components/SearchInput";
 import { Button } from "@/components/ui/button";
 import {
@@ -100,6 +107,22 @@ export default function DeviceRomsTable({ roms }: Props) {
     ],
     [],
   );
+
+  if (roms.length === 0) {
+    return (
+      <Empty className="h-64">
+        <EmptyHeader>
+          <EmptyMedia variant="icon">
+            <PackageOpen />
+          </EmptyMedia>
+          <EmptyTitle>No ROM data yet</EmptyTitle>
+          <EmptyDescription>
+            unrom tracks this device, but no custom ROM reports a build for it.
+          </EmptyDescription>
+        </EmptyHeader>
+      </Empty>
+    );
+  }
 
   return (
     <DataTable

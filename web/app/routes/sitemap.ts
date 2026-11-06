@@ -12,7 +12,6 @@ export async function loader() {
     "/",
     "/devices",
     "/roms",
-    "/registry",
     ...[...new Set(devices.map((device) => device.vendor))].map(
       (vendor) => `/devices/${vendor}`,
     ),

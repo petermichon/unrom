@@ -77,6 +77,24 @@ export function createApi(dbPath: string) {
     return map;
   }
 
+  // Curation provenance per device, from the name registry.
+  function registryByDevice(): Map<
+    string,
+    { confidence: RegistryEntry["confidence"]; sources: string[] }
+  > {
+    const map = new Map<
+      string,
+      { confidence: RegistryEntry["confidence"]; sources: string[] }
+    >();
+    for (const row of db.select().from(registry).all()) {
+      map.set(deviceKey(row.vendor, row.codename), {
+        confidence: row.confidence as RegistryEntry["confidence"],
+        sources: parseNames(row.sources),
+      });
+    }
+    return map;
+  }
+
   // A canonical device row, looked up exactly.
   function findDevice(vendor: string, codename: string): DeviceRow | undefined {
     return db
@@ -197,6 +215,7 @@ export function createApi(dbPath: string) {
 
     const aliasMap = aliasesByDevice();
     const coverage = deviceCoverage();
+    const provenance = registryByDevice();
     // A variant is supported by every ROM that builds its covering target, so
     // the list count matches the detail page.
     const chipsFor = (key: string): RomChip[] => {
@@ -225,6 +244,7 @@ export function createApi(dbPath: string) {
           ...(coverage.variantsByMain.get(key) ?? []),
         ].sort(),
         roms: chipsFor(key),
+        confidence: provenance.get(key)?.confidence ?? null,
       };
     });
   }
@@ -306,6 +326,8 @@ export function createApi(dbPath: string) {
       ...inherited.map(({ edge, from }) => toRomSupport(edge, names, from)),
     ].sort((a, b) => bySortKey(a.name, b.name));
 
+    const provenance = registryByDevice().get(key);
+
     return {
       vendor: device.vendor,
       vendorName: vendorName(device.vendor),
@@ -319,6 +341,8 @@ export function createApi(dbPath: string) {
         ...(coverage.variantsByMain.get(key) ?? []),
       ].sort(),
       roms,
+      confidence: provenance?.confidence ?? null,
+      sources: provenance?.sources ?? [],
     };
   }
 
@@ -419,13 +443,18 @@ export function createApi(dbPath: string) {
   function listRegistry(query?: string, vendor?: string): RegistryEntry[] {
     const needle = query?.trim().toLowerCase();
     const terms = needle ? searchTerms(needle) : [];
+    // "Supported" means the device has build data, directly or through a
+    // covering target — not merely that it exists in the device catalogue.
     const supported = new Set(
       db
-        .select({ vendor: devices.vendor, codename: devices.codename })
-        .from(devices)
+        .select({ vendor: romDevices.vendor, codename: romDevices.codename })
+        .from(romDevices)
         .all()
         .map((row) => deviceKey(row.vendor, row.codename)),
     );
+    for (const [variant, mains] of deviceCoverage().mainsByVariant) {
+      if (mains.some((main) => supported.has(main))) supported.add(variant);
+    }
     return db
       .select()
       .from(registry)

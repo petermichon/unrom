@@ -63,6 +63,7 @@ const browseDeviceSchema = {
     "aliases",
     "group",
     "roms",
+    "confidence",
   ],
   properties: {
     vendor: { type: "string" },
@@ -85,6 +86,12 @@ const browseDeviceSchema = {
       description: "Every codename a single build is valid for.",
     },
     roms: { type: "array", items: { $ref: "#/components/schemas/RomChip" } },
+    confidence: {
+      type: ["string", "null"],
+      enum: ["verified", "inferred", "manual", "unverified", null],
+      description:
+        "How well source data backs the curated names; null when uncurated.",
+    },
   },
 };
 
@@ -99,6 +106,8 @@ const deviceDetailSchema = {
     "aliases",
     "group",
     "roms",
+    "confidence",
+    "sources",
   ],
   properties: {
     vendor: { type: "string" },
@@ -111,6 +120,17 @@ const deviceDetailSchema = {
     roms: {
       type: "array",
       items: { $ref: "#/components/schemas/RomSupport" },
+    },
+    confidence: {
+      type: ["string", "null"],
+      enum: ["verified", "inferred", "manual", "unverified", null],
+      description:
+        "How well source data backs the curated names; null when uncurated.",
+    },
+    sources: {
+      type: "array",
+      items: { type: "string" },
+      description: "ROM ids whose reported names match the curated names.",
     },
   },
 };
@@ -234,7 +254,7 @@ export const openapi = {
   openapi: "3.1.0",
   info: {
     title: "unrom API",
-    version: "1.0.0",
+    version: "1.1.0",
     summary: "Open database for device–ROM compatibility.",
     description:
       "Which custom Android ROMs support which devices. Every response is " +

@@ -1,10 +1,4 @@
-import type {
-  BrowseDevice,
-  DeviceDetail,
-  Meta,
-  RegistryEntry,
-  RomDetail,
-} from "@/lib/types";
+import type { BrowseDevice, DeviceDetail, Meta, RomDetail } from "@/lib/types";
 
 // Server-side loaders reach the API directly; in the browser the app is
 // same-origin (Caddy proxies /api), so a relative path is used.
@@ -59,10 +53,6 @@ export function fetchDevice(
   return get<DeviceDetail>(
     `/api/devices/${encodeURIComponent(vendor)}/${encodeURIComponent(codename)}`,
   );
-}
-
-export function fetchRegistry(): Promise<RegistryEntry[]> {
-  return get<RegistryEntry[]>("/api/registry");
 }
 
 export function fetchRoms(): Promise<RomDetail[]> {

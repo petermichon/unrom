@@ -331,6 +331,36 @@ test("canonical names come from the registry", async () => {
   }
 });
 
+test("registry-only devices ship with zero ROMs", () => {
+  const dir = mkdtempSync(join(tmpdir(), "unrom-test-"));
+  const dbPath = join(dir, "unrom.sqlite");
+
+  try {
+    const built = buildDatabase([], dbPath);
+    assert.equal(built.deviceCount, Object.keys(DEVICE_NAMES).length);
+
+    const api = createApi(dbPath);
+    const devices = api.listDevices();
+    assert.equal(devices.length, Object.keys(DEVICE_NAMES).length);
+
+    // A curated device no roster reports is still part of the catalogue.
+    const madrid = api.getDevice("huawei", "madrid");
+    assert.equal(madrid?.name, "Huawei Y6 (2019)");
+    assert.equal(madrid?.roms.length, 0);
+    assert.equal(madrid?.confidence, "unverified");
+    assert.deepEqual(madrid?.sources, []);
+
+    const listed = devices.find((device) => device.codename === "madrid");
+    assert.deepEqual(listed?.roms, []);
+    assert.equal(listed?.confidence, "unverified");
+    assert.equal(listed?.name, "Huawei Y6 (2019)");
+
+    api.close();
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 test("devices outside the registry stay unnamed", () => {
   const dir = mkdtempSync(join(tmpdir(), "unrom-test-"));
   const dbPath = join(dir, "unrom.sqlite");

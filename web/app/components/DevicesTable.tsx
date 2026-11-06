@@ -18,9 +18,21 @@ import {
 } from "@/components/ui/hover-card";
 import type { BrowseDevice } from "@/lib/types";
 
-const MOBILE_HIDDEN = new Set(["vendor", "codename"]);
+const MOBILE_HIDDEN = new Set(["vendor", "codename", "confidence"]);
 const columnClassName = (id: string) =>
   MOBILE_HIDDEN.has(id) ? "hidden md:table-cell" : undefined;
+
+const CONFIDENCE_OPTIONS: FacetOption[] = [
+  { label: "Verified", value: "verified" },
+  { label: "Inferred", value: "inferred" },
+  { label: "Manual", value: "manual" },
+  { label: "Unverified", value: "unverified" },
+  { label: "Uncurated", value: "uncurated" },
+];
+
+const CONFIDENCE_LABELS: Record<string, string> = Object.fromEntries(
+  CONFIDENCE_OPTIONS.map((option) => [option.value, option.label]),
+);
 
 interface Props {
   devices: BrowseDevice[];
@@ -134,6 +146,21 @@ export default function DevicesTable({
           value.includes(String(row.getValue(id))),
       },
       {
+        id: "confidence",
+        accessorFn: (row) => row.confidence ?? "uncurated",
+        meta: { title: "Confidence" },
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title="Confidence" />
+        ),
+        cell: ({ row }) => (
+          <span className="text-muted-foreground">
+            {CONFIDENCE_LABELS[row.original.confidence ?? "uncurated"]}
+          </span>
+        ),
+        filterFn: (row, id, value: string[]) =>
+          value.includes(String(row.getValue(id))),
+      },
+      {
         id: "romList",
         accessorFn: (row) => row.roms.map((rom) => rom.name).join(", "),
         meta: { title: "ROM list" },
@@ -195,7 +222,7 @@ export default function DevicesTable({
       tableClassName="min-w-[40rem]"
       renderAllRows={renderAllRows}
       initialState={{
-        columnVisibility: { search: false },
+        columnVisibility: { search: false, confidence: false },
         sorting: [{ id: "roms", desc: true }],
       }}
       toolbar={(table) => (
@@ -216,6 +243,13 @@ export default function DevicesTable({
               column={table.getColumn("roms")!}
               title="ROMs"
               options={romOptions}
+            />
+          )}
+          {table.getColumn("confidence") && (
+            <DataTableFacetedFilter
+              column={table.getColumn("confidence")!}
+              title="Confidence"
+              options={CONFIDENCE_OPTIONS}
             />
           )}
           {table.getState().columnFilters.length > 0 && (
