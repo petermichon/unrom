@@ -149,7 +149,7 @@ export default function DevicesDirectory({ devices }: Props) {
         >
           {listReady
             ? `${total} of ${devices.length} devices`
-            : `Loading ${devices.length} devices…`}
+            : "Loading devices…"}
         </p>
       </div>
 
