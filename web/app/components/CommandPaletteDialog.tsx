@@ -29,8 +29,7 @@ interface VendorResult {
   deviceCount: number;
 }
 
-// Loaded on demand (see `CommandPalette`) so the command-menu code is not in
-// the initial bundle.
+// Mounted by `CommandPalette` while the dialog is open.
 export default function CommandPaletteDialog({ open, onOpenChange }: Props) {
   const [devices, setDevices] = useState<BrowseDevice[]>([]);
   const [roms, setRoms] = useState<RomChip[]>([]);
