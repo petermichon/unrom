@@ -1,7 +1,6 @@
 import type {
   BrowseDevice,
   DeviceDetail,
-  Mapping,
   Meta,
   RegistryEntry,
   RomDetail,
@@ -72,10 +71,6 @@ export function fetchRoms(): Promise<RomDetail[]> {
 
 export function fetchRom(id: string): Promise<RomDetail> {
   return get<RomDetail>(`/api/roms/${encodeURIComponent(id)}`);
-}
-
-export function fetchMappings(): Promise<Mapping[]> {
-  return get<Mapping[]>("/api/data");
 }
 
 export function fetchMeta(): Promise<Meta> {

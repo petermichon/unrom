@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
 import CommandPalette from "@/components/CommandPalette";
+import { ExportMenu } from "@/components/ExportMenu";
 import { GitHubIcon } from "@/components/GitHubIcon";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Button } from "@/components/ui/button";
@@ -29,6 +30,7 @@ export default function AppShell({ updatedAt, updatedAtIso, children }: Props) {
           >
             <SidebarTrigger />
             <div className="ml-auto flex items-center gap-2">
+              <ExportMenu />
               <Button
                 variant="outline"
                 size="icon"
@@ -52,13 +54,38 @@ export default function AppShell({ updatedAt, updatedAtIso, children }: Props) {
           <div id="content" tabIndex={-1} className="flex-1 px-4 py-10 sm:px-6">
             <div className="mx-auto w-full max-w-4xl">{children}</div>
           </div>
-          <footer className="border-t border-border/60 px-4 py-6 text-xs text-muted-foreground sm:px-6">
-            Last updated{" "}
-            {updatedAtIso ? (
-              <time dateTime={updatedAtIso}>{updatedAt ?? "—"}</time>
-            ) : (
-              (updatedAt ?? "—")
-            )}
+          <footer className="flex flex-wrap items-center justify-between gap-3 border-t border-border/60 px-4 py-6 text-xs text-muted-foreground sm:px-6">
+            <p>
+              Last updated{" "}
+              {updatedAtIso ? (
+                <time dateTime={updatedAtIso}>{updatedAt ?? "—"}</time>
+              ) : (
+                (updatedAt ?? "—")
+              )}
+            </p>
+            <nav
+              aria-label="Data access"
+              data-nosnippet
+              className="flex flex-wrap items-center gap-4"
+            >
+              <a href="/api" className="hover:text-foreground hover:underline">
+                API
+              </a>
+              <a
+                href="/api/openapi.json"
+                className="hover:text-foreground hover:underline"
+              >
+                OpenAPI
+              </a>
+              <a
+                href="https://opendatacommons.org/licenses/odbl/1-0/"
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-foreground hover:underline"
+              >
+                ODbL license
+              </a>
+            </nav>
           </footer>
         </SidebarInset>
       </SidebarProvider>

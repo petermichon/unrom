@@ -1,11 +1,4 @@
-import {
-  Asterisk,
-  Fingerprint,
-  Home,
-  Layers2,
-  Smartphone,
-  TableProperties,
-} from "lucide-react";
+import { Asterisk, Fingerprint, Home, Layers2, Smartphone } from "lucide-react";
 import { Link, useLocation } from "react-router";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -92,16 +85,6 @@ export function AppSidebar() {
               >
                 <Fingerprint />
                 <span>Registry</span>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-            <SidebarMenuItem>
-              <SidebarMenuButton
-                tooltip="Data"
-                isActive={isActive("/data")}
-                render={<Link to="/data" prefetch="viewport" />}
-              >
-                <TableProperties />
-                <span>Data</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>

@@ -6,7 +6,6 @@ export default [
   route("devices/:vendor", "routes/vendor.tsx"),
   route("registry", "routes/registry.tsx"),
   route("roms", "routes/roms.tsx"),
-  route("data", "routes/data.tsx"),
   route("devices/:vendor/:codename", "routes/device.tsx"),
   route("roms/:id", "routes/rom.tsx"),
   route("sitemap.xml", "routes/sitemap.ts"),

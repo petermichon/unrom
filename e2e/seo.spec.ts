@@ -4,7 +4,6 @@ const PAGES = [
   "/",
   "/devices",
   "/roms",
-  "/data",
   "/registry",
   "/roms/projectinfinityx",
   "/devices/samsung/a52sxq",
