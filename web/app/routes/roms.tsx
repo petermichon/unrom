@@ -13,6 +13,7 @@ import {
   updatedAtFromMatches,
 } from "@/lib/seo";
 import { bySortKey } from "@/lib/sort";
+import { useInitialDocument } from "@/lib/use-initial-document";
 import type { RomDetail } from "@/lib/types";
 import type { Route } from "./+types/roms";
 
@@ -33,11 +34,7 @@ function romHaystack(rom: RomDetail): string {
 
 function RomRow({ rom, count }: { rom: RomDetail; count?: boolean }) {
   return (
-    <Link
-      to={`/roms/${rom.id}`}
-      prefetch="intent"
-      className="flex items-baseline justify-between gap-3 rounded-lg border border-border/60 px-3 py-2.5 outline-none transition-colors hover:border-foreground/20 hover:bg-muted/40 focus-visible:ring-3 focus-visible:ring-ring/50"
-    >
+    <Link to={`/roms/${rom.id}`} prefetch="intent" className="directory-row">
       <span className="truncate font-medium">{rom.name}</span>
       <span className="shrink-0 text-xs text-muted-foreground tabular-nums">
         <span
@@ -103,6 +100,7 @@ export default function RomsRoute() {
   const { roms } = useLoaderData<typeof loader>();
   const [query, setQuery] = useState("");
   const [catalogueOpen, setCatalogueOpen] = useState(false);
+  const initialDocument = useInitialDocument();
 
   useEffect(() => {
     seedRoms(roms);
@@ -227,27 +225,28 @@ export default function RomsRoute() {
                 data yet
               </summary>
               <div className="flex flex-col gap-5 px-4 pb-4">
-                {catalogueGroups.map((group) => (
-                  <section
-                    key={group.letter}
-                    aria-labelledby={`catalogue-${group.letter}`}
-                    className="flex flex-col gap-2"
-                  >
-                    <h3
-                      id={`catalogue-${group.letter}`}
-                      className="font-heading text-xs font-semibold text-muted-foreground"
+                {(initialDocument || catalogueIsOpen) &&
+                  catalogueGroups.map((group) => (
+                    <section
+                      key={group.letter}
+                      aria-labelledby={`catalogue-${group.letter}`}
+                      className="flex flex-col gap-2"
                     >
-                      {group.letter}
-                    </h3>
-                    <ul className="grid gap-2 sm:grid-cols-2">
-                      {group.roms.map((rom) => (
-                        <li key={rom.id}>
-                          <RomRow rom={rom} />
-                        </li>
-                      ))}
-                    </ul>
-                  </section>
-                ))}
+                      <h3
+                        id={`catalogue-${group.letter}`}
+                        className="font-heading text-xs font-semibold text-muted-foreground"
+                      >
+                        {group.letter}
+                      </h3>
+                      <ul className="grid gap-2 sm:grid-cols-2">
+                        {group.roms.map((rom) => (
+                          <li key={rom.id}>
+                            <RomRow rom={rom} />
+                          </li>
+                        ))}
+                      </ul>
+                    </section>
+                  ))}
               </div>
             </details>
           )}

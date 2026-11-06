@@ -79,10 +79,14 @@ test("the devices index is an A-Z directory", async ({ page }) => {
 test("device search reveals the no-ROM tier", async ({ page }) => {
   await page.goto("/devices");
   await page.waitForLoadState("networkidle");
-  await page.getByLabel("Filter devices").fill("madrid");
+  await expect(async () => {
+    await page.getByLabel("Filter devices").fill("madrid");
+    await expect(page.getByRole("status")).toHaveText("1 of 902 devices", {
+      timeout: 1_500,
+    });
+  }).toPass({ timeout: 10_000 });
 
   await expect(page.getByRole("link", { name: /Huawei Y6/ })).toBeVisible();
-  await expect(page.getByRole("status")).toHaveText("1 of 902 devices");
 });
 
 test("the devices index filters by brand", async ({ page }) => {
