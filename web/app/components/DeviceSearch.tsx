@@ -183,15 +183,15 @@ export default function DeviceSearch({ devices, roms, examples = [] }: Props) {
               ))}
             </CommandGroup>
           )}
-          {/* Persistent live region so screen readers announce truncation. */}
-          <div role="status">
-            {truncated && (
-              <div className="px-3 py-2 text-xs text-muted-foreground">
-                Showing top matches. Refine your search.
-              </div>
-            )}
-          </div>
         </CommandList>
+        {/* Persistent live region so screen readers announce truncation. */}
+        <div role="status">
+          {truncated && (
+            <div className="px-3 py-2 text-xs text-muted-foreground">
+              Showing top matches. Refine your search.
+            </div>
+          )}
+        </div>
       </Command>
 
       {examples.length > 0 && (terms.length === 0 || noResults) && (
