@@ -57,6 +57,25 @@ test("client navigation renders the destination table", async ({ page }) => {
   await expect(page.getByRole("link", { name: "LineageOS" })).toBeVisible();
 });
 
+test("the ROMs index separates covered from catalogue", async ({ page }) => {
+  await page.goto("/roms");
+
+  await expect(
+    page.getByRole("heading", { name: "With device data" }),
+  ).toBeVisible();
+  await expect(page.getByText(/Catalogue only/)).toBeVisible();
+  await expect(page.getByRole("link", { name: "LineageOS" })).toBeVisible();
+});
+
+test("the ROMs filter opens the catalogue for a match", async ({ page }) => {
+  await page.goto("/roms");
+  await page.waitForLoadState("networkidle");
+  await page.getByLabel("Filter ROMs").fill("AlphaDroid");
+
+  await expect(page.getByRole("link", { name: "AlphaDroid" })).toBeVisible();
+  await expect(page.getByRole("status")).toHaveText("1 of 260 ROMs");
+});
+
 test("the brands index links to a brand", async ({ page }) => {
   await page.goto("/brands");
 

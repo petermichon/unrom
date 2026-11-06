@@ -75,6 +75,8 @@ test("sitemap lists canonical pages with a trustworthy lastmod", async ({
   expect(xml).toContain("<loc>https://unrom.com/</loc>");
   expect(xml).toContain("<loc>https://unrom.com/brands</loc>");
   expect(xml).toContain("<loc>https://unrom.com/devices</loc>");
+  expect(xml).toContain("<loc>https://unrom.com/roms/lineageos</loc>");
+  expect(xml).not.toContain("<loc>https://unrom.com/roms/alphadroid</loc>");
   expect(xml).not.toContain("<loc>https://unrom.com/registry</loc>");
   expect(xml).toContain("<lastmod>");
 });
@@ -87,6 +89,15 @@ test("brand aliases redirect to the canonical lowercase URL", async ({
   });
   expect(response.status()).toBe(301);
   expect(response.headers()["location"]).toBe("/devices/lenovo");
+});
+
+test("zero-device ROM pages are not indexable", async ({ page }) => {
+  const response = await page.goto("/roms/alphadroid");
+  expect(response?.status()).toBe(200);
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
+    "content",
+    "noindex",
+  );
 });
 
 test("error pages are not indexable", async ({ page }) => {

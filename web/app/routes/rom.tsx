@@ -57,6 +57,7 @@ export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
       path: `/roms/${rom.id}`,
     }),
     ...modifiedMeta(updatedAt),
+    ...(rom.deviceCount === 0 ? [{ name: "robots", content: "noindex" }] : []),
     {
       "script:ld+json": {
         "@context": "https://schema.org",
@@ -70,15 +71,19 @@ export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
         ...(updatedAt ? { dateModified: updatedAt } : {}),
       },
     },
-    {
-      "script:ld+json": itemListLd(
-        `${rom.name} supported devices`,
-        rom.devices.map((device) => ({
-          name: device.name ?? device.codename,
-          path: `/devices/${device.vendor}/${device.codename}`,
-        })),
-      ),
-    },
+    ...(rom.devices.length > 0
+      ? [
+          {
+            "script:ld+json": itemListLd(
+              `${rom.name} supported devices`,
+              rom.devices.map((device) => ({
+                name: device.name ?? device.codename,
+                path: `/devices/${device.vendor}/${device.codename}`,
+              })),
+            ),
+          },
+        ]
+      : []),
   ];
 };
 

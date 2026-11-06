@@ -17,7 +17,9 @@ export async function loader() {
       (vendor) => `/devices/${vendor}`,
     ),
     ...devices.map((device) => `/devices/${device.vendor}/${device.codename}`),
-    ...roms.map((rom) => `/roms/${rom.id}`),
+    ...roms
+      .filter((rom) => rom.deviceCount > 0)
+      .map((rom) => `/roms/${rom.id}`),
   ];
 
   // The dataset is baked into each deployment, so its timestamp is the
