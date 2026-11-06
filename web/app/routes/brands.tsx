@@ -57,8 +57,6 @@ function BrandRow({ brand }: { brand: Brand }) {
       <span className="truncate font-medium">{brand.vendorName}</span>
       <span className="shrink-0 text-xs text-muted-foreground tabular-nums">
         {brand.deviceCount} {brand.deviceCount === 1 ? "device" : "devices"}
-        {" · "}
-        {brand.romCount} {brand.romCount === 1 ? "ROM" : "ROMs"}
       </span>
     </Link>
   );
