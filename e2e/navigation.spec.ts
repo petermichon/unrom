@@ -106,6 +106,20 @@ test("the devices index filters by brand", async ({ page }) => {
   }).toPass({ timeout: 10_000 });
 });
 
+test("the devices index filters by ROM count", async ({ page }) => {
+  await page.goto("/devices");
+  await page.waitForLoadState("networkidle");
+
+  await expect(async () => {
+    await page.getByLabel("Filter by ROM count").selectOption("10");
+    await expect(page.getByRole("status")).toHaveText("67 of 902 devices", {
+      timeout: 1_500,
+    });
+  }).toPass({ timeout: 10_000 });
+
+  await expect(page.getByText("No ROM data yet")).toHaveCount(0);
+});
+
 test("the ROMs index separates covered from catalogue", async ({ page }) => {
   await page.goto("/roms");
 

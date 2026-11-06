@@ -40,6 +40,7 @@ function groupByLetter(devices: BrowseDevice[]): LetterGroup[] {
 export default function DevicesDirectory({ devices }: Props) {
   const [query, setQuery] = useState("");
   const [brand, setBrand] = useState("");
+  const [minRoms, setMinRoms] = useState("");
   const [zeroOpen, setZeroOpen] = useState(false);
 
   const brands = useMemo(() => {
@@ -59,22 +60,30 @@ export default function DevicesDirectory({ devices }: Props) {
       .sort((a, b) => byDirectoryName(deviceName(a), deviceName(b)));
   }, [devices, query, brand]);
 
+  const minRomCount = Number(minRoms) || 0;
   const withData = useMemo(
-    () => filtered.filter((device) => device.roms.length > 0),
-    [filtered],
+    () =>
+      filtered.filter(
+        (device) => device.roms.length > 0 && device.roms.length >= minRomCount,
+      ),
+    [filtered, minRomCount],
   );
   const withoutData = useMemo(
-    () => filtered.filter((device) => device.roms.length === 0),
-    [filtered],
+    () =>
+      minRomCount > 0
+        ? []
+        : filtered.filter((device) => device.roms.length === 0),
+    [filtered, minRomCount],
   );
   const groups = useMemo(() => groupByLetter(withData), [withData]);
 
-  const filtering = query.trim().length > 0 || brand !== "";
+  const filtering = query.trim().length > 0 || brand !== "" || minRomCount > 0;
   const zeroIsOpen = zeroOpen || (filtering && withoutData.length > 0);
+  const total = withData.length + withoutData.length;
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+      <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
         <SearchInput
           id="devices-search"
           value={query}
@@ -96,16 +105,28 @@ export default function DevicesDirectory({ devices }: Props) {
             </option>
           ))}
         </select>
+        <select
+          value={minRoms}
+          onChange={(event) => setMinRoms(event.target.value)}
+          aria-label="Filter by ROM count"
+          className="h-9 w-full cursor-pointer rounded-lg border border-input bg-transparent px-2.5 text-sm outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 sm:w-40"
+        >
+          <option value="">Any ROM count</option>
+          <option value="1">1+ ROM</option>
+          <option value="5">5+ ROMs</option>
+          <option value="10">10+ ROMs</option>
+          <option value="20">20+ ROMs</option>
+        </select>
         <p
           role="status"
           aria-live="polite"
           className="text-sm text-muted-foreground tabular-nums"
         >
-          {filtered.length} of {devices.length} devices
+          {total} of {devices.length} devices
         </p>
       </div>
 
-      {filtered.length === 0 ? (
+      {total === 0 ? (
         <p className="py-12 text-center text-sm text-muted-foreground">
           No devices match.
         </p>
