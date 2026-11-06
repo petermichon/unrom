@@ -61,10 +61,15 @@ test("the brands index links to a brand", async ({ page }) => {
   await page.goto("/brands");
 
   await expect(page.getByRole("heading", { name: "Brands" })).toBeVisible();
-  await expect(page.getByRole("link", { name: /Xiaomi/ })).toHaveAttribute(
-    "href",
-    "/devices/xiaomi",
-  );
+  await expect(
+    page.getByRole("heading", { name: "Most devices" }),
+  ).toBeVisible();
+  await expect(
+    page.getByText("Ranked by devices with ROM data — not popularity."),
+  ).toBeVisible();
+  await expect(
+    page.getByRole("link", { name: /Xiaomi/ }).first(),
+  ).toHaveAttribute("href", "/devices/xiaomi");
 });
 
 test("the mobile menu exposes navigation", async ({ page }) => {
