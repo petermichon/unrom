@@ -27,9 +27,9 @@ interface Props {
 }
 
 const NAV_ITEMS = [
-  { to: "/brands", label: "Brands", preload: fetchDevices },
   { to: "/devices", label: "Devices", preload: fetchDevices },
   { to: "/roms", label: "ROMs", preload: fetchRoms },
+  { to: "/brands", label: "Brands", preload: fetchDevices },
 ];
 
 type NavItem = (typeof NAV_ITEMS)[number];
