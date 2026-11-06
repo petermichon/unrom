@@ -1,10 +1,9 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import DeviceRow from "@/components/DeviceRow";
 import { SearchInput } from "@/components/SearchInput";
 import { deviceName } from "@/lib/devices";
 import { deviceHaystack, matchesAll, tokenize } from "@/lib/search";
 import { byDirectoryName } from "@/lib/sort";
-import { useInitialDocument } from "@/lib/use-initial-document";
 import type { BrowseDevice } from "@/lib/types";
 
 interface Props {
@@ -43,31 +42,6 @@ export default function DevicesDirectory({ devices }: Props) {
   const [brand, setBrand] = useState("");
   const [zeroOpen, setZeroOpen] = useState(false);
 
-  // The first document renders all rows for SSR. On client navigations, paint
-  // the first letter section immediately, then mount the rest a frame later so
-  // the route switch never blocks on all 900 rows.
-  const initialDocument = useInitialDocument();
-  const [full, setFull] = useState(initialDocument);
-  useEffect(() => {
-    if (full) return;
-    let done = false;
-    const finish = () => {
-      if (done) return;
-      done = true;
-      setFull(true);
-    };
-    let inner = 0;
-    const outer = requestAnimationFrame(() => {
-      inner = requestAnimationFrame(finish);
-    });
-    const timer = window.setTimeout(finish, 100);
-    return () => {
-      cancelAnimationFrame(outer);
-      cancelAnimationFrame(inner);
-      window.clearTimeout(timer);
-    };
-  }, [full]);
-
   const brands = useMemo(() => {
     const map = new Map<string, string>();
     for (const device of devices) map.set(device.vendor, device.vendorName);
@@ -94,7 +68,6 @@ export default function DevicesDirectory({ devices }: Props) {
     [filtered],
   );
   const groups = useMemo(() => groupByLetter(withData), [withData]);
-  const shownGroups = full ? groups : groups.slice(0, 1);
 
   const filtering = query.trim().length > 0 || brand !== "";
   const zeroIsOpen = zeroOpen || (filtering && withoutData.length > 0);
@@ -138,9 +111,9 @@ export default function DevicesDirectory({ devices }: Props) {
         </p>
       ) : (
         <>
-          {shownGroups.length > 1 && (
+          {groups.length > 1 && (
             <nav aria-label="Device letters" className="flex flex-wrap gap-1">
-              {shownGroups.map((group) => (
+              {groups.map((group) => (
                 <a
                   key={group.letter}
                   href={`#devices-${group.letter}`}
@@ -152,7 +125,7 @@ export default function DevicesDirectory({ devices }: Props) {
             </nav>
           )}
 
-          {shownGroups.map((group) => (
+          {groups.map((group) => (
             <section
               key={group.letter}
               aria-labelledby={`devices-${group.letter}`}

@@ -12,7 +12,6 @@ import {
   pageMeta,
   updatedAtFromMatches,
 } from "@/lib/seo";
-import { useInitialDocument } from "@/lib/use-initial-document";
 import type { Route } from "./+types/brands";
 
 export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
@@ -67,30 +66,6 @@ export default function BrandsRoute() {
   const { devices } = useLoaderData<typeof loader>();
   const [query, setQuery] = useState("");
 
-  // Paint the header and first cards with the route; mount the rest a frame
-  // later on client navigations.
-  const initialDocument = useInitialDocument();
-  const [full, setFull] = useState(initialDocument);
-  useEffect(() => {
-    if (full) return;
-    let done = false;
-    const finish = () => {
-      if (done) return;
-      done = true;
-      setFull(true);
-    };
-    let inner = 0;
-    const outer = requestAnimationFrame(() => {
-      inner = requestAnimationFrame(finish);
-    });
-    const timer = window.setTimeout(finish, 100);
-    return () => {
-      cancelAnimationFrame(outer);
-      cancelAnimationFrame(inner);
-      window.clearTimeout(timer);
-    };
-  }, [full]);
-
   useEffect(() => {
     seedDevices(devices);
   }, [devices]);
@@ -107,7 +82,6 @@ export default function BrandsRoute() {
     [brands, needle],
   );
   const withRoms = devices.filter((device) => device.roms.length > 0).length;
-  const shown = full || query.trim() ? filtered : filtered.slice(0, 20);
 
   return (
     <div className="flex flex-col gap-6">
@@ -143,7 +117,7 @@ export default function BrandsRoute() {
         </p>
       ) : (
         <ul className="grid gap-2 sm:grid-cols-2">
-          {shown.map((brand) => (
+          {filtered.map((brand) => (
             <li key={brand.vendor}>
               <BrandRow brand={brand} />
             </li>
