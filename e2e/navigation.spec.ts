@@ -57,6 +57,15 @@ test("client navigation renders the destination table", async ({ page }) => {
   await expect(page.getByRole("link", { name: "LineageOS" })).toBeVisible();
 });
 
+test("a brand page lists its devices by ROM count", async ({ page }) => {
+  await page.goto("/devices/xiaomi");
+
+  await expect(page.getByRole("heading", { name: "Xiaomi" })).toBeVisible();
+  await expect(
+    page.getByRole("link", { name: /Redmi Note 10 Pro/ }).first(),
+  ).toBeVisible();
+});
+
 test("the devices index is an A-Z directory", async ({ page }) => {
   await page.goto("/devices");
 

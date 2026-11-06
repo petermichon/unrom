@@ -1,7 +1,12 @@
+import { useMemo, useState } from "react";
 import { redirect, useLoaderData } from "react-router";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import DevicesTable from "@/components/DevicesTable";
+import DeviceRow from "@/components/DeviceRow";
 import { PageHeader } from "@/components/PageHeader";
+import { SearchInput } from "@/components/SearchInput";
+import { deviceName } from "@/lib/devices";
+import { deviceHaystack, matchesAll, tokenize } from "@/lib/search";
+import { bySortKey } from "@/lib/sort";
 import { fetchDevices } from "@/lib/data";
 import {
   errorMeta,
@@ -35,10 +40,12 @@ export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
     {
       "script:ld+json": itemListLd(
         `${vendorName} devices`,
-        devices.map((device) => ({
-          name: device.name ?? device.codename,
-          path: `/devices/${device.vendor}/${device.codename}`,
-        })),
+        devices
+          .filter((device) => device.roms.length > 0)
+          .map((device) => ({
+            name: deviceName(device),
+            path: `/devices/${device.vendor}/${device.codename}`,
+          })),
       ),
     },
   ];
@@ -67,9 +74,26 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
 
 export default function VendorRoute() {
   const { vendor, vendorName, devices } = useLoaderData<typeof loader>();
+  const [query, setQuery] = useState("");
   const romCount = new Set(
     devices.flatMap((device) => device.roms.map((rom) => rom.id)),
   ).size;
+
+  const ranked = useMemo(
+    () =>
+      [...devices].sort(
+        (a, b) =>
+          b.roms.length - a.roms.length ||
+          bySortKey(deviceName(a), deviceName(b)),
+      ),
+    [devices],
+  );
+  const filtered = useMemo(() => {
+    const terms = tokenize(query);
+    return terms.length === 0
+      ? ranked
+      : ranked.filter((device) => matchesAll(deviceHaystack(device), terms));
+  }, [ranked, query]);
 
   return (
     <div className="flex flex-col gap-6">
@@ -86,13 +110,45 @@ export default function VendorRoute() {
         description={`${devices.length} device${
           devices.length === 1 ? "" : "s"
         } across ${romCount} ROM${romCount === 1 ? "" : "s"}, including ${summarizeNames(
-          devices.map((device) => device.name ?? device.codename),
+          devices.map((device) => deviceName(device)),
           3,
         )}.`}
         endpoint={`/api/devices?vendor=${vendor}`}
       />
 
-      <DevicesTable devices={devices} renderAllRows />
+      {devices.length > 20 && (
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+          <SearchInput
+            id="vendor-devices-search"
+            value={query}
+            onValueChange={setQuery}
+            placeholder="Filter this brand's devices…"
+            ariaLabel="Filter devices"
+            className="max-w-md"
+          />
+          <p
+            role="status"
+            aria-live="polite"
+            className="text-sm text-muted-foreground tabular-nums"
+          >
+            {filtered.length} of {devices.length} devices
+          </p>
+        </div>
+      )}
+
+      {filtered.length === 0 ? (
+        <p className="py-12 text-center text-sm text-muted-foreground">
+          No devices match.
+        </p>
+      ) : (
+        <ul className="flex flex-col">
+          {filtered.map((device) => (
+            <li key={`${device.vendor}/${device.codename}`}>
+              <DeviceRow device={device} showBrand={false} />
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }

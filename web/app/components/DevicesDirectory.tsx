@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
-import { Link } from "react-router";
+import DeviceRow from "@/components/DeviceRow";
 import { SearchInput } from "@/components/SearchInput";
+import { deviceName } from "@/lib/devices";
 import { deviceHaystack, matchesAll, tokenize } from "@/lib/search";
 import { byDirectoryName } from "@/lib/sort";
 import type { BrowseDevice } from "@/lib/types";
@@ -14,8 +15,6 @@ interface LetterGroup {
   devices: BrowseDevice[];
 }
 
-const displayName = (device: BrowseDevice) => device.name ?? device.codename;
-
 function firstLetter(name: string): string {
   const key = name.replace(/^[^\p{L}\p{N}]+/u, "");
   const first = key.charAt(0);
@@ -26,7 +25,7 @@ function groupByLetter(devices: BrowseDevice[]): LetterGroup[] {
   const groups: LetterGroup[] = [];
   const index = new Map<string, LetterGroup>();
   for (const device of devices) {
-    const letter = firstLetter(displayName(device));
+    const letter = firstLetter(deviceName(device));
     let group = index.get(letter);
     if (!group) {
       group = { letter, devices: [] };
@@ -36,30 +35,6 @@ function groupByLetter(devices: BrowseDevice[]): LetterGroup[] {
     group.devices.push(device);
   }
   return groups;
-}
-
-function DeviceRow({ device }: { device: BrowseDevice }) {
-  const count = device.roms.length;
-  return (
-    <Link
-      to={`/devices/${device.vendor}/${device.codename}`}
-      prefetch="intent"
-      className="flex items-center justify-between gap-3 rounded-lg px-2 py-2.5 outline-none transition-colors hover:bg-muted/40 focus-visible:ring-3 focus-visible:ring-ring/50"
-    >
-      <span className="flex min-w-0 flex-col">
-        <span className="truncate font-medium">{displayName(device)}</span>
-        <span className="truncate text-xs text-muted-foreground">
-          {device.vendorName} ·{" "}
-          <span className="font-mono">{device.codename}</span>
-        </span>
-      </span>
-      <span className="shrink-0 text-xs text-muted-foreground tabular-nums">
-        {count === 0
-          ? "No ROM data"
-          : `${count} ${count === 1 ? "ROM" : "ROMs"}`}
-      </span>
-    </Link>
-  );
 }
 
 export default function DevicesDirectory({ devices }: Props) {
@@ -81,7 +56,7 @@ export default function DevicesDirectory({ devices }: Props) {
           (!brand || device.vendor === brand) &&
           (terms.length === 0 || matchesAll(deviceHaystack(device), terms)),
       )
-      .sort((a, b) => byDirectoryName(displayName(a), displayName(b)));
+      .sort((a, b) => byDirectoryName(deviceName(a), deviceName(b)));
   }, [devices, query, brand]);
 
   const withData = useMemo(
