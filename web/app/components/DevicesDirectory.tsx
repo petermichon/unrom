@@ -42,7 +42,6 @@ export default function DevicesDirectory({ devices }: Props) {
   const [query, setQuery] = useState("");
   const [brand, setBrand] = useState("");
   const [minRoms, setMinRoms] = useState("");
-  const [zeroOpen, setZeroOpen] = useState(false);
 
   // The document's first render includes every row for SSR. On client
   // navigations the shell paints first and the list mounts a frame later.
@@ -86,25 +85,13 @@ export default function DevicesDirectory({ devices }: Props) {
   }, [devices, query, brand]);
 
   const minRomCount = Number(minRoms) || 0;
-  const withData = useMemo(
-    () =>
-      filtered.filter(
-        (device) => device.roms.length > 0 && device.roms.length >= minRomCount,
-      ),
+  const visible = useMemo(
+    () => filtered.filter((device) => device.roms.length >= minRomCount),
     [filtered, minRomCount],
   );
-  const withoutData = useMemo(
-    () =>
-      minRomCount > 0
-        ? []
-        : filtered.filter((device) => device.roms.length === 0),
-    [filtered, minRomCount],
-  );
-  const groups = useMemo(() => groupByLetter(withData), [withData]);
+  const groups = useMemo(() => groupByLetter(visible), [visible]);
 
-  const filtering = query.trim().length > 0 || brand !== "" || minRomCount > 0;
-  const zeroIsOpen = zeroOpen || (filtering && withoutData.length > 0);
-  const total = withData.length + withoutData.length;
+  const total = visible.length;
 
   return (
     <div className="flex flex-col gap-4">
@@ -213,26 +200,6 @@ export default function DevicesDirectory({ devices }: Props) {
                     </ul>
                   </section>
                 ))}
-
-                {withoutData.length > 0 && (
-                  <details
-                    open={zeroIsOpen}
-                    onToggle={(event) => setZeroOpen(event.currentTarget.open)}
-                    className="rounded-xl border border-border/60"
-                  >
-                    <summary className="cursor-pointer px-4 py-3 text-sm font-medium text-muted-foreground outline-none focus-visible:ring-3 focus-visible:ring-ring/50">
-                      No ROM data yet — {withoutData.length}{" "}
-                      {withoutData.length === 1 ? "device" : "devices"}
-                    </summary>
-                    <ul className="flex flex-col px-2 pb-2">
-                      {withoutData.map((device) => (
-                        <li key={`${device.vendor}/${device.codename}`}>
-                          <DeviceRow device={device} />
-                        </li>
-                      ))}
-                    </ul>
-                  </details>
-                )}
               </>
             )}
           </div>

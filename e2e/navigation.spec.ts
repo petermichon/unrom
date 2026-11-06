@@ -82,7 +82,7 @@ test("the devices index is an A-Z directory", async ({ page }) => {
   ).toBeVisible();
 });
 
-test("device search reveals the no-ROM tier", async ({ page }) => {
+test("device search finds a zero-ROM device", async ({ page }) => {
   await page.goto("/devices");
   await page.waitForLoadState("networkidle");
   await expect(async () => {
@@ -92,7 +92,9 @@ test("device search reveals the no-ROM tier", async ({ page }) => {
     });
   }).toPass({ timeout: 10_000 });
 
-  await expect(page.getByRole("link", { name: /Huawei Y6/ })).toBeVisible();
+  await expect(page.getByRole("link", { name: /Huawei Y6/ })).toContainText(
+    "0 ROMs",
+  );
 });
 
 test("the devices index filters by brand", async ({ page }) => {
@@ -117,7 +119,7 @@ test("the devices index filters by ROM count", async ({ page }) => {
     });
   }).toPass({ timeout: 10_000 });
 
-  await expect(page.getByText("No ROM data yet")).toHaveCount(0);
+  await expect(page.getByRole("link", { name: /Huawei Y6/ })).toHaveCount(0);
 });
 
 test("the ROMs index separates covered from catalogue", async ({ page }) => {

@@ -24,9 +24,7 @@ export default function DeviceRow({ device, showBrand = true }: Props) {
         </span>
       </span>
       <span className="shrink-0 text-xs text-muted-foreground tabular-nums">
-        {count === 0
-          ? "No ROM data"
-          : `${count} ${count === 1 ? "ROM" : "ROMs"}`}
+        {count} {count === 1 ? "ROM" : "ROMs"}
       </span>
     </Link>
   );
