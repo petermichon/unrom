@@ -1,4 +1,4 @@
-import { Asterisk, Home, Layers2, Smartphone } from "lucide-react";
+import { Asterisk, Layers2, Smartphone } from "lucide-react";
 import { Link, useLocation } from "react-router";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -24,7 +24,8 @@ export function AppSidebar() {
         <Link
           to="/"
           prefetch="viewport"
-          className="flex items-center gap-2 px-2 py-1 font-heading font-semibold tracking-tight group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0"
+          aria-label="unrom home"
+          className="flex items-center gap-2 px-2 py-1 font-heading font-semibold tracking-tight transition-opacity hover:opacity-80 group-data-[collapsible=icon]:justify-center group-data-[collapsible=icon]:px-0"
         >
           <span
             className="grid size-6 shrink-0 place-items-center rounded-md bg-brand text-brand-foreground"
@@ -47,16 +48,6 @@ export function AppSidebar() {
         <SidebarGroup>
           <SidebarGroupLabel>Navigation</SidebarGroupLabel>
           <SidebarMenu>
-            <SidebarMenuItem>
-              <SidebarMenuButton
-                tooltip="Home"
-                isActive={isActive("/")}
-                render={<Link to="/" prefetch="viewport" />}
-              >
-                <Home />
-                <span>Home</span>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
             <SidebarMenuItem>
               <SidebarMenuButton
                 tooltip="Devices"
