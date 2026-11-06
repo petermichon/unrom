@@ -14,7 +14,7 @@ export default function DeviceRow({ device, showBrand = true }: Props) {
     <Link
       to={`/devices/${device.vendor}/${device.codename}`}
       prefetch="intent"
-      className="flex items-center justify-between gap-3 rounded-lg px-2 py-2.5 outline-none transition-colors hover:bg-muted/40 focus-visible:ring-3 focus-visible:ring-ring/50"
+      className="device-row"
     >
       <span className="flex min-w-0 flex-col">
         <span className="truncate font-medium">{deviceName(device)}</span>

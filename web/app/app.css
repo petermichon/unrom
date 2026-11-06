@@ -170,6 +170,12 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+@layer components {
+  .device-row {
+    @apply flex items-center justify-between gap-3 rounded-lg px-2 py-2.5 outline-none transition-colors hover:bg-muted/40 focus-visible:ring-3 focus-visible:ring-ring/50;
+  }
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

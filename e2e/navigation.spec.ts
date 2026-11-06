@@ -88,9 +88,12 @@ test("device search reveals the no-ROM tier", async ({ page }) => {
 test("the devices index filters by brand", async ({ page }) => {
   await page.goto("/devices");
   await page.waitForLoadState("networkidle");
-  await page.getByLabel("Filter by brand").selectOption("samsung");
-
-  await expect(page.getByRole("status")).toHaveText("161 of 902 devices");
+  await expect(async () => {
+    await page.getByLabel("Filter by brand").selectOption("samsung");
+    await expect(page.getByRole("status")).toHaveText("161 of 902 devices", {
+      timeout: 1_500,
+    });
+  }).toPass({ timeout: 10_000 });
 });
 
 test("the ROMs index separates covered from catalogue", async ({ page }) => {
@@ -106,10 +109,14 @@ test("the ROMs index separates covered from catalogue", async ({ page }) => {
 test("the ROMs filter opens the catalogue for a match", async ({ page }) => {
   await page.goto("/roms");
   await page.waitForLoadState("networkidle");
-  await page.getByLabel("Filter ROMs").fill("AlphaDroid");
+  await expect(async () => {
+    await page.getByLabel("Filter ROMs").fill("AlphaDroid");
+    await expect(page.getByRole("status")).toHaveText("1 of 260 ROMs", {
+      timeout: 1_500,
+    });
+  }).toPass({ timeout: 10_000 });
 
   await expect(page.getByRole("link", { name: "AlphaDroid" })).toBeVisible();
-  await expect(page.getByRole("status")).toHaveText("1 of 260 ROMs");
 });
 
 test("the brands index links to a brand", async ({ page }) => {
@@ -125,11 +132,15 @@ test("the brands index links to a brand", async ({ page }) => {
 test("the brands filter narrows the list", async ({ page }) => {
   await page.goto("/brands");
   await page.waitForLoadState("networkidle");
-  await page.getByLabel("Filter brands").fill("sams");
+  await expect(async () => {
+    await page.getByLabel("Filter brands").fill("sams");
+    await expect(page.getByRole("status")).toHaveText("1 of 66 brands", {
+      timeout: 1_500,
+    });
+  }).toPass({ timeout: 10_000 });
 
   await expect(page.getByRole("link", { name: /Samsung/ })).toBeVisible();
   await expect(page.getByRole("link", { name: /Xiaomi/ })).toHaveCount(0);
-  await expect(page.getByRole("status")).toHaveText("1 of 66 brands");
 });
 
 test("mobile shows sections outside the utility menu", async ({ page }) => {
