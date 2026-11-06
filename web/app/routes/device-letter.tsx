@@ -169,7 +169,10 @@ export default function DeviceLetterRoute() {
               Previous
             </PageLink>
           ) : (
-            <span className="px-3 py-2 text-sm text-muted-foreground/50">
+            <span
+              aria-disabled="true"
+              className="px-3 py-2 text-sm text-muted-foreground"
+            >
               Previous
             </span>
           )}
@@ -181,7 +184,10 @@ export default function DeviceLetterRoute() {
               Next
             </PageLink>
           ) : (
-            <span className="px-3 py-2 text-sm text-muted-foreground/50">
+            <span
+              aria-disabled="true"
+              className="px-3 py-2 text-sm text-muted-foreground"
+            >
               Next
             </span>
           )}

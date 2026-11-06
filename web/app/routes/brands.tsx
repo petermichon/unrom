@@ -4,7 +4,7 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { PageHeader } from "@/components/PageHeader";
 import { SearchInput } from "@/components/SearchInput";
 import { brandRanking, type Brand } from "@/lib/brands";
-import { fetchDevices, seedDevices } from "@/lib/data";
+import { fetchBrands, seedBrands } from "@/lib/data";
 import {
   errorMeta,
   itemListLd,
@@ -16,14 +16,14 @@ import type { Route } from "./+types/brands";
 
 export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
   if (error) return errorMeta();
-  const devices = loaderData?.devices ?? [];
-  const brands = brandRanking(devices);
-  const withRoms = devices.filter((device) => device.roms.length > 0).length;
+  const brands = brandRanking(loaderData?.brands ?? []);
+  const devices = brands.reduce((sum, brand) => sum + brand.deviceCount, 0);
+  const withRoms = brands.reduce((sum, brand) => sum + brand.withRoms, 0);
 
   return [
     ...pageMeta({
       title: "Brands | unrom",
-      description: `Browse ${brands.length} Android brands and the ${devices.length} devices they make, ${withRoms} with custom ROM compatibility data.`,
+      description: `Browse ${brands.length} Android brands and the ${devices} devices they make, ${withRoms} with custom ROM compatibility data.`,
       path: "/brands",
     }),
     ...modifiedMeta(updatedAtFromMatches(matches)),
@@ -40,11 +40,11 @@ export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
 };
 
 export async function loader() {
-  return { devices: await fetchDevices() };
+  return { brands: await fetchBrands() };
 }
 
 export async function clientLoader() {
-  return { devices: await fetchDevices() };
+  return { brands: await fetchBrands() };
 }
 
 function BrandRow({ brand }: { brand: Brand }) {
@@ -63,14 +63,14 @@ function BrandRow({ brand }: { brand: Brand }) {
 }
 
 export default function BrandsRoute() {
-  const { devices } = useLoaderData<typeof loader>();
+  const { brands: rawBrands } = useLoaderData<typeof loader>();
   const [query, setQuery] = useState("");
 
   useEffect(() => {
-    seedDevices(devices);
-  }, [devices]);
+    seedBrands(rawBrands);
+  }, [rawBrands]);
 
-  const brands = useMemo(() => brandRanking(devices), [devices]);
+  const brands = useMemo(() => brandRanking(rawBrands), [rawBrands]);
   const needle = query.trim().toLowerCase();
   const filtered = useMemo(
     () =>
@@ -81,7 +81,8 @@ export default function BrandsRoute() {
         : brands,
     [brands, needle],
   );
-  const withRoms = devices.filter((device) => device.roms.length > 0).length;
+  const devices = brands.reduce((sum, brand) => sum + brand.deviceCount, 0);
+  const withRoms = brands.reduce((sum, brand) => sum + brand.withRoms, 0);
 
   return (
     <div className="flex flex-col gap-6">
@@ -89,8 +90,8 @@ export default function BrandsRoute() {
 
       <PageHeader
         title="Brands"
-        description={`${brands.length} brands and ${devices.length} devices, ${withRoms} with custom ROM data. Largest catalogues first.`}
-        endpoint="/api/devices"
+        description={`${brands.length} brands and ${devices} devices, ${withRoms} with custom ROM data. Largest catalogues first.`}
+        endpoint="/api/brands"
       />
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">

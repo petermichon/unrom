@@ -1,4 +1,8 @@
-import { vendorForBrand, vendorForName } from "../data/identity.ts";
+import {
+  isValidCodename,
+  vendorForBrand,
+  vendorForName,
+} from "../data/identity.ts";
 import type { CatalogDevice } from "./play-devices.ts";
 
 export type FormFactor =
@@ -77,6 +81,7 @@ export interface CatalogEntry {
 
 export interface CatalogExclusions {
   brand: number;
+  codename: number;
   name: number;
   formFactor: number;
 }
@@ -114,7 +119,12 @@ export function selectCatalog(
     groups.set(key, group);
   }
 
-  const exclusions: CatalogExclusions = { brand: 0, name: 0, formFactor: 0 };
+  const exclusions: CatalogExclusions = {
+    brand: 0,
+    codename: 0,
+    name: 0,
+    formFactor: 0,
+  };
   const formFactors: Record<FormFactor, number> = {
     phone: 0,
     tablet: 0,
@@ -133,6 +143,11 @@ export function selectCatalog(
       vendorForBrand(group.brand) ?? vendorForName(names[0] ?? null);
     if (!vendor) {
       exclusions.brand++;
+      continue;
+    }
+
+    if (!isValidCodename(group.codename)) {
+      exclusions.codename++;
       continue;
     }
 

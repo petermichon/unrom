@@ -278,11 +278,17 @@ const letterSummarySchema = {
 
 const brandSummarySchema = {
   type: "object",
-  required: ["vendor", "vendorName", "deviceCount"],
+  required: ["vendor", "vendorName", "deviceCount", "withRoms"],
   properties: {
     vendor: { type: "string" },
     vendorName: { type: "string" },
     deviceCount: { type: "integer", minimum: 0 },
+    withRoms: {
+      type: "integer",
+      minimum: 0,
+      description:
+        "Devices with at least one ROM build, directly or via a covered variant.",
+    },
   },
 };
 
@@ -338,7 +344,7 @@ export const openapi = {
   openapi: "3.1.0",
   info: {
     title: "unrom API",
-    version: "1.4.0",
+    version: "1.5.0",
     summary: "Open database for device–ROM compatibility.",
     description:
       "Which custom Android ROMs support which devices. Every response is " +
@@ -357,6 +363,7 @@ export const openapi = {
   tags: [
     { name: "meta", description: "Health and dataset freshness." },
     { name: "devices", description: "Devices and their ROM support." },
+    { name: "brands", description: "Device counts by vendor." },
     { name: "roms", description: "ROMs and the devices they support." },
     { name: "registry", description: "Curated device name mappings." },
     { name: "data", description: "Flat mappings and bulk exports." },
@@ -454,6 +461,19 @@ export const openapi = {
         responses: {
           200: jsonResponse({ $ref: "#/components/schemas/DeviceDetail" }),
           404: notFound,
+        },
+      },
+    },
+    "/api/brands": {
+      get: {
+        tags: ["brands"],
+        summary: "List brands with device and ROM counts",
+        operationId: "listBrands",
+        responses: {
+          200: jsonResponse({
+            type: "array",
+            items: { $ref: "#/components/schemas/BrandSummary" },
+          }),
         },
       },
     },

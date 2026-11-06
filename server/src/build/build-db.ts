@@ -1,3 +1,4 @@
+import { existsSync } from "node:fs";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 
 import { buildDatabase } from "./database.ts";
@@ -6,12 +7,18 @@ import { normalizedRomDeviceSchema } from "../normalized.ts";
 import type { NormalizedRomDevice } from "../normalized.ts";
 import {
   ALIASES_PATH,
+  DATA_DIR,
   DB_PATH,
   DIST_DIR,
   NDJSON_PATH,
   REGISTRY_REPORT_PATH,
   SCHEMA_SQL_PATH,
 } from "../paths.ts";
+import { selectCatalog } from "../sources/catalog.ts";
+import {
+  PLAY_DEVICES_FILE,
+  parsePlayDevices,
+} from "../sources/play-devices.ts";
 
 const raw = await readFile(NDJSON_PATH, "utf8");
 const records: NormalizedRomDevice[] = raw
@@ -23,7 +30,20 @@ await mkdir(DIST_DIR, { recursive: true });
 // The DDL is derived from the schema and shipped alongside the exports.
 await writeFile(SCHEMA_SQL_PATH, generateDdl(), "utf8");
 
-const result = buildDatabase(records, DB_PATH);
+const catalogPath = `${DATA_DIR}/${PLAY_DEVICES_FILE}`;
+const catalog = existsSync(catalogPath)
+  ? selectCatalog(parsePlayDevices(await readFile(catalogPath, "utf8"))).entries
+  : [];
+
+const result = buildDatabase(
+  records,
+  DB_PATH,
+  catalog.map((entry) => ({
+    vendor: entry.vendor,
+    codename: entry.codename,
+    names: entry.names,
+  })),
+);
 
 // Alias resolution is a generation-time normalization; the resolved mapping is
 // emitted as a reviewable artifact rather than stored in the DB.
@@ -44,6 +64,7 @@ await writeFile(
 const report = result.registryReport.summary;
 console.log(
   `Built ${DB_PATH}\n  ${result.romCount} ROM(s), ${result.deviceCount} device(s), ` +
+    `${result.catalogCount} catalogue seed(s), ` +
     `${result.edgeCount} edge(s), ${result.registryCount} registry entr(ies), ` +
     `${result.aliases.length} alias(es)\n` +
     `  Registry: ${report.curated} curated, ${report.sourceNamed} source-named, ` +

@@ -108,8 +108,11 @@ app.get("/api", (c) =>
       "GET /api/health",
       "GET /api/openapi.json",
       "GET /api/meta",
-      "GET /api/devices?q=&vendor=",
+      "GET /api/devices?q=&vendor=&letter=&limit=&offset=",
+      "GET /api/devices/letters",
+      "GET /api/brands",
       "GET /api/devices/:vendor/:codename",
+      "GET /api/search?q=",
       "GET /api/registry?q=&vendor=",
       "GET /api/roms",
       "GET /api/roms/:id",
@@ -133,6 +136,8 @@ app.get("/api/openapi.json", (c) => {
 app.get("/api/meta", (c) => c.json(api.getMeta()));
 
 app.get("/api/devices/letters", (c) => c.json(api.letterCounts()));
+
+app.get("/api/brands", (c) => c.json(api.listBrands()));
 
 app.get("/api/search", (c) => c.json(api.search(c.req.query("q") ?? "")));
 

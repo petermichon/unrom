@@ -640,3 +640,39 @@ test("cross-vendor collisions resolve to distinct devices", async () => {
     rmSync(dir, { recursive: true, force: true });
   }
 });
+
+test("brand and letter summaries cover the whole catalogue", () => {
+  const dir = mkdtempSync(join(tmpdir(), "unrom-test-"));
+  const dbPath = join(dir, "unrom.sqlite");
+
+  try {
+    const built = buildDatabase([], dbPath, [
+      { vendor: "google", codename: "catalog_only", names: ["Catalog Only"] },
+    ]);
+    const api = createApi(dbPath);
+
+    const brands = api.listBrands();
+    const google = brands.find((brand) => brand.vendor === "google");
+    assert.ok(google);
+    assert.ok(google.deviceCount >= 1);
+    assert.ok(google.withRoms <= google.deviceCount);
+    assert.equal(
+      brands.reduce((sum, brand) => sum + brand.deviceCount, 0),
+      built.deviceCount,
+    );
+    assert.ok(brands.every((brand) => brand.withRoms <= brand.deviceCount));
+
+    const letters = api.letterCounts();
+    assert.equal(
+      letters.reduce((sum, letter) => sum + letter.deviceCount, 0),
+      built.deviceCount,
+    );
+    assert.equal(letters.at(-1)?.letter, "#");
+
+    assert.equal(api.getDevice("google", "catalog_only")?.name, "Catalog Only");
+
+    api.close();
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});

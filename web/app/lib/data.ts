@@ -1,4 +1,5 @@
 import type {
+  BrandSummary,
   BrowseDevice,
   DeviceDetail,
   LetterSummary,
@@ -59,6 +60,15 @@ export function seedDevices(devices: BrowseDevice[]): void {
 
 export function fetchDeviceLetters(): Promise<LetterSummary[]> {
   return get<LetterSummary[]>("/api/devices/letters");
+}
+
+export function fetchBrands(): Promise<BrandSummary[]> {
+  return get<BrandSummary[]>("/api/brands");
+}
+
+/** Seed the browser cache with data already rendered by the server loader. */
+export function seedBrands(brands: BrandSummary[]): void {
+  cache.set("/api/brands", brands);
 }
 
 export async function fetchDevicesPage(options: {

@@ -212,6 +212,35 @@ export function createApi(dbPath: string) {
     return filters;
   }
 
+  function listBrands(): BrandSummary[] {
+    const direct = new Set<string>();
+    for (const edge of db.select().from(romDevices).all()) {
+      direct.add(deviceKey(edge.vendor, edge.codename));
+    }
+    const coverage = deviceCoverage();
+    const brands = new Map<string, BrandSummary>();
+
+    for (const row of db.select().from(devices).all()) {
+      const key = deviceKey(row.vendor, row.codename);
+      const brand = brands.get(row.vendor) ?? {
+        vendor: row.vendor,
+        vendorName: vendorName(row.vendor),
+        deviceCount: 0,
+        withRoms: 0,
+      };
+      brand.deviceCount++;
+      const hasRoms =
+        direct.has(key) ||
+        (coverage.mainsByVariant.get(key) ?? []).some((main) =>
+          direct.has(main),
+        );
+      if (hasRoms) brand.withRoms++;
+      brands.set(row.vendor, brand);
+    }
+
+    return [...brands.values()];
+  }
+
   function letterCounts(): LetterSummary[] {
     const displayName = sql`coalesce(${devices.name}, ${devices.codename})`;
     const rows = db
@@ -610,24 +639,14 @@ export function createApi(dbPath: string) {
     const deviceResults = listDevicesPage({ query: q, limit: 20 });
     const deviceTotal = countDevices({ query: q });
 
-    const vendorCounts = db
-      .select({
-        vendor: devices.vendor,
-        count: sql<number>`count(*)`,
-      })
-      .from(devices)
-      .groupBy(devices.vendor)
-      .all()
-      .map((row) => ({
-        vendor: row.vendor,
-        vendorName: vendorName(row.vendor),
-        deviceCount: Number(row.count),
-      }))
-      .filter((brand) => matches(`${brand.vendor} ${brand.vendorName}`));
+    const vendorCounts = listBrands().filter((brand) =>
+      matches(`${brand.vendor} ${brand.vendorName}`),
+    );
     const brandTotal = vendorCounts.length;
     const brands: BrandSummary[] = [...vendorCounts]
       .sort(
         (a, b) =>
+          b.withRoms - a.withRoms ||
           b.deviceCount - a.deviceCount ||
           bySortKey(a.vendorName, b.vendorName),
       )
@@ -792,6 +811,7 @@ export function createApi(dbPath: string) {
     listDevicesPage,
     countDevices,
     letterCounts,
+    listBrands,
     getDevice,
     listRegistry,
     listRoms,

@@ -76,8 +76,8 @@ test("home search finds a catalogue-only ROM", async ({ page }) => {
 test("home links to the three directories", async ({ page }) => {
   await page.goto("/");
 
-  await expect(page.getByRole("link", { name: /Devices 902/ })).toBeVisible();
-  await expect(page.getByRole("link", { name: /Brands 66/ })).toBeVisible();
+  await expect(page.getByRole("link", { name: /Devices \d+/ })).toBeVisible();
+  await expect(page.getByRole("link", { name: /Brands \d+/ })).toBeVisible();
   await expect(page.getByRole("link", { name: /ROMs 260/ })).toBeVisible();
 });
 

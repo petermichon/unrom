@@ -88,6 +88,8 @@ export interface BrandSummary {
   vendor: string;
   vendorName: string;
   deviceCount: number;
+  /** Devices with at least one ROM build, directly or via a covered variant. */
+  withRoms: number;
 }
 
 /** Grouped, capped results for the home and command-palette searches. */

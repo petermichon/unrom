@@ -33,9 +33,16 @@ import {
 } from "../db/schema.ts";
 import type { NormalizedRomDevice } from "../normalized.ts";
 
+export interface DeviceSeed {
+  vendor: string;
+  codename: string;
+  names: string[];
+}
+
 export interface BuildResult {
   romCount: number;
   deviceCount: number;
+  catalogCount: number;
   edgeCount: number;
   registryCount: number;
   registryReport: RegistryReport;
@@ -242,6 +249,7 @@ function nameIssues(name: string, codename: string): string[] {
 function buildRegistryReport(
   deviceMap: Map<string, Device>,
   sourceNames: SourceNames,
+  catalogKeys: ReadonlySet<string> = new Set(),
 ): RegistryReport {
   const normalized = (value: string) =>
     value.trim().replace(/\s+/g, " ").toLowerCase();
@@ -270,7 +278,7 @@ function buildRegistryReport(
     }
     coverage.set(device.vendor, row);
 
-    if (curated) continue;
+    if (curated || catalogKeys.has(key)) continue;
 
     const sources: RegistryNameSource[] = [...(names ?? [])]
       .map(([name, romIds]) => ({ name, romIds: [...romIds].sort() }))
@@ -334,6 +342,7 @@ function buildRegistryReport(
 export function buildDatabase(
   records: NormalizedRomDevice[],
   dbPath: string,
+  catalog: readonly DeviceSeed[] = [],
 ): BuildResult {
   for (const suffix of ["", "-wal", "-shm"]) {
     rmSync(dbPath + suffix, { force: true });
@@ -402,6 +411,27 @@ export function buildDatabase(
   for (const key of Object.keys(DEVICE_NAMES)) {
     const [vendor, codename] = key.split("\0");
     ensureDevice(vendor, codename);
+  }
+
+  // Curated catalogue devices not reported by any ROM roster. Their names are
+  // source-named rather than curated, so they stay outside the registry report.
+  const catalogKeys = new Set<string>();
+  for (const device of catalog) {
+    const canonical = canonicalCodename(
+      device.vendor,
+      canonicalCasing(device.codename),
+    );
+    ensureDevice(device.vendor, canonical);
+    const key = `${device.vendor}\0${canonical}`;
+    const existing = deviceMap.get(key);
+    if (existing && !existing.names) {
+      const names = [...new Set(device.names)].filter(Boolean);
+      if (names.length > 0) {
+        existing.names = names;
+        existing.name = names[0] ?? null;
+      }
+    }
+    catalogKeys.add(key);
   }
 
   // Union-find over device keys to build compatibility groups: the sets of
@@ -594,7 +624,11 @@ export function buildDatabase(
       `${a.vendor}\0${a.codename}`.localeCompare(`${b.vendor}\0${b.codename}`),
     );
 
-  const registryReport = buildRegistryReport(deviceMap, sourceNames);
+  const registryReport = buildRegistryReport(
+    deviceMap,
+    sourceNames,
+    catalogKeys,
+  );
 
   // SOURCE_DATE_EPOCH makes rebuilds deterministic (reproducible builds).
   const generatedAt = process.env.SOURCE_DATE_EPOCH
@@ -645,6 +679,7 @@ export function buildDatabase(
   return {
     romCount: romMap.size,
     deviceCount: deviceMap.size,
+    catalogCount: catalogKeys.size,
     edgeCount: edges.length,
     registryCount: registryRows.length,
     registryReport,
