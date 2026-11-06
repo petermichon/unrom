@@ -16,6 +16,7 @@ import {
   vendorForBrand,
 } from "./data/identity.ts";
 import { DEVICE_NAMES } from "./data/registry.ts";
+import { PLAY_DEVICES_FILE } from "./sources/play-devices.ts";
 import { createParser, isCitation, selectors } from "./sources/adapter.ts";
 import { parseKaliNetHunter } from "./sources/kali-nethunter.ts";
 import { ALLOWED_EMPTY_FILES, sources } from "./sources/registry.ts";
@@ -35,7 +36,7 @@ test("every source parses and yields records", async () => {
 test("every raw data file has a normalizer", async () => {
   const covered = new Set(sources.map((source) => source.file));
   const uncovered = (await listDataFiles()).filter(
-    (file) => !covered.has(file),
+    (file) => !covered.has(file) && file !== PLAY_DEVICES_FILE,
   );
   assert.deepEqual(
     uncovered,

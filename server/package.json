@@ -18,7 +18,8 @@
     "test": "node --disable-warning=ExperimentalWarning --test src/*.test.ts",
     "start": "node --disable-warning=ExperimentalWarning src/api/server.ts",
     "dev": "node --disable-warning=ExperimentalWarning --watch src/api/server.ts",
-    "check": "tsc --noEmit"
+    "check": "tsc --noEmit",
+    "catalog:report": "node --disable-warning=ExperimentalWarning src/build/catalog-report.ts"
   },
   "dependencies": {
     "@hono/node-server": "^2.1.1",

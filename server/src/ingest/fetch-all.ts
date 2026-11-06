@@ -28,6 +28,7 @@ import { listDevices as listParanoidAndroid } from "./fetch/paranoidandroid.ts";
 import { listDevices as listPixelExtended } from "./fetch/pixelextended.ts";
 import { listDevices as listPixelExperience } from "./fetch/pixelexperience.ts";
 import { listDevices as listPixelOS } from "./fetch/pixelos.ts";
+import { listDevices as listPlayDevices } from "./fetch/play.ts";
 import { listDevices as listProjectInfinityX } from "./fetch/projectinfinityx.ts";
 import { listDevices as listPixysOS } from "./fetch/pixysos.ts";
 import { listDevices as listProjectPixelAge } from "./fetch/projectpixelage.ts";
@@ -84,6 +85,11 @@ const sources: Source[] = [
     fetch: listPixelExperience,
   },
   { id: "pixelos", file: "pixelos.json", fetch: listPixelOS },
+  {
+    id: "play-devices",
+    file: "play-devices.csv",
+    fetch: listPlayDevices,
+  },
   { id: "pixysos", file: "pixysos.json", fetch: listPixysOS },
   {
     id: "projectinfinityx",

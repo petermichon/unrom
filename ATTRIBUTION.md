@@ -41,3 +41,16 @@ open an issue.
 | Project Infinity X | `devices.json`         | https://github.com/ProjectInfinity-X                                        |
 | Project PixelAge   | OTA `devices/`         | https://github.com/ProjectPixelage/pixelage_ota                             |
 | RisingOS           | `devices.md`           | https://github.com/RisingOS-Revived/official_devices                        |
+
+## Device catalogues
+
+The device catalogue is larger than the ROM rosters, so it is built from a
+separate source. These snapshots identify devices independent of ROM support;
+they are not ROM compatibility data.
+
+| Catalogue                  | Snapshot           | Upstream                                             |
+| -------------------------- | ------------------ | ---------------------------------------------------- |
+| Google Play supported list | `play-devices.csv` | https://support.google.com/googleplay/answer/1727131 |
+
+Google's list is used as an upstream reference under Google's terms; it is not
+relicensed here. Brand and model names remain the trademarks of their owners.
