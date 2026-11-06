@@ -173,9 +173,21 @@ export default function DevicesDirectory({ devices }: Props) {
 
           <div aria-busy={!listReady} className="flex flex-col gap-4">
             {!listReady ? (
-              <div className="flex flex-col gap-1" aria-hidden="true">
-                {Array.from({ length: 12 }, (_, index) => (
-                  <div key={index} className="h-11 rounded-lg bg-muted/30" />
+              <div aria-hidden="true">
+                {groups.slice(0, 1).map((group) => (
+                  <section key={group.letter}>
+                    <h2 className="mb-1 font-heading text-sm font-semibold text-muted-foreground">
+                      {group.letter}
+                    </h2>
+                    <div className="flex flex-col gap-1">
+                      {Array.from({ length: 12 }, (_, index) => (
+                        <div
+                          key={index}
+                          className="h-11 rounded-lg bg-muted/30"
+                        />
+                      ))}
+                    </div>
+                  </section>
                 ))}
               </div>
             ) : (
