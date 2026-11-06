@@ -1,9 +1,10 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import DeviceRow from "@/components/DeviceRow";
 import { SearchInput } from "@/components/SearchInput";
 import { deviceName } from "@/lib/devices";
 import { deviceHaystack, matchesAll, tokenize } from "@/lib/search";
 import { byDirectoryName } from "@/lib/sort";
+import { useInitialDocument } from "@/lib/use-initial-document";
 import type { BrowseDevice } from "@/lib/types";
 
 interface Props {
@@ -42,6 +43,30 @@ export default function DevicesDirectory({ devices }: Props) {
   const [brand, setBrand] = useState("");
   const [minRoms, setMinRoms] = useState("");
   const [zeroOpen, setZeroOpen] = useState(false);
+
+  // The document's first render includes every row for SSR. On client
+  // navigations the shell paints first and the list mounts a frame later.
+  const initialDocument = useInitialDocument();
+  const [listReady, setListReady] = useState(initialDocument);
+  useEffect(() => {
+    if (listReady) return;
+    let done = false;
+    const finish = () => {
+      if (done) return;
+      done = true;
+      setListReady(true);
+    };
+    let inner = 0;
+    const outer = requestAnimationFrame(() => {
+      inner = requestAnimationFrame(finish);
+    });
+    const timer = window.setTimeout(finish, 100);
+    return () => {
+      cancelAnimationFrame(outer);
+      cancelAnimationFrame(inner);
+      window.clearTimeout(timer);
+    };
+  }, [listReady]);
 
   const brands = useMemo(() => {
     const map = new Map<string, string>();
@@ -122,11 +147,13 @@ export default function DevicesDirectory({ devices }: Props) {
           aria-live="polite"
           className="text-sm text-muted-foreground tabular-nums"
         >
-          {total} of {devices.length} devices
+          {listReady
+            ? `${total} of ${devices.length} devices`
+            : `Loading ${devices.length} devices…`}
         </p>
       </div>
 
-      {total === 0 ? (
+      {total === 0 && listReady ? (
         <p className="py-12 text-center text-sm text-muted-foreground">
           No devices match.
         </p>
@@ -146,46 +173,56 @@ export default function DevicesDirectory({ devices }: Props) {
             </nav>
           )}
 
-          {groups.map((group) => (
-            <section
-              key={group.letter}
-              aria-labelledby={`devices-${group.letter}`}
-              className="scroll-mt-24"
-            >
-              <h2
-                id={`devices-${group.letter}`}
-                className="mb-1 font-heading text-sm font-semibold text-muted-foreground"
-              >
-                {group.letter}
-              </h2>
-              <ul className="flex flex-col">
-                {group.devices.map((device) => (
-                  <li key={`${device.vendor}/${device.codename}`}>
-                    <DeviceRow device={device} />
-                  </li>
-                ))}
-              </ul>
-            </section>
-          ))}
+          {!listReady ? (
+            <div className="flex flex-col gap-1" aria-hidden="true">
+              {Array.from({ length: 12 }, (_, index) => (
+                <div key={index} className="h-11 rounded-lg bg-muted/30" />
+              ))}
+            </div>
+          ) : (
+            <>
+              {groups.map((group) => (
+                <section
+                  key={group.letter}
+                  aria-labelledby={`devices-${group.letter}`}
+                  className="scroll-mt-24"
+                >
+                  <h2
+                    id={`devices-${group.letter}`}
+                    className="mb-1 font-heading text-sm font-semibold text-muted-foreground"
+                  >
+                    {group.letter}
+                  </h2>
+                  <ul className="flex flex-col">
+                    {group.devices.map((device) => (
+                      <li key={`${device.vendor}/${device.codename}`}>
+                        <DeviceRow device={device} />
+                      </li>
+                    ))}
+                  </ul>
+                </section>
+              ))}
 
-          {withoutData.length > 0 && (
-            <details
-              open={zeroIsOpen}
-              onToggle={(event) => setZeroOpen(event.currentTarget.open)}
-              className="rounded-xl border border-border/60"
-            >
-              <summary className="cursor-pointer px-4 py-3 text-sm font-medium text-muted-foreground outline-none focus-visible:ring-3 focus-visible:ring-ring/50">
-                No ROM data yet — {withoutData.length}{" "}
-                {withoutData.length === 1 ? "device" : "devices"}
-              </summary>
-              <ul className="flex flex-col px-2 pb-2">
-                {withoutData.map((device) => (
-                  <li key={`${device.vendor}/${device.codename}`}>
-                    <DeviceRow device={device} />
-                  </li>
-                ))}
-              </ul>
-            </details>
+              {withoutData.length > 0 && (
+                <details
+                  open={zeroIsOpen}
+                  onToggle={(event) => setZeroOpen(event.currentTarget.open)}
+                  className="rounded-xl border border-border/60"
+                >
+                  <summary className="cursor-pointer px-4 py-3 text-sm font-medium text-muted-foreground outline-none focus-visible:ring-3 focus-visible:ring-ring/50">
+                    No ROM data yet — {withoutData.length}{" "}
+                    {withoutData.length === 1 ? "device" : "devices"}
+                  </summary>
+                  <ul className="flex flex-col px-2 pb-2">
+                    {withoutData.map((device) => (
+                      <li key={`${device.vendor}/${device.codename}`}>
+                        <DeviceRow device={device} />
+                      </li>
+                    ))}
+                  </ul>
+                </details>
+              )}
+            </>
           )}
         </>
       )}
