@@ -47,7 +47,7 @@ test("client navigation renders the destination table", async ({ page }) => {
     .click();
   await page.waitForURL("**/roms");
   await expect(
-    page.getByRole("heading", { name: "ROMs", exact: true }),
+    page.getByRole("heading", { name: "ROMs", level: 1, exact: true }),
   ).toBeVisible();
   await expect(page.locator('a[href="/roms/lineageos"]')).toBeVisible();
 });
@@ -62,7 +62,9 @@ test("a brand page lists its devices", async ({ page }) => {
 test("the devices index links to letter pages", async ({ page }) => {
   await page.goto("/devices");
 
-  await expect(page.getByRole("heading", { name: "Devices" })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Devices", level: 1, exact: true }),
+  ).toBeVisible();
   await expect(page.locator('a[href="/devices/letter/a"]')).toBeVisible();
   await expect(page.locator('a[href="/devices/letter/g"]')).toBeVisible();
 });
@@ -133,7 +135,9 @@ test("the ROMs filter opens the catalogue for a match", async ({ page }) => {
 test("the brands index links to a brand", async ({ page }) => {
   await page.goto("/brands");
 
-  await expect(page.getByRole("heading", { name: "Brands" })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Brands", level: 1, exact: true }),
+  ).toBeVisible();
   await expect(page.getByRole("link", { name: /Xiaomi/ })).toHaveAttribute(
     "href",
     "/devices/xiaomi",
@@ -168,10 +172,14 @@ test("mobile shows sections outside the utility menu", async ({ page }) => {
 
   const menu = page.getByRole("button", { name: "Open menu" });
   await menu.click();
-  await expect(page.getByRole("menuitem", { name: "API index" })).toBeVisible();
+  await expect(
+    page.getByRole("menuitem", { name: "Dataset overview" }),
+  ).toBeVisible();
   await page.keyboard.press("Escape");
 
   await sections.getByRole("link", { name: "Devices" }).click();
   await expect(page).toHaveURL(/\/devices$/);
-  await expect(page.getByRole("heading", { name: "Devices" })).toBeVisible();
+  await expect(
+    page.getByRole("heading", { name: "Devices", level: 1, exact: true }),
+  ).toBeVisible();
 });

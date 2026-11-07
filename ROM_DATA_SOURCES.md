@@ -246,17 +246,17 @@ the ROM supports that device. In order of preference:
 Provenance (the URL a fetcher happened to read) is a tiebreaker, not the
 headline: a raw URL is used only when it is itself a good citation.
 
-- **A — URL already in the raw data.** The fetcher receives a device-specific
+- **A: URL already in the raw data.** The fetcher receives a device-specific
   URL and it is a citation. A URL is _not_ a citation when it is a contact link
   (Telegram, Discord), a download artifact or store page (`.zip`, pling), a
   maintainer profile, or shared across devices; such a source falls through to
   B, then C, then D. A pure contact field (e.g. `supportgroupurl`) is never
   picked.
-- **B — deterministic device page.** A per-device page exists and is derivable
+- **B: deterministic device page.** A per-device page exists and is derivable
   from the codename (verified live, with a real 404 for unknown codenames).
-- **C — list-only.** No per-device page; cite a pinned deep link to the exact
+- **C: list-only.** No per-device page; cite a pinned deep link to the exact
   file/commit the record came from.
-- **D — no device-specific page.** Cite the source index if one exists and
+- **D: no device-specific page.** Cite the source index if one exists and
   record it here as an exception.
 
 These rules are enforced globally by the adapter gate (`isCitation` in

@@ -20,7 +20,7 @@ interface OtaFile {
 }
 
 // Device support lives across one branch per Android version. crdroid.net lists
-// the union of every branch, so we do too — newest branch first, so a codename
+// the union of every branch, so we do too; newest branch first, so a codename
 // keeps its most recent build and forum link.
 function versionRank(branch: string): number {
   const [major = 0, minor = 0] = branch.split(".").map(Number);

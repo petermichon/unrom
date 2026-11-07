@@ -1,4 +1,4 @@
-# unrom — reverse proxy for the compose deployment (`proxy` profile).
+# unrom reverse proxy for the compose deployment (`proxy` profile).
 #
 # If you run your own proxy on the host, point it at the published ports
 # instead (they are bound to 127.0.0.1):
@@ -9,8 +9,10 @@ unrom.com {
 	# Transport compression for HTML/CSS/JS/JSON (browsers decode transparently).
 	encode zstd gzip
 
-	# Same-origin API — the frontend calls /api/* with no CORS.
-	handle /api/* {
+	# Same-origin API: the frontend calls /api/* with no CORS.
+	# The bare /api path is the human-readable index, so match it too.
+	@api path /api /api/*
+	handle @api {
 		reverse_proxy api:3000
 	}
 

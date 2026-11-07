@@ -2,6 +2,8 @@ import { expect, test } from "@playwright/test";
 
 const PAGES = [
   "/",
+  "/data",
+  "/legal",
   "/brands",
   "/devices",
   "/devices/letter/x",
@@ -43,6 +45,27 @@ test("indexable pages expose complete metadata", async ({ page }) => {
       ).not.toThrow();
     }
   }
+});
+
+test("data page exposes downloads and API", async ({ page }) => {
+  await page.goto("/data");
+  await expect(page.getByRole("heading", { name: "Downloads" })).toBeVisible();
+  await expect(
+    page.locator('a[href="/api/export/json"]').first(),
+  ).toBeVisible();
+  await expect(
+    page.locator('a[href="/api/export/sqlite"]').first(),
+  ).toBeVisible();
+  await expect(
+    page.locator('a[href="/api/openapi.json"]').first(),
+  ).toBeVisible();
+});
+
+test("legal page names the publisher and host", async ({ page }) => {
+  await page.goto("/legal");
+  await expect(page.getByRole("heading", { name: "Publisher" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Host" })).toBeVisible();
+  await expect(page.getByText("OVH SAS")).toBeVisible();
 });
 
 test("device metadata brands the model without duplicating it", async ({
@@ -116,6 +139,8 @@ test("section sitemaps list only canonical, indexable pages", async ({
 
   const pageXml = await pages.text();
   expect(pageXml).toContain("<loc>https://unrom.com/</loc>");
+  expect(pageXml).toContain("<loc>https://unrom.com/data</loc>");
+  expect(pageXml).toContain("<loc>https://unrom.com/legal</loc>");
   expect(pageXml).toContain("<loc>https://unrom.com/brands</loc>");
   expect(pageXml).toContain("<loc>https://unrom.com/devices</loc>");
   expect(pageXml).toContain("<loc>https://unrom.com/devices/letter/x</loc>");

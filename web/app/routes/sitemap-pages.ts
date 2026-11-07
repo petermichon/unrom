@@ -10,6 +10,8 @@ export async function loader() {
   return sitemapResponse(
     [
       "/",
+      "/data",
+      "/legal",
       "/devices",
       ...letters
         .filter((letter) => isUsefulDirectoryPage(letter.withRoms))

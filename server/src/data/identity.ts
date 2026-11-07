@@ -1,5 +1,5 @@
 // Device identity. A codename is only unique per vendor (manufacturer), not
-// globally — e.g. `sirius` is both a Sony and a Xiaomi device — so devices are
+// globally. For example, `sirius` is both a Sony and a Xiaomi device, so devices are
 // keyed by `(vendor, codename)`. Vendors are derived from the marketing brand
 // sources report; `null` means the source omitted it and it is inherited from
 // the same codename elsewhere.

@@ -2,7 +2,7 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-/* Self-hosted Inter Variable — latin + latin-ext (see public/fonts/). */
+/* Self-hosted Inter Variable: latin + latin-ext (see public/fonts/). */
 @font-face {
   font-family: "Inter Variable";
   font-style: normal;

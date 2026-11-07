@@ -28,8 +28,8 @@ docker compose -f deploy/compose.yaml up -d --build
 
 This builds the database + exports from `data/` (the `data` service), then runs:
 
-- **API** — `http://127.0.0.1:3000`
-- **Web** — `http://127.0.0.1:3001`
+- **API**: `http://127.0.0.1:3000`
+- **Web**: `http://127.0.0.1:3001`
 
 Both are bound to localhost; put a reverse proxy in front. An optional Caddy is
 included:
@@ -61,7 +61,7 @@ docker compose -f deploy/compose.yaml run --rm data
 #### Unattended refresh
 
 `scripts/refresh-data.sh` is the wrapper for cron, a systemd timer or a remote
-job. Nothing installs it — schedule it yourself:
+job. Nothing installs it; schedule it yourself:
 
 ```sh
 bash scripts/refresh-data.sh             # pull, ingest, build, verify, commit, push
@@ -93,17 +93,17 @@ npm run registry:suggest -- asus    # paste-ready entries for one vendor
 
 ### Production (image publishing)
 
-- **Images** (`.github/workflows/images.yml`) — on pushes to `main` (docs-only
+- **Images** (`.github/workflows/images.yml`): on pushes to `main` (docs-only
   changes are skipped) and manual runs, builds and publishes
   `ghcr.io/<owner>/unrom-api` and `unrom-web` tagged with the commit SHA and
   `latest`. Tests and typechecks are local: `npm run verify`; use
   `npm run verify:all` to include e2e.
-- **Deploy is pull-based** — the server runs [freshdock](https://github.com/Turbootzz/freshdock)
+- **Deploy is pull-based**: the server runs [freshdock](https://github.com/Turbootzz/freshdock)
   (`--profile deploy`), which recreates `api`/`web` when a new image is
   published. No SSH credentials or inbound access; healthchecks gate updates and
   roll back a broken image. `git pull` is only needed when the compose file or
   Caddyfile changes.
-- **Refresh data** — `npm run refresh` for the reviewed local flow, or
+- **Refresh data**: `npm run refresh` for the reviewed local flow, or
   `scripts/refresh-data.sh` when scheduled. Pushes to `main` build and deploy the
   images; there is no GitHub refresh job.
 
@@ -115,7 +115,7 @@ cd /srv/unrom
 docker compose -f deploy/compose.yaml --profile proxy --profile deploy up -d --build
 ```
 
-Rollback: change the tag and restart —
+Rollback: change the tag and restart:
 `UNROM_TAG=<previous-sha> docker compose -f deploy/compose.yaml --profile proxy --profile deploy up -d`.
 
 ### Without Docker
@@ -152,10 +152,10 @@ Response shapes are frozen in `contract/`.
 
 ## License
 
-- **Code** — AGPL-3.0-only ([`LICENSE`](./LICENSE)).
-- **Data & exports** — ODbL-1.0 ([`DATA_LICENSE`](./DATA_LICENSE)); upstream ROM
+- **Code**: AGPL-3.0-only ([`LICENSE`](./LICENSE)).
+- **Data & exports**: ODbL-1.0 ([`DATA_LICENSE`](./DATA_LICENSE)); upstream ROM
   data keeps its own terms. See [`ATTRIBUTION.md`](./ATTRIBUTION.md).
-- **Trademarks** — Android is a trademark of Google LLC. All other product
+- **Trademarks**: Android is a trademark of Google LLC. All other product
   names, logos, and brands are property of their respective owners and are used
   for identification purposes only. unrom is not affiliated with or endorsed by
   any of them.

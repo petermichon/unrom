@@ -8,7 +8,7 @@ const REPO = "Evolution-X/OTA";
 const BRANCHES = ["cnb", "bka", "vic", "udc"];
 
 // The project's published roster (drives evolution-x.org/devices). Used only as
-// a drift check — it can lag the OTA repo.
+// a drift check; it can lag the OTA repo.
 const ROSTER_URL =
   "https://raw.githubusercontent.com/Evolution-X/www_gitres/main/devices/devices.json";
 

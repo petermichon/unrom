@@ -124,6 +124,9 @@ app.get("/api", (c) =>
   }),
 );
 
+// Keep the index reachable with a trailing slash without duplicating the list.
+app.get("/api/", (c) => c.redirect("/api", 308));
+
 app.get("/api/health", (c) => {
   c.header("cache-control", "no-store");
   return c.json({ ok: true });

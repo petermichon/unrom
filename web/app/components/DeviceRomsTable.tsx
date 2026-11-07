@@ -117,7 +117,7 @@ export default function DeviceRomsTable({ roms }: Props) {
               </TooltipContent>
             </Tooltip>
           ) : (
-            <span className="text-muted-foreground">—</span>
+            <span className="text-muted-foreground">None</span>
           ),
       },
     ],

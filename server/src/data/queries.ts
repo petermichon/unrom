@@ -602,7 +602,7 @@ export function createApi(dbPath: string) {
     const needle = query?.trim().toLowerCase();
     const terms = needle ? searchTerms(needle) : [];
     // "Supported" means the device has build data, directly or through a
-    // covering target — not merely that it exists in the device catalogue.
+    // covering target, not merely that it exists in the device catalogue.
     const supported = new Set(
       db
         .select({ vendor: romDevices.vendor, codename: romDevices.codename })

@@ -4,8 +4,8 @@
 
 **unrom exists for exactly two things: data quality and data accessibility.**
 
-- **Data quality** — accurate, complete, current, correct, deduplicated, with provenance and validation.
-- **Data accessibility** — currently: available via the API (complete, stable, fast, exportable) and viewable via the frontend. This is the current state, not a boundary — **any channel that makes the data more available or consumable is in scope** (formats, bulk exports, integrations, discovery).
+- **Data quality**: accurate, complete, current, correct, deduplicated, with provenance and validation.
+- **Data accessibility**: currently available via the API (complete, stable, fast, exportable) and viewable via the frontend. This is the current state, not a boundary. **Any channel that makes the data more available or consumable is in scope** (formats, bulk exports, integrations, discovery).
 
 Roles:
 
@@ -14,7 +14,7 @@ Roles:
 
 **Every decision is judged against this rule.** A change earns its place only if it
 improves **data quality** or **data accessibility**. Anything that doesn't is out of
-scope — no features, polish, or infrastructure for their own sake.
+scope. No features, polish, or infrastructure for their own sake.
 
 ## Product priority
 
@@ -26,7 +26,7 @@ scope — no features, polish, or infrastructure for their own sake.
 
 **While in beta, nothing public is a compatibility promise.** Routes, URLs, query
 params, UI components, export filenames, and vendor/device ids may be renamed or
-removed outright — no aliases, redirects, deprecation windows, or shims. Prefer
+removed outright. No aliases, redirects, deprecation windows, or shims. Prefer
 the clean shape over the compatible one.
 
 Three things are exceptions, because they were never compatibility:

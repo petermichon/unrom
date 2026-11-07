@@ -55,7 +55,7 @@ export function formatVendor(report: RegistryReport, vendor: string): string {
       lines.push(`  // ${entry.codename}:`);
       for (const source of entry.sources) {
         lines.push(
-          `  //   ${JSON.stringify(source.name)} — ${source.romIds.join(", ")}`,
+          `  //   ${JSON.stringify(source.name)}: ${source.romIds.join(", ")}`,
         );
       }
       lines.push(

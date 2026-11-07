@@ -1,4 +1,4 @@
-# unrom — self-hosted deployment.
+# unrom self-hosted deployment.
 #
 #   docker compose -f deploy/compose.yaml up -d --build            # build locally
 #   docker compose -f deploy/compose.yaml --profile proxy up -d    # + bundled Caddy

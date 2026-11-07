@@ -6,7 +6,7 @@ import type { NormalizedRomDevice } from "../normalized.ts";
 const ROM_ID = "kali-nethunter";
 const ROM_NAME = "Kali NetHunter";
 
-// Kali keys some entries by build variant rather than device — e.g. `surya-16`
+// Kali keys some entries by build variant rather than device, e.g. `surya-16`
 // is the PixelOS/Android-16 kernel for `surya`, and `oneplus-nord` is `avicii`.
 // The entry's own `devicenames` names the real device; map the known variant
 // keys so they never become phantom devices.

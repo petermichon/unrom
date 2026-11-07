@@ -11,7 +11,7 @@ export interface RomCatalogEntry {
 //
 // `id` is the ROM id used by sources and by the API (`/roms/:id`); a ROM with a
 // fetcher must use that source's id. Status is a judgement about upstream
-// activity, not about how fresh our snapshot is — a ROM whose repos are dormant
+// activity, not about how fresh our snapshot is: a ROM whose repos are dormant
 // is `discontinued` even if `data/` still holds its last roster. Entries without
 // a fetcher have no device data yet (`deviceCount` 0 in the API); entries we have
 // not assessed upstream are `unknown`, and MIUI/HyperOS-based ports are only

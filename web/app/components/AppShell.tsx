@@ -84,6 +84,11 @@ function MobileMenu() {
         <DropdownMenuGroup>
           <DropdownMenuLabel>Data</DropdownMenuLabel>
           <DropdownMenuItem
+            render={<Link to="/data" aria-label="Dataset overview" />}
+          >
+            Dataset overview
+          </DropdownMenuItem>
+          <DropdownMenuItem
             render={
               <a
                 href="/api/export/json"
@@ -105,16 +110,6 @@ function MobileMenu() {
           >
             SQLite export
           </DropdownMenuItem>
-          <DropdownMenuItem render={<a href="/api" aria-label="API index" />}>
-            API
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            render={
-              <a href="/api/openapi.json" aria-label="OpenAPI specification" />
-            }
-          >
-            OpenAPI
-          </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem
@@ -128,18 +123,6 @@ function MobileMenu() {
           }
         >
           GitHub
-        </DropdownMenuItem>
-        <DropdownMenuItem
-          render={
-            <a
-              href={ODBL_URL}
-              target="_blank"
-              rel="noreferrer"
-              aria-label="ODbL license"
-            />
-          }
-        >
-          ODbL license
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
@@ -224,9 +207,9 @@ export default function AppShell({ updatedAt, updatedAtIso, children }: Props) {
             <p>
               Last updated{" "}
               {updatedAtIso ? (
-                <time dateTime={updatedAtIso}>{updatedAt ?? "—"}</time>
+                <time dateTime={updatedAtIso}>{updatedAt ?? "unknown"}</time>
               ) : (
-                (updatedAt ?? "—")
+                (updatedAt ?? "unknown")
               )}
             </p>
             <nav
@@ -234,15 +217,20 @@ export default function AppShell({ updatedAt, updatedAtIso, children }: Props) {
               data-nosnippet
               className="flex flex-wrap items-center gap-4"
             >
-              <a href="/api" className="hover:text-foreground hover:underline">
-                API
-              </a>
-              <a
-                href="/api/openapi.json"
+              <Link
+                to="/data"
+                prefetch="intent"
                 className="hover:text-foreground hover:underline"
               >
-                OpenAPI
-              </a>
+                Data
+              </Link>
+              <Link
+                to="/legal"
+                prefetch="intent"
+                className="hover:text-foreground hover:underline"
+              >
+                Legal
+              </Link>
               <a
                 href={ODBL_URL}
                 target="_blank"
@@ -253,12 +241,6 @@ export default function AppShell({ updatedAt, updatedAtIso, children }: Props) {
               </a>
             </nav>
           </div>
-          <p className="mx-auto mt-3 w-full max-w-4xl">
-            Android is a trademark of Google LLC. All other product names,
-            logos, and brands are property of their respective owners and are
-            used for identification purposes only. unrom is not affiliated with
-            or endorsed by any of them.
-          </p>
         </footer>
       </div>
     </TooltipProvider>

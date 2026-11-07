@@ -33,7 +33,7 @@ have the right to submit the contribution under the project's licenses.
    `server/src/ingest/fetch/` and registered in `server/src/ingest/fetch-all.ts`.
 2. **Normalizers** in `server/src/sources/` map a source's shape into the
    canonical `NormalizedRomDevice` record; register them in the source registry.
-3. Keep `data/` immutable — never hand-edit it; change the fetcher instead.
+3. Keep `data/` immutable: never hand-edit it; change the fetcher instead.
 4. Add the source to `ATTRIBUTION.md`.
 
 ## Typography

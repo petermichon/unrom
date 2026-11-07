@@ -1,7 +1,7 @@
 /**
  * OpenAPI 3.1 description of the unrom API.
  *
- * Every shape here mirrors `@unrom/contract` — that package stays the single
+ * Every shape here mirrors `@unrom/contract`; that package stays the single
  * source of truth for the DTOs, and this document is the machine-readable view
  * of it so clients (and their generators) do not have to reverse-engineer the
  * endpoints from the README.

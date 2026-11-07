@@ -11,7 +11,7 @@ interface GitHubFile {
 
 /**
  * The wiki holds one YAML file per device (and per variant). We list the
- * directory once, then download each file from its raw URL — only the listing
+ * directory once, then download each file from its raw URL; only the listing
  * counts against the GitHub API rate limit.
  */
 export async function listDevices(): Promise<string | Error> {

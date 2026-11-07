@@ -98,7 +98,7 @@ export default function Home() {
           <span className="text-foreground">{formatNumber(counts.brands)}</span>{" "}
           brands and{" "}
           <span className="text-foreground">{formatNumber(counts.roms)}</span>{" "}
-          ROMs —{" "}
+          ROMs;{" "}
           <span className="text-foreground">
             {formatNumber(counts.coveredRoms)}
           </span>{" "}
@@ -108,27 +108,52 @@ export default function Home() {
 
       <DeviceSearch examples={EXAMPLES} />
 
-      <ul className="grid gap-3 sm:grid-cols-3">
-        {sections.map((section) => (
-          <li key={section.to}>
+      <section aria-labelledby="browse" className="flex flex-col gap-3">
+        <div className="flex flex-col gap-2">
+          <h2
+            id="browse"
+            className="font-heading text-lg font-semibold tracking-tight"
+          >
+            Browse the database
+          </h2>
+          <p className="text-sm text-muted-foreground">
+            Each device page lists every custom ROM with a known build, the
+            codename, and the source behind it. The dataset is rebuilt from
+            upstream device lists and refreshed regularly. It is available as
+            JSON, SQLite, and a REST API; see the{" "}
             <Link
-              to={section.to}
+              to="/data"
               prefetch="intent"
-              className="flex h-full flex-col gap-1 rounded-xl border border-border/60 p-4 outline-none transition-colors hover:border-foreground/20 hover:bg-muted/40 focus-visible:ring-3 focus-visible:ring-ring/50"
+              className="text-foreground hover:underline"
             >
-              <span className="font-heading text-base font-semibold">
-                {section.title}
-              </span>
-              <span className="text-2xl font-semibold tabular-nums">
-                {formatNumber(section.count)}
-              </span>
-              <span className="text-xs text-muted-foreground">
-                {section.note}
-              </span>
+              data page
             </Link>
-          </li>
-        ))}
-      </ul>
+            .
+          </p>
+        </div>
+
+        <ul className="grid gap-3 sm:grid-cols-3">
+          {sections.map((section) => (
+            <li key={section.to}>
+              <Link
+                to={section.to}
+                prefetch="intent"
+                className="flex h-full flex-col gap-1 rounded-xl border border-border/60 p-4 outline-none transition-colors hover:border-foreground/20 hover:bg-muted/40 focus-visible:ring-3 focus-visible:ring-ring/50"
+              >
+                <h3 className="font-heading text-base font-semibold">
+                  {section.title}
+                </h3>
+                <span className="text-2xl font-semibold tabular-nums">
+                  {formatNumber(section.count)}
+                </span>
+                <span className="text-xs text-muted-foreground">
+                  {section.note}
+                </span>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </section>
 
       <section aria-labelledby="top-devices" className="flex flex-col gap-3">
         <div className="flex items-baseline justify-between gap-2">
@@ -148,39 +173,6 @@ export default function Home() {
           ))}
         </ul>
       </section>
-
-      <p className="text-xs text-muted-foreground">
-        Data:{" "}
-        <a
-          href="/api/devices"
-          className="font-mono text-foreground/80 hover:text-foreground hover:underline"
-        >
-          GET /api/devices
-        </a>{" "}
-        ·{" "}
-        <a
-          href="/api/export/json"
-          className="hover:text-foreground hover:underline"
-        >
-          JSON
-        </a>{" "}
-        ·{" "}
-        <a
-          href="/api/export/sqlite"
-          className="hover:text-foreground hover:underline"
-        >
-          SQLite
-        </a>{" "}
-        ·{" "}
-        <a
-          href="https://opendatacommons.org/licenses/odbl/1-0/"
-          target="_blank"
-          rel="noreferrer"
-          className="hover:text-foreground hover:underline"
-        >
-          ODbL
-        </a>
-      </p>
     </section>
   );
 }

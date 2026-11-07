@@ -63,6 +63,49 @@ export function fetchSummary(): Promise<Summary> {
   return get<Summary>("/api/summary");
 }
 
+/** The API's own index, used by the data page to list endpoints. */
+export interface ApiIndex {
+  name: string;
+  endpoints: string[];
+}
+
+export function fetchApiIndex(): Promise<ApiIndex> {
+  return get<ApiIndex>("/api");
+}
+
+async function headContentLength(path: string): Promise<number | null> {
+  try {
+    const response = await fetch(`${apiBase()}${path}`, { method: "HEAD" });
+    if (!response.ok) return null;
+    const value = response.headers.get("content-length");
+    return value ? Number(value) : null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Export sizes are not in any JSON response, so ask the API with HEAD. A
+ * failure is non-fatal: the data page still links to the downloads.
+ */
+export async function fetchExportSizes(): Promise<{
+  json: number | null;
+  sqlite: number | null;
+}> {
+  const cached = cache.get("/api/export/sizes");
+  if (cached !== undefined) {
+    return cached as { json: number | null; sqlite: number | null };
+  }
+
+  const [json, sqlite] = await Promise.all([
+    headContentLength("/api/export/json"),
+    headContentLength("/api/export/sqlite"),
+  ]);
+  const sizes = { json, sqlite };
+  cache.set("/api/export/sizes", sizes);
+  return sizes;
+}
+
 export function fetchDeviceLetters(): Promise<LetterSummary[]> {
   return get<LetterSummary[]>("/api/devices/letters");
 }

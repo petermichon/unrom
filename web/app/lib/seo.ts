@@ -18,9 +18,9 @@ function datasetNode(): Record<string, unknown> {
   return {
     "@type": "Dataset",
     "@id": `${SITE_URL}/#dataset`,
-    name: "unrom — device–ROM compatibility database",
+    name: "unrom: device–ROM compatibility database",
     description: SITE_DESCRIPTION,
-    url: SITE_URL,
+    url: `${SITE_URL}/data`,
     license: ODBL_URL,
     isAccessibleForFree: true,
     creator: { "@id": `${SITE_URL}/#organization` },
@@ -90,7 +90,7 @@ interface PageMetaInput {
 /**
  * Title, description and social tags for a page. Engines fall back to page
  * body text when a description is missing or too generic, which is how
- * navigation chrome ends up in search snippets — so every page passes one.
+ * navigation chrome ends up in search snippets, so every page passes one.
  */
 export function pageMeta({
   title,

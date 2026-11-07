@@ -222,7 +222,7 @@ export default function RomsRoute() {
               className="rounded-xl border border-border/60"
             >
               <summary className="cursor-pointer px-4 py-3 text-sm font-medium text-muted-foreground outline-none focus-visible:ring-3 focus-visible:ring-ring/50">
-                Catalogue only — {formatNumber(filteredCatalogue.length)}{" "}
+                Catalogue only: {formatNumber(filteredCatalogue.length)}{" "}
                 {filteredCatalogue.length === 1 ? "ROM" : "ROMs"} with no device
                 data yet
               </summary>

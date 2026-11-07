@@ -5,7 +5,7 @@ import { DB_PATH } from "../paths.ts";
 // Reference health check. Every `rom_devices.reference_url` is a citation for the
 // claim "this ROM supports this device"; a citation that no longer resolves is
 // worse than none, because it implies verifiability. This script reads the
-// built database and reports which reference hosts are dead — it never mutates
+// built database and reports which reference hosts are dead; it never mutates
 // data. Reclassify the affected sources (see ROM_DATA_SOURCES.md) by hand.
 //
 // Probing is per-host, not per-URL: the dataset has ~1500 device pages across
@@ -104,7 +104,7 @@ async function mapLimit<T, R>(
 
 const references = collectReferences(DB_PATH);
 if (references.length === 0) {
-  console.error(`No references found in ${DB_PATH} — build the data first.`);
+  console.error(`No references found in ${DB_PATH}. Build the data first.`);
   process.exit(1);
 }
 
@@ -185,7 +185,7 @@ if (dead.length === 0) {
   console.log("No dead reference hosts.");
   if (timeouts.length > 0) {
     console.log(
-      "Timed-out hosts are inconclusive — re-run or check them by hand.",
+      "Timed-out hosts are inconclusive. Re-run or check them by hand.",
     );
   }
   process.exit(0);
@@ -194,7 +194,7 @@ if (dead.length === 0) {
 for (const report of dead) {
   const reason = report.error ?? `HTTP ${report.status}`;
   console.log(
-    `${report.host} — ${report.records} record(s), ${report.urls} URL(s)`,
+    `${report.host}: ${report.records} record(s), ${report.urls} URL(s)`,
   );
   console.log(`  ${reason}: ${report.sample}`);
 }
@@ -203,7 +203,7 @@ if (blocked.length > 0) {
   console.log("\nBlocked (alive, but refuses automated requests):");
   for (const report of blocked) {
     console.log(
-      `  ${report.host} — HTTP ${report.status}, ${report.records} record(s)`,
+      `  ${report.host}: HTTP ${report.status}, ${report.records} record(s)`,
     );
   }
 }
@@ -211,7 +211,7 @@ if (blocked.length > 0) {
 if (timeouts.length > 0) {
   console.log("\nTimed out (inconclusive):");
   for (const report of timeouts) {
-    console.log(`  ${report.host} — ${report.records} record(s)`);
+    console.log(`  ${report.host}: ${report.records} record(s)`);
   }
 }
 
