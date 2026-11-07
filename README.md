@@ -61,6 +61,30 @@ docker compose -f deploy/compose.yaml run --rm data
 The `Refresh data (manual)` workflow is a fallback for running the same ingest
 remotely; it is no longer scheduled.
 
+#### Unattended refresh
+
+`scripts/refresh-data.sh` is the wrapper for cron, a systemd timer or a remote
+job. Nothing installs it — schedule it yourself:
+
+```sh
+bash scripts/refresh-data.sh             # pull, ingest, build, verify, commit, push
+bash scripts/refresh-data.sh --no-push   # commit locally only
+```
+
+It refuses a dirty tracked tree, tolerates partial source failures, commits only
+`data/`, and skips commit/push when nothing changed. Partial ingest still has to
+pass the build and `npm run verify` before anything is committed. Pushes must
+come from `main`, and git identity must be configured because commits are
+signed off.
+
+Example schedule (not installed by the repo):
+
+```cron
+17 3 * * * cd /srv/unrom && bash scripts/refresh-data.sh >>/var/log/unrom-refresh.log 2>&1
+```
+
+`flock` is used when available so overlapping runs exit instead of racing.
+
 Each build also writes `server/dist/registry-report.json`: source-reported names
 for uncurated devices (candidates), conflicts where sources disagree, and
 per-vendor coverage. Use it to grow the curated registry incrementally:

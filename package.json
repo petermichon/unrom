@@ -31,6 +31,7 @@
     "ingest": "npm run ingest --workspace server",
     "build:data": "npm run build:data --workspace server",
     "refresh": "npm run ingest && npm run build:data && npm run verify && git status --short data/",
+    "refresh:auto": "bash scripts/refresh-data.sh",
     "registry:suggest": "npm run registry:suggest --workspace server",
     "api": "npm run start --workspace server",
     "catalog:report": "npm run catalog:report --workspace server"
