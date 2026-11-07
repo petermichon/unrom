@@ -1,4 +1,5 @@
 import { fetchDeviceLetters, fetchMeta } from "@/lib/data";
+import { isUsefulDirectoryPage } from "@/lib/indexing";
 import { sitemapResponse } from "@/lib/sitemap";
 
 export async function loader() {
@@ -11,7 +12,7 @@ export async function loader() {
       "/",
       "/devices",
       ...letters
-        .filter((letter) => letter.withRoms > 0)
+        .filter((letter) => isUsefulDirectoryPage(letter.withRoms))
         .map(
           (letter) =>
             `/devices/letter/${letter.letter === "#" ? "0-9" : letter.letter.toLowerCase()}`,

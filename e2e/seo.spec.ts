@@ -193,7 +193,7 @@ test("pagination pages without ROM data are not indexable", async ({
   const letter = letters.find((candidate) => {
     const pages = Math.ceil(candidate.deviceCount / pageSize);
     return (
-      candidate.withRoms > 0 &&
+      candidate.withRoms >= 2 &&
       pages > 1 &&
       candidate.withRoms <= (pages - 1) * pageSize
     );
@@ -211,6 +211,46 @@ test("pagination pages without ROM data are not indexable", async ({
     "content",
     "noindex",
   );
+});
+
+test("directory pages with a single ROM device are not indexable", async ({
+  page,
+  request,
+}) => {
+  const brands = (await (
+    await request.get("http://127.0.0.1:3000/api/brands")
+  ).json()) as Array<{ vendor: string; withRoms: number }>;
+  const brand = brands.find((candidate) => candidate.withRoms === 1);
+
+  if (brand) {
+    await page.goto(`/devices/${brand.vendor}`);
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
+      "content",
+      "noindex",
+    );
+    const sitemap = await (await request.get("/sitemap-brands.xml")).text();
+    expect(sitemap).not.toContain(
+      `<loc>https://unrom.com/devices/${brand.vendor}</loc>`,
+    );
+  }
+
+  const letters = (await (
+    await request.get("http://127.0.0.1:3000/api/devices/letters")
+  ).json()) as Array<{ letter: string; withRoms: number }>;
+  const letter = letters.find((candidate) => candidate.withRoms === 1);
+
+  if (letter) {
+    const slug = letter.letter === "#" ? "0-9" : letter.letter.toLowerCase();
+    await page.goto(`/devices/letter/${slug}`);
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
+      "content",
+      "noindex",
+    );
+    const sitemap = await (await request.get("/sitemap-pages.xml")).text();
+    expect(sitemap).not.toContain(
+      `<loc>https://unrom.com/devices/letter/${slug}</loc>`,
+    );
+  }
 });
 
 test("zero-ROM device pages are not indexable", async ({ page }) => {

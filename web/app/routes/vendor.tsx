@@ -3,6 +3,7 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import DeviceRow from "@/components/DeviceRow";
 import { PageHeader } from "@/components/PageHeader";
 import { fetchDevicesPage } from "@/lib/data";
+import { isUsefulDirectoryPage } from "@/lib/indexing";
 import { deviceName } from "@/lib/devices";
 import {
   errorMeta,
@@ -34,7 +35,7 @@ export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
       path: `/devices/${vendor}${page > 1 ? `?page=${page}` : ""}`,
     }),
     ...modifiedMeta(updatedAt),
-    ...(loaderData.hasRoms ? [] : [{ name: "robots", content: "noindex" }]),
+    ...(loaderData.isIndexable ? [] : [{ name: "robots", content: "noindex" }]),
     ...(devices.length > 0
       ? [
           {
@@ -83,7 +84,9 @@ async function load(vendor: string, request: URL) {
     total,
     page,
     pages,
-    hasRoms: devices.some((device) => device.roms.length > 0),
+    isIndexable: isUsefulDirectoryPage(
+      devices.filter((device) => device.roms.length > 0).length,
+    ),
   };
 }
 
