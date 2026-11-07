@@ -141,11 +141,18 @@ const VENDOR_BY_CODENAME: Record<string, string> = {
   emerald: "teracube",
   gs290: "gigaset",
   gs6_venus: "gigaset",
+  lilac: "sony",
+  maple_dsds: "sony",
   mimir: "volla",
   one: "murena",
   oscar: "realme",
+  poplar_dsds: "sony",
+  sirius: "sony",
   tulip: "xiaomi",
   two: "murena",
+  x2: "leeco",
+  z3tc: "sony",
+  z3tcw: "sony",
   zirconia: "teracube",
 };
 

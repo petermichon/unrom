@@ -114,7 +114,7 @@ Out of scope: recoveries, root tools, GSIs and repacks, OEM stock skins.
 - Good4Nothing-AOSP
 - 🟢 GrapheneOS
 - Halcyon - Calla Lily
-- ❌ Halcyon Project
+- ❌ Halcyon
 - ❌ Halogen OS
 - HaloUI
 - 🟢 Havoc-OS
@@ -142,6 +142,7 @@ Out of scope: recoveries, root tools, GSIs and repacks, OEM stock skins.
 - ❌ LightningFastRom
 - LightningOS AOSP
 - 🟢 LineageOS
+- 🟢 LineageOS for microG
 - LineageOS x CLO
 - LineageOS-Ext
 - ❌ Liquid Remix
@@ -154,7 +155,7 @@ Out of scope: recoveries, root tools, GSIs and repacks, OEM stock skins.
 - ❌ LunarUI
 - ❌ Magnus OS
 - ❌ Mallu OS
-- 🟢 Matrixx
+- 🟢 Project Matrixx
 - ❌ Miku UI
 - 🟢 MistOS
 - MIUI ONE OS

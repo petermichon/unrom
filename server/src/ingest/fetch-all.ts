@@ -22,10 +22,14 @@ import { listDevices as listDroidXUI } from "./fetch/droidxui.ts";
 import { listDevices as listEvolutionX } from "./fetch/evolutionx.ts";
 import { listDevices as listGrapheneOS } from "./fetch/grapheneos.ts";
 import { listDevices as listHavocOS } from "./fetch/havocos.ts";
-import { listDevices as listIode } from "./fetch/iode.ts";
+import {
+  listDevices as listIode,
+  listSupportedDevices as listIodeSupported,
+} from "./fetch/iode.ts";
 import { listDevices as listKaliNetHunter } from "./fetch/kali-nethunter.ts";
 import { listDevices as listKenvyra } from "./fetch/kenvyra.ts";
 import { listDevices as listLineageOS } from "./fetch/lineageos.ts";
+import { listDevices as listLineageOSMicroG } from "./fetch/lineageos-microg.ts";
 import { listDevices as listLunaris } from "./fetch/lunaris.ts";
 import { listDevices as listMatrixx } from "./fetch/matrixx.ts";
 import { listDevices as listMistOS } from "./fetch/mistos.ts";
@@ -70,6 +74,7 @@ const sources: Source[] = [
   { id: "grapheneos", file: "grapheneos.html", fetch: listGrapheneOS },
   { id: "havocos", file: "havocos.txt", fetch: listHavocOS },
   { id: "iode", file: "iode.json", fetch: listIode },
+  { id: "iode", file: "iode.html", fetch: listIodeSupported },
   {
     id: "kali-nethunter",
     file: "kali-nethunter.yml",
@@ -77,6 +82,11 @@ const sources: Source[] = [
   },
   { id: "kenvyra", file: "kenvyra.json", fetch: listKenvyra },
   { id: "lineageos", file: "lineageos.json", fetch: listLineageOS },
+  {
+    id: "lineageos-microg",
+    file: "lineageos-microg.html",
+    fetch: listLineageOSMicroG,
+  },
   { id: "lunaris", file: "lunaris.json", fetch: listLunaris },
   { id: "matrixx", file: "matrixx.json", fetch: listMatrixx },
   { id: "mistos", file: "mistos.json", fetch: listMistOS },

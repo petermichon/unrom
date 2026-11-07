@@ -9,10 +9,11 @@ import { createEosParser } from "./eos.ts";
 import { parseEvolutionX } from "./evolutionx.ts";
 import { parseGrapheneOS } from "./grapheneos.ts";
 import { parseHavocOS } from "./havocos.ts";
-import { parseIode } from "./iode.ts";
+import { parseIode, parseIodeHtml } from "./iode.ts";
 import { parseKaliNetHunter } from "./kali-nethunter.ts";
 import { parseKenvyra } from "./kenvyra.ts";
 import { parseLineageOS } from "./lineageos.ts";
+import { parseLineageOSMicroG } from "./lineageos-microg.ts";
 import { parsePixelOS } from "./pixelos.ts";
 import { parseRisingOS } from "./risingos.ts";
 import { parseSuperiorOS } from "./superioros.ts";
@@ -166,7 +167,7 @@ const configs: DeviceSource[] = [
   },
   {
     id: "matrixx",
-    romName: "Matrixx",
+    romName: "Project Matrixx",
     file: "matrixx.json",
     select: selectors.devices("devices"),
     name: ["model"],
@@ -295,6 +296,12 @@ const specialSources: SourceAdapter[] = [
     parse: parseLineageOS,
   },
   {
+    id: "lineageos-microg",
+    romName: "LineageOS for microG",
+    file: "lineageos-microg.html",
+    parse: parseLineageOSMicroG,
+  },
+  {
     id: "evolutionx",
     romName: "Evolution X",
     file: "evolutionx.json",
@@ -307,6 +314,7 @@ const specialSources: SourceAdapter[] = [
     parse: parseGrapheneOS,
   },
   { id: "iode", romName: "iodéOS", file: "iode.json", parse: parseIode },
+  { id: "iode", romName: "iodéOS", file: "iode.html", parse: parseIodeHtml },
   {
     id: "eos",
     romName: "/e/OS",
