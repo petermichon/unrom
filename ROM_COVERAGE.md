@@ -237,7 +237,7 @@ Out of scope: recoveries, root tools, GSIs and repacks, OEM stock skins.
 - ❌ Stag OS
 - ❌ StatiX OS
 - SunOS Project
-- ❌ Superior OS
+- 🟢 Superior OS
 - ❌ Syberia OS
 - ❌ TenXOS
 - ❌ Tequila OS

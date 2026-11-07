@@ -35,6 +35,7 @@ import { listDevices as listProjectInfinityX } from "./fetch/projectinfinityx.ts
 import { listDevices as listPixysOS } from "./fetch/pixysos.ts";
 import { listDevices as listProjectPixelAge } from "./fetch/projectpixelage.ts";
 import { listDevices as listRisingOS } from "./fetch/risingos.ts";
+import { listDevices as listSuperiorOS } from "./fetch/superioros.ts";
 import { DATA_DIR } from "../paths.ts";
 
 type DeviceList = () => Promise<string | Error>;
@@ -106,6 +107,7 @@ const sources: Source[] = [
     fetch: listProjectPixelAge,
   },
   { id: "risingos", file: "risingos.md", fetch: listRisingOS },
+  { id: "superioros", file: "superioros.json", fetch: listSuperiorOS },
 ];
 
 const only = process.argv.slice(2);

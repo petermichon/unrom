@@ -14,6 +14,7 @@ import { parseKenvyra } from "./kenvyra.ts";
 import { parseLineageOS } from "./lineageos.ts";
 import { parsePixelOS } from "./pixelos.ts";
 import { parseRisingOS } from "./risingos.ts";
+import { parseSuperiorOS } from "./superioros.ts";
 
 export interface SourceAdapter {
   id: string;
@@ -238,6 +239,12 @@ const specialSources: SourceAdapter[] = [
     romName: "RisingOS",
     file: "risingos.md",
     parse: parseRisingOS,
+  },
+  {
+    id: "superioros",
+    romName: "SuperiorOS",
+    file: "superioros.json",
+    parse: parseSuperiorOS,
   },
   {
     id: "kenvyra",

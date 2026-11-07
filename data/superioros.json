@@ -1,0 +1,473 @@
+{
+  "source": "https://github.com/SuperiorOS-Devices/official_devices/tree/fourteen",
+  "devices": [
+    {
+      "file": "Mi439.json",
+      "raw": {
+        "response": [
+          {
+            "datetime": 1666222664,
+            "filename": "SuperiorOS-Thirteen-Mi439-RELEASE-20221019-2340.zip",
+            "id": "81c2a3db2a4f419dcc36ca6c11471b19115880975eae00337de7597103fbee2a",
+            "romtype": "Mi439",
+            "size": 872970847,
+            "url": "https://master.dl.sourceforge.net/project/superioros/Mi439/vanilla/SuperiorOS-Thirteen-Mi439-RELEASE-20221019-2340.zip",
+            "version": "Thirteen",
+            "device_name": "Redmi 7a/ 8 series",
+            "maintainer": "karann2354"
+          }
+        ]
+      }
+    },
+    {
+      "file": "RMX2020.json",
+      "raw": {
+        "response": [
+          {
+            "datetime": 1692067597,
+            "filename": "SuperiorOS-Thirteen-RMX2020-RELEASE-20230815-0250.zip",
+            "id": "f2aed5bda6104704270065a09db229743fc4cff3661972457d1a380c04d8d8ea",
+            "romtype": "RELEASE",
+            "size": 1051321793,
+            "url": "https://master.dl.sourceforge.net/project/superioros/RMX2020/vanilla/SuperiorOS-Thirteen-RMX2020-RELEASE-20230815-0250.zip",
+            "version": "Thirteen",
+            "device_name": "Realme C3/ Narzo 10A",
+            "maintainer": "Lakshit (@WillyS69)"
+          }
+        ]
+      }
+    },
+    {
+      "file": "RMX3461.json",
+      "raw": {
+        "response": [
+          {
+            "datetime": 1683950124,
+            "filename": "SuperiorOS-Thirteen-RMX3461-RELEASE-20230513-0355.zip",
+            "id": "9b0c1b5ca9dbd43ed3319ee6ebf129c9bdb0b890092671ba34ed58b1859bd0a7",
+            "romtype": "RELEASE",
+            "size": 1516750298,
+            "url": "https://master.dl.sourceforge.net/project/superioros/RMX3461/vanilla/SuperiorOS-Thirteen-RMX3461-RELEASE-20230513-0355.zip",
+            "version": "Thirteen",
+            "device_name": "Realme 9 SE 5G",
+            "maintainer": "ZirgomHaidar"
+          }
+        ]
+      }
+    },
+    {
+      "file": "alioth.json",
+      "raw": {
+        "response": [
+          {
+            "datetime": 1697769270,
+            "filename": "SuperiorOS-Thirteen-alioth-RELEASE-20231020-0234.zip",
+            "id": "ad2c8671a0ac534703786ae2b6f6e375ea484d64d9a8fe9caa5f1283b80353ef",
+            "romtype": "RELEASE",
+            "size": 1361514580,
+            "url": "https://master.dl.sourceforge.net/project/superioros/alioth/vanilla/SuperiorOS-Thirteen-alioth-RELEASE-20231020-0234.zip",
+            "version": "Thirteen",
+            "device_name": "Poco F3/ Mi 11x/ Redmi K40",
+            "maintainer": "CHAITANYA (@chaitanyakm)"
+          }
+        ]
+      }
+    },
+    {
+      "file": "avicii.json",
+      "raw": {
+        "response": [
+          {
+            "datetime": 1735206792,
+            "filename": "SuperiorOS-Fourteen-avicii-RELEASE-20241226-0954.zip",
+            "id": "71a2754cc72f5f962e82aa97477ed77125162429fe917a22d1c876e91af341d7",
+            "romtype": "RELEASE",
+            "size": 1299810935,
+            "url": "https://master.dl.sourceforge.net/project/superioros/avicii/vanilla/SuperiorOS-Fourteen-avicii-RELEASE-20241226-0954.zip",
+            "version": "Fourteen",
+            "device_name": "Oneplus Nord",
+            "maintainer": "Sipun Ku Mahanta (@Darkstar085)"
+          }
+        ]
+      }
+    },
+    {
+      "file": "beryllium.json",
+      "raw": {
+        "response": [
+          {
+            "datetime": 1707628912,
+            "filename": "SuperiorOS-Fourteen-beryllium-RELEASE-20240211-0524.zip",
+            "id": "5a47e767b5ed4b8a03d29147a6c6bd3243b5250b690a4347494027fe8313a623",
+            "romtype": "RELEASE",
+            "size": 1415787158,
+            "url": "https://master.dl.sourceforge.net/project/superioros/beryllium/vanilla/SuperiorOS-Fourteen-beryllium-RELEASE-20240211-0524.zip",
+            "version": "Fourteen",
+            "device_name": "Xiaomi Pocophone F1",
+            "maintainer": "Akshat (@Legendleo90)"
+          }
+        ]
+      }
+    },
+    {
+      "file": "davinci.json",
+      "raw": {
+        "response": [
+          {
+            "datetime": 1678326361,
+            "filename": "SuperiorOS-Thirteen-davinci-RELEASE-20230309-0147.zip",
+            "id": "e75d74da480bb1c91218d898e06fe6c615ef86fc0ad04fea9c1b1ddf00ca1646",
+            "romtype": "RELEASE",
+            "size": 1456551307,
+            "url": "https://master.dl.sourceforge.net/project/superioros/davinci/vanilla/SuperiorOS-Thirteen-davinci-RELEASE-20230309-0147.zip",
+            "version": "Thirteen",
+            "device_name": "Xiaomi Mi 9T/Redmi K20",
+            "maintainer": "MK(@SILENT_KILLER404)"
+          }
+        ]
+      }
+    },
+    {
+      "file": "enchilada.json",
+      "raw": {
+        "response": [
+          {
+            "datetime": 1707584383,
+            "filename": "SuperiorOS-Fourteen-enchilada-RELEASE-20240210-1710.zip",
+            "id": "9f83e1dc030e11dcce6158bde9fd9e1cedfcde6fe9dc1666170d32aae558493c",
+            "romtype": "RELEASE",
+            "size": 1131081772,
+            "url": "https://master.dl.sourceforge.net/project/superioros/enchilada/vanilla/SuperiorOS-Fourteen-enchilada-RELEASE-20240210-1710.zip",
+            "version": "Fourteen",
+            "device_name": "Oneplus 6",
+            "maintainer": "Vikas Yaduvanshi  (@Vikas_2_0)"
+          }
+        ]
+      }
+    },
+    {
+      "file": "fajita.json",
+      "raw": {
+        "response": [
+          {
+            "datetime": 1707596385,
+            "filename": "SuperiorOS-Fourteen-fajita-RELEASE-20240210-2026.zip",
+            "id": "a9aa023e8cce8a273f6fa1fbda454d4348ece542697ff0f9dfab5e35ae1cbe41",
+            "romtype": "RELEASE",
+            "size": 1132483883,
+            "url": "https://master.dl.sourceforge.net/project/superioros/fajita/vanilla/SuperiorOS-Fourteen-fajita-RELEASE-20240210-2026.zip",
+            "version": "Fourteen",
+            "device_name": "Oneplus 6T",
+            "maintainer": "Vikas Yaduvanshi (@Vikas_2_0)"
+          }
+        ]
+      }
+    },
+    {
+      "file": "haydn.json",
+      "raw": {
+        "response": [
+          {
+            "datetime": 1707643276,
+            "filename": "SuperiorOS-Fourteen-haydn-RELEASE-20240211-0930.zip",
+            "id": "93bba21aea5dcb5ca27ea4e699bccdec7ca95481d808b54c692e23e857fdc94f",
+            "romtype": "RELEASE",
+            "size": 1891397976,
+            "url": "https://master.dl.sourceforge.net/project/superioros/haydn/vanilla/SuperiorOS-Fourteen-haydn-RELEASE-20240211-0930.zip",
+            "version": "Fourteen",
+            "device_name": "Mi 11x pro/Redmi K40 Pro",
+            "maintainer": "AshraySingh (@AshraySingh)"
+          }
+        ]
+      }
+    },
+    {
+      "file": "lancelot.json",
+      "raw": {
+        "response": [
+          {
+            "datetime": 1707622347,
+            "filename": "SuperiorOS-Fourteen-lancelot-RELEASE-20240211-0334.zip",
+            "id": "74d3af08941aa97efb398c48d0ac98300e2fc0ccb25b3384f228e4f1edaac73a",
+            "romtype": "RELEASE",
+            "size": 1167326138,
+            "url": "https://master.dl.sourceforge.net/project/superioros/lancelot/vanilla/SuperiorOS-Fourteen-lancelot-RELEASE-20240211-0334.zip",
+            "version": "Fourteen",
+            "device_name": "Redmi 9 / Poco M2",
+            "maintainer": "Soni Dharma (@TimJR205)"
+          }
+        ]
+      }
+    },
+    {
+      "file": "lavender.json",
+      "raw": {
+        "response": [
+          {
+            "datetime": 1691693147,
+            "filename": "SuperiorOS-Thirteen-lavender-RELEASE-20230810-1917.zip",
+            "id": "71cd338e66073f80ae588ee85ee86f9de7cc9545c3415c16124fbd93d64e7d1e",
+            "romtype": "RELEASE",
+            "size": 1108492106,
+            "url": "https://master.dl.sourceforge.net/project/superioros/lavender/vanilla/SuperiorOS-Thirteen-lavender-RELEASE-20230810-1917.zip",
+            "version": "Thirteen",
+            "device_name": "Xiaomi Redmi Note 7/7s",
+            "maintainer": "Prashant"
+          }
+        ]
+      }
+    },
+    {
+      "file": "liber.json",
+      "raw": {
+        "response": [
+          {
+            "datetime": 1707610439,
+            "filename": "SuperiorOS-Fourteen-liber-RELEASE-20240211-0016.zip",
+            "id": "f6ea1e40d0747616bac4e61a10b19ccfbd9a5e6c1430fc874bcf3a19b168ba56",
+            "romtype": "RELEASE",
+            "size": 869940707,
+            "url": "https://master.dl.sourceforge.net/project/superioros/liber/vanilla/SuperiorOS-Fourteen-liber-RELEASE-20240211-0016.zip",
+            "version": "Fourteen",
+            "device_name": "Moto One Fusion+",
+            "maintainer": "Dhinesh (@cool585)"
+          }
+        ]
+      }
+    },
+    {
+      "file": "marble.json",
+      "raw": {
+        "response": [
+          {
+            "datetime": 1709627421,
+            "filename": "SuperiorOS-Fourteen-marble-RELEASE-20240305-0832.zip",
+            "id": "4919e4a8b25afca3c64c4a14a2a54be1f52e313976144bba4cf4c2a265ea1f03",
+            "romtype": "RELEASE",
+            "size": 1746162885,
+            "url": "https://master.dl.sourceforge.net/project/superioros/marble/vanilla/SuperiorOS-Fourteen-marble-RELEASE-20240305-0832.zip",
+            "version": "Fourteen",
+            "device_name": "Redmi Note 12T/Poco F5",
+            "maintainer": "Chaitanya (@Chaitanyakm)"
+          }
+        ]
+      }
+    },
+    {
+      "file": "merlinx.json",
+      "raw": {
+        "response": [
+          {
+            "datetime": 1707616972,
+            "filename": "SuperiorOS-Fourteen-merlinx-RELEASE-20240211-0211.zip",
+            "id": "7401a1cfaa8365cf35cd1269cb22fe380f41ca4afa88f6b89c05f95b9ca7d792",
+            "romtype": "RELEASE",
+            "size": 1184116805,
+            "url": "https://master.dl.sourceforge.net/project/superioros/merlinx/vanilla/SuperiorOS-Fourteen-merlinx-RELEASE-20240211-0211.zip",
+            "version": "Fourteen",
+            "device_name": "Redmi Note 9 / Redmi 10X 4G",
+            "maintainer": "Soni Dharma (@TimJR205)"
+          }
+        ]
+      }
+    },
+    {
+      "file": "miatoll.json",
+      "raw": {
+        "response": [
+          {
+            "datetime": 1707571587,
+            "filename": "SuperiorOS-Fourteen-miatoll-RELEASE-20240210-1333.zip",
+            "id": "46e5e3e289b219c05b8ea6c050fdd2f502d9bd805cbc470f609822a89f1d6f90",
+            "romtype": "RELEASE",
+            "size": 1494442687,
+            "url": "https://master.dl.sourceforge.net/project/superioros/miatoll/vanilla/SuperiorOS-Fourteen-miatoll-RELEASE-20240210-1333.zip",
+            "version": "Fourteen",
+            "device_name": "Redmi Note 9 Pro",
+            "maintainer": "Clarence K (@clarencelol)"
+          }
+        ]
+      }
+    },
+    {
+      "file": "mojito.json",
+      "raw": {
+        "response": [
+          {
+            "datetime": 1698039032,
+            "filename": "SuperiorOS-Thirteen-mojito-RELEASE-20231023-0530.zip",
+            "id": "34913416b2b622c329a0f87d4d9863d0c2eb4a19d28272cf5f211d814528d71a",
+            "romtype": "RELEASE",
+            "size": 1420490873,
+            "url": "https://master.dl.sourceforge.net/project/superioros/mojito/vanilla/SuperiorOS-Thirteen-mojito-RELEASE-20231023-0530.zip",
+            "version": "Thirteen",
+            "device_name": "Redmi Note 10",
+            "maintainer": "Rom Bdr. Gharti (@Romgharti)"
+          }
+        ]
+      }
+    },
+    {
+      "file": "munch.json",
+      "raw": {
+        "response": [
+          {
+            "datetime": 1692415247,
+            "filename": "SuperiorOS-Thirteen-munch-RELEASE-20230819-1242.zip",
+            "id": "1f3e8673ab61028a82b0eb62a4a64713176c6d02539ed7a69b8bec4fcd6697ed",
+            "romtype": "RELEASE",
+            "size": 1406429504,
+            "url": "https://master.dl.sourceforge.net/project/superioros/munch/vanilla/SuperiorOS-Thirteen-munch-RELEASE-20230819-1242.zip",
+            "version": "Thirteen",
+            "device_name": "Poco F4",
+            "maintainer": "Mudit (@Mudit1808)"
+          }
+        ]
+      }
+    },
+    {
+      "file": "payton.json",
+      "raw": {
+        "response": [
+          {
+            "datetime": 1697912346,
+            "filename": "SuperiorOS-Thirteen-payton-RELEASE-20231021-1820.zip",
+            "id": "7d116a66aae6da90435fd310eeb8dc1da3720409d632dbd4cd5e4a8e5559ae2a",
+            "romtype": "RELEASE",
+            "size": 875019780,
+            "url": "https://master.dl.sourceforge.net/project/superioros/payton/vanilla/SuperiorOS-Thirteen-payton-RELEASE-20231021-1820.zip",
+            "version": "Thirteen",
+            "device_name": "Moto X4",
+            "maintainer": "Dhinesh (@cool585)"
+          }
+        ]
+      }
+    },
+    {
+      "file": "raphael.json",
+      "raw": {
+        "response": [
+          {
+            "datetime": 1701275733,
+            "filename": "SuperiorOS-Thirteen-raphael-RELEASE-20231129-1638.zip",
+            "id": "a1153dcb28c63a69f7b40aa94648b2dc52f06eb9c77d99a8d8ca8ecb03dec674",
+            "romtype": "RELEASE",
+            "size": 1701134524,
+            "url": "https://master.dl.sourceforge.net/project/superioros/raphael/vanilla/SuperiorOS-Thirteen-raphael-RELEASE-20231129-1638.zip",
+            "version": "Thirteen",
+            "device_name": "Xiaomi Redmi K20 Pro",
+            "maintainer": "Anirban (@SageOfD6Path)"
+          }
+        ]
+      }
+    },
+    {
+      "file": "spes.json",
+      "raw": {
+        "response": [
+          {
+            "datetime": 1695444083,
+            "filename": "SuperiorOS-Thirteen-spes-RELEASE-20230923-0442.zip",
+            "id": "74996d5dc77f3ac6809962a5236b2e14a87723f1bf80853e09298bb399fdad52",
+            "romtype": "RELEASE",
+            "size": 1082431908,
+            "url": "https://master.dl.sourceforge.net/project/superioros/spes/vanilla/SuperiorOS-Thirteen-spes-RELEASE-20230923-0442.zip",
+            "version": "Thirteen",
+            "device_name": "Redmi Note 11",
+            "maintainer": "Enweazu Daniel (@dandollar1)"
+          }
+        ]
+      }
+    },
+    {
+      "file": "sweet.json",
+      "raw": {
+        "response": [
+          {
+            "datetime": 1707657674,
+            "filename": "SuperiorOS-Fourteen-sweet-RELEASE-20240211-1329.zip",
+            "id": "1880b0b27dd1c2c79a258789531e8cdfdcc7652de6ec991f3992c3d8fd7ba913",
+            "romtype": "RELEASE",
+            "size": 1654062419,
+            "url": "https://master.dl.sourceforge.net/project/superioros/sweet/vanilla/SuperiorOS-Fourteen-sweet-RELEASE-20240211-1329.zip",
+            "version": "Fourteen",
+            "device_name": "Xiaomi Redmi Note 10 Pro",
+            "maintainer": "Unsatifsed27 (@unsatifsed27)"
+          }
+        ]
+      }
+    },
+    {
+      "file": "venus.json",
+      "raw": {
+        "response": [
+          {
+            "datetime": 1688908959,
+            "filename": "SuperiorOS-Thirteen-venus-RELEASE-20230709-1326.zip",
+            "id": "4aaf0e9ada58a76321b81a23de202f5c9e43dab808d0a838dcf4fe99a3fee9d8",
+            "romtype": "RELEASE",
+            "size": 1883823534,
+            "url": "https://master.dl.sourceforge.net/project/superioros/venus/vanilla/SuperiorOS-Thirteen-venus-RELEASE-20230709-1326.zip",
+            "version": "Thirteen",
+            "device_name": "Xiaomi Mi 11",
+            "maintainer": "Alan Lin"
+          }
+        ]
+      }
+    },
+    {
+      "file": "veux.json",
+      "raw": {
+        "response": [
+          {
+            "datetime": 1688017130,
+            "filename": "SuperiorOS-Thirteen-veux-RELEASE-20230629-0540.zip",
+            "id": "8ef694d5315cc8bbfc2b8a847c0337184e34ba4280c152b8fdddbc0c30f4cd75",
+            "romtype": "RELEASE",
+            "size": 1320526714,
+            "url": "https://master.dl.sourceforge.net/project/superioros/veux/vanilla/SuperiorOS-Thirteen-veux-RELEASE-20230629-0540.zip",
+            "version": "Thirteen",
+            "device_name": "Poco X4 Pro/ Redmi note 11 Pro+ 5G",
+            "maintainer": "Anant Goel (@Anant_Goel)"
+          }
+        ]
+      }
+    },
+    {
+      "file": "violet.json",
+      "raw": {
+        "response": [
+          {
+            "datetime": 1729208295,
+            "filename": "SuperiorOS-Fourteen-violet-RELEASE-20241017-2339.zip",
+            "id": "feb61b15e6590fecd0de1a9ff89840545ad9c09ba5d98b65d1b3063f67dfa2f6",
+            "romtype": "RELEASE",
+            "size": 1629118639,
+            "url": "https://master.dl.sourceforge.net/project/superioros/violet/vanilla/SuperiorOS-Fourteen-violet-RELEASE-20241017-2339.zip",
+            "version": "Fourteen",
+            "device_name": "Xiaomi Redmi Note 7 Pro",
+            "maintainer": "Nipin NA (@Joker_V2_0)"
+          }
+        ]
+      }
+    },
+    {
+      "file": "whyred.json",
+      "raw": {
+        "response": [
+          {
+            "datetime": 1717062383,
+            "filename": "SuperiorOS-Fourteen-whyred-RELEASE-20240530-0947.zip",
+            "id": "f336fe95f292cf39ad5f4c5d9badd995c3fe846dee5c27c54224c515c5d9426b",
+            "romtype": "RELEASE",
+            "size": 1003112696,
+            "url": "https://master.dl.sourceforge.net/project/superioros/whyred/vanilla/SuperiorOS-Fourteen-whyred-RELEASE-20240530-0947.zip",
+            "version": "Fourteen",
+            "device_name": "Xiaomi Redmi Note 5 Pro",
+            "maintainer": "Sipun Ku Mahanta"
+          }
+        ]
+      }
+    }
+  ]
+}
