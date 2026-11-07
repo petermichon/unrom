@@ -42,14 +42,24 @@ See `deploy/Caddyfile` for the routes (`/api/*` → API, everything else → web
 
 ### Refreshing the data
 
-```sh
-# Rebuild the database/exports from the existing raw snapshots
-docker compose -f deploy/compose.yaml run --rm data
+Normal flow: fetch, rebuild and validate locally, then review and commit the
+snapshot diff. Nothing is committed automatically.
 
-# Or fetch fresh snapshots first (network), then rebuild
-docker compose -f deploy/compose.yaml run --rm data npm run ingest --workspace server
+```sh
+npm run refresh        # ingest → build → verify → prints changed data files
+git diff --stat data/  # review what the sources changed
+git add data/ && git commit -s -m "chore(data): refresh source snapshots"
+git push               # images.yml builds and freshdock deploys
+```
+
+Or rebuild from the existing snapshots without touching the network:
+
+```sh
 docker compose -f deploy/compose.yaml run --rm data
 ```
+
+The `Refresh data (manual)` workflow is a fallback for running the same ingest
+remotely; it is no longer scheduled.
 
 Each build also writes `server/dist/registry-report.json`: source-reported names
 for uncurated devices (candidates), conflicts where sources disagree, and
@@ -72,9 +82,9 @@ npm run registry:suggest -- asus    # paste-ready entries for one vendor
   published. No SSH credentials or inbound access; healthchecks gate updates and
   roll back a broken image. `git pull` is only needed when the compose file or
   Caddyfile changes.
-- **Refresh data** (`.github/workflows/refresh-data.yml`) — nightly, fetches
-  new source snapshots, commits `data/`, and triggers the image build so fresh
-  data ships.
+- **Refresh data** — local by default (`npm run refresh`, then review/commit
+  `data/`). `.github/workflows/refresh-data.yml` is manual-only and triggers the
+  image build when used remotely.
 
 Server bootstrap:
 

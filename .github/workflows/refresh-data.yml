@@ -1,9 +1,8 @@
-name: Refresh data
+name: Refresh data (manual)
 
+# Normal flow is local: `npm run refresh`, review the data diff, then commit and
+# push. This workflow is the fallback for running it remotely.
 on:
-  schedule:
-    # Nightly; fetchers are network-bound and may fail per source.
-    - cron: "17 3 * * *"
   workflow_dispatch:
 
 permissions:

@@ -449,7 +449,10 @@ test("device pages filter by letter and offset", async () => {
     // No limit keeps the previous full-list behaviour; the page size is capped.
     assert.equal(api.listDevices().length, built.deviceCount);
     assert.equal(api.listDevicesPage({ limit: 1000 }).length, 200);
-    assert.equal(api.listDevicesPage({ offset: 900 }).length, 2);
+    assert.equal(
+      api.listDevicesPage({ offset: built.deviceCount - 2 }).length,
+      2,
+    );
 
     api.close();
   } finally {
