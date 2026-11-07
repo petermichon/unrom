@@ -169,7 +169,7 @@ export default function AppShell({ updatedAt, updatedAtIso, children }: Props) {
               className="flex items-center gap-2 rounded-lg font-heading font-semibold tracking-tight outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
             >
               <span className="flex items-center gap-2">
-                unrom
+                <span className="font-brand">unrom</span>
                 <Badge
                   variant="outline"
                   className="px-1.5 py-0 text-[11px] font-medium tracking-wide text-muted-foreground uppercase"

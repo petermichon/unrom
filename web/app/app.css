@@ -51,9 +51,20 @@
     U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 
+/* Wordmark-only subset: u n r o m (Space Grotesk 600, SIL OFL). */
+@font-face {
+  font-family: "Space Grotesk";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url("/fonts/space-grotesk-unrom.woff2") format("woff2");
+  unicode-range: U+006D-006F, U+0072, U+0075;
+}
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --font-brand: "Space Grotesk", "Roboto Variable", sans-serif;
   --font-heading: var(--font-sans);
   --font-sans: "Roboto Variable", sans-serif;
   --font-mono: "Roboto Mono Variable", ui-monospace, monospace;
