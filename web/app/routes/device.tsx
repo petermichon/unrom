@@ -4,6 +4,7 @@ import DeviceRomsTable from "@/components/DeviceRomsTable";
 import { PageHeader } from "@/components/PageHeader";
 import { Badge } from "@/components/ui/badge";
 import { fetchDevice } from "@/lib/data";
+import { brandedDeviceName } from "@/lib/devices";
 import {
   SITE_URL,
   errorMeta,
@@ -39,11 +40,11 @@ export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
   if (error || !device) return errorMeta("Device not found | unrom");
 
   const updatedAt = updatedAtFromMatches(matches);
-  const name = device.name ?? device.codename;
+  const name = brandedDeviceName(device);
   const description =
     device.roms.length === 0
-      ? `The ${name} (${device.codename}) by ${device.vendorName}. unrom tracks this device but holds no custom ROM build data for it yet.`
-      : `The ${name} (${device.codename}) by ${device.vendorName} is supported by ${device.roms.length} custom ${
+      ? `The ${name} (${device.codename}). unrom tracks this device but holds no custom ROM build data for it yet.`
+      : `The ${name} (${device.codename}) is supported by ${device.roms.length} custom ${
           device.roms.length === 1 ? "ROM" : "ROMs"
         }, including ${summarizeNames(
           device.roms.map((rom) => rom.name),
@@ -52,7 +53,10 @@ export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
 
   return [
     ...pageMeta({
-      title: `${name} (${device.codename}) | unrom`,
+      title:
+        device.roms.length === 0
+          ? `${name} (${device.codename}) | unrom`
+          : `${name} (${device.codename}) custom ROMs | unrom`,
       description,
       path: `/devices/${device.vendor}/${device.codename}`,
     }),

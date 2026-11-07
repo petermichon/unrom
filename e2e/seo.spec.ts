@@ -45,6 +45,27 @@ test("indexable pages expose complete metadata", async ({ page }) => {
   }
 });
 
+test("device metadata brands the model without duplicating it", async ({
+  page,
+}) => {
+  await page.goto("/devices/samsung/a52sxq");
+  await expect(page).toHaveTitle(
+    "Samsung Galaxy A52s 5G (a52sxq) custom ROMs | unrom",
+  );
+  await expect(page.locator('meta[name="description"]')).toHaveAttribute(
+    "content",
+    /^The Samsung Galaxy A52s 5G \(a52sxq\) is supported by \d+ custom ROMs/,
+  );
+
+  await page.goto("/devices/xiaomi/fuxi");
+  await expect(page).toHaveTitle("Xiaomi 13 (fuxi) custom ROMs | unrom");
+  const description = await page
+    .locator('meta[name="description"]')
+    .getAttribute("content");
+  expect(description).toContain("The Xiaomi 13 (fuxi) is supported by");
+  expect(description).not.toContain("by Xiaomi");
+});
+
 test("ROM pages put the whole device list and structured data in the HTML", async ({
   request,
 }) => {
