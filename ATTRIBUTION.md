@@ -61,6 +61,7 @@ they are not ROM compatibility data.
 | Catalogue                  | Snapshot           | Upstream                                             |
 | -------------------------- | ------------------ | ---------------------------------------------------- |
 | Google Play supported list | `play-devices.csv` | https://support.google.com/googleplay/answer/1727131 |
+| Customrombay device list   | manual cross-check | https://github.com/Customrombay/database             |
 
 Google's list is used as an upstream reference under Google's terms; it is not
 relicensed here. Brand and model names remain the trademarks of their owners.
