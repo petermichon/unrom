@@ -17,6 +17,7 @@ import { listDevices as listDroidXUI } from "./fetch/droidxui.ts";
 // /e/OS: its GitLab releases repo is no longer publicly readable, so the five
 // `eos-*.yml` snapshots are frozen (the normalizer still reads them).
 import { listDevices as listEvolutionX } from "./fetch/evolutionx.ts";
+import { listDevices as listGrapheneOS } from "./fetch/grapheneos.ts";
 import { listDevices as listHavocOS } from "./fetch/havocos.ts";
 import { listDevices as listIode } from "./fetch/iode.ts";
 import { listDevices as listKaliNetHunter } from "./fetch/kali-nethunter.ts";
@@ -59,6 +60,7 @@ const sources: Source[] = [
   { id: "dotos", file: "dotos.json", fetch: listDotOS },
   { id: "droidxui", file: "droidxui.json", fetch: listDroidXUI },
   { id: "evolutionx", file: "evolutionx.json", fetch: listEvolutionX },
+  { id: "grapheneos", file: "grapheneos.html", fetch: listGrapheneOS },
   { id: "havocos", file: "havocos.txt", fetch: listHavocOS },
   { id: "iode", file: "iode.json", fetch: listIode },
   {

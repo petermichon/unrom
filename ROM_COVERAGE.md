@@ -112,7 +112,7 @@ Out of scope: recoveries, root tools, GSIs and repacks, OEM stock skins.
 - ❌ GenesisOS
 - ❌ GhostOS
 - Good4Nothing-AOSP
-- ❌ GrapheneOS
+- 🟢 GrapheneOS
 - Halcyon - Calla Lily
 - ❌ Halcyon Project
 - ❌ Halogen OS

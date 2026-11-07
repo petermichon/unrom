@@ -6,6 +6,7 @@ import { parseAlphaDroid } from "./alphadroid.ts";
 import { parseArrowOS } from "./arrowos.ts";
 import { createEosParser } from "./eos.ts";
 import { parseEvolutionX } from "./evolutionx.ts";
+import { parseGrapheneOS } from "./grapheneos.ts";
 import { parseHavocOS } from "./havocos.ts";
 import { parseIode } from "./iode.ts";
 import { parseKaliNetHunter } from "./kali-nethunter.ts";
@@ -261,6 +262,12 @@ const specialSources: SourceAdapter[] = [
     romName: "Evolution X",
     file: "evolutionx.json",
     parse: parseEvolutionX,
+  },
+  {
+    id: "grapheneos",
+    romName: "GrapheneOS",
+    file: "grapheneos.html",
+    parse: parseGrapheneOS,
   },
   { id: "iode", romName: "iodéOS", file: "iode.json", parse: parseIode },
   {
