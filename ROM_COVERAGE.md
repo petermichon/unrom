@@ -133,6 +133,7 @@ Out of scope: recoveries, root tools, GSIs and repacks, OEM stock skins.
 - 🟢 iodéOS
 - ❌ Ion OS
 - ❌ IronOS Project
+- ❌ Jaguar ROM
 - 🟢 Kali NetHunter
 - ❌ Kang OS
 - 🟢 Kenvyra
@@ -140,6 +141,8 @@ Out of scope: recoveries, root tools, GSIs and repacks, OEM stock skins.
 - ❌ Komodo OS
 - ❌ Krypton Open Source Project
 - ❌ LeafOS
+- ❌ LeaOS
+- ❌ LeaOS-OSS
 - ❌ Legion OS
 - ❌ LessAOSP
 - ❌ LightningFastRom
@@ -156,6 +159,7 @@ Out of scope: recoveries, root tools, GSIs and repacks, OEM stock skins.
 - LumineDroid
 - 🟢 Lunaris AOSP
 - ❌ LunarUI
+- ❌ madOS
 - ❌ Magnus OS
 - ❌ Mallu OS
 - 🟢 Project Matrixx
@@ -241,6 +245,7 @@ Out of scope: recoveries, root tools, GSIs and repacks, OEM stock skins.
 - ❌ SlimRoms
 - ❌ SomethingOS
 - ❌ SoniUI
+- ❌ SonyAOSP (SODP)
 - ❌ SparkOS
 - ❌ Spice OS
 - ❌ Stag OS
@@ -258,13 +263,16 @@ Out of scope: recoveries, root tools, GSIs and repacks, OEM stock skins.
 - ❌ The XPerience Project
 - ❌ Tipsy OS
 - ❌ Toxyc OS
+- ❌ TugaPower
 - ❌ UltimateOS
 - UOTAN OS
+- ❌ UrukDroid
 - uwuAOSP
 - ❌ Validus OS
 - ❌ Viper OS
 - ❌ VoidUI
 - ❌ Voltage OS
+- ❌ Watchdogs ROM
 - ❌ WaveOS
 - ❌ Weeb Projekt
 - ❌ WitAqua
