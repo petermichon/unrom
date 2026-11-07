@@ -58,9 +58,6 @@ Or rebuild from the existing snapshots without touching the network:
 docker compose -f deploy/compose.yaml run --rm data
 ```
 
-The `Refresh data (manual)` workflow is a fallback for running the same ingest
-remotely; it is no longer scheduled.
-
 #### Unattended refresh
 
 `scripts/refresh-data.sh` is the wrapper for cron, a systemd timer or a remote
@@ -106,9 +103,9 @@ npm run registry:suggest -- asus    # paste-ready entries for one vendor
   published. No SSH credentials or inbound access; healthchecks gate updates and
   roll back a broken image. `git pull` is only needed when the compose file or
   Caddyfile changes.
-- **Refresh data** — local by default (`npm run refresh`, then review/commit
-  `data/`). `.github/workflows/refresh-data.yml` is manual-only and triggers the
-  image build when used remotely.
+- **Refresh data** — `npm run refresh` for the reviewed local flow, or
+  `scripts/refresh-data.sh` when scheduled. Pushes to `main` build and deploy the
+  images; there is no GitHub refresh job.
 
 Server bootstrap:
 
