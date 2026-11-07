@@ -376,7 +376,11 @@ export const openapi = {
     description:
       "Which custom Android ROMs support which devices. Every response is " +
       "the same JSON the web app renders, and the full dataset is available " +
-      "as JSON or SQLite exports. Data is licensed ODbL-1.0; code is AGPL-3.0-only.",
+      "as JSON or SQLite exports. Data is licensed ODbL-1.0; code is AGPL-3.0-only. " +
+      "Android is a trademark of Google LLC. All other product names, logos, and " +
+      "brands are property of their respective owners and are used for " +
+      "identification purposes only. unrom is not affiliated with or endorsed by " +
+      "any of them.",
     license: {
       name: "ODbL-1.0",
       url: "https://opendatacommons.org/licenses/odbl/1-0/",

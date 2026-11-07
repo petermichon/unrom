@@ -155,4 +155,8 @@ Response shapes are frozen in `contract/`.
 - **Code** — AGPL-3.0-only ([`LICENSE`](./LICENSE)).
 - **Data & exports** — ODbL-1.0 ([`DATA_LICENSE`](./DATA_LICENSE)); upstream ROM
   data keeps its own terms. See [`ATTRIBUTION.md`](./ATTRIBUTION.md).
+- **Trademarks** — Android is a trademark of Google LLC. All other product
+  names, logos, and brands are property of their respective owners and are used
+  for identification purposes only. unrom is not affiliated with or endorsed by
+  any of them.
 - Contributions require a DCO sign-off ([`DCO`](./DCO), [`CONTRIBUTING.md`](./CONTRIBUTING.md)).

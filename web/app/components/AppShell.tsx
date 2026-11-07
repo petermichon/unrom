@@ -267,6 +267,12 @@ export default function AppShell({ updatedAt, updatedAtIso, children }: Props) {
               </a>
             </nav>
           </div>
+          <p className="mx-auto mt-3 w-full max-w-4xl">
+            Android is a trademark of Google LLC. All other product names,
+            logos, and brands are property of their respective owners and are
+            used for identification purposes only. unrom is not affiliated with
+            or endorsed by any of them.
+          </p>
         </footer>
       </div>
     </TooltipProvider>
