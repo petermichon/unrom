@@ -361,9 +361,9 @@ test("search groups devices, brands and ROMs", async () => {
     const xiaomi = api.search("xiaomi");
     assert.ok(xiaomi.brands.some((brand) => brand.vendor === "xiaomi"));
 
-    const catalogue = api.search("alphadroid");
+    const catalogue = api.search("aokp");
     assert.equal(catalogue.totals.devices, 0);
-    assert.equal(catalogue.roms[0]?.name, "AlphaDroid");
+    assert.equal(catalogue.roms[0]?.name, "AOKP");
     assert.equal(catalogue.roms[0]?.deviceCount, 0);
 
     api.close();

@@ -2,6 +2,7 @@ import type { NormalizedRomDevice } from "../normalized.ts";
 import { createParser, selectors } from "./adapter.ts";
 import type { DeviceSource } from "./adapter.ts";
 import { parseAICP } from "./aicp.ts";
+import { parseAlphaDroid } from "./alphadroid.ts";
 import { parseArrowOS } from "./arrowos.ts";
 import { createEosParser } from "./eos.ts";
 import { parseEvolutionX } from "./evolutionx.ts";
@@ -213,6 +214,12 @@ const specialSources: SourceAdapter[] = [
     parse: parsePixelOS,
   },
   { id: "aicp", romName: "AICP", file: "aicp.txt", parse: parseAICP },
+  {
+    id: "alphadroid",
+    romName: "AlphaDroid",
+    file: "alphadroid.md",
+    parse: parseAlphaDroid,
+  },
   {
     id: "arrowos",
     romName: "ArrowOS",

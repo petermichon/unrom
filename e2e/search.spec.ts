@@ -66,9 +66,9 @@ test("home search finds a catalogue-only ROM", async ({ page }) => {
   await page.goto("/");
   await page
     .getByPlaceholder("Search by device name, codename, brand, or ROM…")
-    .fill("alphadroid");
+    .fill("aokp");
 
-  const rom = page.getByRole("option", { name: /AlphaDroid/ }).first();
+  const rom = page.getByRole("option", { name: /AOKP/ }).first();
   await expect(rom).toBeVisible();
   await expect(rom).toContainText("No device data");
 });

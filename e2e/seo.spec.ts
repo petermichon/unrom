@@ -137,7 +137,8 @@ test("section sitemaps list only canonical, indexable pages", async ({
 
   const romXml = await roms.text();
   expect(romXml).toContain("<loc>https://unrom.com/roms/lineageos</loc>");
-  expect(romXml).not.toContain("<loc>https://unrom.com/roms/alphadroid</loc>");
+  expect(romXml).toContain("<loc>https://unrom.com/roms/alphadroid</loc>");
+  expect(romXml).not.toContain("<loc>https://unrom.com/roms/aokp</loc>");
 });
 
 test("index titles name the search intent", async ({ page }) => {
@@ -161,7 +162,10 @@ test("ROM and brand titles name the search intent", async ({ page }) => {
   await expect(page).toHaveTitle("Samsung custom ROM devices | unrom");
 
   await page.goto("/roms/alphadroid");
-  await expect(page).toHaveTitle("AlphaDroid | unrom");
+  await expect(page).toHaveTitle("AlphaDroid supported devices | unrom");
+
+  await page.goto("/roms/aokp");
+  await expect(page).toHaveTitle("AOKP | unrom");
 });
 
 test("brand aliases redirect to the canonical lowercase URL", async ({
@@ -219,7 +223,7 @@ test("zero-ROM device pages are not indexable", async ({ page }) => {
 });
 
 test("zero-device ROM pages are not indexable", async ({ page }) => {
-  const response = await page.goto("/roms/alphadroid");
+  const response = await page.goto("/roms/aokp");
   expect(response?.status()).toBe(200);
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
     "content",

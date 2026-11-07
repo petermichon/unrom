@@ -17,7 +17,7 @@ Out of scope: recoveries, root tools, GSIs and repacks, OEM stock skins.
 - 🟢 AICP
 - ❌ AIM ROM
 - Alch3myOS
-- ❌ AlphaDroid
+- 🟢 AlphaDroid
 - ❌ AlrightOS
 - Altair ROM
 - ❌ AmogOS Rom
