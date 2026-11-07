@@ -27,7 +27,7 @@ Out of scope: recoveries, root tools, GSIs and repacks, OEM stock skins.
 - ❌ AOKP
 - ❌ AOSDP
 - ❌ AOSiP
-- ❌ AOSP Extended
+- 🟢 AOSP Extended
 - aospa-shadedark
 - ❌ Aquari OS
 - AquariumUI

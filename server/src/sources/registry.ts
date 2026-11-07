@@ -47,6 +47,19 @@ const configs: DeviceSource[] = [
       "https://github.com/AfterlifeOS/device_afterlife_ota/blob/16.2/devices.json",
   },
   {
+    id: "aospextended",
+    romName: "AospExtended",
+    file: "aospextended.json",
+    select: selectors.array,
+    name: ["name"],
+    brand: ["brand"],
+    referenceUrl: ["supported_versions[].xda_thread"],
+    referencePage:
+      "https://github.com/AospExtended/official_devices/blob/main/devices.json",
+    // Alternate codenames for devices already in the registry.
+    codenameCorrections: { I006D: "sake", denniz: "op6893" },
+  },
+  {
     id: "awakenos",
     romName: "AwakenOS",
     file: "awakenos.json",

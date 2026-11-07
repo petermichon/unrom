@@ -6,6 +6,7 @@ import { listDevices as listAICP } from "./fetch/aicp.ts";
 import { listDevices as listAlphaDroid } from "./fetch/alphadroid.ts";
 import { listDevices as listCalyxOS } from "./fetch/calyxos.ts";
 import { listDevices as listArrowOS } from "./fetch/arrowos.ts";
+import { listDevices as listAospExtended } from "./fetch/aospextended.ts";
 import { listDevices as listAwakenOS } from "./fetch/awakenos.ts";
 import { listDevices as listBlissROMs } from "./fetch/blissroms.ts";
 import { listDevices as listCherishOS } from "./fetch/cherishos.ts";
@@ -53,6 +54,7 @@ const sources: Source[] = [
   { id: "alphadroid", file: "alphadroid.md", fetch: listAlphaDroid },
   { id: "calyxos", file: "calyxos.html", fetch: listCalyxOS },
   { id: "arrowos", file: "arrowos.txt", fetch: listArrowOS },
+  { id: "aospextended", file: "aospextended.json", fetch: listAospExtended },
   { id: "awakenos", file: "awakenos.json", fetch: listAwakenOS },
   { id: "blissroms", file: "blissroms.json", fetch: listBlissROMs },
   { id: "cherishos", file: "cherishos.json", fetch: listCherishOS },

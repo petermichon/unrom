@@ -160,6 +160,7 @@ export const EXCLUDED_CODENAMES = new Set<string>([
   "opkona",
   "gsi_gapps",
   "gsi_vanilla",
+  "treble_gsi",
 ]);
 
 export const UNKNOWN_VENDOR = "unknown";
