@@ -22,7 +22,7 @@ export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
 
   return [
     ...pageMeta({
-      title: "Brands | unrom",
+      title: "Android brands and ROM coverage | unrom",
       description: `Browse ${brands.length} Android brands and the ${devices} devices they make, ${withRoms} with custom ROM compatibility data.`,
       path: "/brands",
     }),

@@ -137,6 +137,19 @@ test("section sitemaps list only canonical, indexable pages", async ({
   expect(romXml).not.toContain("<loc>https://unrom.com/roms/alphadroid</loc>");
 });
 
+test("index titles name the search intent", async ({ page }) => {
+  await page.goto("/devices");
+  await expect(page).toHaveTitle("Android devices and ROM support | unrom");
+
+  await page.goto("/brands");
+  await expect(page).toHaveTitle("Android brands and ROM coverage | unrom");
+
+  await page.goto("/roms");
+  await expect(page).toHaveTitle(
+    "Custom Android ROMs and supported devices | unrom",
+  );
+});
+
 test("ROM and brand titles name the search intent", async ({ page }) => {
   await page.goto("/roms/lineageos");
   await expect(page).toHaveTitle("LineageOS supported devices | unrom");
