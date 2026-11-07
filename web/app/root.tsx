@@ -61,7 +61,7 @@ export const links: Route.LinksFunction = () => [
   { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
   {
     rel: "preload",
-    href: "/fonts/roboto-latin-wght-normal.woff2",
+    href: "/fonts/inter-latin-wght-normal.woff2",
     as: "font",
     type: "font/woff2",
     crossOrigin: "anonymous",
