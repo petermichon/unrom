@@ -79,6 +79,16 @@ const configs: DeviceSource[] = [
     referencePage: "https://blissroms.org/downloads/{codename}",
   },
   {
+    id: "candyroms",
+    romName: "CandyRoms",
+    file: "candyroms.json",
+    select: selectors.array,
+    name: ["device_name"],
+    referenceUrl: ["xda_thread"],
+    referencePage:
+      "https://github.com/CandyRoms/official_devices/blob/c11/devices.json",
+  },
+  {
     id: "cherishos",
     romName: "CherishOS",
     file: "cherishos.json",

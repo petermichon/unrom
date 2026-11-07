@@ -9,6 +9,7 @@ import { listDevices as listArrowOS } from "./fetch/arrowos.ts";
 import { listDevices as listAospExtended } from "./fetch/aospextended.ts";
 import { listDevices as listAwakenOS } from "./fetch/awakenos.ts";
 import { listDevices as listBlissROMs } from "./fetch/blissroms.ts";
+import { listDevices as listCandyRoms } from "./fetch/candyroms.ts";
 import { listDevices as listCherishOS } from "./fetch/cherishos.ts";
 import { listDevices as listClover } from "./fetch/clover.ts";
 import { listDevices as listCorvusOS } from "./fetch/corvusos.ts";
@@ -57,6 +58,7 @@ const sources: Source[] = [
   { id: "aospextended", file: "aospextended.json", fetch: listAospExtended },
   { id: "awakenos", file: "awakenos.json", fetch: listAwakenOS },
   { id: "blissroms", file: "blissroms.json", fetch: listBlissROMs },
+  { id: "candyroms", file: "candyroms.json", fetch: listCandyRoms },
   { id: "cherishos", file: "cherishos.json", fetch: listCherishOS },
   { id: "clover", file: "clover.json", fetch: listClover },
   { id: "corvusos", file: "corvusos.json", fetch: listCorvusOS },
