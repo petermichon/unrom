@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useSyncExternalStore } from "react";
 import { Link, useNavigate } from "react-router";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -15,14 +15,33 @@ interface Props {
   examples?: string[];
 }
 
+const SEARCH_PLACEHOLDER = "Search by device name, codename, brand, or ROM…";
+const MOBILE_SEARCH_PLACEHOLDER = "Search devices or ROMs…";
+
+function useMediaQuery(query: string): boolean {
+  return useSyncExternalStore(
+    (onChange) => {
+      const media = window.matchMedia(query);
+      media.addEventListener("change", onChange);
+      return () => media.removeEventListener("change", onChange);
+    },
+    () => window.matchMedia(query).matches,
+    () => false,
+  );
+}
+
 export default function DeviceSearch({ examples = [] }: Props) {
   const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
   const [query, setQuery] = useState("");
-  const { data, loading } = useSearch(query);
+  const placeholder = useMediaQuery("(max-width: 640px)")
+    ? MOBILE_SEARCH_PLACEHOLDER
+    : SEARCH_PLACEHOLDER;
+  const { data, loading, error } = useSearch(query);
   const terms = tokenize(query);
 
   const noResults =
+    !error &&
     terms.length > 0 &&
     !loading &&
     data.totals.devices === 0 &&
@@ -49,12 +68,12 @@ export default function DeviceSearch({ examples = [] }: Props) {
           seamless
           className="text-base"
           aria-label="Search devices, brands, and ROMs"
-          placeholder="Search by device name, codename, brand, or ROM…"
+          placeholder={placeholder}
           value={query}
           onValueChange={setQuery}
         />
         <CommandList className="max-h-[26rem]">
-          {data.brands.length > 0 && (
+          {!error && data.brands.length > 0 && (
             <CommandGroup heading="Brands">
               {data.brands.map((brand) => (
                 <CommandItem
@@ -79,7 +98,7 @@ export default function DeviceSearch({ examples = [] }: Props) {
               ))}
             </CommandGroup>
           )}
-          {data.devices.length > 0 && (
+          {!error && data.devices.length > 0 && (
             <CommandGroup heading="Devices">
               {data.devices.map((device) => (
                 <CommandItem
@@ -109,7 +128,7 @@ export default function DeviceSearch({ examples = [] }: Props) {
               ))}
             </CommandGroup>
           )}
-          {data.roms.length > 0 && (
+          {!error && data.roms.length > 0 && (
             <CommandGroup heading="ROMs">
               {data.roms.map((rom) => (
                 <CommandItem
@@ -136,10 +155,15 @@ export default function DeviceSearch({ examples = [] }: Props) {
         </CommandList>
         {/* Persistent live region for result counts and truncation. */}
         <div role="status" aria-live="polite">
-          {terms.length > 0 && (
+          {loading && (
+            <span className="block px-3 py-2 text-xs text-muted-foreground">
+              Searching…
+            </span>
+          )}
+          {terms.length > 0 && !loading && (
             <span className="sr-only">
-              {loading
-                ? "Searching"
+              {error
+                ? "Search unavailable"
                 : `${data.totals.devices} ${
                     data.totals.devices === 1 ? "device" : "devices"
                   }, ${data.totals.brands} ${
@@ -149,13 +173,19 @@ export default function DeviceSearch({ examples = [] }: Props) {
                   }`}
             </span>
           )}
-          {truncated && (
+          {!error && truncated && (
             <div className="px-3 py-2 text-xs text-muted-foreground">
               Showing top matches. Refine your search.
             </div>
           )}
         </div>
       </Command>
+
+      {error && (
+        <p className="text-sm text-muted-foreground">
+          Search is unavailable right now. Check your connection and try again.
+        </p>
+      )}
 
       {noResults && (
         <p className="text-sm text-muted-foreground">

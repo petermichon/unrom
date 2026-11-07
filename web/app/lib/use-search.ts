@@ -17,9 +17,11 @@ const SEARCH_DELAY = 120;
 export function useSearch(query: string) {
   const [data, setData] = useState<SearchResponse>(EMPTY);
   const [loading, setLoading] = useState(false);
+  const [errorQuery, setErrorQuery] = useState<string | null>(null);
+  const trimmed = query.trim();
 
   useEffect(() => {
-    const q = query.trim();
+    const q = trimmed;
     if (!q) return;
 
     let cancelled = false;
@@ -30,13 +32,20 @@ export function useSearch(query: string) {
       fetch(`/api/search?q=${encodeURIComponent(q)}`, {
         signal: controller.signal,
       })
-        .then((response) =>
-          response.ok ? (response.json() as Promise<SearchResponse>) : EMPTY,
-        )
-        .then((result) => {
-          if (!cancelled) setData(result);
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`Search failed: ${response.status}`);
+          }
+          return response.json() as Promise<SearchResponse>;
         })
-        .catch(() => {})
+        .then((result) => {
+          if (cancelled) return;
+          setErrorQuery(null);
+          setData(result);
+        })
+        .catch(() => {
+          if (!cancelled) setErrorQuery(q);
+        })
         .finally(() => {
           if (!cancelled) setLoading(false);
         });
@@ -47,7 +56,9 @@ export function useSearch(query: string) {
       window.clearTimeout(timer);
       controller.abort();
     };
-  }, [query]);
+  }, [trimmed]);
 
-  return query.trim() ? { data, loading } : { data: EMPTY, loading: false };
+  return trimmed
+    ? { data, loading, error: errorQuery === trimmed }
+    : { data: EMPTY, loading: false, error: false };
 }

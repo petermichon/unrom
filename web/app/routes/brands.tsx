@@ -12,6 +12,7 @@ import {
   pageMeta,
   updatedAtFromMatches,
 } from "@/lib/seo";
+import { formatNumber } from "@/lib/utils";
 import type { Route } from "./+types/brands";
 
 export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
@@ -23,7 +24,7 @@ export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
   return [
     ...pageMeta({
       title: "Android brands and ROM coverage | unrom",
-      description: `Browse ${brands.length} Android brands and the ${devices} devices they make, ${withRoms} with custom ROM compatibility data.`,
+      description: `Browse ${brands.length} Android brands and the ${formatNumber(devices)} devices they make, ${formatNumber(withRoms)} with custom ROM compatibility data.`,
       path: "/brands",
     }),
     ...modifiedMeta(updatedAtFromMatches(matches)),
@@ -57,11 +58,13 @@ function BrandRow({ brand }: { brand: Brand }) {
       <span className="flex min-w-0 flex-col">
         <span className="truncate font-medium">{brand.vendorName}</span>
         <span className="text-xs text-muted-foreground tabular-nums">
-          {brand.withRoms} with {brand.withRoms === 1 ? "ROM" : "ROMs"}
+          {formatNumber(brand.withRoms)} with{" "}
+          {brand.withRoms === 1 ? "ROM" : "ROMs"}
         </span>
       </span>
       <span className="shrink-0 text-xs text-muted-foreground tabular-nums">
-        {brand.deviceCount} {brand.deviceCount === 1 ? "device" : "devices"}
+        {formatNumber(brand.deviceCount)}{" "}
+        {brand.deviceCount === 1 ? "device" : "devices"}
       </span>
     </Link>
   );
@@ -95,7 +98,7 @@ export default function BrandsRoute() {
 
       <PageHeader
         title="Brands"
-        description={`${brands.length} brands and ${devices} devices, ${withRoms} with custom ROM data. Largest catalogues first.`}
+        description={`${brands.length} brands and ${formatNumber(devices)} devices, ${formatNumber(withRoms)} with custom ROM data. Ranked by ROM coverage.`}
         endpoint="/api/brands"
       />
 

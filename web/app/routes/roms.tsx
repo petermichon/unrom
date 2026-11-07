@@ -14,6 +14,7 @@ import {
 } from "@/lib/seo";
 import { bySortKey } from "@/lib/sort";
 import { useInitialDocument } from "@/lib/use-initial-document";
+import { formatNumber } from "@/lib/utils";
 import type { RomDetail } from "@/lib/types";
 import type { Route } from "./+types/roms";
 
@@ -47,7 +48,8 @@ function RomRow({ rom, count }: { rom: RomDetail; count?: boolean }) {
         {count && (
           <>
             {" · "}
-            {rom.deviceCount} {rom.deviceCount === 1 ? "device" : "devices"}
+            {formatNumber(rom.deviceCount)}{" "}
+            {rom.deviceCount === 1 ? "device" : "devices"}
           </>
         )}
       </span>
@@ -75,7 +77,7 @@ export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
   return [
     ...pageMeta({
       title: "Custom Android ROMs and supported devices | unrom",
-      description: `${roms.length} custom ROMs; ${covered.length} currently have device data, covering ${deviceCount} devices. Browse every Android ROM with API access.`,
+      description: `${formatNumber(roms.length)} custom ROMs; ${formatNumber(covered.length)} currently have device data, covering ${formatNumber(deviceCount)} devices. Browse every Android ROM with API access.`,
       path: "/roms",
     }),
     ...modifiedMeta(updatedAt),
@@ -164,7 +166,7 @@ export default function RomsRoute() {
 
       <PageHeader
         title="ROMs"
-        description={`${roms.length} ROMs in the catalogue, ${covered.length} with device data.`}
+        description={`${formatNumber(roms.length)} ROMs in the catalogue, ${formatNumber(covered.length)} with device data.`}
         endpoint="/api/roms"
       />
 
@@ -182,7 +184,7 @@ export default function RomsRoute() {
           aria-live="polite"
           className="text-sm text-muted-foreground tabular-nums"
         >
-          {total} of {roms.length} ROMs
+          {total} of {formatNumber(roms.length)} ROMs
         </p>
       </div>
 
@@ -220,7 +222,7 @@ export default function RomsRoute() {
               className="rounded-xl border border-border/60"
             >
               <summary className="cursor-pointer px-4 py-3 text-sm font-medium text-muted-foreground outline-none focus-visible:ring-3 focus-visible:ring-ring/50">
-                Catalogue only — {filteredCatalogue.length}{" "}
+                Catalogue only — {formatNumber(filteredCatalogue.length)}{" "}
                 {filteredCatalogue.length === 1 ? "ROM" : "ROMs"} with no device
                 data yet
               </summary>

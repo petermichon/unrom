@@ -11,6 +11,7 @@ import {
   pageMeta,
   updatedAtFromMatches,
 } from "@/lib/seo";
+import { formatNumber } from "@/lib/utils";
 import type { Route } from "./+types/device-letter";
 
 const PAGE_SIZE = 200;
@@ -42,7 +43,7 @@ export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
   const description =
     data.total === 0
       ? `No devices starting with ${label}.`
-      : `${data.total} devices starting with ${label}${
+      : `${formatNumber(data.total)} devices starting with ${label}${
           data.pages > 1 ? `, page ${data.page} of ${data.pages}` : ""
         }. Browse model names and codenames.`;
 
@@ -159,8 +160,8 @@ export default function DeviceLetterRoute() {
         title={`${label} devices`}
         description={
           letter === "other"
-            ? `${total} device${total === 1 ? "" : "s"} with non-Latin names.`
-            : `${total} device${total === 1 ? "" : "s"} starting with ${label}. ROM-covered devices first.`
+            ? `${formatNumber(total)} device${total === 1 ? "" : "s"} with non-Latin names.`
+            : `${formatNumber(total)} device${total === 1 ? "" : "s"} starting with ${label}. ROM-covered devices first.`
         }
         endpoint={`/api/devices?letter=${encodeURIComponent(letter)}&limit=${PAGE_SIZE}`}
       />

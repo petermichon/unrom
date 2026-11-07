@@ -217,6 +217,15 @@ export function DataTable<TData, TValue>({
                   <TableHead
                     key={header.id}
                     className={cellClass(header.column.id)}
+                    aria-sort={
+                      header.column.getCanSort()
+                        ? header.column.getIsSorted() === "asc"
+                          ? "ascending"
+                          : header.column.getIsSorted() === "desc"
+                            ? "descending"
+                            : undefined
+                        : undefined
+                    }
                   >
                     {header.isPlaceholder
                       ? null

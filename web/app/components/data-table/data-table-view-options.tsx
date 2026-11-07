@@ -29,6 +29,12 @@ function columnLabel(column: {
 }
 
 export function DataTableViewOptions<TData>({ table }: Props<TData>) {
+  const visibleHideable = table
+    .getVisibleLeafColumns()
+    .filter((column) => column.getCanHide());
+  const lastVisibleId =
+    visibleHideable.length === 1 ? visibleHideable[0]?.id : undefined;
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
@@ -55,6 +61,7 @@ export function DataTableViewOptions<TData>({ table }: Props<TData>) {
               key={column.id}
               checked={column.getIsVisible()}
               onCheckedChange={(value) => column.toggleVisibility(!!value)}
+              disabled={column.id === lastVisibleId}
             >
               {columnLabel(column)}
             </DropdownMenuCheckboxItem>

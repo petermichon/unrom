@@ -1,5 +1,5 @@
 import Database from "better-sqlite3";
-import { and, asc, eq, like, or, sql } from "drizzle-orm";
+import { and, asc, eq, or, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/better-sqlite3";
 import type {
   BrandSummary,
@@ -192,13 +192,14 @@ export function createApi(dbPath: string) {
       filters.push(
         and(
           ...terms.map((term) => {
-            const pattern = `%${term}%`;
+            // `instr` treats `%` and `_` literally; LIKE would treat them as
+            // wildcards and make a query for either match every device.
             return or(
-              like(devices.codename, pattern),
-              like(sql`coalesce(${devices.name}, '')`, pattern),
-              like(sql`coalesce(${devices.vendor}, '')`, pattern),
+              sql`instr(lower(${devices.codename}), ${term}) > 0`,
+              sql`instr(lower(coalesce(${devices.name}, '')), ${term}) > 0`,
+              sql`instr(lower(coalesce(${devices.vendor}, '')), ${term}) > 0`,
               // Match a device by any of its alternate codenames.
-              sql`exists (select 1 from aliases a where a.vendor = ${devices.vendor} and a.codename = ${devices.codename} and lower(a.alias) like ${pattern})`,
+              sql`exists (select 1 from aliases a where a.vendor = ${devices.vendor} and a.codename = ${devices.codename} and instr(lower(a.alias), ${term}) > 0)`,
             );
           }),
         ),
@@ -685,7 +686,15 @@ export function createApi(dbPath: string) {
       return terms.every((term) => lower.includes(term));
     };
 
-    const deviceResults = listDevicesPage({ query: q, limit: 20 });
+    const deviceResults = listDevicesPage({ query: q, limit: 200 })
+      .sort(
+        (a, b) =>
+          b.roms.length - a.roms.length ||
+          bySortKey(a.name ?? a.codename, b.name ?? b.codename) ||
+          a.vendor.localeCompare(b.vendor) ||
+          a.codename.localeCompare(b.codename),
+      )
+      .slice(0, 20);
     const deviceTotal = countDevices({ query: q });
 
     const vendorCounts = listBrands().filter((brand) =>

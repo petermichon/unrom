@@ -13,6 +13,7 @@ import {
   summarizeNames,
   updatedAtFromMatches,
 } from "@/lib/seo";
+import { formatNumber } from "@/lib/utils";
 import type { Route } from "./+types/vendor";
 
 const PAGE_SIZE = 200;
@@ -24,7 +25,7 @@ export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
   const description =
     total === 0
       ? `No ${vendorName} devices in the catalogue yet.`
-      : `${total} ${vendorName} device${total === 1 ? "" : "s"}${
+      : `${formatNumber(total)} ${vendorName} device${total === 1 ? "" : "s"}${
           pages > 1 ? `, page ${page} of ${pages}` : ""
         }, including ${summarizeNames(devices.map(deviceName), 3, total)}.`;
 
@@ -142,7 +143,7 @@ export default function VendorRoute() {
 
       <PageHeader
         title={vendorName}
-        description={`${total} device${total === 1 ? "" : "s"}. ROM-covered devices first.`}
+        description={`${formatNumber(total)} device${total === 1 ? "" : "s"}. ROM-covered devices first.`}
         endpoint={`/api/devices?vendor=${vendor}&limit=${PAGE_SIZE}`}
       />
 

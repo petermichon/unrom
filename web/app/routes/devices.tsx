@@ -8,6 +8,7 @@ import {
   pageMeta,
   updatedAtFromMatches,
 } from "@/lib/seo";
+import { formatNumber } from "@/lib/utils";
 import type { Route } from "./+types/devices";
 
 export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
@@ -18,7 +19,7 @@ export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
   return [
     ...pageMeta({
       title: "Android devices and ROM support | unrom",
-      description: `${total} devices. Browse by first letter, open a brand, or search by name or codename.`,
+      description: `${formatNumber(total)} devices. Browse by first letter, open a brand, or search by name or codename.`,
       path: "/devices",
     }),
     ...modifiedMeta(updatedAtFromMatches(matches)),
@@ -43,7 +44,7 @@ export default function DevicesRoute() {
 
       <PageHeader
         title="Devices"
-        description={`${total} devices. Pick a letter, or search by device name or codename.`}
+        description={`${formatNumber(total)} devices. Pick a letter, or use search above to find a device by name or codename.`}
         endpoint="/api/devices"
       />
 
@@ -70,12 +71,12 @@ export default function DevicesRoute() {
                       : letter.letter}
                 </span>
                 <span className="text-xs text-muted-foreground tabular-nums">
-                  {letter.withRoms} with{" "}
+                  {formatNumber(letter.withRoms)} with{" "}
                   {letter.withRoms === 1 ? "ROM" : "ROMs"}
                 </span>
               </span>
               <span className="shrink-0 text-xs text-muted-foreground tabular-nums">
-                {letter.deviceCount}{" "}
+                {formatNumber(letter.deviceCount)}{" "}
                 {letter.deviceCount === 1 ? "device" : "devices"}
               </span>
             </Link>

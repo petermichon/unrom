@@ -9,6 +9,7 @@ import {
   pageMeta,
   updatedAtFromMatches,
 } from "@/lib/seo";
+import { formatNumber } from "@/lib/utils";
 import type { Route } from "./+types/home";
 
 async function load() {
@@ -32,7 +33,7 @@ export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
     ...pageMeta({
       title: "Find the custom ROMs that support your device | unrom",
       description: counts
-        ? `The open database for device–ROM compatibility: ${counts.devices} devices, ${counts.brands} brands and ${counts.roms} custom ROMs (${counts.coveredRoms} with device data). Search by device, codename, brand, or ROM.`
+        ? `The open database for device–ROM compatibility: ${formatNumber(counts.devices)} devices, ${formatNumber(counts.brands)} brands and ${formatNumber(counts.roms)} custom ROMs (${formatNumber(counts.coveredRoms)} with device data). Search by device, codename, brand, or ROM.`
         : "The open database for device–ROM compatibility.",
       path: "/",
     }),
@@ -89,12 +90,19 @@ export default function Home() {
           codename, brand, or ROM to see what supports it.
         </p>
         <p className="text-sm text-muted-foreground">
-          Tracking <span className="text-foreground">{counts.devices}</span>{" "}
+          Tracking{" "}
+          <span className="text-foreground">
+            {formatNumber(counts.devices)}
+          </span>{" "}
           devices across{" "}
-          <span className="text-foreground">{counts.brands}</span> brands and{" "}
-          <span className="text-foreground">{counts.roms}</span> ROMs —{" "}
-          <span className="text-foreground">{counts.coveredRoms}</span> with
-          device data.
+          <span className="text-foreground">{formatNumber(counts.brands)}</span>{" "}
+          brands and{" "}
+          <span className="text-foreground">{formatNumber(counts.roms)}</span>{" "}
+          ROMs —{" "}
+          <span className="text-foreground">
+            {formatNumber(counts.coveredRoms)}
+          </span>{" "}
+          with device data.
         </p>
       </div>
 
@@ -112,7 +120,7 @@ export default function Home() {
                 {section.title}
               </span>
               <span className="text-2xl font-semibold tabular-nums">
-                {section.count.toLocaleString("en-US")}
+                {formatNumber(section.count)}
               </span>
               <span className="text-xs text-muted-foreground">
                 {section.note}

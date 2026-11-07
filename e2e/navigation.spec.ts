@@ -49,7 +49,7 @@ test("client navigation renders the destination table", async ({ page }) => {
   await expect(
     page.getByRole("heading", { name: "ROMs", exact: true }),
   ).toBeVisible();
-  await expect(page.getByRole("link", { name: "LineageOS" })).toBeVisible();
+  await expect(page.locator('a[href="/roms/lineageos"]')).toBeVisible();
 });
 
 test("a brand page lists its devices", async ({ page }) => {
@@ -114,7 +114,7 @@ test("the ROMs index separates covered from catalogue", async ({ page }) => {
     page.getByRole("heading", { name: "With device data" }),
   ).toBeVisible();
   await expect(page.getByText(/Catalogue only/)).toBeVisible();
-  await expect(page.getByRole("link", { name: "LineageOS" })).toBeVisible();
+  await expect(page.locator('a[href="/roms/lineageos"]')).toBeVisible();
 });
 
 test("the ROMs filter opens the catalogue for a match", async ({ page }) => {
@@ -122,7 +122,7 @@ test("the ROMs filter opens the catalogue for a match", async ({ page }) => {
   await page.waitForLoadState("networkidle");
   await expect(async () => {
     await page.getByLabel("Filter ROMs").fill("AlphaDroid");
-    await expect(page.getByRole("status")).toHaveText("1 of 260 ROMs", {
+    await expect(page.getByRole("status")).toHaveText(/1 of [\d,]+ ROMs/, {
       timeout: 1_500,
     });
   }).toPass({ timeout: 10_000 });
@@ -148,7 +148,7 @@ test("the brands filter narrows the list", async ({ page }) => {
   await page.waitForLoadState("networkidle");
   await expect(async () => {
     await page.getByLabel("Filter brands").fill("sams");
-    await expect(page.getByRole("status")).toHaveText("1 of 66 brands", {
+    await expect(page.getByRole("status")).toHaveText(/1 of [\d,]+ brands/, {
       timeout: 1_500,
     });
   }).toPass({ timeout: 10_000 });

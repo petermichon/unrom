@@ -12,6 +12,7 @@ import {
   summarizeNames,
   updatedAtFromMatches,
 } from "@/lib/seo";
+import { formatNumber } from "@/lib/utils";
 import type { RomDetail } from "@/lib/types";
 import type { Route } from "./+types/rom";
 
@@ -30,9 +31,9 @@ function romDescription(rom: RomDetail): string {
     3,
   );
 
-  return `Supports ${rom.deviceCount} ${
+  return `Supports ${formatNumber(rom.deviceCount)} ${
     rom.deviceCount === 1 ? "device" : "devices"
-  } across ${vendorCount} vendor${vendorCount === 1 ? "" : "s"}, including ${names}.${discontinued}`;
+  } across ${formatNumber(vendorCount)} vendor${vendorCount === 1 ? "" : "s"}, including ${names}.${discontinued}`;
 }
 
 export async function loader({ params }: Route.LoaderArgs) {

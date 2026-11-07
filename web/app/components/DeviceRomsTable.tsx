@@ -50,22 +50,38 @@ export default function DeviceRomsTable({ roms }: Props) {
         ),
         sortingFn: (a, b) => bySortKey(a.original.name, b.original.name),
         cell: ({ row }) => (
-          <span className="flex min-w-0 items-center gap-2">
-            <Link
-              to={`/roms/${row.original.id}`}
-              prefetch="intent"
-              title={row.original.name}
-              className="w-fit max-w-full truncate font-medium hover:underline"
-            >
-              {row.original.name}
-            </Link>
-            {row.original.inheritedFrom && (
-              <span
-                className="shrink-0 text-xs text-muted-foreground"
-                title={`Supports this device via its ${row.original.inheritedFrom} build`}
+          <span className="flex min-w-0 flex-col gap-0.5">
+            <span className="flex min-w-0 items-center gap-2">
+              <Link
+                to={`/roms/${row.original.id}`}
+                prefetch="intent"
+                title={row.original.name}
+                className="w-fit max-w-full truncate font-medium hover:underline"
               >
-                via {row.original.inheritedFrom}
-              </span>
+                {row.original.name}
+              </Link>
+              {row.original.inheritedFrom && (
+                <span
+                  className="shrink-0 text-xs text-muted-foreground"
+                  title={`Supports this device via its ${row.original.inheritedFrom} build`}
+                >
+                  via {row.original.inheritedFrom}
+                </span>
+              )}
+            </span>
+            {row.original.referenceUrl && (
+              <a
+                href={row.original.referenceUrl}
+                target="_blank"
+                rel="noreferrer"
+                title={row.original.referenceUrl}
+                className="inline-flex max-w-full items-center gap-1 text-xs text-muted-foreground underline underline-offset-4 hover:text-foreground md:hidden"
+              >
+                <span className="truncate">
+                  {referenceLabel(row.original.referenceUrl)}
+                </span>
+                <ExternalLink className="size-3 shrink-0" aria-hidden="true" />
+              </a>
             )}
           </span>
         ),
@@ -130,7 +146,7 @@ export default function DeviceRomsTable({ roms }: Props) {
       data={roms}
       columnClassName={columnClassName}
       renderAllRows
-      tableClassName="min-w-[36rem]"
+      tableClassName="md:min-w-[36rem]"
       initialState={{
         columnVisibility: { search: false },
         sorting: [{ id: "name", desc: false }],

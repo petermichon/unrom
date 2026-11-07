@@ -3,7 +3,6 @@ import { useNavigate } from "react-router";
 import {
   Command,
   CommandDialog,
-  CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
@@ -20,7 +19,7 @@ interface Props {
 // Mounted by `CommandPalette` while the dialog is open.
 export default function CommandPaletteDialog({ open, onOpenChange }: Props) {
   const [query, setQuery] = useState("");
-  const { data, loading } = useSearch(query);
+  const { data, loading, error } = useSearch(query);
   const terms = tokenize(query);
   const navigate = useNavigate();
 
@@ -30,6 +29,7 @@ export default function CommandPaletteDialog({ open, onOpenChange }: Props) {
   };
 
   const noResults =
+    !error &&
     terms.length > 0 &&
     !loading &&
     data.totals.devices === 0 &&
@@ -52,14 +52,31 @@ export default function CommandPaletteDialog({ open, onOpenChange }: Props) {
           value={query}
           onValueChange={setQuery}
         />
+        {error && (
+          <div
+            role="status"
+            aria-live="polite"
+            className="px-3 py-2 text-sm text-muted-foreground"
+          >
+            Search is unavailable right now.
+          </div>
+        )}
+        {!error && (loading || noResults) && (
+          <div
+            role="status"
+            aria-live="polite"
+            className="px-3 py-2 text-sm text-muted-foreground"
+          >
+            {loading ? "Searching…" : "No results found."}
+          </div>
+        )}
+        {!error && terms.length === 0 && !loading && (
+          <div className="px-3 py-6 text-center text-sm text-muted-foreground">
+            Type to search devices, brands, and ROMs.
+          </div>
+        )}
         <CommandList>
-          {loading && (
-            <p className="px-3 py-2 text-sm text-muted-foreground">
-              Searching…
-            </p>
-          )}
-          {noResults && <CommandEmpty>No results found.</CommandEmpty>}
-          {data.brands.length > 0 && (
+          {!error && data.brands.length > 0 && (
             <CommandGroup heading="Brands">
               {data.brands.map((brand) => (
                 <CommandItem
@@ -76,7 +93,7 @@ export default function CommandPaletteDialog({ open, onOpenChange }: Props) {
               ))}
             </CommandGroup>
           )}
-          {data.devices.length > 0 && (
+          {!error && data.devices.length > 0 && (
             <CommandGroup heading="Devices">
               {data.devices.map((device) => (
                 <CommandItem
@@ -96,7 +113,7 @@ export default function CommandPaletteDialog({ open, onOpenChange }: Props) {
               ))}
             </CommandGroup>
           )}
-          {data.roms.length > 0 && (
+          {!error && data.roms.length > 0 && (
             <CommandGroup heading="ROMs">
               {data.roms.map((rom) => (
                 <CommandItem

@@ -192,7 +192,7 @@ function DeviceIdentity({ device }: { device: DeviceDetail }) {
                         prefetch="intent"
                         className="font-mono text-xs hover:text-foreground hover:underline"
                       >
-                        {id}
+                        {device.roms.find((rom) => rom.id === id)?.name ?? id}
                       </Link>
                     </span>
                   ))}

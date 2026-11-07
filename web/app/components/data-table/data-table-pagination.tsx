@@ -19,10 +19,13 @@ interface Props<TData> {
 }
 
 export function DataTablePagination<TData>({ table }: Props<TData>) {
+  const rowCount = table.getFilteredRowModel().rows.length;
+  if (rowCount === 0) return null;
+
   return (
     <div className="flex items-center justify-between gap-4 px-1">
       <div className="flex-1 text-xs text-muted-foreground">
-        {table.getFilteredRowModel().rows.length} row(s)
+        {rowCount} {rowCount === 1 ? "row" : "rows"}
       </div>
       <div className="flex items-center gap-6 lg:gap-8">
         <div className="hidden items-center gap-2 sm:flex">

@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Search } from "lucide-react";
 import CommandPaletteDialog from "@/components/CommandPaletteDialog";
 import { Button } from "@/components/ui/button";
-import { Kbd } from "@/components/ui/kbd";
 
 export default function CommandPalette() {
   const [open, setOpen] = useState(false);
@@ -25,13 +24,12 @@ export default function CommandPalette() {
         variant="outline"
         onClick={() => setOpen(true)}
         aria-label="Search devices, brands, and ROMs"
+        aria-keyshortcuts="Control+K Meta+K"
+        title="Search (⌘K)"
         className="text-muted-foreground"
       >
         <Search className="size-4" />
         <span className="hidden sm:inline">Search</span>
-        <Kbd className="hidden bg-transparent! px-0! text-muted-foreground! sm:inline-flex">
-          ⌘K
-        </Kbd>
       </Button>
 
       {open && <CommandPaletteDialog open={open} onOpenChange={setOpen} />}

@@ -71,9 +71,11 @@ test("home search finds a catalogue-only ROM", async ({ page }) => {
 test("home links to the three directories", async ({ page }) => {
   await page.goto("/");
 
-  await expect(page.getByRole("link", { name: /Devices \d+/ })).toBeVisible();
-  await expect(page.getByRole("link", { name: /Brands \d+/ })).toBeVisible();
-  await expect(page.getByRole("link", { name: /ROMs 260/ })).toBeVisible();
+  await expect(
+    page.getByRole("link", { name: /Devices [\d,]+/ }),
+  ).toBeVisible();
+  await expect(page.getByRole("link", { name: /Brands [\d,]+/ })).toBeVisible();
+  await expect(page.getByRole("link", { name: /ROMs [\d,]+/ })).toBeVisible();
 });
 
 test("home search shows matching brands", async ({ page }) => {

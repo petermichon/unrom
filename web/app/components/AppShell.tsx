@@ -17,7 +17,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { fetchDevices, fetchRoms } from "@/lib/data";
+import { fetchBrands, fetchDeviceLetters, fetchRoms } from "@/lib/data";
 import { cn } from "@/lib/utils";
 
 interface Props {
@@ -27,9 +27,9 @@ interface Props {
 }
 
 const NAV_ITEMS = [
-  { to: "/devices", label: "Devices", preload: fetchDevices },
+  { to: "/devices", label: "Devices", preload: fetchDeviceLetters },
   { to: "/roms", label: "ROMs", preload: fetchRoms },
-  { to: "/brands", label: "Brands", preload: fetchDevices },
+  { to: "/brands", label: "Brands", preload: fetchBrands },
 ];
 
 type NavItem = (typeof NAV_ITEMS)[number];
@@ -41,7 +41,7 @@ function TopNavLink({ item }: { item: NavItem }) {
   // Start the clientLoader's fetch before the click so navigation does not
   // wait on the network.
   const preload = () => {
-    void item.preload();
+    void item.preload().catch(() => {});
   };
 
   return (
@@ -67,14 +67,7 @@ function TopNavLink({ item }: { item: NavItem }) {
 
 function MobileMenu() {
   return (
-    <DropdownMenu
-      onOpenChange={(open) => {
-        if (open) {
-          void fetchDevices();
-          void fetchRoms();
-        }
-      }}
-    >
+    <DropdownMenu>
       <DropdownMenuTrigger
         render={
           <Button
@@ -165,7 +158,6 @@ export default function AppShell({ updatedAt, updatedAtIso, children }: Props) {
             <Link
               to="/"
               prefetch="viewport"
-              aria-label="unrom home"
               className="flex items-center gap-2 rounded-lg font-heading font-semibold tracking-tight outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
             >
               <span className="flex items-center gap-2">
