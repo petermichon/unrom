@@ -13,9 +13,13 @@ open an issue.
 | ------------------ | ---------------------- | --------------------------------------------------------------------------- |
 | AfterlifeOS        | `devices.json`         | https://github.com/AfterlifeOS/device_afterlife_ota                         |
 | AICP               | `aicp-build-targets`   | https://github.com/AICP/vendor_jenkins                                      |
+| AlphaDroid         | `devices.md`           | https://github.com/AlphaDroid-devices/official_devices                      |
+| AospExtended       | `devices.json`         | https://github.com/AospExtended/official_devices                            |
 | ArrowOS            | `arrow.devices`        | https://github.com/ArrowOS/arrow_infrastructure_devices                     |
 | AwakenOS           | `devices.json`         | https://github.com/Project-Awaken/official_devices                          |
 | BlissROMs          | `devices.json`         | https://github.com/BlissRoms-Devices/official-devices                       |
+| CalyxOS            | install page           | https://calyxos.org/install/                                                |
+| CandyRoms          | `devices.json`         | https://github.com/CandyRoms/official_devices                               |
 | CherishOS          | `/api/devices`         | https://www.cherishos.com                                                   |
 | Clover             | `devices.json`         | https://github.com/The-Clover-Project/TheCloverProject.com                  |
 | CorvusOS           | `devices.json`         | https://github.com/CorvusRom-Devices/jenkins                                |
@@ -25,6 +29,7 @@ open an issue.
 | DroidX-UI          | `devices.json`         | https://github.com/DroidX-UI-Devices/vendor_droidxOTA                       |
 | /e/OS              | `.gitlab-ci.yml`       | https://gitlab.e.foundation/e/os/releases                                   |
 | Evolution X        | OTA `builds/`          | https://github.com/Evolution-X/OTA                                          |
+| GrapheneOS         | FAQ device list        | https://grapheneos.org/faq#supported-devices                                |
 | Havoc-OS           | `devices`              | https://github.com/Havoc-OS/Devices                                         |
 | iodéOS             | GitLab device tree     | https://gitlab.iode.tech                                                    |
 | Kali NetHunter     | `devices.yml`          | https://gitlab.com/kalilinux/nethunter/build-scripts/kali-nethunter-kernels |
@@ -41,6 +46,7 @@ open an issue.
 | Project Infinity X | `devices.json`         | https://github.com/ProjectInfinity-X                                        |
 | Project PixelAge   | OTA `devices/`         | https://github.com/ProjectPixelage/pixelage_ota                             |
 | RisingOS           | `devices.md`           | https://github.com/RisingOS-Revived/official_devices                        |
+| SuperiorOS         | OTA `*.json`           | https://github.com/SuperiorOS-Devices/official_devices                      |
 
 ## Device catalogues
 
