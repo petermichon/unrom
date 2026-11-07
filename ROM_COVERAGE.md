@@ -55,7 +55,7 @@ Out of scope: recoveries, root tools, GSIs and repacks, OEM stock skins.
 - ❌ BsdkOS
 - CaesiumOS
 - ❌ CAF Extended
-- ❌ CalyxOS
+- 🟢 CalyxOS
 - ❌ CandyRoms
 - ❌ Carbon ROM
 - ❌ CatalystOS

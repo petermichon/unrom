@@ -3,6 +3,7 @@ import { createParser, selectors } from "./adapter.ts";
 import type { DeviceSource } from "./adapter.ts";
 import { parseAICP } from "./aicp.ts";
 import { parseAlphaDroid } from "./alphadroid.ts";
+import { parseCalyxOS } from "./calyxos.ts";
 import { parseArrowOS } from "./arrowos.ts";
 import { createEosParser } from "./eos.ts";
 import { parseEvolutionX } from "./evolutionx.ts";
@@ -221,6 +222,12 @@ const specialSources: SourceAdapter[] = [
     romName: "AlphaDroid",
     file: "alphadroid.md",
     parse: parseAlphaDroid,
+  },
+  {
+    id: "calyxos",
+    romName: "CalyxOS",
+    file: "calyxos.html",
+    parse: parseCalyxOS,
   },
   {
     id: "arrowos",

@@ -4,6 +4,7 @@ import { join } from "node:path";
 import { listDevices as listAfterlifeOS } from "./fetch/afterlifeos.ts";
 import { listDevices as listAICP } from "./fetch/aicp.ts";
 import { listDevices as listAlphaDroid } from "./fetch/alphadroid.ts";
+import { listDevices as listCalyxOS } from "./fetch/calyxos.ts";
 import { listDevices as listArrowOS } from "./fetch/arrowos.ts";
 import { listDevices as listAwakenOS } from "./fetch/awakenos.ts";
 import { listDevices as listBlissROMs } from "./fetch/blissroms.ts";
@@ -50,6 +51,7 @@ const sources: Source[] = [
   { id: "afterlifeos", file: "afterlifeos.json", fetch: listAfterlifeOS },
   { id: "aicp", file: "aicp.txt", fetch: listAICP },
   { id: "alphadroid", file: "alphadroid.md", fetch: listAlphaDroid },
+  { id: "calyxos", file: "calyxos.html", fetch: listCalyxOS },
   { id: "arrowos", file: "arrowos.txt", fetch: listArrowOS },
   { id: "awakenos", file: "awakenos.json", fetch: listAwakenOS },
   { id: "blissroms", file: "blissroms.json", fetch: listBlissROMs },
