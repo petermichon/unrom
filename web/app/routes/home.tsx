@@ -2,35 +2,25 @@ import { useMemo } from "react";
 import { Link, useLoaderData } from "react-router";
 import DeviceRow from "@/components/DeviceRow";
 import DeviceSearch from "@/components/DeviceSearch";
-import { fetchDevices, fetchRoms } from "@/lib/data";
-import { deviceName } from "@/lib/devices";
+import { fetchSummary } from "@/lib/data";
 import {
   errorMeta,
   modifiedMeta,
   pageMeta,
   updatedAtFromMatches,
 } from "@/lib/seo";
-import { bySortKey } from "@/lib/sort";
 import type { Route } from "./+types/home";
 
 async function load() {
-  const [devices, roms] = await Promise.all([fetchDevices(), fetchRoms()]);
-  const topDevices = [...devices]
-    .sort(
-      (a, b) =>
-        b.roms.length - a.roms.length ||
-        bySortKey(deviceName(a), deviceName(b)),
-    )
-    .slice(0, 6);
-
+  const summary = await fetchSummary();
   return {
     counts: {
-      devices: devices.length,
-      brands: new Set(devices.map((device) => device.vendor)).size,
-      roms: roms.length,
-      coveredRoms: roms.filter((rom) => rom.deviceCount > 0).length,
+      devices: summary.deviceCount,
+      brands: summary.brandCount,
+      roms: summary.romCount,
+      coveredRoms: summary.coveredRomCount,
     },
-    topDevices,
+    topDevices: summary.topDevices,
   };
 }
 

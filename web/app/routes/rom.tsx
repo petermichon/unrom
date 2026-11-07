@@ -52,7 +52,10 @@ export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
 
   return [
     ...pageMeta({
-      title: `${rom.name} | unrom`,
+      title:
+        rom.deviceCount === 0
+          ? `${rom.name} | unrom`
+          : `${rom.name} supported devices | unrom`,
       description,
       path: `/roms/${rom.id}`,
     }),

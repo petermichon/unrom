@@ -303,6 +303,27 @@ const romSummarySchema = {
   },
 };
 
+const summarySchema = {
+  type: "object",
+  required: [
+    "deviceCount",
+    "brandCount",
+    "romCount",
+    "coveredRomCount",
+    "topDevices",
+  ],
+  properties: {
+    deviceCount: { type: "integer", minimum: 0 },
+    brandCount: { type: "integer", minimum: 0 },
+    romCount: { type: "integer", minimum: 0 },
+    coveredRomCount: { type: "integer", minimum: 0 },
+    topDevices: {
+      type: "array",
+      items: { $ref: "#/components/schemas/BrowseDevice" },
+    },
+  },
+};
+
 const searchResponseSchema = {
   type: "object",
   required: ["devices", "brands", "roms", "totals"],
@@ -344,7 +365,7 @@ export const openapi = {
   openapi: "3.1.0",
   info: {
     title: "unrom API",
-    version: "1.5.0",
+    version: "1.6.0",
     summary: "Open database for device–ROM compatibility.",
     description:
       "Which custom Android ROMs support which devices. Every response is " +
@@ -410,6 +431,16 @@ export const openapi = {
         operationId: "getMeta",
         responses: {
           200: jsonResponse({ $ref: "#/components/schemas/Meta" }),
+        },
+      },
+    },
+    "/api/summary": {
+      get: {
+        tags: ["meta"],
+        summary: "Dataset counts and top ROM-covered devices",
+        operationId: "getSummary",
+        responses: {
+          200: jsonResponse({ $ref: "#/components/schemas/Summary" }),
         },
       },
     },
@@ -627,6 +658,7 @@ export const openapi = {
       LetterSummary: letterSummarySchema,
       BrandSummary: brandSummarySchema,
       RomSummary: romSummarySchema,
+      Summary: summarySchema,
       SearchResponse: searchResponseSchema,
       DeviceDetail: deviceDetailSchema,
       RegistryEntry: registryEntrySchema,

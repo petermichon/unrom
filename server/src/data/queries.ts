@@ -16,6 +16,7 @@ import type {
   RomSummary,
   RomSupport,
   SearchResponse,
+  Summary,
 } from "@unrom/contract";
 
 import {
@@ -791,6 +792,27 @@ export function createApi(dbPath: string) {
       }));
   }
 
+  function getSummary(): Summary {
+    const brands = listBrands();
+    const roms = listRoms();
+    const topDevices = listDevices()
+      .filter((device) => device.roms.length > 0)
+      .sort(
+        (a, b) =>
+          b.roms.length - a.roms.length ||
+          bySortKey(a.name ?? a.codename, b.name ?? b.codename),
+      )
+      .slice(0, 6);
+
+    return {
+      deviceCount: brands.reduce((sum, brand) => sum + brand.deviceCount, 0),
+      brandCount: brands.length,
+      romCount: roms.length,
+      coveredRomCount: roms.filter((rom) => rom.deviceCount > 0).length,
+      topDevices,
+    };
+  }
+
   function getMeta(): Meta {
     const values = Object.fromEntries(
       db
@@ -816,6 +838,7 @@ export function createApi(dbPath: string) {
     listRegistry,
     listRoms,
     getRom,
+    getSummary,
     search,
     listMappings,
     listVariants,

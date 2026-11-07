@@ -108,6 +108,7 @@ app.get("/api", (c) =>
       "GET /api/health",
       "GET /api/openapi.json",
       "GET /api/meta",
+      "GET /api/summary",
       "GET /api/devices?q=&vendor=&letter=&limit=&offset=",
       "GET /api/devices/letters",
       "GET /api/brands",
@@ -134,6 +135,8 @@ app.get("/api/openapi.json", (c) => {
 });
 
 app.get("/api/meta", (c) => c.json(api.getMeta()));
+
+app.get("/api/summary", (c) => c.json(api.getSummary()));
 
 app.get("/api/devices/letters", (c) => c.json(api.letterCounts()));
 

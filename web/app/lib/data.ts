@@ -5,6 +5,7 @@ import type {
   LetterSummary,
   Meta,
   RomDetail,
+  Summary,
 } from "@/lib/types";
 
 // Server-side loaders reach the API directly; in the browser the app is
@@ -56,6 +57,10 @@ export function fetchDevices(vendor?: string): Promise<BrowseDevice[]> {
 /** Seed the browser cache with data already rendered by the server loader. */
 export function seedDevices(devices: BrowseDevice[]): void {
   cache.set("/api/devices", devices);
+}
+
+export function fetchSummary(): Promise<Summary> {
+  return get<Summary>("/api/summary");
 }
 
 export function fetchDeviceLetters(): Promise<LetterSummary[]> {

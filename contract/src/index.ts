@@ -84,6 +84,17 @@ export interface RomSummary {
   deviceCount: number;
 }
 
+/** Counts and top devices for the home page, without the full catalogue. */
+export interface Summary {
+  deviceCount: number;
+  brandCount: number;
+  romCount: number;
+  /** ROMs with at least one device build. */
+  coveredRomCount: number;
+  /** Highest ROM-count devices, already sorted. */
+  topDevices: BrowseDevice[];
+}
+
 export interface BrandSummary {
   vendor: string;
   vendorName: string;

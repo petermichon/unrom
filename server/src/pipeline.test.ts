@@ -672,6 +672,16 @@ test("brand and letter summaries cover the whole catalogue", () => {
     );
     assert.equal(letters.at(-1)?.letter, "#");
 
+    const summary = api.getSummary();
+    assert.equal(summary.deviceCount, built.deviceCount);
+    assert.equal(summary.brandCount, brands.length);
+    assert.equal(summary.romCount, api.listRoms().length);
+    assert.equal(
+      summary.coveredRomCount,
+      api.listRoms().filter((rom) => rom.deviceCount > 0).length,
+    );
+    assert.deepEqual(summary.topDevices, []);
+
     assert.equal(api.getDevice("google", "catalog_only")?.name, "Catalog Only");
 
     api.close();

@@ -86,26 +86,66 @@ test("HTML responses carry cache validators", async ({ request }) => {
   expect(headers["last-modified"]).toBeTruthy();
 });
 
-test("sitemap lists canonical pages with a trustworthy lastmod", async ({
-  request,
-}) => {
+test("sitemap index points at each section sitemap", async ({ request }) => {
   const response = await request.get("/sitemap.xml");
   expect(response.status()).toBe(200);
   expect(response.headers()["content-type"]).toContain("application/xml");
 
   const xml = await response.text();
-  expect(xml).toContain("<loc>https://unrom.com/</loc>");
-  expect(xml).toContain("<loc>https://unrom.com/brands</loc>");
-  expect(xml).toContain("<loc>https://unrom.com/devices</loc>");
-  expect(xml).toContain("<loc>https://unrom.com/devices/letter/x</loc>");
-  expect(xml).toContain("<loc>https://unrom.com/roms/lineageos</loc>");
-  expect(xml).not.toContain("<loc>https://unrom.com/roms/alphadroid</loc>");
-  expect(xml).toContain("<loc>https://unrom.com/devices/xiaomi/sweet</loc>");
-  expect(xml).not.toContain(
+  expect(xml).toContain("<sitemapindex");
+  for (const section of ["pages", "devices", "brands", "roms"]) {
+    expect(xml).toContain(
+      `<loc>https://unrom.com/sitemap-${section}.xml</loc>`,
+    );
+  }
+  expect(xml).toContain("<lastmod>");
+  expect(xml).not.toContain("<url>");
+});
+
+test("section sitemaps list only canonical, indexable pages", async ({
+  request,
+}) => {
+  const pages = await request.get("/sitemap-pages.xml");
+  const devices = await request.get("/sitemap-devices.xml");
+  const brands = await request.get("/sitemap-brands.xml");
+  const roms = await request.get("/sitemap-roms.xml");
+  for (const response of [pages, devices, brands, roms]) {
+    expect(response.status()).toBe(200);
+    expect(response.headers()["content-type"]).toContain("application/xml");
+  }
+
+  const pageXml = await pages.text();
+  expect(pageXml).toContain("<loc>https://unrom.com/</loc>");
+  expect(pageXml).toContain("<loc>https://unrom.com/brands</loc>");
+  expect(pageXml).toContain("<loc>https://unrom.com/devices</loc>");
+  expect(pageXml).toContain("<loc>https://unrom.com/devices/letter/x</loc>");
+  expect(pageXml).not.toContain("<loc>https://unrom.com/registry</loc>");
+
+  const deviceXml = await devices.text();
+  expect(deviceXml).toContain(
+    "<loc>https://unrom.com/devices/xiaomi/sweet</loc>",
+  );
+  expect(deviceXml).not.toContain(
     "<loc>https://unrom.com/devices/huawei/madrid</loc>",
   );
-  expect(xml).not.toContain("<loc>https://unrom.com/registry</loc>");
-  expect(xml).toContain("<lastmod>");
+
+  const brandXml = await brands.text();
+  expect(brandXml).toContain("<loc>https://unrom.com/devices/xiaomi</loc>");
+
+  const romXml = await roms.text();
+  expect(romXml).toContain("<loc>https://unrom.com/roms/lineageos</loc>");
+  expect(romXml).not.toContain("<loc>https://unrom.com/roms/alphadroid</loc>");
+});
+
+test("ROM and brand titles name the search intent", async ({ page }) => {
+  await page.goto("/roms/lineageos");
+  await expect(page).toHaveTitle("LineageOS supported devices | unrom");
+
+  await page.goto("/devices/samsung");
+  await expect(page).toHaveTitle("Samsung custom ROM devices | unrom");
+
+  await page.goto("/roms/alphadroid");
+  await expect(page).toHaveTitle("AlphaDroid | unrom");
 });
 
 test("brand aliases redirect to the canonical lowercase URL", async ({
