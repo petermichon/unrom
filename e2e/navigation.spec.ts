@@ -1,17 +1,12 @@
 import { expect, test } from "@playwright/test";
+import { proxyApi } from "./api-proxy.ts";
 
 // The dataset is immutable per deployment, so client-side navigations must be
 // served from the in-memory cache: once a route has been visited, going back to
 // it must not trigger a loader `.data` request or an `/api/*` fetch.
 test("repeat client navigations do not hit the network", async ({ page }) => {
   // The harness does not proxy /api; forward client fetches to the API server.
-  await page.route("http://127.0.0.1:3001/api/**", async (route) => {
-    const url = new URL(route.request().url());
-    url.protocol = "http:";
-    url.host = "127.0.0.1:3000";
-    const response = await route.fetch({ url: url.toString() });
-    await route.fulfill({ response });
-  });
+  await proxyApi(page);
 
   const network: string[] = [];
   page.on("request", (request) => {
@@ -43,13 +38,7 @@ test("repeat client navigations do not hit the network", async ({ page }) => {
 });
 
 test("client navigation renders the destination table", async ({ page }) => {
-  await page.route("**/api/**", async (route) => {
-    const url = new URL(route.request().url());
-    url.protocol = "http:";
-    url.host = "127.0.0.1:3000";
-    const response = await route.fetch({ url: url.toString() });
-    await route.fulfill({ response });
-  });
+  await proxyApi(page);
 
   await page.goto("/");
   await page
@@ -99,13 +88,7 @@ test("a letter page lists its devices", async ({ page }) => {
 });
 
 test("a letter page paginates", async ({ page }) => {
-  await page.route("**/api/**", async (route) => {
-    const url = new URL(route.request().url());
-    url.protocol = "http:";
-    url.host = "127.0.0.1:3000";
-    const response = await route.fetch({ url: url.toString() });
-    await route.fulfill({ response });
-  });
+  await proxyApi(page);
 
   await page.goto("/devices/letter/g");
   await expect(page.getByText(/Page 1 of \d+/)).toBeVisible();
@@ -154,6 +137,9 @@ test("the brands index links to a brand", async ({ page }) => {
     "href",
     "/devices/xiaomi",
   );
+  await expect(page.getByRole("link", { name: /Xiaomi/ })).toContainText(
+    "with ROMs",
+  );
 });
 
 test("the brands filter narrows the list", async ({ page }) => {
@@ -171,13 +157,7 @@ test("the brands filter narrows the list", async ({ page }) => {
 });
 
 test("mobile shows sections outside the utility menu", async ({ page }) => {
-  await page.route("**/api/**", async (route) => {
-    const url = new URL(route.request().url());
-    url.protocol = "http:";
-    url.host = "127.0.0.1:3000";
-    const response = await route.fetch({ url: url.toString() });
-    await route.fulfill({ response });
-  });
+  await proxyApi(page);
 
   await page.setViewportSize({ width: 390, height: 800 });
   await page.goto("/");

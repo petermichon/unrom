@@ -1,14 +1,9 @@
 import { expect, test } from "@playwright/test";
+import { proxyApi } from "./api-proxy.ts";
 
 // Home and the command palette call the search API; forward it to the server.
 test.beforeEach(async ({ page }) => {
-  await page.route("**/api/**", async (route) => {
-    const url = new URL(route.request().url());
-    url.protocol = "http:";
-    url.host = "127.0.0.1:3000";
-    const response = await route.fetch({ url: url.toString() });
-    await route.fulfill({ response });
-  });
+  await proxyApi(page);
 });
 
 test("home search shows matching devices while typing", async ({ page }) => {
