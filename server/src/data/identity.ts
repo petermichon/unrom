@@ -132,6 +132,7 @@ export function vendorForName(name: string | null): string | null {
 // do not fall into the `unknown` bucket. (Confirmed against the /e/OS device
 // docs, LineageOS wiki, iodéOS and the ArrowOS build targets.)
 const VENDOR_BY_CODENAME: Record<string, string> = {
+  "6781": "advan",
   sapphire: "xiaomi",
   "2e": "teracube",
   brax3: "brax",
@@ -146,8 +147,10 @@ const VENDOR_BY_CODENAME: Record<string, string> = {
   maple_dsds: "sony",
   mimir: "volla",
   one: "murena",
+  onyx: "xiaomi",
   oscar: "realme",
   poplar_dsds: "sony",
+  rmx3371: "realme",
   sirius: "sony",
   tulip: "xiaomi",
   two: "murena",
@@ -347,6 +350,7 @@ export function canonicalCodename(vendor: string, codename: string): string {
 // Display names for vendor slugs.
 const VENDOR_NAMES: Record<string, string> = {
   "10or": "10.or",
+  advan: "ADVAN",
   amazon: "Amazon",
   ark: "ARK",
   asus: "Asus",

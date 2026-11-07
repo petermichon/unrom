@@ -52,7 +52,7 @@ export const ROMS: Record<string, RomCatalogEntry> = {
   auroradroid: { name: "AuroraDroid", status: "unknown" },
   aviumui: { name: "AviumUI", status: "unknown" },
   awakenos: { name: "AwakenOS", status: "active" },
-  axionaosp: { name: "AxionAOSP", status: "unknown" },
+  axionaosp: { name: "AxionOS", status: "active" },
   "axp-os": { name: "AXP.OS", status: "active" },
   ayakaui: { name: "AyakaUI", status: "unknown" },
   baikalos: { name: "BaikalOS", status: "active" },

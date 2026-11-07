@@ -8,8 +8,8 @@
             "maintainer_name": "Debayan Kar",
             "frame": null,
             "active": false,
-            "last_updated": null,
-            "version": null
+            "last_updated": 1724118675,
+            "version": 14
         },
         {
             "codename": "RMX1941",
@@ -19,8 +19,8 @@
             "maintainer_name": "Anoosragh",
             "frame": null,
             "active": false,
-            "last_updated": null,
-            "version": null
+            "last_updated": 1647154440,
+            "version": 12
         },
         {
             "codename": "RMX2001L1",
@@ -43,6 +43,17 @@
             "active": true,
             "last_updated": 1781814660,
             "version": 16
+        },
+        {
+            "codename": "Spacewar",
+            "codename_alt": "A063",
+            "vendor": "Nothing",
+            "model": "Nothing Phone (1)",
+            "maintainer_name": "Abdulaziz",
+            "frame": null,
+            "active": true,
+            "last_updated": 1792764361,
+            "version": 17
         },
         {
             "codename": "X00TD",
@@ -74,8 +85,8 @@
             "maintainer_name": "Tkiliay",
             "frame": null,
             "active": true,
-            "last_updated": 1781100871,
-            "version": 16
+            "last_updated": 1792813374,
+            "version": 17
         },
         {
             "codename": "apollo",
@@ -92,12 +103,23 @@
             "codename": "aston",
             "codename_alt": "aston",
             "vendor": "OnePlus",
-            "model": "OnePlus 12R/ACE 3 5G",
+            "model": "OnePlus 12R",
             "maintainer_name": "InFeRnO",
             "frame": null,
-            "active": false,
-            "last_updated": 1763866814,
-            "version": 16
+            "active": true,
+            "last_updated": 1792780241,
+            "version": 17
+        },
+        {
+            "codename": "astonc",
+            "codename_alt": "astonc",
+            "vendor": "OnePlus",
+            "model": "OnePlus Ace 3",
+            "maintainer_name": "InFeRnO",
+            "frame": null,
+            "active": true,
+            "last_updated": 1792782851,
+            "version": 17
         },
         {
             "codename": "benz",
@@ -106,9 +128,9 @@
             "model": "OnePlus Nord CE 4",
             "maintainer_name": "InFeRnO",
             "frame": null,
-            "active": false,
-            "last_updated": 1763774878,
-            "version": 16
+            "active": true,
+            "last_updated": 1792774409,
+            "version": 17
         },
         {
             "codename": "beryllium",
@@ -129,8 +151,8 @@
             "maintainer_name": "Fellipe Lima",
             "frame": null,
             "active": false,
-            "last_updated": null,
-            "version": null
+            "last_updated": 1729316320,
+            "version": 14
         },
         {
             "codename": "beyond1lte",
@@ -140,8 +162,8 @@
             "maintainer_name": "Fellipe Lima",
             "frame": null,
             "active": false,
-            "last_updated": null,
-            "version": null
+            "last_updated": 1729311988,
+            "version": 14
         },
         {
             "codename": "beyond2lte",
@@ -151,8 +173,8 @@
             "maintainer_name": "Fellipe Lima",
             "frame": null,
             "active": false,
-            "last_updated": null,
-            "version": null
+            "last_updated": 1729312817,
+            "version": 14
         },
         {
             "codename": "beyondx",
@@ -162,8 +184,8 @@
             "maintainer_name": "Fellipe Lima",
             "frame": null,
             "active": false,
-            "last_updated": null,
-            "version": null
+            "last_updated": 1729314556,
+            "version": 14
         },
         {
             "codename": "bitra",
@@ -173,8 +195,8 @@
             "maintainer_name": "Aditya",
             "frame": null,
             "active": false,
-            "last_updated": null,
-            "version": null
+            "last_updated": 1706734369,
+            "version": 14
         },
         {
             "codename": "caihong",
@@ -183,7 +205,7 @@
             "model": "OnePlus Pad 2",
             "maintainer_name": "InFeRnO",
             "frame": null,
-            "active": false,
+            "active": true,
             "last_updated": 1763767943,
             "version": 16
         },
@@ -192,7 +214,7 @@
             "codename_alt": "cancunf",
             "vendor": "Motorola",
             "model": "Motorola moto g54 5G",
-            "maintainer_name": "cyberknight777 && Sarthak Roy",
+            "maintainer_name": "Sarthak Roy",
             "frame": null,
             "active": true,
             "last_updated": 1780985797,
@@ -217,8 +239,8 @@
             "maintainer_name": "Kitsunejasutin",
             "frame": null,
             "active": false,
-            "last_updated": null,
-            "version": null
+            "last_updated": 1696322939,
+            "version": 13
         },
         {
             "codename": "citrus",
@@ -228,8 +250,8 @@
             "maintainer_name": "ryyaap",
             "frame": null,
             "active": false,
-            "last_updated": null,
-            "version": null
+            "last_updated": 1690609539,
+            "version": 13
         },
         {
             "codename": "coral",
@@ -239,8 +261,8 @@
             "maintainer_name": "Yularzhi",
             "frame": null,
             "active": false,
-            "last_updated": null,
-            "version": null
+            "last_updated": 1696328858,
+            "version": 13
         },
         {
             "codename": "courbet",
@@ -250,8 +272,8 @@
             "maintainer_name": "Vantom",
             "frame": null,
             "active": false,
-            "last_updated": null,
-            "version": null
+            "last_updated": 1722363794,
+            "version": 14
         },
         {
             "codename": "crownlte",
@@ -261,8 +283,8 @@
             "maintainer_name": "Mia Ryujin",
             "frame": null,
             "active": false,
-            "last_updated": null,
-            "version": null
+            "last_updated": 1660468680,
+            "version": 12
         },
         {
             "codename": "cupid",
@@ -283,8 +305,8 @@
             "maintainer_name": "Fellipe Lima",
             "frame": null,
             "active": false,
-            "last_updated": null,
-            "version": null
+            "last_updated": 1729363126,
+            "version": 14
         },
         {
             "codename": "d1x",
@@ -294,8 +316,8 @@
             "maintainer_name": "Fellipe Lima",
             "frame": null,
             "active": false,
-            "last_updated": null,
-            "version": null
+            "last_updated": 1729361426,
+            "version": 14
         },
         {
             "codename": "d2s",
@@ -305,8 +327,8 @@
             "maintainer_name": "Fellipe Lima",
             "frame": null,
             "active": false,
-            "last_updated": null,
-            "version": null
+            "last_updated": 1729315442,
+            "version": 14
         },
         {
             "codename": "d2x",
@@ -316,8 +338,8 @@
             "maintainer_name": "Fellipe Lima",
             "frame": null,
             "active": false,
-            "last_updated": null,
-            "version": null
+            "last_updated": 1729313661,
+            "version": 14
         },
         {
             "codename": "davinci",
@@ -327,8 +349,8 @@
             "maintainer_name": "Aryan && Zohaib",
             "frame": null,
             "active": true,
-            "last_updated": 1781620238,
-            "version": 16
+            "last_updated": 1793368480,
+            "version": 17
         },
         {
             "codename": "diting",
@@ -338,8 +360,8 @@
             "maintainer_name": "Sugakesshaa",
             "frame": null,
             "active": false,
-            "last_updated": null,
-            "version": null
+            "last_updated": 1713365490,
+            "version": 14
         },
         {
             "codename": "dubai",
@@ -349,8 +371,8 @@
             "maintainer_name": "Ashwin DS",
             "frame": null,
             "active": true,
-            "last_updated": 1780991719,
-            "version": 16
+            "last_updated": 1792769970,
+            "version": 17
         },
         {
             "codename": "f62",
@@ -360,8 +382,8 @@
             "maintainer_name": "Fellipe Lima",
             "frame": null,
             "active": false,
-            "last_updated": null,
-            "version": null
+            "last_updated": 1729364016,
+            "version": 14
         },
         {
             "codename": "flame",
@@ -371,8 +393,8 @@
             "maintainer_name": "Yularzhi",
             "frame": null,
             "active": false,
-            "last_updated": null,
-            "version": null
+            "last_updated": 1696334780,
+            "version": 13
         },
         {
             "codename": "garnet",
@@ -382,15 +404,15 @@
             "maintainer_name": "AdarshGrewal",
             "frame": null,
             "active": true,
-            "last_updated": 1781280569,
-            "version": 16
+            "last_updated": 1790141357,
+            "version": 17
         },
         {
             "codename": "gauguin",
             "codename_alt": "gauguin",
             "vendor": "Xiaomi",
             "model": "Redmi Note 9 Pro 5G/ Mi 10i 5G/ Mi 10T Lite 5G",
-            "maintainer_name": "Hridaya",
+            "maintainer_name": "Penguin766",
             "frame": null,
             "active": true,
             "last_updated": 1781351062,
@@ -404,8 +426,8 @@
             "maintainer_name": "Zohaib",
             "frame": null,
             "active": true,
-            "last_updated": 1780994195,
-            "version": 16
+            "last_updated": 1792985645,
+            "version": 17
         },
         {
             "codename": "grus",
@@ -415,8 +437,8 @@
             "maintainer_name": "Tkiliay",
             "frame": null,
             "active": false,
-            "last_updated": null,
-            "version": null
+            "last_updated": 1729350831,
+            "version": 14
         },
         {
             "codename": "guamp",
@@ -426,8 +448,8 @@
             "maintainer_name": "MD Raza",
             "frame": null,
             "active": false,
-            "last_updated": null,
-            "version": null
+            "last_updated": 1722417495,
+            "version": 14
         },
         {
             "codename": "hotdog",
@@ -437,8 +459,8 @@
             "maintainer_name": "cyberknight777",
             "frame": null,
             "active": false,
-            "last_updated": null,
-            "version": null
+            "last_updated": 1660738440,
+            "version": 12
         },
         {
             "codename": "hotdogg",
@@ -448,6 +470,17 @@
             "maintainer_name": "cyberknight777",
             "frame": null,
             "active": false,
+            "last_updated": 1660741140,
+            "version": 12
+        },
+        {
+            "codename": "infiniti",
+            "codename_alt": "infiniti",
+            "vendor": "OnePlus",
+            "model": "OnePlus 15",
+            "maintainer_name": "Sugakesshaa",
+            "frame": null,
+            "active": true,
             "last_updated": null,
             "version": null
         },
@@ -470,8 +503,8 @@
             "maintainer_name": "Di Raizel",
             "frame": null,
             "active": false,
-            "last_updated": null,
-            "version": null
+            "last_updated": 1688734155,
+            "version": 13
         },
         {
             "codename": "lime",
@@ -481,8 +514,8 @@
             "maintainer_name": "ryyaap",
             "frame": null,
             "active": false,
-            "last_updated": null,
-            "version": null
+            "last_updated": 1690603574,
+            "version": 13
         },
         {
             "codename": "lisa",
@@ -514,8 +547,8 @@
             "maintainer_name": "Aditya",
             "frame": null,
             "active": false,
-            "last_updated": null,
-            "version": null
+            "last_updated": 1728121521,
+            "version": 14
         },
         {
             "codename": "martini",
@@ -547,8 +580,8 @@
             "maintainer_name": "Alone0316",
             "frame": null,
             "active": false,
-            "last_updated": null,
-            "version": null
+            "last_updated": 1700055330,
+            "version": 14
         },
         {
             "codename": "munch",
@@ -558,8 +591,8 @@
             "maintainer_name": "masarou",
             "frame": null,
             "active": false,
-            "last_updated": null,
-            "version": null
+            "last_updated": 1706144532,
+            "version": 14
         },
         {
             "codename": "nemo",
@@ -580,8 +613,8 @@
             "maintainer_name": "AdarshGrewal",
             "frame": null,
             "active": true,
-            "last_updated": 1781340111,
-            "version": 16
+            "last_updated": 1789924357,
+            "version": 17
         },
         {
             "codename": "oscar",
@@ -591,8 +624,8 @@
             "maintainer_name": "Sugakesshaa",
             "frame": null,
             "active": true,
-            "last_updated": 1775373781,
-            "version": 16
+            "last_updated": 1790875390,
+            "version": 17
         },
         {
             "codename": "panther",
@@ -602,8 +635,8 @@
             "maintainer_name": "Kitsunejasutin",
             "frame": null,
             "active": false,
-            "last_updated": null,
-            "version": null
+            "last_updated": 1696300143,
+            "version": 13
         },
         {
             "codename": "pdx206",
@@ -613,8 +646,8 @@
             "maintainer_name": "Aditya",
             "frame": null,
             "active": false,
-            "last_updated": null,
-            "version": null
+            "last_updated": 1719658548,
+            "version": 14
         },
         {
             "codename": "pdx223",
@@ -624,8 +657,8 @@
             "maintainer_name": "Tuan Anh",
             "frame": null,
             "active": true,
-            "last_updated": 1781828298,
-            "version": 16
+            "last_updated": 1792958462,
+            "version": 17
         },
         {
             "codename": "pdx224",
@@ -635,8 +668,8 @@
             "maintainer_name": "Tuan Anh",
             "frame": null,
             "active": true,
-            "last_updated": 1781833051,
-            "version": 16
+            "last_updated": 1792963007,
+            "version": 17
         },
         {
             "codename": "peridot",
@@ -646,8 +679,8 @@
             "maintainer_name": "AdarshGrewal",
             "frame": null,
             "active": true,
-            "last_updated": 1781292487,
-            "version": 16
+            "last_updated": 1791186882,
+            "version": 17
         },
         {
             "codename": "pipa",
@@ -668,8 +701,8 @@
             "maintainer_name": "Karan Parashar",
             "frame": null,
             "active": true,
-            "last_updated": 1782548642,
-            "version": 16
+            "last_updated": 1790945805,
+            "version": 17
         },
         {
             "codename": "r5x",
@@ -679,8 +712,8 @@
             "maintainer_name": "Debayan Kar",
             "frame": null,
             "active": false,
-            "last_updated": null,
-            "version": null
+            "last_updated": 1677582350,
+            "version": 13
         },
         {
             "codename": "salaa",
@@ -712,8 +745,8 @@
             "maintainer_name": "HELLINFIX",
             "frame": null,
             "active": false,
-            "last_updated": null,
-            "version": null
+            "last_updated": 1683091357,
+            "version": 13
         },
         {
             "codename": "star2lte",
@@ -723,8 +756,8 @@
             "maintainer_name": "Mia Ryujin",
             "frame": null,
             "active": false,
-            "last_updated": null,
-            "version": null
+            "last_updated": 1660465920,
+            "version": 12
         },
         {
             "codename": "starlte",
@@ -734,8 +767,8 @@
             "maintainer_name": "Mia Ryujin",
             "frame": null,
             "active": false,
-            "last_updated": null,
-            "version": null
+            "last_updated": 1660463160,
+            "version": 12
         },
         {
             "codename": "sunny",
@@ -745,8 +778,8 @@
             "maintainer_name": "cyberknight777 && Sarthak Roy",
             "frame": null,
             "active": true,
-            "last_updated": 1781013997,
-            "version": 16
+            "last_updated": 1793165619,
+            "version": 17
         },
         {
             "codename": "surya",
@@ -756,8 +789,8 @@
             "maintainer_name": "Debayan Kar",
             "frame": null,
             "active": true,
-            "last_updated": 1781952202,
-            "version": 16
+            "last_updated": 1793192534,
+            "version": 17
         },
         {
             "codename": "sweet",
@@ -767,8 +800,8 @@
             "maintainer_name": "Aryan && Zohaib",
             "frame": null,
             "active": true,
-            "last_updated": 1781069438,
-            "version": 16
+            "last_updated": 1793394994,
+            "version": 17
         },
         {
             "codename": "toco",
@@ -778,8 +811,8 @@
             "maintainer_name": "Dennis Murimi",
             "frame": null,
             "active": true,
-            "last_updated": 1781022209,
-            "version": 16
+            "last_updated": 1793372888,
+            "version": 17
         },
         {
             "codename": "tundra",
@@ -788,9 +821,9 @@
             "model": "Motorola Edge (30 Fusion/S30 Pro)",
             "maintainer_name": "Raghav Tandon",
             "frame": null,
-            "active": false,
-            "last_updated": null,
-            "version": null
+            "active": true,
+            "last_updated": 1793132141,
+            "version": 17
         },
         {
             "codename": "vayu",
@@ -800,19 +833,19 @@
             "maintainer_name": "clhex",
             "frame": null,
             "active": false,
-            "last_updated": null,
-            "version": null
+            "last_updated": 1729094379,
+            "version": 14
         },
         {
             "codename": "violet",
             "codename_alt": "violet",
             "vendor": "Xiaomi",
             "model": "Redmi Note 7 Pro",
-            "maintainer_name": "Chethas",
+            "maintainer_name": "Raghav Tandon",
             "frame": null,
-            "active": false,
-            "last_updated": null,
-            "version": null
+            "active": true,
+            "last_updated": 1793346729,
+            "version": 17
         },
         {
             "codename": "waffle",
@@ -833,8 +866,8 @@
             "maintainer_name": "PaperBoy",
             "frame": null,
             "active": false,
-            "last_updated": null,
-            "version": null
+            "last_updated": 1660318020,
+            "version": 12
         },
         {
             "codename": "yogurt",
@@ -844,8 +877,19 @@
             "maintainer_name": "Sakthivel Nadar",
             "frame": null,
             "active": false,
-            "last_updated": null,
-            "version": null
+            "last_updated": 1696680223,
+            "version": 13
+        },
+        {
+            "codename": "yupei",
+            "codename_alt": "yupei",
+            "vendor": "Xiaomi",
+            "model": "Xiaomi Pad 8",
+            "maintainer_name": "Sidharth \"Siddhi\" Sharma",
+            "frame": null,
+            "active": true,
+            "last_updated": 1793756626,
+            "version": 17
         },
         {
             "codename": "zeus",

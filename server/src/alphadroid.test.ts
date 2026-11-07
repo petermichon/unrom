@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 
-import { parseAlphaDroid } from "./sources/alphadroid.ts";
+import { parseAlphaDroid, parseAlphaDroidJson } from "./sources/alphadroid.ts";
 
 test("AlphaDroid parses grouped codenames and corrects upstream typos", () => {
   const records = parseAlphaDroid(`
@@ -43,5 +43,45 @@ test("AlphaDroid parses grouped codenames and corrects upstream typos", () => {
   assert.equal(
     records.find((record) => record.codename === "peridot")?.brand,
     "Xiaomi",
+  );
+});
+
+test("AlphaDroid parses the website build index", () => {
+  const records = parseAlphaDroidJson(
+    JSON.stringify({
+      devices: [
+        {
+          name: "astonc.json",
+          data: {
+            response: [{ oem: "OnePlus", device: "astonc", version: "4.7" }],
+          },
+        },
+        {
+          name: "akita.json",
+          data: {
+            response: [
+              { oem: "Google", device: "Pixel 8a (akita)", version: "4.5" },
+            ],
+          },
+        },
+      ],
+    }),
+  );
+
+  assert.deepEqual(
+    records.map((record) => record.codename),
+    ["astonc", "akita"],
+  );
+  assert.deepEqual(
+    records.map((record) => record.name),
+    [null, "Pixel 8a (akita)"],
+  );
+  assert.deepEqual(
+    records.map((record) => record.brand),
+    ["OnePlus", "Google"],
+  );
+  assert.equal(
+    records[0]?.referenceUrl,
+    "https://alphadroid.org/#devices?codename=astonc",
   );
 });

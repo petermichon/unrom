@@ -1,5 +1,5 @@
 const BASE_URL =
-  "https://raw.githubusercontent.com/PixelOS-AOSP/official_devices/sixteen/API/devices.json";
+  "https://raw.githubusercontent.com/PixelOS-AOSP/official_devices/seventeen/API/devices.json";
 
 export async function listDevices(): Promise<string | Error> {
   const response = await fetch(BASE_URL);

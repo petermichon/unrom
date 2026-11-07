@@ -3,12 +3,16 @@ import { join } from "node:path";
 
 import { listDevices as listAfterlifeOS } from "./fetch/afterlifeos.ts";
 import { listDevices as listAICP } from "./fetch/aicp.ts";
-import { listDevices as listAlphaDroid } from "./fetch/alphadroid.ts";
+import {
+  listDevices as listAlphaDroid,
+  listSiteDevices as listAlphaDroidSite,
+} from "./fetch/alphadroid.ts";
 import { listDevices as listCalyxOS } from "./fetch/calyxos.ts";
 import { listDevices as listArrowOS } from "./fetch/arrowos.ts";
 import { listDevices as listAospExtended } from "./fetch/aospextended.ts";
 import { listDevices as listAwakenOS } from "./fetch/awakenos.ts";
 import { listDevices as listAxpOs } from "./fetch/axp-os.ts";
+import { listDevices as listAxionOs } from "./fetch/axionos.ts";
 import { listDevices as listBlissROMs } from "./fetch/blissroms.ts";
 import { listDevices as listCandyRoms } from "./fetch/candyroms.ts";
 import { listDevices as listCherishOS } from "./fetch/cherishos.ts";
@@ -18,8 +22,9 @@ import { listDevices as listCrDroid } from "./fetch/crdroid.ts";
 import { listDevices as listDerpFest } from "./fetch/derpfest.ts";
 import { listDevices as listDotOS } from "./fetch/dotos.ts";
 import { listDevices as listDroidXUI } from "./fetch/droidxui.ts";
-// /e/OS: its GitLab releases repo is no longer publicly readable, so the five
-// `eos-*.yml` snapshots are frozen (the normalizer still reads them).
+// /e/OS: its GitLab releases repo is no longer publicly readable, so the
+// `eos-*.yml` snapshots are frozen; the live source is the official devices page.
+import { listDevices as listEos } from "./fetch/eos.ts";
 import { listDevices as listEvolutionX } from "./fetch/evolutionx.ts";
 import { listDevices as listGrapheneOS } from "./fetch/grapheneos.ts";
 import { listDevices as listHavocOS } from "./fetch/havocos.ts";
@@ -62,11 +67,13 @@ const sources: Source[] = [
   { id: "afterlifeos", file: "afterlifeos.json", fetch: listAfterlifeOS },
   { id: "aicp", file: "aicp.txt", fetch: listAICP },
   { id: "alphadroid", file: "alphadroid.md", fetch: listAlphaDroid },
+  { id: "alphadroid", file: "alphadroid.json", fetch: listAlphaDroidSite },
   { id: "calyxos", file: "calyxos.html", fetch: listCalyxOS },
   { id: "arrowos", file: "arrowos.txt", fetch: listArrowOS },
   { id: "aospextended", file: "aospextended.json", fetch: listAospExtended },
   { id: "awakenos", file: "awakenos.json", fetch: listAwakenOS },
   { id: "axp-os", file: "axp-os.xml", fetch: listAxpOs },
+  { id: "axionaosp", file: "axionos.json", fetch: listAxionOs },
   { id: "blissroms", file: "blissroms.json", fetch: listBlissROMs },
   { id: "candyroms", file: "candyroms.json", fetch: listCandyRoms },
   { id: "cherishos", file: "cherishos.json", fetch: listCherishOS },
@@ -76,6 +83,7 @@ const sources: Source[] = [
   { id: "derpfest", file: "derpfest.json", fetch: listDerpFest },
   { id: "dotos", file: "dotos.json", fetch: listDotOS },
   { id: "droidxui", file: "droidxui.json", fetch: listDroidXUI },
+  { id: "eos", file: "eos.html", fetch: listEos },
   { id: "evolutionx", file: "evolutionx.json", fetch: listEvolutionX },
   { id: "grapheneos", file: "grapheneos.html", fetch: listGrapheneOS },
   { id: "havocos", file: "havocos.txt", fetch: listHavocOS },

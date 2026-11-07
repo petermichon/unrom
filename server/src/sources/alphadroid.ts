@@ -1,4 +1,4 @@
-import { buildRecord } from "./adapter.ts";
+import { buildRecord, str } from "./adapter.ts";
 import type { NormalizedRomDevice } from "../normalized.ts";
 
 const ROM_ID = "alphadroid";
@@ -74,6 +74,64 @@ export function parseAlphaDroid(raw: string): NormalizedRomDevice[] {
         }),
       );
     }
+  }
+
+  return records;
+}
+
+interface SiteDevice {
+  name?: unknown;
+  data?: { response?: unknown };
+}
+
+interface SiteBuild {
+  oem?: unknown;
+  device?: unknown;
+}
+
+/**
+ * The website keeps every official build under `data/devices.json`, one entry
+ * per device file (`<codename>.json`). It is a superset of `devices.md`, so
+ * both are normalized to catch devices the markdown roster has not listed yet.
+ */
+export function parseAlphaDroidJson(raw: string): NormalizedRomDevice[] {
+  const data = JSON.parse(raw) as { devices?: unknown };
+  const devices = Array.isArray(data.devices) ? data.devices : [];
+
+  const records: NormalizedRomDevice[] = [];
+  const seen = new Set<string>();
+
+  for (const entry of devices) {
+    if (!entry || typeof entry !== "object") continue;
+    const device = entry as SiteDevice;
+    const file = str(device.name);
+    if (!file) continue;
+
+    const codename = file.replace(/\.json$/i, "");
+    if (!codename || seen.has(codename)) continue;
+
+    const response = device.data?.response;
+    const build =
+      Array.isArray(response) && response[0] && typeof response[0] === "object"
+        ? (response[0] as SiteBuild)
+        : null;
+    const reportedName = str(build?.device);
+    const name =
+      reportedName && reportedName.toLowerCase() !== codename.toLowerCase()
+        ? reportedName
+        : null;
+
+    seen.add(codename);
+    records.push(
+      buildRecord({
+        romId: ROM_ID,
+        romName: ROM_NAME,
+        codename,
+        name,
+        brand: str(build?.oem),
+        referenceUrl: `https://alphadroid.org/#devices?codename=${codename}`,
+      }),
+    );
   }
 
   return records;

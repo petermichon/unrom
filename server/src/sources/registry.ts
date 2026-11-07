@@ -2,11 +2,12 @@ import type { NormalizedRomDevice } from "../normalized.ts";
 import { createParser, selectors } from "./adapter.ts";
 import type { DeviceSource } from "./adapter.ts";
 import { parseAICP } from "./aicp.ts";
-import { parseAlphaDroid } from "./alphadroid.ts";
+import { parseAlphaDroid, parseAlphaDroidJson } from "./alphadroid.ts";
 import { parseAxpOs } from "./axp-os.ts";
+import { parseAxionOs } from "./axionos.ts";
 import { parseCalyxOS } from "./calyxos.ts";
 import { parseArrowOS } from "./arrowos.ts";
-import { createEosParser } from "./eos.ts";
+import { createEosParser, parseEosHtml } from "./eos.ts";
 import { parseEvolutionX } from "./evolutionx.ts";
 import { parseGrapheneOS } from "./grapheneos.ts";
 import { parseHavocOS } from "./havocos.ts";
@@ -250,10 +251,22 @@ const specialSources: SourceAdapter[] = [
     parse: parseAxpOs,
   },
   {
+    id: "axionaosp",
+    romName: "AxionOS",
+    file: "axionos.json",
+    parse: parseAxionOs,
+  },
+  {
     id: "alphadroid",
     romName: "AlphaDroid",
     file: "alphadroid.md",
     parse: parseAlphaDroid,
+  },
+  {
+    id: "alphadroid",
+    romName: "AlphaDroid",
+    file: "alphadroid.json",
+    parse: parseAlphaDroidJson,
   },
   {
     id: "calyxos",
@@ -364,6 +377,12 @@ const specialSources: SourceAdapter[] = [
     romName: "/e/OS",
     file: "eos-a16.yml",
     parse: createEosParser(),
+  },
+  {
+    id: "eos",
+    romName: "/e/OS",
+    file: "eos.html",
+    parse: parseEosHtml,
   },
 ];
 

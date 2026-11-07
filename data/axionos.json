@@ -1,0 +1,1664 @@
+{
+  "schema": 2,
+  "devices": [
+    {
+      "codename": "X01BD",
+      "name": "ASUS ZenFone Max Pro M2",
+      "brand": "asus",
+      "status": "active",
+      "maintainer_ids": [
+        "Debayan_Kar"
+      ],
+      "support_group": "https://t.me/AxionOS_android_chat",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/X01BD.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/x01bd.webp",
+        "fallback": "https://fdn2.gsmarena.com/vv/pics/asus/asus-zenfone-max-pro-m2-zb631kl-2.jpg"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/X01BD.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/X01BD.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/X01BD.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/X01BD.md"
+    },
+    {
+      "codename": "oriole",
+      "name": "Google Pixel 6",
+      "brand": "google",
+      "status": "active",
+      "maintainer_ids": [
+        "rmp"
+      ],
+      "support_group": "https://t.me/AxionAOSP_PixelsSupport",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/oriole.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/oriole.webp",
+        "fallback": "https://wiki.lineageos.org/images/devices/oriole.png"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/oriole.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/oriole.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/oriole.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/oriole.md"
+    },
+    {
+      "codename": "bluejay",
+      "name": "Google Pixel 6a",
+      "brand": "google",
+      "status": "active",
+      "maintainer_ids": [
+        "rmp"
+      ],
+      "support_group": "https://t.me/AxionAOSP_PixelsSupport",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/bluejay.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/bluejay.webp",
+        "fallback": "https://wiki.lineageos.org/images/devices/bluejay.png"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/bluejay.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/bluejay.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/bluejay.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/bluejay.md"
+    },
+    {
+      "codename": "raven",
+      "name": "Google Pixel 6 Pro",
+      "brand": "google",
+      "status": "active",
+      "maintainer_ids": [
+        "rmp"
+      ],
+      "support_group": "https://t.me/AxionAOSP_PixelsSupport",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/raven.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/raven.webp",
+        "fallback": "https://wiki.lineageos.org/images/devices/raven.png"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/raven.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/raven.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/raven.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/raven.md"
+    },
+    {
+      "codename": "panther",
+      "name": "Google Pixel 7",
+      "brand": "google",
+      "status": "active",
+      "maintainer_ids": [
+        "rmp"
+      ],
+      "support_group": "https://t.me/AxionAOSP_PixelsSupport",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/panther.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/panther.webp",
+        "fallback": "https://wiki.lineageos.org/images/devices/panther.png"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/panther.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/panther.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/panther.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/panther.md"
+    },
+    {
+      "codename": "lynx",
+      "name": "Google Pixel 7a",
+      "brand": "google",
+      "status": "active",
+      "maintainer_ids": [
+        "rmp"
+      ],
+      "support_group": "https://t.me/AxionAOSP_PixelsSupport",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/lynx.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/lynx.webp",
+        "fallback": "https://wiki.lineageos.org/images/devices/lynx.png"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/lynx.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/lynx.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/lynx.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/lynx.md"
+    },
+    {
+      "codename": "cheetah",
+      "name": "Google Pixel 7 Pro",
+      "brand": "google",
+      "status": "active",
+      "maintainer_ids": [
+        "rmp"
+      ],
+      "support_group": "https://t.me/AxionAOSP_PixelsSupport",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/cheetah.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/cheetah.webp",
+        "fallback": "https://wiki.lineageos.org/images/devices/cheetah.png"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/cheetah.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/cheetah.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/cheetah.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/cheetah.md"
+    },
+    {
+      "codename": "shiba",
+      "name": "Google Pixel 8",
+      "brand": "google",
+      "status": "active",
+      "maintainer_ids": [
+        "rmp"
+      ],
+      "support_group": "https://t.me/AxionAOSP_PixelsSupport",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/shiba.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/shiba.webp",
+        "fallback": "https://wiki.lineageos.org/images/devices/shiba.png"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/shiba.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/shiba.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/shiba.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/shiba.md"
+    },
+    {
+      "codename": "akita",
+      "name": "Google Pixel 8a",
+      "brand": "google",
+      "status": "active",
+      "maintainer_ids": [
+        "rmp"
+      ],
+      "support_group": "https://t.me/AxionAOSP_PixelsSupport",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/akita.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/akita.webp",
+        "fallback": "https://wiki.lineageos.org/images/devices/akita.png"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/akita.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/akita.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/akita.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/akita.md"
+    },
+    {
+      "codename": "husky",
+      "name": "Google Pixel 8 Pro",
+      "brand": "google",
+      "status": "active",
+      "maintainer_ids": [
+        "rmp"
+      ],
+      "support_group": "https://t.me/AxionAOSP_PixelsSupport",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/husky.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/husky.webp",
+        "fallback": "https://wiki.lineageos.org/images/devices/husky.png"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/husky.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/husky.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/husky.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/husky.md"
+    },
+    {
+      "codename": "tokay",
+      "name": "Google Pixel 9",
+      "brand": "google",
+      "status": "active",
+      "maintainer_ids": [
+        "Niv"
+      ],
+      "support_group": "https://t.me/AxionAOSP_PixelsSupport",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/tokay.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/tokay.webp",
+        "fallback": "https://wiki.lineageos.org/images/devices/tokay.png"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/tokay.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/tokay.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/tokay.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/tokay.md"
+    },
+    {
+      "codename": "caiman",
+      "name": "Google Pixel 9 Pro",
+      "brand": "google",
+      "status": "active",
+      "maintainer_ids": [
+        "Niv"
+      ],
+      "support_group": "https://t.me/AxionAOSP_PixelsSupport",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/caiman.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/caiman.webp",
+        "fallback": "https://wiki.lineageos.org/images/devices/caiman.png"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/caiman.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/caiman.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/caiman.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/caiman.md"
+    },
+    {
+      "codename": "komodo",
+      "name": "Google Pixel 9 Pro XL",
+      "brand": "google",
+      "status": "active",
+      "maintainer_ids": [
+        "Niv"
+      ],
+      "support_group": "https://t.me/AxionAOSP_PixelsSupport",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/komodo.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/komodo.webp",
+        "fallback": "https://wiki.lineageos.org/images/devices/komodo.png"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/komodo.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/komodo.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/komodo.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/komodo.md"
+    },
+    {
+      "codename": "frankel",
+      "name": "Google Pixel 10",
+      "brand": "google",
+      "status": "active",
+      "maintainer_ids": [
+        "EliteDarkKaiser"
+      ],
+      "support_group": "https://t.me/+E67IdG0vR0gzZWEx",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/frankel.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/frankel.webp",
+        "fallback": "https://fdn2.gsmarena.com/vv/bigpic/google-pixel-10-.jpg"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/frankel.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/frankel.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/frankel.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/frankel.md"
+    },
+    {
+      "codename": "blazer",
+      "name": "Google Pixel 10 Pro",
+      "brand": "google",
+      "status": "active",
+      "maintainer_ids": [
+        "EliteDarkKaiser"
+      ],
+      "support_group": "https://t.me/+E67IdG0vR0gzZWEx",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/blazer.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/blazer.webp",
+        "fallback": "https://fdn2.gsmarena.com/vv/bigpic/google-pixel-10-pro-.jpg"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/blazer.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/blazer.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/blazer.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/blazer.md"
+    },
+    {
+      "codename": "mustang",
+      "name": "Google Pixel 10 Pro XL",
+      "brand": "google",
+      "status": "active",
+      "maintainer_ids": [
+        "EliteDarkKaiser"
+      ],
+      "support_group": "https://t.me/+E67IdG0vR0gzZWEx",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/mustang.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/mustang.webp",
+        "fallback": "https://fdn2.gsmarena.com/vv/bigpic/google-pixel-10-pro-xl-.jpg"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/mustang.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/mustang.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/mustang.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/mustang.md"
+    },
+    {
+      "codename": "tangorpro",
+      "name": "Google Pixel Tablet",
+      "brand": "google",
+      "status": "inactive",
+      "maintainer_ids": [
+        "EliteDarkKaiser"
+      ],
+      "support_group": "https://t.me/AxionAOSP_PixelsSupport",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/tangorpro.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/tangorpro.webp",
+        "fallback": "https://wiki.lineageos.org/images/devices/tangorpro.png"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/tangorpro.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/tangorpro.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/tangorpro.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/tangorpro.md"
+    },
+    {
+      "codename": "fogos",
+      "name": "Motorola G34/45 5G",
+      "brand": "motorola",
+      "status": "active",
+      "maintainer_ids": [
+        "Byben"
+      ],
+      "support_group": "https://t.me/wkcwproject",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/fogos.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/fogos.webp",
+        "fallback": "https://fdn2.gsmarena.com/vv/bigpic/motorola-moto-g45-5g.jpg"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/fogos.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/fogos.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/fogos.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/fogos.md"
+    },
+    {
+      "codename": "cancunf",
+      "name": "Motorola G54",
+      "brand": "motorola",
+      "status": "inactive",
+      "maintainer_ids": [
+        "Ayan"
+      ],
+      "support_group": "https://t.me/stoopid_ayan",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/cancunf.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/cancunf.webp",
+        "fallback": "https://fdn2.gsmarena.com/vv/bigpic/motorola-moto-g54.jpg"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/cancunf.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/cancunf.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/cancunf.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/cancunf.md"
+    },
+    {
+      "codename": "mumba",
+      "name": "Motorola G57 Power",
+      "brand": "motorola",
+      "status": "inactive",
+      "maintainer_ids": [
+        "Viaan"
+      ],
+      "support_group": "https://t.me/noescape_aosp",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/mumba.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/mumba.webp",
+        "fallback": "https://fdn2.gsmarena.com/vv/bigpic/motorola-moto-g57-power-.jpg"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/mumba.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/mumba.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/mumba.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/mumba.md"
+    },
+    {
+      "codename": "bangkk",
+      "name": "Motorola G84 5G",
+      "brand": "motorola",
+      "status": "active",
+      "maintainer_ids": [
+        "Zediss"
+      ],
+      "support_group": "https://t.me/zedissppchat",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/bangkk.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/bangkk.webp",
+        "fallback": "https://wiki.lineageos.org/images/devices/bangkk.png"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/bangkk.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/bangkk.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/bangkk.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/bangkk.md"
+    },
+    {
+      "codename": "Tetris",
+      "name": "Nothing CMF Phone 1",
+      "brand": "nothing",
+      "status": "inactive",
+      "maintainer_ids": [
+        "Ashwani"
+      ],
+      "support_group": "https://t.me/axion_tetris",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/Tetris.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/tetris.webp",
+        "fallback": "https://m.gsmarena.com/nothing_cmf_phone_1-pictures-13122.php"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/Tetris.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/Tetris.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/Tetris.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/Tetris.md"
+    },
+    {
+      "codename": "Pong",
+      "name": "Nothing Phone (2)",
+      "brand": "nothing",
+      "status": "active",
+      "maintainer_ids": [
+        "hiroshi._(Superuser)"
+      ],
+      "support_group": "https://t.me/nukisystems_chat",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/Pong.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/pong.webp",
+        "fallback": "https://wiki.lineageos.org/images/devices/Pong.png"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/Pong.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/Pong.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/Pong.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/Pong.md"
+    },
+    {
+      "codename": "Pacman",
+      "name": "Nothing Phone 2a",
+      "brand": "nothing",
+      "status": "active",
+      "maintainer_ids": [
+        "Shravan"
+      ],
+      "support_group": "https://t.me/exediscuss",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/Pacman.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/pacman.webp",
+        "fallback": "https://cdn.shopify.com/s/files/1/0585/2479/5086/products/black-1.png?v=1709369706"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/Pacman.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/Pacman.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/Pacman.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/Pacman.md"
+    },
+    {
+      "codename": "PacmanPro",
+      "name": "Nothing Phone 2a Plus",
+      "brand": "nothing",
+      "status": "active",
+      "maintainer_ids": [
+        "Shravan"
+      ],
+      "support_group": "https://t.me/exediscuss",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/PacmanPro.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/pacmanpro.webp",
+        "fallback": "https://cdn.shopify.com/s/files/1/0585/2479/5086/products/black-1.png?v=1709369706"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/PacmanPro.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/PacmanPro.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/PacmanPro.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/PacmanPro.md"
+    },
+    {
+      "codename": "Galaxian",
+      "name": "Nothing Phone 3a Lite",
+      "brand": "nothing",
+      "status": "active",
+      "maintainer_ids": [
+        "CRAZY_JOKER67"
+      ],
+      "support_group": "",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/Galaxian.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/galaxian.webp",
+        "fallback": "https://raw.githubusercontent.com/AxionAOSP/official_devices/main/OTA/Banners/devices/Galaxian.webp"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/Galaxian.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/Galaxian.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/Galaxian.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/Galaxian.md"
+    },
+    {
+      "codename": "instantnoodle",
+      "name": "Oneplus 8",
+      "brand": "oneplus",
+      "status": "active",
+      "maintainer_ids": [
+        "Itachi"
+      ],
+      "support_group": "https://t.me/ItachiRomSupport",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/instantnoodle.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/instantnoodle.webp",
+        "fallback": "https://wiki.lineageos.org/images/devices/instantnoodle.png"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/instantnoodle.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/instantnoodle.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/instantnoodle.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/instantnoodle.md"
+    },
+    {
+      "codename": "instantnoodlep",
+      "name": "Oneplus 8 Pro",
+      "brand": "oneplus",
+      "status": "active",
+      "maintainer_ids": [
+        "Itachi"
+      ],
+      "support_group": "https://t.me/ItachiRomSupport",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/instantnoodlep.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/instantnoodlep.webp",
+        "fallback": "https://wiki.lineageos.org/images/devices/instantnoodlep.png"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/instantnoodlep.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/instantnoodlep.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/instantnoodlep.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/instantnoodlep.md"
+    },
+    {
+      "codename": "kebab",
+      "name": "Oneplus 8T",
+      "brand": "oneplus",
+      "status": "active",
+      "maintainer_ids": [
+        "Itachi"
+      ],
+      "support_group": "https://t.me/ItachiRomSupport",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/kebab.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/kebab.webp",
+        "fallback": "https://wiki.lineageos.org/images/devices/kebab.png"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/kebab.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/kebab.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/kebab.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/kebab.md"
+    },
+    {
+      "codename": "lemonades",
+      "name": "Oneplus 9R",
+      "brand": "oneplus",
+      "status": "active",
+      "maintainer_ids": [
+        "Itachi"
+      ],
+      "support_group": "https://t.me/ItachiRomSupport",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/lemonades.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/lemonades.webp",
+        "fallback": "https://wiki.lineageos.org/images/devices/lemonades.png"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/lemonades.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/lemonades.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/lemonades.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/lemonades.md"
+    },
+    {
+      "codename": "dodge",
+      "name": "Oneplus 13",
+      "brand": "oneplus",
+      "status": "active",
+      "maintainer_ids": [
+        "Kill3rEz"
+      ],
+      "support_group": "https://t.me/OP13CustomRoms",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/dodge.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/dodge.webp",
+        "fallback": "https://wiki.lineageos.org/images/devices/dodge.png"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/dodge.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/dodge.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/dodge.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/dodge.md"
+    },
+    {
+      "codename": "giulia",
+      "name": "Oneplus 13R",
+      "brand": "oneplus",
+      "status": "active",
+      "maintainer_ids": [
+        "Genoxci"
+      ],
+      "support_group": "https://t.me/+AjwuK7p-rJ44ZmU1",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/giulia.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/giulia.webp",
+        "fallback": "https://wiki.lineageos.org/images/devices/giulia.png"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/giulia.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/giulia.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/giulia.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/giulia.md"
+    },
+    {
+      "codename": "macan",
+      "name": "Oneplus 15R",
+      "brand": "oneplus",
+      "status": "active",
+      "maintainer_ids": [
+        "Paul"
+      ],
+      "support_group": "https://t.me/AxMacanSupport",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/macan.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/macan.webp",
+        "fallback": "https://fdn2.gsmarena.com/vv/pics/oneplus/oneplus-15r-3.jpg"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/macan.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/macan.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/macan.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/macan.md"
+    },
+    {
+      "codename": "giuliac",
+      "name": "Oneplus Ace 5",
+      "brand": "oneplus",
+      "status": "active",
+      "maintainer_ids": [
+        "Genoxci"
+      ],
+      "support_group": "https://t.me/+AjwuK7p-rJ44ZmU1",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/giuliac.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/giuliac.webp",
+        "fallback": "https://wiki.lineageos.org/images/devices/giuliac.png"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/giuliac.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/giuliac.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/giuliac.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/giuliac.md"
+    },
+    {
+      "codename": "macanc",
+      "name": "Oneplus Ace 6T",
+      "brand": "oneplus",
+      "status": "active",
+      "maintainer_ids": [
+        "Paul"
+      ],
+      "support_group": "https://t.me/AxMacanSupport",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/macanc.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/macanc.webp",
+        "fallback": "https://fdn2.gsmarena.com/vv/pics/oneplus/oneplus-ace-6t-2.jpg"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/macanc.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/macanc.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/macanc.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/macanc.md"
+    },
+    {
+      "codename": "avicii",
+      "name": "Oneplus Nord",
+      "brand": "oneplus",
+      "status": "active",
+      "maintainer_ids": [
+        "Sreeshankar_K"
+      ],
+      "support_group": "https://t.me/skprjkt",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/avicii.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/avicii.webp",
+        "fallback": "https://wiki.lineageos.org/images/devices/avicii.png"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/avicii.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/avicii.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/avicii.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/avicii.md"
+    },
+    {
+      "codename": "oscaro",
+      "name": "Oneplus Nord CE2 Lite 5G",
+      "brand": "oneplus",
+      "status": "inactive",
+      "maintainer_ids": [
+        "Chethan"
+      ],
+      "support_group": "https://t.me/oscaro_aosp",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/oscaro.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/oscaro.webp",
+        "fallback": "https://wiki.lineageos.org/images/devices/oscaro.png"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/oscaro.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/oscaro.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/oscaro.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/oscaro.md"
+    },
+    {
+      "codename": "beryllium",
+      "name": "POCO F1",
+      "brand": "poco",
+      "status": "inactive",
+      "maintainer_ids": [
+        "Akshat"
+      ],
+      "support_group": "https://t.me/ak_builds_discussion",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/beryllium.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/beryllium.webp",
+        "fallback": "https://wiki.lineageos.org/images/devices/beryllium.png"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/beryllium.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/beryllium.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/beryllium.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/beryllium.md"
+    },
+    {
+      "codename": "alioth",
+      "name": "POCO F3/Mi 11X/K40",
+      "brand": "poco",
+      "status": "active",
+      "maintainer_ids": [
+        "Yaseakun"
+      ],
+      "support_group": "https://t.me/yaseaprjktchat",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/alioth.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/alioth.webp",
+        "fallback": "https://wiki.lineageos.org/images/devices/alioth.png"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/alioth.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/alioth.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/alioth.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/alioth.md"
+    },
+    {
+      "codename": "munch",
+      "name": "POCO F4/K40S",
+      "brand": "poco",
+      "status": "active",
+      "maintainer_ids": [
+        "SENX|センクス"
+      ],
+      "support_group": "https://t.me/senseixhub",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/munch.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/munch.webp",
+        "fallback": "https://wiki.lineageos.org/images/devices/munch.png"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/munch.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/munch.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/munch.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/munch.md"
+    },
+    {
+      "codename": "marble",
+      "name": "POCO F5",
+      "brand": "poco",
+      "status": "inactive",
+      "maintainer_ids": [
+        "PabloEscobar"
+      ],
+      "support_group": "https://t.me/pablo_laboratory",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/marble.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/marble.webp",
+        "fallback": "https://i.postimg.cc/3NP59Rrg/1000003700.png"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/marble.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/marble.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/marble.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/marble.md"
+    },
+    {
+      "codename": "mondrian",
+      "name": "POCO F5 Pro/K60",
+      "brand": "poco",
+      "status": "inactive",
+      "maintainer_ids": [
+        "Keosh"
+      ],
+      "support_group": "https://t.me/keoshlapgroup",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/mondrian.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/mondrian.webp",
+        "fallback": "https://fdn2.gsmarena.com/vv/bigpic/xiaomi-poco-f5-pro-2.jpg"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/mondrian.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/mondrian.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/mondrian.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/mondrian.md"
+    },
+    {
+      "codename": "peridot",
+      "name": "POCO F6",
+      "brand": "poco",
+      "status": "inactive",
+      "maintainer_ids": [
+        "zenin1504"
+      ],
+      "support_group": "https://t.me/zeninlounge",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/peridot.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/peridot.webp",
+        "fallback": "https://fdn2.gsmarena.com/vv/bigpic/xiaomi-poco-f6.jpg"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/peridot.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/peridot.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/peridot.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/peridot.md"
+    },
+    {
+      "codename": "onyx",
+      "name": "POCO F7",
+      "brand": "poco",
+      "status": "active",
+      "maintainer_ids": [
+        "Zarathos_Ghost_Rider"
+      ],
+      "support_group": "https://t.me/onyxmodding",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/onyx.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/onyx.webp",
+        "fallback": "https://fdn2.gsmarena.com/vv/bigpic/xiaomi-poco-f7.jpg"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/onyx.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/onyx.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/onyx.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/onyx.md"
+    },
+    {
+      "codename": "miatoll",
+      "name": "POCO M2 Pro / Redmi Note 9S / 9 Pro / 9 Pro Max / 10 Lite",
+      "brand": "poco",
+      "status": "active",
+      "maintainer_ids": [
+        "RiteshSahany"
+      ],
+      "support_group": "https://t.me/RiteshChat",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/miatoll.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/miatoll.webp",
+        "fallback": "https://wiki.lineageos.org/images/devices/miatoll.png"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/miatoll.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/miatoll.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/miatoll.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/miatoll.md"
+    },
+    {
+      "codename": "surya",
+      "name": "POCO X3 / POCO X3 NFC",
+      "brand": "poco",
+      "status": "active",
+      "maintainer_ids": [
+        "Debayan_Kar"
+      ],
+      "support_group": "https://t.me/PocoX3Discussions",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/surya.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/surya.webp",
+        "fallback": "https://i01.appmifile.com/webfile/globalimg/products/pc/poco-x3-nfc/specs-header.png"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/surya.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/surya.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/surya.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/surya.md"
+    },
+    {
+      "codename": "xaga",
+      "name": "POCO X4 GT / Redmi Note 11T Pro (+) / K50i",
+      "brand": "poco",
+      "status": "active",
+      "maintainer_ids": [
+        "Jefino9488"
+      ],
+      "support_group": "https://t.me/XAGASupport",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/xaga.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/xaga.webp",
+        "fallback": ""
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/xaga.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/xaga.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/xaga.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/xaga.md"
+    },
+    {
+      "codename": "redwood",
+      "name": "POCO X5 Pro 5G",
+      "brand": "poco",
+      "status": "inactive",
+      "maintainer_ids": [
+        "Mayur_U"
+      ],
+      "support_group": "https://t.me/Mayurbuilds",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/redwood.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/redwood.webp",
+        "fallback": "https://fdn2.gsmarena.com/vv/bigpic/xiaomi-poco-x5-pro-5g.jpg"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/redwood.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/redwood.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/redwood.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/redwood.md"
+    },
+    {
+      "codename": "duchamp",
+      "name": "POCO X6 Pro 5G",
+      "brand": "poco",
+      "status": "active",
+      "maintainer_ids": [
+        "Sai_Krishna"
+      ],
+      "support_group": "https://t.me/+T-zAXhSqatUxMjBl",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/duchamp.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/duchamp.webp",
+        "fallback": "https://fdn2.gsmarena.com/vv/bigpic/xiaomi-redmi-k70e.jpg"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/duchamp.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/duchamp.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/duchamp.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/duchamp.md"
+    },
+    {
+      "codename": "rodin",
+      "name": "POCO X7 Pro 5G",
+      "brand": "poco",
+      "status": "active",
+      "maintainer_ids": [
+        "SENX|センクス"
+      ],
+      "support_group": "https://t.me/senseixhub",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/rodin.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/rodin.webp",
+        "fallback": "https://i02.appmifile.com/755_item_id/12/02/2025/b27b9211fbbb432229945701ea6116c2.png"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/rodin.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/rodin.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/rodin.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/rodin.md"
+    },
+    {
+      "codename": "r5x",
+      "name": "Realme 5 series",
+      "brand": "realme",
+      "status": "active",
+      "maintainer_ids": [
+        "Amrito_Karmokar"
+      ],
+      "support_group": "https://t.me/Realme5Dev",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/r5x.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/r5x.webp",
+        "fallback": "https://fdn2.gsmarena.com/vv/bigpic/realme-5i.jpg"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/r5x.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/r5x.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/r5x.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/r5x.md"
+    },
+    {
+      "codename": "RM6785",
+      "name": "Realme 6/7/Narzo Unified",
+      "brand": "realme",
+      "status": "active",
+      "maintainer_ids": [
+        "𝙴𝙻𝙾𝙷𝙸𝙼"
+      ],
+      "support_group": "https://t.me/RM6785_Chat",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/RM6785.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/rm6785.webp",
+        "fallback": "https://fdn2.gsmarena.com/vv/pics/realme/realme-6-1.jpg"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/RM6785.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/RM6785.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/RM6785.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/RM6785.md"
+    },
+    {
+      "codename": "even",
+      "name": "Realme C25/S/N50A",
+      "brand": "realme",
+      "status": "active",
+      "maintainer_ids": [
+        "Heliactyl"
+      ],
+      "support_group": "https://t.me/c25series_official",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/even.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/even.webp",
+        "fallback": "https://example.com/even.webp"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/even.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/even.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/even.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/even.md"
+    },
+    {
+      "codename": "bitra",
+      "name": "Realme GT Neo 2",
+      "brand": "realme",
+      "status": "active",
+      "maintainer_ids": [
+        "Bijoy"
+      ],
+      "support_group": "https://t.me/ryuksupport09",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/bitra.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/bitra.webp",
+        "fallback": "https://i.postimg.cc/yN3FGXnR/4-zu-3-realme-GT-Neo-2.png"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/bitra.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/bitra.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/bitra.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/bitra.md"
+    },
+    {
+      "codename": "spartan",
+      "name": "Realme GT Neo 3T",
+      "brand": "realme",
+      "status": "active",
+      "maintainer_ids": [
+        "Bijoy"
+      ],
+      "support_group": "https://t.me/ryuksupport09",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/spartan.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/spartan.webp",
+        "fallback": "https://i.postimg.cc/ncJDcTFs/original-imaghyc7gkgg6qzf.webp"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/spartan.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/spartan.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/spartan.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/spartan.md"
+    },
+    {
+      "codename": "haydn",
+      "name": "Mi 11X Pro/Mi 11i/Redmi K40 Pro/Redmi K40 Pro+",
+      "brand": "xiaomi",
+      "status": "inactive",
+      "maintainer_ids": [
+        "Lucifer"
+      ],
+      "support_group": "https://t.me/EternelVoid_sg",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/haydn.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/haydn.webp",
+        "fallback": "https://fdn2.gsmarena.com/vv/pics/xiaomi/xiaomi-mi11x-pro-0.jpg"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/haydn.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/haydn.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/haydn.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/haydn.md"
+    },
+    {
+      "codename": "Mi8937_4_19",
+      "name": "Redmi 3S/3X/4/4A/4X/5A/Note 5A",
+      "brand": "xiaomi",
+      "status": "inactive",
+      "maintainer_ids": [
+        "Rve"
+      ],
+      "support_group": "https://t.me/rve_enterprises",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/Mi8937_4_19.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/mi8937_4_19.webp",
+        "fallback": "https://wiki.lineageos.org/images/devices/land.png"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/Mi8937_4_19.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/Mi8937_4_19.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/Mi8937_4_19.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/Mi8937_4_19.md"
+    },
+    {
+      "codename": "lancelot",
+      "name": "Redmi 9",
+      "brand": "xiaomi",
+      "status": "active",
+      "maintainer_ids": [
+        "doissM"
+      ],
+      "support_group": "https://t.me/doissmchat",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/lancelot.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/lancelot.webp",
+        "fallback": "https://files.tecnoblog.net/wp-content/uploads/2025/02/Xiaomi-Redmi-9-Violeta.png"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/lancelot.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/lancelot.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/lancelot.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/lancelot.md"
+    },
+    {
+      "codename": "blossom",
+      "name": "Redmi Blossom Series",
+      "brand": "xiaomi",
+      "status": "inactive",
+      "maintainer_ids": [
+        "fukiame"
+      ],
+      "support_group": "https://t.me/t25_discussions",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/blossom.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/blossom.webp",
+        "fallback": "https://fdn2.gsmarena.com/vv/pics/xiaomi/redmi-9a-01.jpg"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/blossom.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/blossom.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/blossom.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/blossom.md"
+    },
+    {
+      "codename": "raphael",
+      "name": "Redmi K20 Pro / Mi 9T Pro",
+      "brand": "xiaomi",
+      "status": "active",
+      "maintainer_ids": [
+        "Muhammad_Al-Arabi"
+      ],
+      "support_group": "https://t.me/Al_Arabis_Support",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/raphael.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/raphael.webp",
+        "fallback": "https://fdn2.gsmarena.com/vv/pics/xiaomi/xiaomi-redmi-k20pro-5.jpg"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/raphael.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/raphael.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/raphael.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/raphael.md"
+    },
+    {
+      "codename": "lavender",
+      "name": "Redmi Note 7/7s",
+      "brand": "xiaomi",
+      "status": "active",
+      "maintainer_ids": [
+        "Amrito_Karmokar"
+      ],
+      "support_group": "https://t.me/RedmiNote7Official",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/lavender.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/lavender.webp",
+        "fallback": "https://fdn2.gsmarena.com/vv/bigpic/xiaomi-redmi-note-7.jpg"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/lavender.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/lavender.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/lavender.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/lavender.md"
+    },
+    {
+      "codename": "violet",
+      "name": "Redmi Note 7 Pro",
+      "brand": "xiaomi",
+      "status": "active",
+      "maintainer_ids": [
+        "Joker-V2"
+      ],
+      "support_group": "https://t.me/Joker_viomeme",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/violet.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/violet.webp",
+        "fallback": "https://wiki.lineageos.org/images/devices/violet.png"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/violet.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/violet.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/violet.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/violet.md"
+    },
+    {
+      "codename": "begonia",
+      "name": "Redmi Note 8 Pro",
+      "brand": "xiaomi",
+      "status": "active",
+      "maintainer_ids": [
+        "Sai_Krishna"
+      ],
+      "support_group": "https://t.me/+T-zAXhSqatUxMjBl",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/begonia.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/begonia.webp",
+        "fallback": "https://fdn2.gsmarena.com/vv/bigpic/xiaomi-redmi-note-8-pro-.jpg"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/begonia.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/begonia.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/begonia.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/begonia.md"
+    },
+    {
+      "codename": "merlinx",
+      "name": "Redmi Note 9",
+      "brand": "xiaomi",
+      "status": "active",
+      "maintainer_ids": [
+        "doissM"
+      ],
+      "support_group": "https://t.me/doissmchat",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/merlinx.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/merlinx.webp",
+        "fallback": "https://wiki.lineageos.org/images/devices/merlinx.png"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/merlinx.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/merlinx.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/merlinx.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/merlinx.md"
+    },
+    {
+      "codename": "sweet",
+      "name": "Redmi Note 10 Pro / Pro Max",
+      "brand": "xiaomi",
+      "status": "active",
+      "maintainer_ids": [
+        "therealmharc"
+      ],
+      "support_group": "https://t.me/donjohanliebert_sg",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/sweet.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/sweet.webp",
+        "fallback": "https://wiki.lineageos.org/images/devices/sweet.png"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/sweet.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/sweet.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/sweet.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/sweet.md"
+    },
+    {
+      "codename": "rubyx",
+      "name": "Redmi Note 12 Pro / Plus / Discovery 5G",
+      "brand": "xiaomi",
+      "status": "active",
+      "maintainer_ids": [
+        "Casanova."
+      ],
+      "support_group": "https://t.me/casanovas_cult",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/rubyx.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/rubyx.webp",
+        "fallback": "https://fdn2.gsmarena.com/vv/bigpic/xiaomi-redmi-note-12-pro.jpg"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/rubyx.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/rubyx.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/rubyx.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/rubyx.md"
+    },
+    {
+      "codename": "garnet",
+      "name": "Redmi Note 13 Pro 5G / Poco X6 5G",
+      "brand": "xiaomi",
+      "status": "active",
+      "maintainer_ids": [
+        "ZetyaWyn"
+      ],
+      "support_group": "https://t.me/Garnet_Axion_Support",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/garnet.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/garnet.webp",
+        "fallback": "https://wiki.lineageos.org/images/devices/garnet.png"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/garnet.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/garnet.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/garnet.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/garnet.md"
+    },
+    {
+      "codename": "tanzanite",
+      "name": "Redmi Note 14 4G",
+      "brand": "xiaomi",
+      "status": "inactive",
+      "maintainer_ids": [
+        "ido@rexprjkt°"
+      ],
+      "support_group": "https://t.me/rexp_discussion",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/tanzanite.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/tanzanite.webp",
+        "fallback": "https://fdn2.gsmarena.com/vv/bigpic/xiaomi-redmi-note-14-4g-gl.jpg"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/tanzanite.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/tanzanite.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/tanzanite.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/tanzanite.md"
+    },
+    {
+      "codename": "vili",
+      "name": "Xiaomi 11T Pro",
+      "brand": "xiaomi",
+      "status": "inactive",
+      "maintainer_ids": [
+        "swiitchOFF"
+      ],
+      "support_group": "https://t.me/+d9Y_N7yuDpxkMmE1",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/vili.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/vili.webp",
+        "fallback": "https://fdn2.gsmarena.com/vv/bigpic/xiaomi-11t-pro.jpg"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/vili.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/vili.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/vili.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/vili.md"
+    },
+    {
+      "codename": "fuxi",
+      "name": "Xiaomi 13",
+      "brand": "xiaomi",
+      "status": "active",
+      "maintainer_ids": [
+        "🔻neural0x🔻"
+      ],
+      "support_group": "https://t.me/xiaomi13roms",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/fuxi.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/fuxi.webp",
+        "fallback": "https://i.imgur.com/ikrkK8y.png"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/fuxi.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/fuxi.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/fuxi.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/fuxi.md"
+    },
+    {
+      "codename": "nabu",
+      "name": "Xiaomi Pad 5",
+      "brand": "xiaomi",
+      "status": "active",
+      "maintainer_ids": [
+        "°⊥⋊ɹ∀°"
+      ],
+      "support_group": "https://t.me/+12Ja1iBatW9lNTNl",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/nabu.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/nabu.webp",
+        "fallback": "https://github.com/AxionAOSP/official_devices/blob/main/OTA/Banners/devices/nabu.webp?raw=true"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/nabu.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/nabu.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/nabu.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/nabu.md"
+    },
+    {
+      "codename": "pipa",
+      "name": "Xiaomi Pad 6",
+      "brand": "xiaomi",
+      "status": "active",
+      "maintainer_ids": [
+        "Null_Pointer"
+      ],
+      "support_group": "https://t.me/the_usual_suspects_777",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/pipa.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/pipa.webp",
+        "fallback": "https://fdn2.gsmarena.com/vv/pics/xiaomi/xiaomi-pad6-1.jpg"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/pipa.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/pipa.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/pipa.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/pipa.md"
+    },
+    {
+      "codename": "uke",
+      "name": "Xiaomi Pad 7/POCO Pad X1",
+      "brand": "xiaomi",
+      "status": "active",
+      "maintainer_ids": [
+        "delano-git"
+      ],
+      "support_group": "https://t.me/axion_uke",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/uke.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/uke.webp",
+        "fallback": "https://fdn2.gsmarena.com/vv/pics/xiaomi/xiaomi-pad-7-pro-1.jpg"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/uke.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/uke.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/uke.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/uke.md"
+    },
+    {
+      "codename": "a52sxq",
+      "name": "Samsung Galaxy A52s 5G",
+      "brand": "samsung",
+      "status": "active",
+      "maintainer_ids": [
+        "Genoxci"
+      ],
+      "support_group": "https://t.me/+XP1c6dUf7yM4NmE1",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/a52sxq.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/a52sxq.webp",
+        "fallback": "https://wiki.lineageos.org/images/devices/a52sxq.png"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/a52sxq.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/a52sxq.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/a52sxq.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/a52sxq.md"
+    },
+    {
+      "codename": "LG8n",
+      "name": "TECNO POVA 4 Pro",
+      "brand": "tecno",
+      "status": "active",
+      "maintainer_ids": [
+        "Shirayuki39"
+      ],
+      "support_group": "https://t.me/millenniumdiscussion",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/LG8n.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/lg8n.webp",
+        "fallback": "https://d13pvy8xd75yde.cloudfront.net/global/phones/pova4pro/black.png"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/LG8n.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/LG8n.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/LG8n.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/LG8n.md"
+    },
+    {
+      "codename": "LH7n",
+      "name": "TECNO POVA 5",
+      "brand": "tecno",
+      "status": "active",
+      "maintainer_ids": [
+        "Shirayuki39"
+      ],
+      "support_group": "https://t.me/millenniumdiscussion",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/LH7n.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/lh7n.webp",
+        "fallback": "https://d13pvy8xd75yde.cloudfront.net/global/phones/pova5/gold.png"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/LH7n.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/LH7n.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/LH7n.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/LH7n.md"
+    },
+    {
+      "codename": "S666LN",
+      "name": "Itel RS4",
+      "brand": "itel",
+      "status": "active",
+      "maintainer_ids": [
+        "KimelaZPrjkt."
+      ],
+      "support_group": "https://t.me/itel_rs4",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/S666LN.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/s666ln.webp",
+        "fallback": "https://github.com/KimelaZX/official_devices/blob/main/OTA/Banners/devices/S666LN.webp?raw=true"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/S666LN.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/S666LN.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/S666LN.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/S666LN.md"
+    },
+    {
+      "codename": "X6882",
+      "name": "Infinix Hot 50 4G",
+      "brand": "other",
+      "status": "active",
+      "maintainer_ids": [
+        "ー々hans."
+      ],
+      "support_group": "https://t.me/hanssnv",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/X6882.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/x6882.webp",
+        "fallback": ""
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/X6882.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/X6882.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/X6882.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/X6882.md"
+    },
+    {
+      "codename": "X6880",
+      "name": "Infinix Hot 50 Pro+ 4G",
+      "brand": "other",
+      "status": "active",
+      "maintainer_ids": [
+        "ーケrayannn."
+      ],
+      "support_group": "https://t.me/rayaaannnnnnnnn",
+      "images": {
+        "banner": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/X6880.webp",
+        "banner_lower": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/Banners/devices/x6880.webp",
+        "fallback": "https://fdn2.gsmarena.com/vv/pics/infinix/infinix-hot-50-pro-plus-4g-1.jpg"
+      },
+      "ota": {
+        "gms": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/GMS/X6880.json",
+        "vanilla": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/VANILLA/X6880.json"
+      },
+      "changelog": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/OTA/CHANGELOG/X6880.txt",
+      "guide": "https://raw.githubusercontent.com/AxionAOSP/official_devices/refs/heads/main/Wiki/X6880.md"
+    }
+  ]
+}

@@ -40,7 +40,7 @@ Out of scope: recoveries, root tools, GSIs and repacks, OEM stock skins.
 - ❌ AuroraDroid
 - AviumUI
 - 🟢 AwakenOS
-- AxionAOSP
+- 🟢 AxionOS
 - 🟢 AXP.OS
 - AyakaUI
 - ❌ BaikalOS

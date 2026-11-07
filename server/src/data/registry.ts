@@ -8,6 +8,8 @@
 export const DEVICE_NAMES: Record<string, string[]> = {
   "10or\0G": ["10.or G"],
 
+  "advan\u00006781": ["ADVAN X1"],
+
   "amazon\0sunstone": ["Fire Max 11"],
 
   "ark\0peach": ["ARK Benefit A3"],
@@ -178,6 +180,8 @@ export const DEVICE_NAMES: Record<string, string[]> = {
 
   "infinix\0X678B": ["Infinix Note 30 Pro"],
   "infinix\0X6833B": ["Infinix Note 30"],
+  "infinix\0X6880": ["Infinix Hot 50 Pro+ 4G"],
+  "infinix\0X6882": ["Infinix Hot 50 4G"],
 
   "itel\0S666LN": ["Itel RS4"],
 
@@ -449,6 +453,8 @@ export const DEVICE_NAMES: Record<string, string[]> = {
   "oneplus\0lemonades": ["OnePlus 9R"],
   "oneplus\0lemonkebab": ["OnePlus 8T", "OnePlus 9R"],
   "oneplus\0lexus": ["OnePlus Nord 5"],
+  "oneplus\0macan": ["OnePlus 15R"],
+  "oneplus\0macanc": ["OnePlus Ace 6T"],
   "oneplus\0martini": ["OnePlus 9RT"],
   "oneplus\0oneplus2": ["OnePlus 2"],
   "oneplus\0oneplus3": ["OnePlus 3", "OnePlus 3T"],
@@ -504,6 +510,7 @@ export const DEVICE_NAMES: Record<string, string[]> = {
   "realme\0bladerunner_48m": ["Realme X50 Pro Player Edition"],
   "realme\0CPH1859": ["Realme 1"],
   "realme\0cupidr": ["Realme GT 5G"],
+  "realme\0even": ["Realme C25", "Realme C25s", "Realme Narzo 50A"],
   "realme\0ferrarri": ["Realme GT 2 Pro"],
   "realme\0ice": ["Realme 9 SE 5G", "Realme 9 Speed Edition"],
   "realme\0luigi": ["Realme 10 Pro 5G"],
@@ -541,6 +548,7 @@ export const DEVICE_NAMES: Record<string, string[]> = {
   "realme\0RMX3461": ["Realme 9 5G Speed Edition", "Realme Q3s"],
   "realme\0rmx2180": ["Realme C15 (MediaTek)"],
   "realme\0rmx3031": ["Realme X7 Max 5G"],
+  "realme\0rmx3371": ["Realme GT Neo 2"],
   "realme\0salaa": ["Realme 7", "Realme Narzo 20 Pro", "Realme Narzo 30 4G"],
   "realme\0samurai": ["Realme X2 Pro"],
   "realme\0spaced": ["Realme 8i", "Realme Narzo 50"],
@@ -777,6 +785,7 @@ export const DEVICE_NAMES: Record<string, string[]> = {
   "sony\0z3tc": ["Xperia Z3 Tablet Compact Wi-Fi"],
   "sony\0z3tcw": ["Xperia Z3 Tablet Compact LTE"],
 
+  "tecno\0LG8n": ["TECNO POVA 4 Pro"],
   "tecno\0LH7n": ["TECNO Pova 5"],
   "tecno\0LH8n": ["TECNO Pova 5 Pro 5G"],
 
