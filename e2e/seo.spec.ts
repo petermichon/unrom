@@ -119,6 +119,9 @@ test("section sitemaps list only canonical, indexable pages", async ({
   expect(pageXml).toContain("<loc>https://unrom.com/brands</loc>");
   expect(pageXml).toContain("<loc>https://unrom.com/devices</loc>");
   expect(pageXml).toContain("<loc>https://unrom.com/devices/letter/x</loc>");
+  expect(pageXml).not.toContain(
+    "<loc>https://unrom.com/devices/letter/other</loc>",
+  );
   expect(pageXml).not.toContain("<loc>https://unrom.com/registry</loc>");
 
   const deviceXml = await devices.text();

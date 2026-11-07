@@ -78,6 +78,18 @@ test("the devices index links to letter pages", async ({ page }) => {
   await expect(page.locator('a[href="/devices/letter/g"]')).toBeVisible();
 });
 
+test("non-Latin names get their own directory group", async ({ page }) => {
+  await page.goto("/devices");
+
+  await expect(page.locator('a[href="/devices/letter/other"]')).toBeVisible();
+
+  await page.goto("/devices/letter/other");
+  await expect(
+    page.getByRole("heading", { name: "Other devices" }),
+  ).toBeVisible();
+  await expect(page.locator("a.device-row").first()).toBeVisible();
+});
+
 test("a letter page lists its devices", async ({ page }) => {
   await page.goto("/devices/letter/h");
 

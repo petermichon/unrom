@@ -16,16 +16,21 @@ const PAGE_SIZE = 200;
 
 function letterFromParam(value: string): string | null {
   if (value === "0-9") return "#";
+  if (value === "other") return "other";
   const letter = value.toUpperCase();
   return /^[A-Z]$/.test(letter) ? letter : null;
 }
 
 function slugFor(letter: string): string {
-  return letter === "#" ? "0-9" : letter.toLowerCase();
+  if (letter === "#") return "0-9";
+  if (letter === "other") return "other";
+  return letter.toLowerCase();
 }
 
 function labelFor(letter: string): string {
-  return letter === "#" ? "0–9" : letter;
+  if (letter === "#") return "0–9";
+  if (letter === "other") return "Other";
+  return letter;
 }
 
 export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
@@ -149,7 +154,11 @@ export default function DeviceLetterRoute() {
 
       <PageHeader
         title={`${label} devices`}
-        description={`${total} device${total === 1 ? "" : "s"} starting with ${label}. ROM-covered devices first.`}
+        description={
+          letter === "other"
+            ? `${total} device${total === 1 ? "" : "s"} with non-Latin names.`
+            : `${total} device${total === 1 ? "" : "s"} starting with ${label}. ROM-covered devices first.`
+        }
         endpoint={`/api/devices?letter=${encodeURIComponent(letter)}&limit=${PAGE_SIZE}`}
       />
 

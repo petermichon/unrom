@@ -105,7 +105,10 @@ export interface BrandSummary {
 
 /** Grouped, capped results for the home and command-palette searches. */
 export interface LetterSummary {
-  /** Uppercase letter, or `#` for names starting with a digit. */
+  /**
+   * Uppercase letter, `#` for names starting with a digit, or `other` for
+   * non-Latin and punctuation names.
+   */
   letter: string;
   deviceCount: number;
   /** Devices with at least one ROM build, directly or via a covered variant. */

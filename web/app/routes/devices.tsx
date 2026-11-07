@@ -52,13 +52,21 @@ export default function DevicesRoute() {
           <li key={letter.letter}>
             <Link
               to={`/devices/letter/${
-                letter.letter === "#" ? "0-9" : letter.letter.toLowerCase()
+                letter.letter === "#"
+                  ? "0-9"
+                  : letter.letter === "other"
+                    ? "other"
+                    : letter.letter.toLowerCase()
               }`}
               prefetch="intent"
               className="directory-row"
             >
               <span className="font-heading text-base font-semibold">
-                {letter.letter === "#" ? "0–9" : letter.letter}
+                {letter.letter === "#"
+                  ? "0–9"
+                  : letter.letter === "other"
+                    ? "Other"
+                    : letter.letter}
               </span>
               <span className="text-xs text-muted-foreground tabular-nums">
                 {letter.deviceCount}{" "}

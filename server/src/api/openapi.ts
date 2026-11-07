@@ -248,8 +248,9 @@ const deviceListParameters = [
     in: "query",
     required: false,
     description:
-      "Display-name initial, A-Z, or `#` for names starting with a digit.",
-    schema: { type: "string", pattern: "^[A-Z#]$" },
+      "Display-name initial: A-Z, `#` for names starting with a digit, or " +
+      "`other` for non-Latin and punctuation names.",
+    schema: { type: "string", pattern: "^(?:[A-Z#]|other)$" },
   },
   {
     name: "limit",
@@ -271,7 +272,7 @@ const letterSummarySchema = {
   type: "object",
   required: ["letter", "deviceCount", "withRoms"],
   properties: {
-    letter: { type: "string", pattern: "^[A-Z#]$" },
+    letter: { type: "string", pattern: "^(?:[A-Z#]|other)$" },
     deviceCount: { type: "integer", minimum: 0 },
     withRoms: {
       type: "integer",
@@ -371,7 +372,7 @@ export const openapi = {
   openapi: "3.1.0",
   info: {
     title: "unrom API",
-    version: "1.7.0",
+    version: "1.8.0",
     summary: "Open database for device–ROM compatibility.",
     description:
       "Which custom Android ROMs support which devices. Every response is " +

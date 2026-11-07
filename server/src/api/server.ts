@@ -148,7 +148,7 @@ app.get("/api/devices", (c) => {
   const query = c.req.query("q") ?? undefined;
   const vendor = c.req.query("vendor") ?? undefined;
   const letter = c.req.query("letter")?.toUpperCase();
-  if (letter && !/^[A-Z#]$/.test(letter)) {
+  if (letter && !/^(?:[A-Z#]|OTHER)$/.test(letter)) {
     return c.json({ error: `invalid letter: ${letter}` }, 400);
   }
 

@@ -663,6 +663,8 @@ test("brand and letter summaries cover the whole catalogue", () => {
   try {
     const built = buildDatabase([], dbPath, [
       { vendor: "google", codename: "catalog_only", names: ["Catalog Only"] },
+      { vendor: "realme", codename: "cjk_test", names: ["真我 GT"] },
+      { vendor: "realme", codename: "digit_test", names: ["10.or G"] },
     ]);
     const api = createApi(dbPath);
 
@@ -682,11 +684,18 @@ test("brand and letter summaries cover the whole catalogue", () => {
       letters.reduce((sum, letter) => sum + letter.deviceCount, 0),
       built.deviceCount,
     );
-    assert.equal(letters.at(-1)?.letter, "#");
+    assert.equal(letters.at(-1)?.letter, "other");
     assert.equal(
       letters.reduce((sum, letter) => sum + letter.withRoms, 0),
       0,
     );
+
+    const cjk = api.listDevicesPage({ letter: "other" });
+    assert.ok(cjk.some((device) => device.codename === "cjk_test"));
+    assert.ok(!cjk.some((device) => device.codename === "digit_test"));
+    const numeric = api.listDevicesPage({ letter: "#" });
+    assert.ok(numeric.some((device) => device.codename === "digit_test"));
+    assert.ok(!numeric.some((device) => device.codename === "cjk_test"));
 
     const summary = api.getSummary();
     assert.equal(summary.deviceCount, built.deviceCount);

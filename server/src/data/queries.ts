@@ -170,7 +170,10 @@ export function createApi(dbPath: string) {
   interface DeviceQuery {
     query?: string;
     vendor?: string;
-    /** Display-name initial: A-Z or `#` for numeric/punctuation names. */
+    /**
+     * Display-name initial: A-Z, `#` for names starting with a digit, or
+     * `other` for non-Latin and punctuation names.
+     */
     letter?: string;
     limit?: number;
     offset?: number;
@@ -204,10 +207,13 @@ export function createApi(dbPath: string) {
     const letter = options.letter?.toUpperCase();
     if (letter) {
       const displayName = sql`coalesce(${devices.name}, ${devices.codename})`;
+      const initial = sql`substr(${displayName}, 1, 1)`;
       filters.push(
         letter === "#"
-          ? sql`${displayName} NOT GLOB '[A-Za-z]*'`
-          : sql`upper(substr(${displayName}, 1, 1)) = ${letter}`,
+          ? sql`${initial} GLOB '[0-9]'`
+          : letter === "OTHER"
+            ? sql`${initial} NOT GLOB '[A-Za-z0-9]'`
+            : sql`upper(${initial}) = ${letter}`,
       );
     }
     return filters;
@@ -267,7 +273,11 @@ export function createApi(dbPath: string) {
     for (const row of db.select().from(devices).all()) {
       const display = row.name ?? row.codename;
       const initial = display.charAt(0).toUpperCase();
-      const letter = /^[A-Z]$/.test(initial) ? initial : "#";
+      const letter = /^[A-Z]$/.test(initial)
+        ? initial
+        : /^[0-9]$/.test(initial)
+          ? "#"
+          : "other";
       const count = counts.get(letter) ?? {
         letter,
         deviceCount: 0,
@@ -278,11 +288,12 @@ export function createApi(dbPath: string) {
       counts.set(letter, count);
     }
 
-    return [...counts.values()].sort((a, b) => {
-      if (a.letter === "#") return 1;
-      if (b.letter === "#") return -1;
-      return a.letter.localeCompare(b.letter);
-    });
+    const rank = (letter: string) =>
+      letter === "other" ? 2 : letter === "#" ? 1 : 0;
+    return [...counts.values()].sort(
+      (a, b) =>
+        rank(a.letter) - rank(b.letter) || a.letter.localeCompare(b.letter),
+    );
   }
 
   function countDevices(options: DeviceQuery = {}): number {
