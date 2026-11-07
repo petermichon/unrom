@@ -1,7 +1,6 @@
 import { Menu } from "lucide-react";
 import type { ReactNode } from "react";
 import { Link, NavLink } from "react-router";
-import BrandMark from "@/components/BrandMark";
 import CommandPalette from "@/components/CommandPalette";
 import { ExportMenu } from "@/components/ExportMenu";
 import { GitHubIcon } from "@/components/GitHubIcon";
@@ -169,13 +168,7 @@ export default function AppShell({ updatedAt, updatedAtIso, children }: Props) {
               aria-label="unrom home"
               className="flex items-center gap-2 rounded-lg font-heading font-semibold tracking-tight outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
             >
-              <span
-                className="grid size-7 shrink-0 place-items-center rounded-md bg-brand text-brand-foreground"
-                aria-hidden="true"
-              >
-                <BrandMark className="size-5" />
-              </span>
-              <span className="hidden items-center gap-2 sm:flex">
+              <span className="flex items-center gap-2">
                 unrom
                 <Badge
                   variant="outline"
