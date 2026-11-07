@@ -71,6 +71,7 @@ test("non-Latin names get their own directory group", async ({ page }) => {
   await page.goto("/devices");
 
   await expect(page.locator('a[href="/devices/letter/other"]')).toBeVisible();
+  await expect(page.getByText("with ROMs").first()).toBeVisible();
 
   await page.goto("/devices/letter/other");
   await expect(

@@ -61,14 +61,20 @@ export default function DevicesRoute() {
               prefetch="intent"
               className="directory-row"
             >
-              <span className="font-heading text-base font-semibold">
-                {letter.letter === "#"
-                  ? "0–9"
-                  : letter.letter === "other"
-                    ? "Other"
-                    : letter.letter}
+              <span className="flex min-w-0 flex-col">
+                <span className="font-heading text-base font-semibold">
+                  {letter.letter === "#"
+                    ? "0–9"
+                    : letter.letter === "other"
+                      ? "Other"
+                      : letter.letter}
+                </span>
+                <span className="text-xs text-muted-foreground tabular-nums">
+                  {letter.withRoms} with{" "}
+                  {letter.withRoms === 1 ? "ROM" : "ROMs"}
+                </span>
               </span>
-              <span className="text-xs text-muted-foreground tabular-nums">
+              <span className="shrink-0 text-xs text-muted-foreground tabular-nums">
                 {letter.deviceCount}{" "}
                 {letter.deviceCount === 1 ? "device" : "devices"}
               </span>

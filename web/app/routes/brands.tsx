@@ -54,7 +54,12 @@ function BrandRow({ brand }: { brand: Brand }) {
       prefetch="intent"
       className="directory-row"
     >
-      <span className="truncate font-medium">{brand.vendorName}</span>
+      <span className="flex min-w-0 flex-col">
+        <span className="truncate font-medium">{brand.vendorName}</span>
+        <span className="text-xs text-muted-foreground tabular-nums">
+          {brand.withRoms} with {brand.withRoms === 1 ? "ROM" : "ROMs"}
+        </span>
+      </span>
       <span className="shrink-0 text-xs text-muted-foreground tabular-nums">
         {brand.deviceCount} {brand.deviceCount === 1 ? "device" : "devices"}
       </span>
