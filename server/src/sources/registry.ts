@@ -3,6 +3,7 @@ import { createParser, selectors } from "./adapter.ts";
 import type { DeviceSource } from "./adapter.ts";
 import { parseAICP } from "./aicp.ts";
 import { parseAlphaDroid } from "./alphadroid.ts";
+import { parseAxpOs } from "./axp-os.ts";
 import { parseCalyxOS } from "./calyxos.ts";
 import { parseArrowOS } from "./arrowos.ts";
 import { createEosParser } from "./eos.ts";
@@ -14,6 +15,7 @@ import { parseKaliNetHunter } from "./kali-nethunter.ts";
 import { parseKenvyra } from "./kenvyra.ts";
 import { parseLineageOS } from "./lineageos.ts";
 import { parseLineageOSMicroG } from "./lineageos-microg.ts";
+import { parseNamelessAosp } from "./nameless-aosp.ts";
 import { parsePixelOS } from "./pixelos.ts";
 import { parseRisingOS } from "./risingos.ts";
 import { parseSuperiorOS } from "./superioros.ts";
@@ -242,6 +244,12 @@ const specialSources: SourceAdapter[] = [
   },
   { id: "aicp", romName: "AICP", file: "aicp.txt", parse: parseAICP },
   {
+    id: "axp-os",
+    romName: "AXP.OS",
+    file: "axp-os.xml",
+    parse: parseAxpOs,
+  },
+  {
     id: "alphadroid",
     romName: "AlphaDroid",
     file: "alphadroid.md",
@@ -300,6 +308,18 @@ const specialSources: SourceAdapter[] = [
     romName: "LineageOS for microG",
     file: "lineageos-microg.html",
     parse: parseLineageOSMicroG,
+  },
+  {
+    id: "nameless-aosp",
+    romName: "Nameless AOSP",
+    file: "nameless-aosp.html",
+    parse: parseNamelessAosp,
+  },
+  {
+    id: "nameless-aosp",
+    romName: "Nameless AOSP",
+    file: "nameless-clo.html",
+    parse: parseNamelessAosp,
   },
   {
     id: "evolutionx",

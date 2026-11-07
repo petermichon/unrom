@@ -41,7 +41,7 @@ Out of scope: recoveries, root tools, GSIs and repacks, OEM stock skins.
 - AviumUI
 - 🟢 AwakenOS
 - AxionAOSP
-- ❌ AXP.OS
+- 🟢 AXP.OS
 - AyakaUI
 - ❌ BaikalOS
 - ❌ BananaDroid
@@ -137,6 +137,7 @@ Out of scope: recoveries, root tools, GSIs and repacks, OEM stock skins.
 - KleeUI
 - ❌ Komodo OS
 - ❌ Krypton Open Source Project
+- ❌ LeafOS
 - ❌ Legion OS
 - ❌ LessAOSP
 - ❌ LightningFastRom
@@ -163,6 +164,7 @@ Out of scope: recoveries, root tools, GSIs and repacks, OEM stock skins.
 - MIUI TR
 - ❌ MoKee ROM
 - ❌ MSM Xtended
+- 🟢 Nameless AOSP
 - nasgoros
 - ❌ NavaDroid
 - Neoteric-OS

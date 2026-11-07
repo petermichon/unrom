@@ -139,6 +139,7 @@ const VENDOR_BY_CODENAME: Record<string, string> = {
   dream2lte: "samsung",
   elish: "xiaomi",
   emerald: "teracube",
+  ferrarri: "realme",
   gs290: "gigaset",
   gs6_venus: "gigaset",
   lilac: "sony",
@@ -334,6 +335,7 @@ const VENDOR_CODENAME_ALIASES: Record<string, string> = {
   "huawei\0HWMRD-M1": "madrid",
   "nothing\0phone1": "Spacewar",
   "nothing\0phone2": "Pong",
+  "realme\0ferrari": "ferrarri",
   "teracube\u00002e": "zirconia",
   "xiaomi\0sirius": "xmsirius",
 };

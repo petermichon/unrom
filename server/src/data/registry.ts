@@ -504,7 +504,7 @@ export const DEVICE_NAMES: Record<string, string[]> = {
   "realme\0bladerunner_48m": ["Realme X50 Pro Player Edition"],
   "realme\0CPH1859": ["Realme 1"],
   "realme\0cupidr": ["Realme GT 5G"],
-  "realme\0ferrari": ["Realme GT 2 Pro"],
+  "realme\0ferrarri": ["Realme GT 2 Pro"],
   "realme\0ice": ["Realme 9 SE 5G", "Realme 9 Speed Edition"],
   "realme\0luigi": ["Realme 10 Pro 5G"],
   "realme\0lunaa": ["Realme GT Master Edition"],

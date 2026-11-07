@@ -8,6 +8,7 @@ import { listDevices as listCalyxOS } from "./fetch/calyxos.ts";
 import { listDevices as listArrowOS } from "./fetch/arrowos.ts";
 import { listDevices as listAospExtended } from "./fetch/aospextended.ts";
 import { listDevices as listAwakenOS } from "./fetch/awakenos.ts";
+import { listDevices as listAxpOs } from "./fetch/axp-os.ts";
 import { listDevices as listBlissROMs } from "./fetch/blissroms.ts";
 import { listDevices as listCandyRoms } from "./fetch/candyroms.ts";
 import { listDevices as listCherishOS } from "./fetch/cherishos.ts";
@@ -33,6 +34,10 @@ import { listDevices as listLineageOSMicroG } from "./fetch/lineageos-microg.ts"
 import { listDevices as listLunaris } from "./fetch/lunaris.ts";
 import { listDevices as listMatrixx } from "./fetch/matrixx.ts";
 import { listDevices as listMistOS } from "./fetch/mistos.ts";
+import {
+  listAospDevices as listNamelessAosp,
+  listCloDevices as listNamelessClo,
+} from "./fetch/nameless-aosp.ts";
 import { listDevices as listParanoidAndroid } from "./fetch/paranoidandroid.ts";
 import { listDevices as listPixelExtended } from "./fetch/pixelextended.ts";
 import { listDevices as listPixelExperience } from "./fetch/pixelexperience.ts";
@@ -61,6 +66,7 @@ const sources: Source[] = [
   { id: "arrowos", file: "arrowos.txt", fetch: listArrowOS },
   { id: "aospextended", file: "aospextended.json", fetch: listAospExtended },
   { id: "awakenos", file: "awakenos.json", fetch: listAwakenOS },
+  { id: "axp-os", file: "axp-os.xml", fetch: listAxpOs },
   { id: "blissroms", file: "blissroms.json", fetch: listBlissROMs },
   { id: "candyroms", file: "candyroms.json", fetch: listCandyRoms },
   { id: "cherishos", file: "cherishos.json", fetch: listCherishOS },
@@ -90,6 +96,8 @@ const sources: Source[] = [
   { id: "lunaris", file: "lunaris.json", fetch: listLunaris },
   { id: "matrixx", file: "matrixx.json", fetch: listMatrixx },
   { id: "mistos", file: "mistos.json", fetch: listMistOS },
+  { id: "nameless-aosp", file: "nameless-aosp.html", fetch: listNamelessAosp },
+  { id: "nameless-aosp", file: "nameless-clo.html", fetch: listNamelessClo },
   {
     id: "paranoidandroid",
     file: "paranoidandroid.json",
