@@ -1,11 +1,13 @@
+import { useState } from "react";
 import { useLocation } from "react-router";
 
 /**
- * True for the document's first location (SSR and hydration), false after a
- * client-side navigation. Tables use it to render every row into the initial
- * HTML for crawlers and no-JS readers without paying that cost on every
- * in-app navigation.
+ * True on the server and during the first hydration, false after a client-side
+ * navigation. React Router's location key is not `default` in the browser, so
+ * remember the first key seen instead of comparing against a literal.
  */
 export function useInitialDocument(): boolean {
-  return useLocation().key === "default";
+  const key = useLocation().key;
+  const [initialKey] = useState(key);
+  return key === initialKey;
 }
