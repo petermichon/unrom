@@ -108,6 +108,8 @@ export interface LetterSummary {
   /** Uppercase letter, or `#` for names starting with a digit. */
   letter: string;
   deviceCount: number;
+  /** Devices with at least one ROM build, directly or via a covered variant. */
+  withRoms: number;
 }
 
 export interface SearchResponse {

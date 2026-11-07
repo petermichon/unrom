@@ -34,6 +34,7 @@ export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
       path: `/devices/${vendor}${page > 1 ? `?page=${page}` : ""}`,
     }),
     ...modifiedMeta(updatedAt),
+    ...(loaderData.hasRoms ? [] : [{ name: "robots", content: "noindex" }]),
     ...(devices.length > 0
       ? [
           {
@@ -82,6 +83,7 @@ async function load(vendor: string, request: URL) {
     total,
     page,
     pages,
+    hasRoms: devices.some((device) => device.roms.length > 0),
   };
 }
 
@@ -137,7 +139,7 @@ export default function VendorRoute() {
 
       <PageHeader
         title={vendorName}
-        description={`${total} device${total === 1 ? "" : "s"}.`}
+        description={`${total} device${total === 1 ? "" : "s"}. ROM-covered devices first.`}
         endpoint={`/api/devices?vendor=${vendor}&limit=${PAGE_SIZE}`}
       />
 

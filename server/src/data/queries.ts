@@ -213,16 +213,36 @@ export function createApi(dbPath: string) {
     return filters;
   }
 
-  function listBrands(): BrandSummary[] {
+  /** Device keys with at least one build, directly or via a covered variant. */
+  function coveredDeviceKeys(): Set<string> {
     const direct = new Set<string>();
     for (const edge of db.select().from(romDevices).all()) {
       direct.add(deviceKey(edge.vendor, edge.codename));
     }
     const coverage = deviceCoverage();
+    const covered = new Set<string>();
+    for (const row of db
+      .select({ vendor: devices.vendor, codename: devices.codename })
+      .from(devices)
+      .all()) {
+      const key = deviceKey(row.vendor, row.codename);
+      if (
+        direct.has(key) ||
+        (coverage.mainsByVariant.get(key) ?? []).some((main) =>
+          direct.has(main),
+        )
+      ) {
+        covered.add(key);
+      }
+    }
+    return covered;
+  }
+
+  function listBrands(): BrandSummary[] {
+    const covered = coveredDeviceKeys();
     const brands = new Map<string, BrandSummary>();
 
     for (const row of db.select().from(devices).all()) {
-      const key = deviceKey(row.vendor, row.codename);
       const brand = brands.get(row.vendor) ?? {
         vendor: row.vendor,
         vendorName: vendorName(row.vendor),
@@ -230,12 +250,7 @@ export function createApi(dbPath: string) {
         withRoms: 0,
       };
       brand.deviceCount++;
-      const hasRoms =
-        direct.has(key) ||
-        (coverage.mainsByVariant.get(key) ?? []).some((main) =>
-          direct.has(main),
-        );
-      if (hasRoms) brand.withRoms++;
+      if (covered.has(deviceKey(row.vendor, row.codename))) brand.withRoms++;
       brands.set(row.vendor, brand);
     }
 
@@ -243,29 +258,31 @@ export function createApi(dbPath: string) {
   }
 
   function letterCounts(): LetterSummary[] {
-    const displayName = sql`coalesce(${devices.name}, ${devices.codename})`;
-    const rows = db
-      .select({
-        letter: sql<string>`upper(substr(${displayName}, 1, 1))`,
-        count: sql<number>`count(*)`,
-      })
-      .from(devices)
-      .groupBy(sql`upper(substr(${displayName}, 1, 1))`)
-      .all();
+    const covered = coveredDeviceKeys();
+    const counts = new Map<
+      string,
+      { letter: string; deviceCount: number; withRoms: number }
+    >();
 
-    const counts = new Map<string, number>();
-    for (const row of rows) {
-      const letter = /^[A-Z]$/.test(row.letter) ? row.letter : "#";
-      counts.set(letter, (counts.get(letter) ?? 0) + Number(row.count));
+    for (const row of db.select().from(devices).all()) {
+      const display = row.name ?? row.codename;
+      const initial = display.charAt(0).toUpperCase();
+      const letter = /^[A-Z]$/.test(initial) ? initial : "#";
+      const count = counts.get(letter) ?? {
+        letter,
+        deviceCount: 0,
+        withRoms: 0,
+      };
+      count.deviceCount++;
+      if (covered.has(deviceKey(row.vendor, row.codename))) count.withRoms++;
+      counts.set(letter, count);
     }
 
-    return [...counts.entries()]
-      .map(([letter, deviceCount]) => ({ letter, deviceCount }))
-      .sort((a, b) => {
-        if (a.letter === "#") return 1;
-        if (b.letter === "#") return -1;
-        return a.letter.localeCompare(b.letter);
-      });
+    return [...counts.values()].sort((a, b) => {
+      if (a.letter === "#") return 1;
+      if (b.letter === "#") return -1;
+      return a.letter.localeCompare(b.letter);
+    });
   }
 
   function countDevices(options: DeviceQuery = {}): number {
@@ -304,6 +321,12 @@ export function createApi(dbPath: string) {
         ? undefined
         : Math.min(Math.max(1, Math.trunc(options.limit)), 200);
     const offset = Math.max(0, Math.trunc(options.offset ?? 0));
+    // Directory pages (a letter or a brand) put ROM-covered devices first, so
+    // the first page is useful even when most of the catalogue has no builds.
+    // Search and the full export keep their own ordering.
+    const directoryOrder =
+      !options.query &&
+      (options.letter !== undefined || options.vendor !== undefined);
     const rows = db
       .select()
       .from(devices)
@@ -313,8 +336,8 @@ export function createApi(dbPath: string) {
         asc(devices.vendor),
         asc(devices.codename),
       )
-      .limit(limit ?? 1_000_000_000)
-      .offset(offset)
+      .limit(directoryOrder ? 1_000_000_000 : (limit ?? 1_000_000_000))
+      .offset(directoryOrder ? 0 : offset)
       .all();
 
     const aliasMap = aliasesByDevice();
@@ -334,7 +357,7 @@ export function createApi(dbPath: string) {
       return chips.sort((a, b) => bySortKey(a.name, b.name));
     };
 
-    return rows.map((device) => {
+    const devicesPage = rows.map((device) => {
       const key = deviceKey(device.vendor, device.codename);
       return {
         vendor: device.vendor,
@@ -351,6 +374,20 @@ export function createApi(dbPath: string) {
         confidence: provenance.get(key)?.confidence ?? null,
       };
     });
+
+    if (!directoryOrder) return devicesPage;
+
+    devicesPage.sort(
+      (a, b) =>
+        Number(b.roms.length > 0) - Number(a.roms.length > 0) ||
+        bySortKey(a.name ?? a.codename, b.name ?? b.codename) ||
+        a.vendor.localeCompare(b.vendor) ||
+        a.codename.localeCompare(b.codename),
+    );
+    return devicesPage.slice(
+      offset,
+      limit === undefined ? undefined : offset + limit,
+    );
   }
 
   /** Backwards-compatible full-list lookup used by existing callers. */

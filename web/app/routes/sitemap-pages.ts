@@ -10,10 +10,12 @@ export async function loader() {
     [
       "/",
       "/devices",
-      ...letters.map(
-        (letter) =>
-          `/devices/letter/${letter.letter === "#" ? "0-9" : letter.letter.toLowerCase()}`,
-      ),
+      ...letters
+        .filter((letter) => letter.withRoms > 0)
+        .map(
+          (letter) =>
+            `/devices/letter/${letter.letter === "#" ? "0-9" : letter.letter.toLowerCase()}`,
+        ),
       "/brands",
       "/roms",
     ],

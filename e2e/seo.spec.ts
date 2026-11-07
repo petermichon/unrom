@@ -171,6 +171,41 @@ test("brand aliases redirect to the canonical lowercase URL", async ({
   expect(response.headers()["location"]).toBe("/devices/lenovo");
 });
 
+test("pagination pages without ROM data are not indexable", async ({
+  page,
+  request,
+}) => {
+  const pageSize = 200;
+  const letters = (await (
+    await request.get("http://127.0.0.1:3000/api/devices/letters")
+  ).json()) as Array<{
+    letter: string;
+    deviceCount: number;
+    withRoms: number;
+  }>;
+  const letter = letters.find((candidate) => {
+    const pages = Math.ceil(candidate.deviceCount / pageSize);
+    return (
+      candidate.withRoms > 0 &&
+      pages > 1 &&
+      candidate.withRoms <= (pages - 1) * pageSize
+    );
+  });
+  expect(letter).toBeTruthy();
+
+  const slug = letter!.letter === "#" ? "0-9" : letter!.letter.toLowerCase();
+  const lastPage = Math.ceil(letter!.deviceCount / pageSize);
+
+  await page.goto(`/devices/letter/${slug}`);
+  await expect(page.locator('meta[name="robots"]')).toHaveCount(0);
+
+  await page.goto(`/devices/letter/${slug}?page=${lastPage}`);
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
+    "content",
+    "noindex",
+  );
+});
+
 test("zero-ROM device pages are not indexable", async ({ page }) => {
   const response = await page.goto("/devices/huawei/madrid");
   expect(response?.status()).toBe(200);

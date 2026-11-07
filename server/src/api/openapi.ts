@@ -269,10 +269,16 @@ const deviceListParameters = [
 
 const letterSummarySchema = {
   type: "object",
-  required: ["letter", "deviceCount"],
+  required: ["letter", "deviceCount", "withRoms"],
   properties: {
     letter: { type: "string", pattern: "^[A-Z#]$" },
     deviceCount: { type: "integer", minimum: 0 },
+    withRoms: {
+      type: "integer",
+      minimum: 0,
+      description:
+        "Devices with at least one ROM build, directly or via a covered variant.",
+    },
   },
 };
 
@@ -365,7 +371,7 @@ export const openapi = {
   openapi: "3.1.0",
   info: {
     title: "unrom API",
-    version: "1.6.0",
+    version: "1.7.0",
     summary: "Open database for device–ROM compatibility.",
     description:
       "Which custom Android ROMs support which devices. Every response is " +

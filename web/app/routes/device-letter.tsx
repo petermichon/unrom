@@ -49,6 +49,7 @@ export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
       }`,
     }),
     ...modifiedMeta(updatedAt),
+    ...(data.hasRoms ? [] : [{ name: "robots", content: "noindex" }]),
     ...(data.devices.length > 0
       ? [
           {
@@ -91,7 +92,8 @@ async function load(letterParam: string, request: URL) {
   const pages = Math.ceil(total / PAGE_SIZE);
   if (page > pages) throw new Response("Not found", { status: 404 });
 
-  return { letter, devices, total, page, pages };
+  const hasRoms = devices.some((device) => device.roms.length > 0);
+  return { letter, devices, total, page, pages, hasRoms };
 }
 
 export async function loader({ params, request }: Route.LoaderArgs) {
@@ -147,7 +149,7 @@ export default function DeviceLetterRoute() {
 
       <PageHeader
         title={`${label} devices`}
-        description={`${total} device${total === 1 ? "" : "s"} starting with ${label}.`}
+        description={`${total} device${total === 1 ? "" : "s"} starting with ${label}. ROM-covered devices first.`}
         endpoint={`/api/devices?letter=${encodeURIComponent(letter)}&limit=${PAGE_SIZE}`}
       />
 

@@ -446,6 +446,18 @@ test("device pages filter by letter and offset", async () => {
       api.countDevices({ vendor: "xiaomi" }),
     );
 
+    // Directory pages put ROM-covered devices first, so the first page is
+    // useful even when the catalogue tail has no builds.
+    const huawei = api.listDevicesPage({ vendor: "huawei" });
+    assert.ok(huawei.some((device) => device.roms.length > 0));
+    assert.ok(huawei.some((device) => device.roms.length === 0));
+    let sawEmptyDevice = false;
+    for (const device of huawei) {
+      if (device.roms.length === 0) sawEmptyDevice = true;
+      else
+        assert.equal(sawEmptyDevice, false, "covered device after empty one");
+    }
+
     // No limit keeps the previous full-list behaviour; the page size is capped.
     assert.equal(api.listDevices().length, built.deviceCount);
     assert.equal(api.listDevicesPage({ limit: 1000 }).length, 200);
@@ -671,6 +683,10 @@ test("brand and letter summaries cover the whole catalogue", () => {
       built.deviceCount,
     );
     assert.equal(letters.at(-1)?.letter, "#");
+    assert.equal(
+      letters.reduce((sum, letter) => sum + letter.withRoms, 0),
+      0,
+    );
 
     const summary = api.getSummary();
     assert.equal(summary.deviceCount, built.deviceCount);
