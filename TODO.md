@@ -7,3 +7,22 @@
 - [ ] Grow indexable content by adding source-backed device data for ROMs that
       currently have none. Deferred: this needs one adapter per ROM, and many
       catalogue entries have no usable public device list.
+- [ ] Serve `/api` from the standalone web server, or document that it needs a
+      reverse proxy. `npm run start --workspace web` cannot reach `/api`
+      without Caddy, so the built app is not self-contained.
+- [ ] Keep directory tables usable without JavaScript. Sorting, filtering and
+      pagination are client-side, so the controls are inert with scripts
+      disabled; render the full table or paginate on the server.
+- [ ] Put table state (sort, filter, hidden columns, page) in the URL so a view
+      can be shared and survives back/forward navigation.
+- [ ] Remove the dark-theme flash on first paint by applying the stored theme
+      before React hydrates.
+- [ ] Redirect trailing-slash URLs to the canonical no-slash form. Both
+      currently return 200, creating duplicate self-canonical URLs.
+- [ ] Give the generic error page a retry action instead of a dead end.
+- [ ] Announce table filter result counts with `aria-live` so screen-reader
+      users know the row set changed.
+- [ ] Decide whether `/api/devices` should have a bounded default. Without
+      `limit` it returns the full filtered list (documented behaviour), which
+      is costly for casual clients; a default page plus an explicit all-rows
+      opt-in would be safer.
