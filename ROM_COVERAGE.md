@@ -51,6 +51,7 @@ Out of scope: recoveries, root tools, GSIs and repacks, OEM stock skins.
 - ❌ Bianca Project
 - ❌ Black Iron Project
 - 🟢 BlissROMs
+- ❌ BodyOS
 - ❌ Bootleggers ROM
 - ❌ BsdkOS
 - CaesiumOS
@@ -97,6 +98,7 @@ Out of scope: recoveries, root tools, GSIs and repacks, OEM stock skins.
 - 🟢 Evolution X
 - ❌ ExTHmUI
 - FeatherOS
+- ❌ FeatherROM
 - Ferrum OS
 - ❌ FireHound
 - ❌ Flamingo OS
@@ -157,7 +159,9 @@ Out of scope: recoveries, root tools, GSIs and repacks, OEM stock skins.
 - ❌ Magnus OS
 - ❌ Mallu OS
 - 🟢 Project Matrixx
+- ❌ MicaOS
 - ❌ Miku UI
+- ❌ MinusOS
 - 🟢 MistOS
 - MIUI ONE OS
 - MIUI Pro
@@ -192,6 +196,7 @@ Out of scope: recoveries, root tools, GSIs and repacks, OEM stock skins.
 - ❌ PixelStar
 - 🟢 PixysOS
 - ❌ POSP
+- ❌ Project-1CE
 - ❌ Project 404
 - ❌ Project Arcana
 - ❌ Project Blaze
@@ -202,6 +207,7 @@ Out of scope: recoveries, root tools, GSIs and repacks, OEM stock skins.
 - ❌ Project Kaleidoscope
 - ❌ Project Kasumi
 - ❌ Project Lighthouse
+- ❌ ProjectLisa-AOSP
 - ❌ Project Mushroom
 - Project Nirwana
 - 🟢 Project PixelAge

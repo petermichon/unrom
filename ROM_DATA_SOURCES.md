@@ -81,6 +81,7 @@ are not ROMs with their own device rosters.
 | Benzo ROM                   | AOSP | ⚠️ Unclear      | ⚠️ GitHub   | Repos last updated May 2023; Pixel device trees only, no centralized device list                                                        |
 | Bianca Project              | AOSP | ❌ Discontinued | ❌ No data  | AOSP/Proton-derived; GitHub org dormant since Dec 2023, no device list or OTA metadata published.                                       |
 | Black Iron Project          | AOSP | ✅ Active       | ⚠️ GitHub   | LineageOS-based; actively commits May 2026 and emits per-device JSON (e.g. lemonade.json) under OTA/builds.                             |
+| BodyOS                      | AOSP | ⚠️ Unclear      | ❌ No data  | 33 repos; last push Dec 2025; manifest only, no device roster.                                                                          |
 | Bootleggers ROM             | AOSP | ❌ Discontinued | ✅ GitHub   | AOSP (android-13.0.0_r43); code frozen 2023, site Aug 2024; devices.json generated from `_devices` front matter.                        |
 | BsdkOS                      | AOSP | ❌ Discontinued | ❌ No data  | AOSP fork (Project-Fluid base); org dormant since Nov 2021, no device list or OTA data published.                                       |
 | CAF Extended                | AOSP | ❌ Discontinued | ❌ No data  | AOSP+Qualcomm CAF build; last commits Jan–Mar 2022, no machine-readable device list found.                                              |
@@ -109,6 +110,7 @@ are not ROMs with their own device rosters.
 | EunoiaOS                    | AOSP | ✅ Active       | ❌ No data  | Repos updated Aug 2026; manifest forks LineageOS lineage-23.2; no public device list found.                                             |
 | Evervolv                    | AOSP | ⚠️ Unclear      | ⚠️ Website  | AOSP mirror repos updated Nov 2025 on v-15.2 (A15) branch, but device builds on site date to ~2021.                                     |
 | ExTHmUI                     | AOSP | ❌ Discontinued | ❌ No data  | Main manifest last updated Sep 2024; exthmui-next code stops Dec 2024; exthmui.cn deprecated; solo maintainer.                          |
+| FeatherROM                  | AOSP | ⚠️ Unclear      | ❌ No data  | 38 repos; last push Aug 2025; SourceForge has no device folders.                                                                        |
 | FireHound                   | AOSP | ❌ Discontinued | ⚠️ Website  | Last repos Nov 2021; Lineage-based (LineageParts/lineage-sdk); only a 2017 website, no device list.                                     |
 | Flamingo OS                 | AOSP | ❌ Discontinued | ❌ No data  | All repos last updated 25 Dec 2022; org states a CLO base; no device list published.                                                    |
 | Floko ROM                   | AOSP | ❌ Discontinued | ⚠️ Website  | Patch README builds from crDroid android 13.0; repo archived Apr 2025; site claims AOSP but base is crDroid.                            |
@@ -140,7 +142,9 @@ are not ROMs with their own device rosters.
 | LunarUI                     | AOSP | ⚠️ Unclear      | ❌ No data  | WIP LineageOS fork, only 3 repos; no activity since Sep 2024, never released.                                                           |
 | Magnus OS                   | AOSP | ❌ Discontinued | ❌ No data  | Org marked "(EOL)"; README says use LineageOS trees; last activity Jul 2023.                                                            |
 | Mallu OS                    | AOSP | ❌ Discontinued | ⚠️ GitHub   | Org titled "Discontinued", repos archived; Android 10 era, last activity ~2022.                                                         |
+| MicaOS                      | AOSP | ✅ Active       | ❌ No data  | 38 repos; last push Jun 2026; OTA repo covers only Nothing Phone (1), no device roster.                                                 |
 | Miku UI                     | AOSP | ✅ Active       | ⚠️ GitHub   | AOSP; active 2026 (Blooming B4 builds Mar 2026); repos updated Sep 2026.                                                                |
+| MinusOS                     | AOSP | ✅ Active       | ❌ No data  | 59 repos; last push Jul 2026; manifest only, no device roster.                                                                          |
 | MoKee ROM                   | AOSP | ❌ Discontinued | ⚠️ Website  | Last nightlies Jan 6 2023; GitHub android repo dormant since Dec 2022; download site unreachable.                                       |
 | MSM Xtended                 | AOSP | ❌ Discontinued | ❌ No data  | Development halted Jan 2022; final XT v7.6 (A13) builds mid-2023.                                                                       |
 | NavaDroid                   | AOSP | ⚠️ Unclear      | ❌ No data  | Named in ROM index lists only; no GitHub org, website, or release feed found.                                                           |
@@ -159,6 +163,7 @@ are not ROMs with their own device rosters.
 | The Pixel Project           | AOSP | ❌ Discontinued | ⚠️ GitHub   | Org archived Mar 5 2026; official_devices has devices.json; last commit Nov 2025.                                                       |
 | PixelStar                   | AOSP | ❌ Discontinued | ⚠️ GitHub   | Org and repos archived by early 2025; official_devices has JSON but the project is dormant                                              |
 | POSP                        | AOSP | ⚠️ Unclear      | ⚠️ GitHub   | 181+ individual device repositories; last builds 2021-2022 (Android 11/13 era), no centralized device list                              |
+| Project-1CE                 | AOSP | ⚠️ Unclear      | ❌ No data  | 119 repos; last push Nov 2025; per-device repos, no central roster.                                                                     |
 | Project 404                 | AOSP | ✅ Active       | ⚠️ Website  | Manifest and vendor repos updated May 24 2026; AOSP experiments; no JSON list.                                                          |
 | Project Arcana              | AOSP | ❌ Discontinued | ⚠️ GitHub   | Org marked [EOL]; last commits 2022; site lists ~24 devices; AEX-derived.                                                               |
 | Project Blaze               | AOSP | ❌ Discontinued | ✅ GitHub   | official_devices last commit Jan 12 2025; manifest credits LineageOS.                                                                   |
@@ -167,6 +172,7 @@ are not ROMs with their own device rosters.
 | Project Kaleidoscope        | AOSP | ❌ Discontinued | ⚠️ Website  | Main org repos last updated Oct 14 2024; device trees in Kscope-Devices; no devices.json.                                               |
 | Project Kasumi              | AOSP | ❌ Discontinued | ⚠️ GitHub   | GitHub org archived Apr 2024; last commits Mar 2024; README states LineageOS-based Materium.                                            |
 | Project Lighthouse          | AOSP | ❌ Discontinued | ✅ GitHub   | Last commits Dec 2022; XDA A12 thread credits AOSP/LineageOS; official_devices.json lists codenames.                                    |
+| ProjectLisa-AOSP            | AOSP | ⚠️ Unclear      | ❌ No data  | 46 repos; last push Dec 2025; manifest only, no device roster.                                                                          |
 | Project Mushroom            | AOSP | ❌ Discontinued | ❌ No data  | Org marked "Deprecated", moved to Miku-UI; last manifest commit Apr 2025; no device list repo.                                          |
 | Project Radiant             | AOSP | ❌ Discontinued | ✅ GitHub   | Last org activity Mar 2024 (web repo); XDA A12 threads tag AOSP; device list is markdown only.                                          |
 | Project Sakura              | AOSP | ✅ Active       | ⚠️ GitHub   | Commits Aug 2026; frameworks_base forked from LineageOS "Android 16"; devices.json in OTA repo.                                         |
