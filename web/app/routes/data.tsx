@@ -32,7 +32,9 @@ async function load() {
   const [summary, meta, api, brands, exports] = await Promise.all([
     fetchSummary(),
     fetchMeta(),
-    fetchApiIndex(),
+    // The endpoint index is presentation only. A proxy or routing problem that
+    // breaks bare /api must not take the whole dataset page down with it.
+    fetchApiIndex().catch(() => null),
     fetchBrands(),
     fetchExportSizes(),
   ]);
@@ -46,7 +48,7 @@ async function load() {
       coveredDevices: brands.reduce((sum, brand) => sum + brand.withRoms, 0),
     },
     meta,
-    endpoints: api.endpoints,
+    endpoints: api?.endpoints ?? [],
     exports,
   };
 }
@@ -220,21 +222,28 @@ export default function DataRoute() {
           <code>contract/</code>.
         </p>
         <ul className="divide-y divide-border/60 rounded-xl border border-border/60">
-          {endpoints.map((endpoint) => {
-            const [method, ...rest] = endpoint.split(" ");
-            const path = rest.join(" ");
-            return (
-              <li
-                key={endpoint}
-                className="flex flex-wrap items-baseline gap-3 px-4 py-2"
-              >
-                <span className="w-8 font-mono text-xs text-muted-foreground">
-                  {method}
-                </span>
-                <code className="font-mono text-sm">{path}</code>
-              </li>
-            );
-          })}
+          {endpoints.length > 0 ? (
+            endpoints.map((endpoint) => {
+              const [method, ...rest] = endpoint.split(" ");
+              const path = rest.join(" ");
+              return (
+                <li
+                  key={endpoint}
+                  className="flex flex-wrap items-baseline gap-3 px-4 py-2"
+                >
+                  <span className="w-8 font-mono text-xs text-muted-foreground">
+                    {method}
+                  </span>
+                  <code className="font-mono text-sm">{path}</code>
+                </li>
+              );
+            })
+          ) : (
+            <li className="px-4 py-2 text-sm text-muted-foreground">
+              The endpoint list is unavailable right now. The OpenAPI document
+              still describes every route.
+            </li>
+          )}
         </ul>
       </section>
 

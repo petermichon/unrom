@@ -52,6 +52,31 @@ test("client navigation renders the destination table", async ({ page }) => {
   await expect(page.locator('a[href="/roms/lineageos"]')).toBeVisible();
 });
 
+test("client navigation survives a failing /api index", async ({ page }) => {
+  await proxyApi(page);
+
+  // The endpoint index is optional page chrome. Simulate a proxy that routes
+  // bare /api to the web app instead of the API, as the old Caddyfile did, so
+  // the client loader gets a 404 instead of the endpoint list.
+  await page.route("**/api", (route) =>
+    route.fulfill({
+      status: 404,
+      contentType: "text/plain",
+      body: "Not Found",
+    }),
+  );
+
+  await page.goto("/");
+  await page
+    .getByRole("navigation", { name: "Data access" })
+    .getByRole("link", { name: "Data" })
+    .click();
+  await page.waitForURL("**/data");
+
+  await expect(page.getByRole("heading", { name: "Downloads" })).toBeVisible();
+  await expect(page.getByText(/endpoint list is unavailable/i)).toBeVisible();
+});
+
 test("a brand page lists its devices", async ({ page }) => {
   await page.goto("/devices/xiaomi");
 
