@@ -130,7 +130,9 @@ npm run build        # web build (SSR)
 npm run start --workspace web   # web on :3001
 ```
 
-Environment variables are documented in `.env.example`.
+Environment variables are documented in `.env.example`. The web server proxies
+`/api` to `API_URL` (default `http://127.0.0.1:3000`), so it needs no reverse
+proxy to serve the app.
 
 ## API
 

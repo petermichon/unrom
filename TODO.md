@@ -7,9 +7,11 @@
 - [ ] Grow indexable content by adding source-backed device data for ROMs that
       currently have none. Deferred: this needs one adapter per ROM, and many
       catalogue entries have no usable public device list.
-- [ ] Serve `/api` from the standalone web server, or document that it needs a
+- [x] ~~Serve `/api` from the standalone web server, or document that it needs a
       reverse proxy. `npm run start --workspace web` cannot reach `/api`
-      without Caddy, so the built app is not self-contained.
+      without Caddy, so the built app is not self-contained.~~
+      Done: `web/server.ts` proxies `/api` to `API_URL`, so the standalone web
+      server is self-contained.
 - [ ] Keep directory tables usable without JavaScript. Sorting, filtering and
       pagination are client-side, so the controls are inert with scripts
       disabled; render the full table or paginate on the server.

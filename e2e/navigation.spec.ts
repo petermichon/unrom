@@ -77,6 +77,24 @@ test("client navigation survives a failing /api index", async ({ page }) => {
   await expect(page.getByText(/endpoint list is unavailable/i)).toBeVisible();
 });
 
+// No proxyApi here: this exercises the standalone server's own /api proxy, so
+// `npm start --workspace web` works without a reverse proxy in front.
+test("the standalone server proxies /api for client navigation", async ({
+  page,
+}) => {
+  await page.goto("/");
+  await page
+    .getByRole("navigation", { name: "Data access" })
+    .getByRole("link", { name: "Data" })
+    .click();
+  await page.waitForURL("**/data");
+
+  await expect(page.getByRole("heading", { name: "Downloads" })).toBeVisible();
+  await expect(
+    page.locator("code", { hasText: "/api/devices/letters" }),
+  ).toBeVisible();
+});
+
 test("a brand page lists its devices", async ({ page }) => {
   await page.goto("/devices/xiaomi");
 
