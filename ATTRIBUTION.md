@@ -45,7 +45,7 @@ open an issue.
 | Paranoid Android     | `devices`                          | https://github.com/AOSPA/ota                                                |
 | PixelExtended        | OTA `builds/*.json`                | https://github.com/PixelExtended/OTA                                        |
 | PixelExperience      | `devices.json`                     | https://github.com/PixelExperience/official_devices                         |
-| PixelOS              | `devices.json` (17)                | https://github.com/PixelOS-AOSP/official_devices                            |
+| PixelOS              | `API/devices/*.json` (17)          | https://github.com/PixelOS-AOSP/official_devices                            |
 | PixysOS              | `devices.json`                     | https://github.com/PixysOS/official_devices                                 |
 | Project Infinity X   | `devices.json` (16+17)             | https://github.com/ProjectInfinity-X                                        |
 | Project PixelAge     | OTA `devices/`                     | https://github.com/ProjectPixelage/pixelage_ota                             |
