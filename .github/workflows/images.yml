@@ -27,6 +27,10 @@ jobs:
       contents: read
       packages: write
     strategy:
+      # GHCR sporadically refuses a push with `permission_denied: write_package`
+      # even when the package grants this repository write access. Keep one job
+      # from cancelling the other while one is still pushing.
+      fail-fast: false
       matrix:
         include:
           - target: api
@@ -41,8 +45,10 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - uses: docker/build-push-action@v6
-        with:
+      - id: push
+        uses: docker/build-push-action@v6
+        continue-on-error: true
+        with: &push
           context: .
           target: ${{ matrix.target }}
           push: true
@@ -51,3 +57,7 @@ jobs:
             ghcr.io/${{ github.repository_owner }}/${{ matrix.image }}:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
+      - name: Retry the push once
+        if: steps.push.outcome == 'failure'
+        uses: docker/build-push-action@v6
+        with: *push
