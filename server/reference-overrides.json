@@ -1,0 +1,15 @@
+{
+  "generatedAt": "2026-11-09T21:43:45.398Z",
+  "dead": [
+    "https://doc.e.foundation/devices/DRG",
+    "https://doc.e.foundation/devices/PL2",
+    "https://doc.e.foundation/devices/chef",
+    "https://doc.e.foundation/devices/deadpool",
+    "https://doc.e.foundation/devices/evert",
+    "https://doc.e.foundation/devices/ocean",
+    "https://doc.e.foundation/devices/wade",
+    "https://thecloverproject.com/download/Asteroids"
+  ],
+  "unverified": [],
+  "deadHosts": ["forum.xda-developers.com"]
+}

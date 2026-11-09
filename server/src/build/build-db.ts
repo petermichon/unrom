@@ -11,9 +11,11 @@ import {
   DB_PATH,
   DIST_DIR,
   NDJSON_PATH,
+  REFERENCE_OVERRIDES_PATH,
   REGISTRY_REPORT_PATH,
   SCHEMA_SQL_PATH,
 } from "../paths.ts";
+import { readDeadReferences } from "../data/reference-overrides.ts";
 import { selectCatalog } from "../sources/catalog.ts";
 import {
   PLAY_DEVICES_FILE,
@@ -43,6 +45,7 @@ const result = buildDatabase(
     codename: entry.codename,
     names: entry.names,
   })),
+  readDeadReferences(REFERENCE_OVERRIDES_PATH),
 );
 
 // Alias resolution is a generation-time normalization; the resolved mapping is

@@ -91,11 +91,26 @@ failed="$(grep -c '^✗' "$ingest_log" || true)"
 log "ingest finished: ${refreshed} refreshed, ${failed} failed"
 
 if [ "$ingest_status" -ne 0 ]; then
-  if [ -z "$(git status --porcelain -- data/)" ]; then
+  if [ -z "$(git status --porcelain -- data/ server/reference-overrides.json)" ]; then
     log "ingest failed and no snapshots changed; aborting"
     exit 1
   fi
   log "ingest had failures; publishing the snapshots that did refresh"
+fi
+
+log "checking derived reference URLs"
+references_log="$(mktemp "${TMPDIR:-/tmp}/unrom-references.XXXXXX")"
+trap 'rm -f "$ingest_log" "$references_log"' EXIT
+set +e
+npm run check:references --workspace server 2>&1 | tee "$references_log"
+references_status=${PIPESTATUS[0]}
+set -e
+if [ "$references_status" -ne 0 ]; then
+  log "reference check failed; keeping the previous overrides"
+fi
+# Keep the committed report Prettier-clean for `npm run verify`.
+if [ -f server/reference-overrides.json ]; then
+  npx --no-install prettier --write server/reference-overrides.json >/dev/null
 fi
 
 log "rebuilding the dataset"
@@ -104,14 +119,14 @@ npm run build:data
 log "validating"
 npm run verify
 
-if [ -z "$(git status --porcelain -- data/)" ]; then
+if [ -z "$(git status --porcelain -- data/ server/reference-overrides.json)" ]; then
   log "no snapshot changes; nothing to commit"
   exit 0
 fi
 
 log "committing data changes"
-git add -- data/
-git commit -s -m "chore(data): refresh source snapshots" -- data/
+git add -- data/ server/reference-overrides.json
+git commit -s -m "chore(data): refresh source snapshots" -- data/ server/reference-overrides.json
 
 if [ "$do_push" = 1 ]; then
   log "pushing"

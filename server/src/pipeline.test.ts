@@ -18,7 +18,12 @@ import {
 } from "./data/identity.ts";
 import { DEVICE_NAMES } from "./data/registry.ts";
 import { PLAY_DEVICES_FILE } from "./sources/play-devices.ts";
-import { createParser, isCitation, selectors } from "./sources/adapter.ts";
+import {
+  buildRecord,
+  createParser,
+  isCitation,
+  selectors,
+} from "./sources/adapter.ts";
 import { parseKaliNetHunter } from "./sources/kali-nethunter.ts";
 import { ALLOWED_EMPTY_FILES, sources } from "./sources/registry.ts";
 import { listDataFiles, parseAllSources, validateSources } from "./validate.ts";
@@ -226,6 +231,79 @@ test("retired roster entries are dropped", () => {
     records.map((record) => record.codename),
     ["live", "unstated"],
   );
+});
+
+test("built references are marked derived, published ones observed", () => {
+  const template = createParser({
+    id: "test",
+    romName: "Test",
+    file: "test.json",
+    select: selectors.array,
+    referencePage: "https://example.com/devices/{codename}",
+  });
+  const [derived] = template(JSON.stringify([{ codename: "alpha" }]));
+  assert.equal(derived.referenceUrl, "https://example.com/devices/alpha");
+  assert.equal(derived.referenceKind, "derived");
+
+  const published = createParser({
+    id: "test",
+    romName: "Test",
+    file: "test.json",
+    select: selectors.array,
+    referenceUrl: ["thread"],
+    referencePage: "https://example.com/devices/{codename}",
+  });
+  const [observed] = published(
+    JSON.stringify([{ codename: "beta", thread: "https://example.com/beta" }]),
+  );
+  assert.equal(observed.referenceUrl, "https://example.com/beta");
+  assert.equal(observed.referenceKind, "observed");
+});
+
+test("dead derived citations are dropped, observed ones kept", () => {
+  const dir = mkdtempSync(join(tmpdir(), "unrom-test-"));
+  const dbPath = join(dir, "unrom.sqlite");
+
+  try {
+    buildDatabase(
+      [
+        buildRecord({
+          romId: "r1",
+          romName: "R1",
+          codename: "deadpool",
+          referenceUrl: "https://example.com/deadpool",
+          referenceKind: "derived",
+        }),
+        buildRecord({
+          romId: "r2",
+          romName: "R2",
+          codename: "alpha",
+          referenceUrl: "https://example.com/alpha",
+          referenceKind: "observed",
+        }),
+      ],
+      dbPath,
+      [],
+      new Set(["https://example.com/deadpool", "https://example.com/alpha"]),
+    );
+
+    const db = new Database(dbPath, { readonly: true });
+    const row = (romId: string) =>
+      db
+        .prepare(
+          "select reference_url url, reference_kind kind from rom_devices where rom_id = ?",
+        )
+        .get(romId) as { url: string | null; kind: string };
+
+    assert.deepEqual(row("r1"), { url: null, kind: "derived" });
+    assert.deepEqual(row("r2"), {
+      url: "https://example.com/alpha",
+      kind: "observed",
+    });
+    db.close();
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
 });
 
 test("source corrections fix upstream mislabels", () => {
@@ -511,6 +589,7 @@ test("devices outside the registry stay unnamed", () => {
           name: "Source Model Name",
           brand: null,
           referenceUrl: null,
+          referenceKind: "observed",
           reportedCodename: null,
         },
       ],

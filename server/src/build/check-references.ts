@@ -1,34 +1,57 @@
-import Database from "better-sqlite3";
+import { writeFile } from "node:fs/promises";
 
-import { DB_PATH } from "../paths.ts";
+import { parseAllSources } from "../validate.ts";
+import { REFERENCE_OVERRIDES_PATH } from "../paths.ts";
 
-// Reference health check. Every `rom_devices.reference_url` is a citation for the
-// claim "this ROM supports this device"; a citation that no longer resolves is
-// worse than none, because it implies verifiability. This script reads the
-// built database and reports which reference hosts are dead; it never mutates
-// data. Reclassify the affected sources (see ROM_DATA_SOURCES.md) by hand.
+// Reference gate. Citations the pipeline *builds* from a codename (class B in
+// ROM_DATA_SOURCES.md) are guesses until someone opens them. Probe those URLs
+// and record the dead ones in `data/reference-overrides.json`; the build drops
+// them, because an unverifiable citation is worse than none.
 //
-// Probing is per-host, not per-URL: the dataset has ~1500 device pages across
-// ~17 hosts, and the failure mode we care about is a whole host going away
-// (e.g. corvusrom.com). Fetching every device page would be thousands of
-// requests for the same signal.
+// Only `derived` URLs are probed per URL. A URL the source itself published is
+// observed evidence: it existed when the snapshot was taken, and re-probing
+// thousands of upstream pages on every refresh is neither polite nor cheap.
+// One URL per host is still probed to catch a host that disappeared.
+//
+// 404/410 mean gone. Everything else (403 bot walls, 429, 5xx, timeouts) is
+// unknown: it must not demote a citation.
 
 const TIMEOUT_MS = 15_000;
-const CONCURRENCY = 6;
+const HOST_CONCURRENCY = 4;
+const URL_CONCURRENCY_PER_HOST = 2;
 
-interface Reference {
-  url: string;
-  romId: string;
-}
-
-interface HostReport {
-  host: string;
-  records: number;
-  urls: number;
-  sample: string;
+interface Probe {
   status: number | null;
   error: string | null;
-  probeUrl: string;
+}
+
+type State = "ok" | "dead" | "unknown";
+
+async function probe(url: string): Promise<Probe> {
+  try {
+    const response = await fetch(url, {
+      redirect: "follow",
+      signal: AbortSignal.timeout(TIMEOUT_MS),
+      headers: {
+        "user-agent": "unrom-reference-check/1.0 (+https://unrom.com)",
+      },
+    });
+    await response.body?.cancel();
+    return { status: response.status, error: null };
+  } catch (error) {
+    return {
+      status: null,
+      error: error instanceof Error ? error.message : String(error),
+    };
+  }
+}
+
+function classify(probe: Probe): State {
+  if (probe.status === 404 || probe.status === 410) return "dead";
+  if (probe.status !== null && probe.status >= 200 && probe.status < 400) {
+    return "ok";
+  }
+  return "unknown";
 }
 
 function hostOf(url: string): string {
@@ -39,184 +62,106 @@ function hostOf(url: string): string {
   }
 }
 
-function collectReferences(dbPath: string): Reference[] {
-  const sqlite = new Database(dbPath, { readonly: true, fileMustExist: true });
-  const rows = sqlite
-    .prepare(
-      "select rom_id, reference_url from rom_devices where reference_url is not null",
-    )
-    .all() as Array<{ rom_id: string; reference_url: string }>;
-  sqlite.close();
-  return rows.map((row) => ({ romId: row.rom_id, url: row.reference_url }));
-}
-
-async function probe(
-  url: string,
-): Promise<{ status: number | null; error: string | null }> {
-  const controller = new AbortController();
-  const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
-  try {
-    // Some hosts block HEAD and non-browser agents. A ranged GET with a
-    // browser-like Accept header is the closest we can get to a real visit
-    // without downloading whole pages. A fetch-level failure (DNS, reset) is
-    // reported separately from an HTTP status so blocked-but-live hosts like
-    // t.me and XDA are not mistaken for dead links.
-    const response = await fetch(url, {
-      method: "GET",
-      redirect: "follow",
-      signal: controller.signal,
-      headers: {
-        "user-agent":
-          "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0 Safari/537.36",
-        accept: "text/html,application/json;q=0.9,*/*;q=0.8",
-        range: "bytes=0-0",
-      },
-    });
-    // Drain a byte so the connection closes cleanly.
-    await response.arrayBuffer();
-    return { status: response.status, error: null };
-  } catch (error) {
-    const message = error instanceof Error ? error.message : String(error);
-    return { status: null, error: message };
-  } finally {
-    clearTimeout(timer);
-  }
-}
-
-async function mapLimit<T, R>(
+/** Run `task` over `items`, at most `limit` at a time. */
+async function pool<T>(
   items: T[],
   limit: number,
-  fn: (item: T) => Promise<R>,
-): Promise<R[]> {
-  const results: R[] = new Array(items.length);
+  task: (item: T) => Promise<void>,
+): Promise<void> {
   let next = 0;
-  async function worker(): Promise<void> {
-    while (next < items.length) {
-      const index = next++;
-      results[index] = await fn(items[index]);
-    }
-  }
-  await Promise.all(
-    Array.from({ length: Math.min(limit, items.length) }, worker),
+  const workers = Array.from(
+    { length: Math.min(limit, items.length) },
+    async () => {
+      while (next < items.length) {
+        const item = items[next++];
+        await task(item);
+      }
+    },
   );
-  return results;
+  await Promise.all(workers);
 }
 
-const references = collectReferences(DB_PATH);
-if (references.length === 0) {
-  console.error(`No references found in ${DB_PATH}. Build the data first.`);
-  process.exit(1);
+async function mapByHost<T>(
+  items: T[],
+  host: (item: T) => string,
+  perHost: number,
+  task: (item: T) => Promise<void>,
+): Promise<void> {
+  const groups = new Map<string, T[]>();
+  for (const item of items) {
+    const key = host(item);
+    const group = groups.get(key);
+    if (group) group.push(item);
+    else groups.set(key, [item]);
+  }
+  await pool([...groups.values()], HOST_CONCURRENCY, (group) =>
+    pool(group, perHost, task),
+  );
 }
 
-const byHost = new Map<
-  string,
-  { records: number; urls: Set<string>; sample: string }
->();
-for (const { url } of references) {
+const records = await parseAllSources();
+
+const derived = new Map<string, string>(); // url -> host
+const allHosts = new Map<string, string>(); // host -> sample url
+for (const record of records) {
+  const url = record.referenceUrl;
+  if (!url) continue;
   const host = hostOf(url);
-  const entry = byHost.get(host) ?? {
-    records: 0,
-    urls: new Set(),
-    sample: url,
-  };
-  entry.records++;
-  entry.urls.add(url);
-  byHost.set(host, entry);
-}
-
-const hosts = [...byHost.entries()].map(([host, entry]) => ({
-  host,
-  records: entry.records,
-  urls: entry.urls.size,
-  sample: entry.sample,
-  probeUrl: entry.sample,
-}));
-
-const probes = await mapLimit(hosts, CONCURRENCY, (entry) =>
-  probe(entry.probeUrl),
-);
-
-const reports: HostReport[] = hosts.map((host, index) => ({
-  ...host,
-  status: probes[index].status,
-  error: probes[index].error,
-}));
-
-type Health = "live" | "blocked" | "timeout" | "dead";
-
-function health(report: HostReport): Health {
-  if (report.error !== null || report.status === null) {
-    const error = report.error ?? "unknown";
-    // A timeout is inconclusive: the host may be slow, geo-blocked, or
-    // rate-limiting. Only a name-resolution or connection failure means the
-    // host is actually gone.
-    if (/timed? ?out|abort/i.test(error)) return "timeout";
-    return "dead";
-  }
-  if ([401, 403, 429].includes(report.status)) return "blocked";
-  if (report.status >= 400) return "dead";
-  return "live";
-}
-
-const classified = reports.map((report) => ({
-  report,
-  health: health(report),
-}));
-const pick = (kind: Health) =>
-  classified
-    .filter((entry) => entry.health === kind)
-    .map((entry) => entry.report)
-    .sort((a, b) => b.records - a.records);
-
-const dead = pick("dead");
-const blocked = pick("blocked");
-const timeouts = pick("timeout");
-const deadRecords = dead.reduce((sum, report) => sum + report.records, 0);
-const liveCount =
-  reports.length - dead.length - blocked.length - timeouts.length;
-
-console.log(`Checked ${reports.length} reference host(s)`);
-console.log(
-  `${liveCount} live, ${blocked.length} blocked, ${timeouts.length} timed out, ` +
-    `${dead.length} dead (${deadRecords}/${references.length} records affected)\n`,
-);
-
-if (dead.length === 0) {
-  console.log("No dead reference hosts.");
-  if (timeouts.length > 0) {
-    console.log(
-      "Timed-out hosts are inconclusive. Re-run or check them by hand.",
-    );
-  }
-  process.exit(0);
-}
-
-for (const report of dead) {
-  const reason = report.error ?? `HTTP ${report.status}`;
-  console.log(
-    `${report.host}: ${report.records} record(s), ${report.urls} URL(s)`,
-  );
-  console.log(`  ${reason}: ${report.sample}`);
-}
-
-if (blocked.length > 0) {
-  console.log("\nBlocked (alive, but refuses automated requests):");
-  for (const report of blocked) {
-    console.log(
-      `  ${report.host}: HTTP ${report.status}, ${report.records} record(s)`,
-    );
-  }
-}
-
-if (timeouts.length > 0) {
-  console.log("\nTimed out (inconclusive):");
-  for (const report of timeouts) {
-    console.log(`  ${report.host}: ${report.records} record(s)`);
-  }
+  if (!allHosts.has(host)) allHosts.set(host, url);
+  if (record.referenceKind === "derived") derived.set(url, host);
 }
 
 console.log(
-  "\nDead hosts mean the cited source is gone; move the affected ROMs to the\nexception list in ROM_DATA_SOURCES.md or find a replacement reference.",
+  `Probing ${derived.size} derived reference(s) and ${allHosts.size} host(s)…`,
 );
 
-process.exit(1);
+const results = new Map<string, State>();
+await mapByHost(
+  [...derived.keys()],
+  (url) => derived.get(url)!,
+  URL_CONCURRENCY_PER_HOST,
+  async (url) => {
+    results.set(url, classify(await probe(url)));
+  },
+);
+
+const hostStates = new Map<string, State>();
+await pool([...allHosts.keys()], HOST_CONCURRENCY, async (host) => {
+  hostStates.set(host, classify(await probe(allHosts.get(host)!)));
+});
+
+const dead = [...results]
+  .filter(([, state]) => state === "dead")
+  .map(([url]) => url)
+  .sort();
+const unverified = [...results]
+  .filter(([, state]) => state === "unknown")
+  .map(([url]) => url)
+  .sort();
+
+const deadHosts = [...hostStates]
+  .filter(([, state]) => state === "dead")
+  .map(([host]) => host)
+  .sort();
+
+await writeFile(
+  REFERENCE_OVERRIDES_PATH,
+  JSON.stringify(
+    {
+      generatedAt: new Date().toISOString(),
+      dead,
+      unverified,
+      deadHosts,
+    },
+    null,
+    2,
+  ) + "\n",
+  "utf8",
+);
+
+console.log(
+  `✓ ${derived.size - dead.length - unverified.length} ok, ${dead.length} dead, ${unverified.length} unverified → ${REFERENCE_OVERRIDES_PATH}`,
+);
+if (deadHosts.length) {
+  console.log(`✗ dead host(s): ${deadHosts.join(", ")}`);
+}

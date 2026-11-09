@@ -28,11 +28,17 @@ const romChipSchema = {
 
 const romSupportSchema = {
   type: "object",
-  required: ["id", "name", "referenceUrl", "inheritedFrom"],
+  required: ["id", "name", "referenceUrl", "referenceKind", "inheritedFrom"],
   properties: {
     id: { type: "string" },
     name: { type: "string" },
     referenceUrl: { ...nullableString, format: "uri" },
+    referenceKind: {
+      type: "string",
+      enum: ["observed", "derived"],
+      description:
+        "`observed` means the source published the URL; `derived` means it was built from the codename.",
+    },
     inheritedFrom: {
       ...nullableString,
       description:
@@ -205,6 +211,7 @@ const mappingSchema = {
     "romId",
     "romName",
     "referenceUrl",
+    "referenceKind",
     "reportedCodename",
   ],
   properties: {
@@ -215,6 +222,7 @@ const mappingSchema = {
     romId: { type: "string" },
     romName: { type: "string" },
     referenceUrl: { ...nullableString, format: "uri" },
+    referenceKind: { type: "string", enum: ["observed", "derived"] },
     reportedCodename: nullableString,
   },
 };

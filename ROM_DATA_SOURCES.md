@@ -253,11 +253,20 @@ headline: a raw URL is used only when it is itself a good citation.
   B, then C, then D. A pure contact field (e.g. `supportgroupurl`) is never
   picked.
 - **B: deterministic device page.** A per-device page exists and is derivable
-  from the codename (verified live, with a real 404 for unknown codenames).
+  from the codename. Because the URL is built rather than observed, it is
+  recorded as `derived` and must resolve before it is published.
 - **C: list-only.** No per-device page; cite a pinned deep link to the exact
   file/commit the record came from.
 - **D: no device-specific page.** Cite the source index if one exists and
   record it here as an exception.
+
+Class B is checked by `npm run check:references --workspace server` (part of
+`npm run refresh`). It probes every `derived` URL; **404/410 means dead** and
+the build drops the citation, because an unverifiable citation is worse than
+none. 403/429/5xx/timeouts are unknown and never demote. Results are committed
+in `server/reference-overrides.json`; the build consumes them offline. A URL the
+source published (`observed`) is evidence on its own and is not re-probed
+per URL.
 
 These rules are enforced globally by the adapter gate (`isCitation` in
 `server/src/sources/adapter.ts`): a raw reference is kept only when it passes

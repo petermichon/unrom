@@ -39,6 +39,7 @@ export interface RecordInput {
   name?: string | null;
   brand?: string | null;
   referenceUrl?: string | null;
+  referenceKind?: "observed" | "derived";
   reportedCodename?: string | null;
 }
 
@@ -222,6 +223,7 @@ export function createParser(
 
     return drafts.map((draft) => {
       const citation = draft.references.find((url) => counts.get(url) === 1);
+      const derivedPage = source.referencePage?.includes("{codename}") ?? false;
 
       return normalizedRomDeviceSchema.parse({
         romId: source.id,
@@ -234,6 +236,9 @@ export function createParser(
           (source.referencePage
             ? source.referencePage.replace("{codename}", draft.codename)
             : null),
+        // A URL the source published is observed; a page we build from the
+        // codename is only a guess until it is verified.
+        referenceKind: citation || !derivedPage ? "observed" : "derived",
         reportedCodename: draft.reportedCodename,
       });
     });

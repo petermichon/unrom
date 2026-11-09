@@ -44,6 +44,7 @@ export function parseCalyxOS(raw: string): NormalizedRomDevice[] {
         name,
         brand: brandFor(name),
         referenceUrl: `https://calyxos.org/install/devices/${codename}/`,
+        referenceKind: "derived",
       }),
     );
   }

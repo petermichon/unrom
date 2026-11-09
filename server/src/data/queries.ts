@@ -17,6 +17,7 @@ import type {
   RomSupport,
   SearchResponse,
   Summary,
+  ReferenceKind,
 } from "@unrom/contract";
 
 import {
@@ -34,6 +35,10 @@ import { vendorName } from "./identity.ts";
 // push a name to the top. Display names are left untouched.
 const sortKey = (value: string): string =>
   value.replace(/^[^\p{L}\p{N}]+/u, "").toLowerCase();
+
+// The column is plain text; only these two values are ever written.
+const asReferenceKind = (value: string): ReferenceKind =>
+  value === "derived" ? "derived" : "observed";
 
 const bySortKey = (a: string, b: string) =>
   sortKey(a).localeCompare(sortKey(b));
@@ -133,6 +138,7 @@ export function createApi(dbPath: string) {
       id: edge.romId,
       name: names.get(edge.romId) ?? edge.romId,
       referenceUrl: edge.referenceUrl,
+      referenceKind: asReferenceKind(edge.referenceKind),
       inheritedFrom,
     };
   }
@@ -825,6 +831,7 @@ export function createApi(dbPath: string) {
           romId: edge.romId,
           romName: names.get(edge.romId) ?? edge.romId,
           referenceUrl: edge.referenceUrl,
+          referenceKind: asReferenceKind(edge.referenceKind),
           reportedCodename: edge.reportedCodename,
         };
       });

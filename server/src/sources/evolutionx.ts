@@ -26,11 +26,12 @@ export function parseEvolutionX(raw: string): NormalizedRomDevice[] {
     seen.add(codename);
 
     const fallback = str(entry.forum) ?? str(entry.download);
-    const referenceUrl = UNPUBLISHED.has(codename)
-      ? isCitation(fallback)
+    const derived = !UNPUBLISHED.has(codename);
+    const referenceUrl = derived
+      ? `https://evolution-x.org/device/${codename}`
+      : isCitation(fallback)
         ? fallback
-        : null
-      : `https://evolution-x.org/device/${codename}`;
+        : null;
 
     records.push(
       buildRecord({
@@ -40,6 +41,7 @@ export function parseEvolutionX(raw: string): NormalizedRomDevice[] {
         name: str(entry.device),
         brand: str(entry.oem),
         referenceUrl,
+        referenceKind: derived ? "derived" : "observed",
       }),
     );
   }

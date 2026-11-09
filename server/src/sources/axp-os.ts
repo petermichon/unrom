@@ -29,6 +29,7 @@ export function parseAxpOs(raw: string): NormalizedRomDevice[] {
         codename,
         brand,
         referenceUrl: `https://axpos.org/devices/${brand}/${codename}/`,
+        referenceKind: "derived",
       }),
     );
   }

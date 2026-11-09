@@ -39,6 +39,7 @@ export function parseAxionOs(raw: string): NormalizedRomDevice[] {
         name: str(device.name),
         brand: str(device.brand),
         referenceUrl: `https://www.axionos.org/download/${codename}`,
+        referenceKind: "derived",
       }),
     );
   }

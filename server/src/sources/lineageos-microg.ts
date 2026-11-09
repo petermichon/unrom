@@ -28,6 +28,7 @@ export function parseLineageOSMicroG(raw: string): NormalizedRomDevice[] {
         romName: ROM_NAME,
         codename,
         referenceUrl: `${BASE_URL}/${codename}/`,
+        referenceKind: "derived",
       }),
     );
   }

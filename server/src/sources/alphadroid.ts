@@ -130,6 +130,7 @@ export function parseAlphaDroidJson(raw: string): NormalizedRomDevice[] {
         name,
         brand: str(build?.oem),
         referenceUrl: `https://alphadroid.org/#devices?codename=${codename}`,
+        referenceKind: "derived",
       }),
     );
   }

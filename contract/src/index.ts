@@ -10,10 +10,18 @@ export interface DeviceSummary {
   romCount: number;
 }
 
+/**
+ * How a citation was obtained. `observed` means the source itself named the
+ * URL; `derived` means it was built from the codename and is not evidence of
+ * the page existing.
+ */
+export type ReferenceKind = "observed" | "derived";
+
 export interface RomSupport {
   id: string;
   name: string;
   referenceUrl: string | null;
+  referenceKind: ReferenceKind;
   /** Set when the ROM supports this device via a covering build target. */
   inheritedFrom: string | null;
 }
@@ -146,5 +154,6 @@ export interface Mapping {
   romId: string;
   romName: string;
   referenceUrl: string | null;
+  referenceKind: ReferenceKind;
   reportedCodename: string | null;
 }

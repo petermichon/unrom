@@ -25,6 +25,7 @@ export function createEosParser(): (raw: string) => NormalizedRomDevice[] {
             romName: ROM_NAME,
             codename,
             referenceUrl: `https://doc.e.foundation/devices/${codename}`,
+            referenceKind: "derived",
           }),
         );
       }
@@ -77,6 +78,7 @@ export function parseEosHtml(raw: string): NormalizedRomDevice[] {
         name: nameCell ? decode(nameCell[1]) : null,
         brand: brandCell ? decode(brandCell[1]) : null,
         referenceUrl: `https://doc.e.foundation/devices/${codename}`,
+        referenceKind: "derived",
       }),
     );
   }

@@ -9,6 +9,10 @@ export const normalizedRomDeviceSchema = z.object({
   name: z.string().nullable(),
   brand: z.string().nullable(),
   referenceUrl: z.string().nullable(),
+  // How the citation was obtained. `observed` means the source itself named the
+  // URL; `derived` means the pipeline built it from the codename, so it must be
+  // verified before it is published.
+  referenceKind: z.enum(["observed", "derived"]).default("observed"),
   // The codename the source's entry is keyed by, when it differs from
   // `codename` (e.g. a combined `sweet/sweetin` entry). Proves which variant
   // covers which.

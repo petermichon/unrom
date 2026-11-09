@@ -32,6 +32,7 @@ export function parsePixelOS(raw: string): NormalizedRomDevice[] {
         name: str(device.model),
         brand: str(device.vendor),
         referenceUrl: `https://pixelos.net/download/${codename}`,
+        referenceKind: "derived",
       }),
     );
   }

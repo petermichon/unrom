@@ -27,6 +27,8 @@ export const romDevices = sqliteTable(
     vendor: text("vendor").notNull(),
     codename: text("codename").notNull(),
     referenceUrl: text("reference_url"),
+    // "observed" | "derived"; see `sources/adapter.ts`.
+    referenceKind: text("reference_kind").notNull().default("observed"),
     reportedCodename: text("reported_codename"),
   },
   (table) => [

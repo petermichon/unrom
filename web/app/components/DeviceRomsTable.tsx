@@ -80,6 +80,14 @@ export default function DeviceRomsTable({ roms }: Props) {
                 <span className="truncate">
                   {referenceLabel(row.original.referenceUrl)}
                 </span>
+                {row.original.referenceKind === "derived" && (
+                  <span
+                    className="shrink-0 text-[10px] uppercase tracking-wide text-muted-foreground/70"
+                    title="Built from the codename; the source does not publish this URL."
+                  >
+                    generated
+                  </span>
+                )}
                 <ExternalLink className="size-3 shrink-0" aria-hidden="true" />
               </a>
             )}
@@ -110,10 +118,21 @@ export default function DeviceRomsTable({ roms }: Props) {
                 <span className="truncate">
                   {referenceLabel(row.original.referenceUrl)}
                 </span>
+                {row.original.referenceKind === "derived" && (
+                  <span className="shrink-0 text-[10px] uppercase tracking-wide text-muted-foreground/70">
+                    generated
+                  </span>
+                )}
                 <ExternalLink className="size-3 shrink-0" />
               </TooltipTrigger>
               <TooltipContent className="max-w-md break-all">
                 {row.original.referenceUrl}
+                {row.original.referenceKind === "derived" && (
+                  <span className="mt-1 block text-muted-foreground">
+                    Built from the codename; the source does not publish this
+                    URL.
+                  </span>
+                )}
               </TooltipContent>
             </Tooltip>
           ) : (

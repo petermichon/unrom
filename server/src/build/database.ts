@@ -104,6 +104,7 @@ interface Edge {
   vendor: string;
   codename: string;
   referenceUrl: string | null;
+  referenceKind: "observed" | "derived";
   // The main codename whose build covers this device, when the source grouped
   // it with a variant (e.g. a `sweetin` edge reported under `sweet`).
   reportedCodename: string | null;
@@ -171,7 +172,7 @@ function contentHash(
     ),
   )) {
     hash.update(
-      `e\0${edge.romId}\0${edge.vendor}\0${edge.codename}\0${edge.referenceUrl ?? ""}\0${edge.reportedCodename ?? ""}\n`,
+      `e\0${edge.romId}\0${edge.vendor}\0${edge.codename}\0${edge.referenceUrl ?? ""}\0${edge.referenceKind}\0${edge.reportedCodename ?? ""}\n`,
     );
   }
   for (const row of [...registryRows].sort((a, b) =>
@@ -343,6 +344,7 @@ export function buildDatabase(
   records: NormalizedRomDevice[],
   dbPath: string,
   catalog: readonly DeviceSeed[] = [],
+  deadReferences: ReadonlySet<string> = new Set(),
 ): BuildResult {
   for (const suffix of ["", "-wal", "-shm"]) {
     rmSync(dbPath + suffix, { force: true });
@@ -546,9 +548,30 @@ export function buildDatabase(
       vendor,
       codename: resolved,
       referenceUrl: null,
+      referenceKind: record.referenceKind,
       reportedCodename: null,
     };
-    edge.referenceUrl ??= record.referenceUrl;
+    // A derived URL is a guess until the reference check confirms the page.
+    // A dead one is dropped rather than published: an unverifiable citation is
+    // worse than none.
+    const referenceUrl =
+      record.referenceUrl &&
+      record.referenceKind === "derived" &&
+      deadReferences.has(record.referenceUrl)
+        ? null
+        : record.referenceUrl;
+    if (edge.referenceUrl === null && referenceUrl) {
+      edge.referenceUrl = referenceUrl;
+      edge.referenceKind = record.referenceKind;
+    } else if (
+      referenceUrl &&
+      edge.referenceKind === "derived" &&
+      record.referenceKind === "observed"
+    ) {
+      // A citation the source published beats one we built ourselves.
+      edge.referenceUrl = referenceUrl;
+      edge.referenceKind = "observed";
+    }
     // A covering entry (a variant reported under a different main codename)
     // records that main. A rename resolves to the same device, so it does not.
     if (record.reportedCodename) {
