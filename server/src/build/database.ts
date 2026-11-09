@@ -6,12 +6,12 @@ import { drizzle } from "drizzle-orm/better-sqlite3";
 
 import {
   CANONICAL_CODENAMES,
-  EXCLUDED_CODENAMES,
   DECLARED_GROUPS,
   UNKNOWN_VENDOR,
   VERIFIED_GROUPS,
   canonicalCodename,
   expandCodename,
+  isExcludedCodename,
   isValidCodename,
   vendorForBrand,
   vendorForCodename,
@@ -371,7 +371,7 @@ export function buildDatabase(
       vendorForBrand(record.brand) ?? vendorForName(record.name);
     for (const part of expandCodename(record.codename)) {
       // Emulator images and unified build targets are not devices.
-      if (EXCLUDED_CODENAMES.has(part.trim().toLowerCase())) continue;
+      if (isExcludedCodename(part)) continue;
       if (!isValidCodename(part)) continue;
       const canonical = canonicalCasing(part);
       prepared.push({ record, part, canonical, vendor: reportedVendor });
@@ -410,6 +410,8 @@ export function buildDatabase(
   // what lets /devices list devices before any ROM supports them.
   for (const key of Object.keys(DEVICE_NAMES)) {
     const [vendor, codename] = key.split("\0");
+    // The curated names must not resurrect a build target the records dropped.
+    if (isExcludedCodename(codename)) continue;
     ensureDevice(vendor, codename);
   }
 

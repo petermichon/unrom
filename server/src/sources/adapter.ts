@@ -56,6 +56,13 @@ function isObject(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
+// Rosters keep retired builds in place with `enabled: false`; those are not
+// supported devices and must not produce records.
+function keepDevice(device: unknown, enabledKey: string | undefined): boolean {
+  if (!enabledKey || !isObject(device)) return true;
+  return device[enabledKey] !== false;
+}
+
 // A reference must be a citation a human can open and check: the ROM's own page
 // or a device-specific thread. Contact links, download artifacts and store pages
 // are not citations. These are demoted to the source's deterministic
@@ -240,12 +247,14 @@ export const selectors = {
     })),
 
   devices:
-    (key: string) =>
+    (key: string, options: { enabledKey?: string } = {}) =>
     (data: unknown): DeviceEntry[] => {
       const list = isObject(data) ? data[key] : undefined;
-      return (Array.isArray(list) ? list : []).map((device) => ({
-        device: isObject(device) ? device : {},
-      }));
+      return (Array.isArray(list) ? list : [])
+        .filter((device) => keepDevice(device, options.enabledKey))
+        .map((device) => ({
+          device: isObject(device) ? device : {},
+        }));
     },
 
   grouped:

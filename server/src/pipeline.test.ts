@@ -12,6 +12,7 @@ import {
   EXCLUDED_CODENAMES,
   canonicalCodename,
   expandCodename,
+  isExcludedCodename,
   isValidCodename,
   vendorForBrand,
 } from "./data/identity.ts";
@@ -200,6 +201,30 @@ test("shared raw references fall through to the reference page", () => {
   assert.equal(
     byCodename.get("fallback"),
     "https://example.com/pinned/fallback",
+  );
+});
+
+test("retired roster entries are dropped", () => {
+  const parse = createParser({
+    id: "test",
+    romName: "Test",
+    file: "test.json",
+    select: selectors.devices("devices", { enabledKey: "enabled" }),
+  });
+
+  const records = parse(
+    JSON.stringify({
+      devices: [
+        { codename: "live", enabled: true },
+        { codename: "retired", enabled: false },
+        { codename: "unstated" },
+      ],
+    }),
+  );
+
+  assert.deepEqual(
+    records.map((record) => record.codename),
+    ["live", "unstated"],
   );
 });
 
@@ -650,6 +675,30 @@ test("cross-vendor collisions resolve to distinct devices", async () => {
         `excluded codename became a device: ${codename}`,
       );
     }
+    // GSI targets are matched by shape, not only by the literal list.
+    for (const codename of ["gsi", "gsi_gapps", "treble_gsi", "gsi_arm64"]) {
+      assert.equal(isExcludedCodename(codename), true, codename);
+      assert.equal(
+        db.prepare("select 1 from devices where codename = ?").get(codename),
+        undefined,
+        `GSI became a device: ${codename}`,
+      );
+    }
+    assert.equal(
+      db.prepare("select 1 from devices where vendor = 'generic'").get(),
+      undefined,
+      "generic vendor namespace leaked into devices",
+    );
+    // Entries retired upstream (`enabled: false`) are not supported devices.
+    assert.equal(
+      db
+        .prepare(
+          "select 1 from rom_devices where rom_id = 'mistos' and codename = 'Pong'",
+        )
+        .get(),
+      undefined,
+      "a disabled roster entry became a supported device",
+    );
     db.close();
   } finally {
     rmSync(dir, { recursive: true, force: true });

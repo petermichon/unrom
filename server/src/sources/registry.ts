@@ -182,7 +182,7 @@ const configs: DeviceSource[] = [
     id: "mistos",
     romName: "MistOS",
     file: "mistos.json",
-    select: selectors.devices("devices"),
+    select: selectors.devices("devices", { enabledKey: "enabled" }),
     name: ["deviceName"],
     brand: ["OEM"],
     referencePage:

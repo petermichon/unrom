@@ -182,15 +182,26 @@ export function vendorForCodename(codename: string): string | null {
   return VENDOR_BY_CODENAME[codename.toLowerCase()] ?? null;
 }
 
-// Build targets that are not real devices: emulator images and unified trees
-// covering several devices. Dropping them keeps phantom rows out of `devices`.
+// Build targets that are not real devices: emulator images. Dropping them keeps
+// phantom rows out of `devices`.
 export const EXCLUDED_CODENAMES = new Set<string>([
   "sdk_phone_x86_64",
   "opkona",
-  "gsi_gapps",
-  "gsi_vanilla",
-  "treble_gsi",
 ]);
+
+// Generic System Images run on any Project Treble device, so they are build
+// targets, not devices. Sources spell them many ways (`gsi`, `gsi_gapps`,
+// `gsi_arm64`, `treble_gsi`, ...), so match the shape rather than a fixed list.
+const NON_DEVICE_PATTERN = /(^|[_-])gsi([_-]|$)|^treble([_-]|$)/i;
+
+/** True for emulator images, GSIs and other unified build targets. */
+export function isExcludedCodename(codename: string): boolean {
+  const value = codename.trim();
+  return (
+    EXCLUDED_CODENAMES.has(value.toLowerCase()) ||
+    NON_DEVICE_PATTERN.test(value)
+  );
+}
 
 export const UNKNOWN_VENDOR = "unknown";
 

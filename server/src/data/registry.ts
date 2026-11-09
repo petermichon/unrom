@@ -81,8 +81,6 @@ export const DEVICE_NAMES: Record<string, string[]> = {
   "fxtec\0pro1": ["F(x)tec Pro¹"],
   "fxtec\0pro1x": ["F(x)tec Pro¹ X"],
 
-  "generic\0gsi": ["Generic System Image (TrebleDroid)"],
-
   "gigaset\0GS290": ["Gigaset GS290"],
   "gigaset\0GS6_Venus": ["Gigaset GS6", "Gigaset GS6 Pro"],
 
