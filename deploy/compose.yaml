@@ -62,7 +62,10 @@ services:
       retries: 3
       start_period: 15s
     depends_on:
-      - api
+      api:
+        # The loaders query the API per request; wait until it is actually
+        # serving so the first pages cannot fail or render an empty dataset.
+        condition: service_healthy
     labels:
       - "freshdock.enable=true"
       - "freshdock.mode=live"

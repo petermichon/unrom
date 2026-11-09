@@ -1,10 +1,10 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { Link, useLoaderData } from "react-router";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { PageHeader } from "@/components/PageHeader";
 import { SearchInput } from "@/components/SearchInput";
 import { brandRanking, type Brand } from "@/lib/brands";
-import { fetchBrands, seedBrands } from "@/lib/data";
+import { fetchBrands } from "@/lib/data";
 import {
   errorMeta,
   itemListLd,
@@ -73,10 +73,6 @@ function BrandRow({ brand }: { brand: Brand }) {
 export default function BrandsRoute() {
   const { brands: rawBrands } = useLoaderData<typeof loader>();
   const [query, setQuery] = useState("");
-
-  useEffect(() => {
-    seedBrands(rawBrands);
-  }, [rawBrands]);
 
   const brands = useMemo(() => brandRanking(rawBrands), [rawBrands]);
   const needle = query.trim().toLowerCase();

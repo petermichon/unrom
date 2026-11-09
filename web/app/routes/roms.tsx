@@ -1,9 +1,9 @@
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { Link, useLoaderData } from "react-router";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { PageHeader } from "@/components/PageHeader";
 import { SearchInput } from "@/components/SearchInput";
-import { fetchRoms, seedRoms } from "@/lib/data";
+import { fetchRoms } from "@/lib/data";
 import { matchesAll, tokenize } from "@/lib/search";
 import {
   errorMeta,
@@ -103,10 +103,6 @@ export default function RomsRoute() {
   const [query, setQuery] = useState("");
   const [catalogueOpen, setCatalogueOpen] = useState(false);
   const initialDocument = useInitialDocument();
-
-  useEffect(() => {
-    seedRoms(roms);
-  }, [roms]);
 
   const covered = useMemo(
     () =>

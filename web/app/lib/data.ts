@@ -15,48 +15,22 @@ function apiBase(): string {
   return process.env.API_URL ?? "http://127.0.0.1:3000";
 }
 
-// The dataset is immutable for the lifetime of a deployment: it is baked into
-// the image and only changes on redeploy. Cache every response so client
-// navigations and SSR requests reuse it instead of re-querying the API, and
-// dedupe concurrent requests for the same path.
-const cache = new Map<string, unknown>();
-const inflight = new Map<string, Promise<unknown>>();
-
+// Every loader queries the API directly. The dataset can be replaced under a
+// running frontend (a deploy may recreate the API without this process), so no
+// response is cached across requests: a stale copy cannot outlive a deploy.
 async function get<T>(path: string): Promise<T> {
-  const cached = cache.get(path);
-  if (cached !== undefined) return cached as T;
-
-  const pending = inflight.get(path);
-  if (pending) return pending as Promise<T>;
-
-  const request = (async () => {
-    const response = await fetch(`${apiBase()}${path}`);
-    if (!response.ok) {
-      throw new Response(`API request failed: ${path}`, {
-        status: response.status,
-      });
-    }
-    const data = (await response.json()) as T;
-    cache.set(path, data);
-    return data;
-  })();
-
-  inflight.set(path, request);
-  try {
-    return (await request) as T;
-  } finally {
-    inflight.delete(path);
+  const response = await fetch(`${apiBase()}${path}`);
+  if (!response.ok) {
+    throw new Response(`API request failed: ${path}`, {
+      status: response.status,
+    });
   }
+  return (await response.json()) as T;
 }
 
 export function fetchDevices(vendor?: string): Promise<BrowseDevice[]> {
   const query = vendor ? `?vendor=${encodeURIComponent(vendor)}` : "";
   return get<BrowseDevice[]>(`/api/devices${query}`);
-}
-
-/** Seed the browser cache with data already rendered by the server loader. */
-export function seedDevices(devices: BrowseDevice[]): void {
-  cache.set("/api/devices", devices);
 }
 
 export function fetchSummary(): Promise<Summary> {
@@ -92,18 +66,11 @@ export async function fetchExportSizes(): Promise<{
   json: number | null;
   sqlite: number | null;
 }> {
-  const cached = cache.get("/api/export/sizes");
-  if (cached !== undefined) {
-    return cached as { json: number | null; sqlite: number | null };
-  }
-
   const [json, sqlite] = await Promise.all([
     headContentLength("/api/export/json"),
     headContentLength("/api/export/sqlite"),
   ]);
-  const sizes = { json, sqlite };
-  cache.set("/api/export/sizes", sizes);
-  return sizes;
+  return { json, sqlite };
 }
 
 export function fetchDeviceLetters(): Promise<LetterSummary[]> {
@@ -112,11 +79,6 @@ export function fetchDeviceLetters(): Promise<LetterSummary[]> {
 
 export function fetchBrands(): Promise<BrandSummary[]> {
   return get<BrandSummary[]>("/api/brands");
-}
-
-/** Seed the browser cache with data already rendered by the server loader. */
-export function seedBrands(brands: BrandSummary[]): void {
-  cache.set("/api/brands", brands);
 }
 
 export async function fetchDevicesPage(options: {
@@ -154,11 +116,6 @@ export function fetchDevice(
 
 export function fetchRoms(): Promise<RomDetail[]> {
   return get<RomDetail[]>("/api/roms");
-}
-
-/** Seed the browser cache with data already rendered by the server loader. */
-export function seedRoms(roms: RomDetail[]): void {
-  cache.set("/api/roms", roms);
 }
 
 export function fetchRom(id: string): Promise<RomDetail> {
