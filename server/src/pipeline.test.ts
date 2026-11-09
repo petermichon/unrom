@@ -575,6 +575,51 @@ test("device pages filter by letter and offset", async () => {
   }
 });
 
+test("the registry report flags curated entries that miss source names", () => {
+  const dir = mkdtempSync(join(tmpdir(), "unrom-test-"));
+  const dbPath = join(dir, "unrom.sqlite");
+
+  try {
+    const built = buildDatabase(
+      [
+        buildRecord({
+          romId: "lineageos",
+          romName: "LineageOS",
+          codename: "otter",
+          name: "SHIFTphone 8.0",
+          names: ["SHIFTphone 8.0", "SHIFTphone 8.1", "SHIFTphone 9"],
+          brand: "SHIFT",
+        }),
+      ],
+      dbPath,
+    );
+
+    const gap = built.registryReport.nameGaps.find(
+      (entry) => entry.codename === "otter",
+    );
+    assert.deepEqual(gap?.curated, ["SHIFTphone 8.0", "SHIFTphone 8.1"]);
+    assert.deepEqual(gap?.observed, ["SHIFTphone 9"]);
+    assert.equal(
+      built.registryReport.summary.nameGaps,
+      built.registryReport.nameGaps.length,
+    );
+
+    // Curated names still win, and both models are listed.
+    const db = new Database(dbPath, { readonly: true });
+    const device = db
+      .prepare("select name, names from devices where codename = 'otter'")
+      .get() as { name: string; names: string };
+    assert.equal(device.name, "SHIFTphone 8.0");
+    assert.deepEqual(JSON.parse(device.names), [
+      "SHIFTphone 8.0",
+      "SHIFTphone 8.1",
+    ]);
+    db.close();
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 test("devices outside the registry stay unnamed", () => {
   const dir = mkdtempSync(join(tmpdir(), "unrom-test-"));
   const dbPath = join(dir, "unrom.sqlite");
@@ -587,6 +632,7 @@ test("devices outside the registry stay unnamed", () => {
           romName: "Test ROM",
           codename: "uncurateddevice",
           name: "Source Model Name",
+          names: ["Source Model Name"],
           brand: null,
           referenceUrl: null,
           referenceKind: "observed",

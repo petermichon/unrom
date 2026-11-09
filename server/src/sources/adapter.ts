@@ -37,6 +37,7 @@ export interface RecordInput {
   romName: string;
   codename: string;
   name?: string | null;
+  names?: string[];
   brand?: string | null;
   referenceUrl?: string | null;
   referenceKind?: "observed" | "derived";

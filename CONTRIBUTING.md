@@ -36,6 +36,18 @@ have the right to submit the contribution under the project's licenses.
 3. Keep `data/` immutable: never hand-edit it; change the fetcher instead.
 4. Add the source to `ATTRIBUTION.md`.
 
+## Device names and variants
+
+- A `codename` identifies a build target, not necessarily one model. When a
+  source lists several models for one codename (LineageOS `variant: 1|2`, e.g.
+  `otter` = SHIFTphone 8.0 and 8.1), merge them into one record and keep every
+  name in `names`.
+- The registry owns the canonical spelling: sources decide which models exist,
+  the registry decides how they are written. `registry-report.json` lists
+  `nameGaps` where a source reports a model a curated entry omits.
+- Separate build targets have separate codenames (`ginkgo/willow`) and stay
+  separate devices.
+
 ## Typography
 
 - Brand name is always lowercase: `unrom`, including at the start of a sentence.

@@ -733,7 +733,7 @@ export const DEVICE_NAMES: Record<string, string[]> = {
   "sdmc\0tifa": ["SDMC DV9135"],
 
   "shift\0axolotl": ["SHIFT6mq"],
-  "shift\0otter": ["SHIFTphone 8.0"],
+  "shift\0otter": ["SHIFTphone 8.0", "SHIFTphone 8.1"],
 
   "smartisan\0trident": ["Smartisan R1"],
 

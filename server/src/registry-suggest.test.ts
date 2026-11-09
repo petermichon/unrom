@@ -27,6 +27,7 @@ const report: RegistryReport = {
     unnamed: 1,
     conflicts: 1,
     suspicious: 1,
+    nameGaps: 0,
   },
   candidates: [
     {
@@ -52,6 +53,7 @@ const report: RegistryReport = {
     },
   ],
   conflicts: [conflict],
+  nameGaps: [],
   coverage: [],
 };
 

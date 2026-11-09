@@ -100,9 +100,15 @@ export function formatSummary(report: RegistryReport): string {
   const lines = [
     `${report.candidates.length} uncurated device(s), ` +
       `${report.conflicts.length} conflict(s).`,
-    "",
-    `  ${"Vendor".padEnd(width)}  Devices  Conflicts`,
   ];
+  const gaps = report.nameGaps?.length ?? 0;
+  if (gaps > 0) {
+    lines.push(
+      `${gaps} curated entry(ies) omit a name a source reports; ` +
+        `see "nameGaps" in registry-report.json.`,
+    );
+  }
+  lines.push("", `  ${"Vendor".padEnd(width)}  Devices  Conflicts`);
   for (const [vendor, row] of [...vendors].sort(([, a], [, b]) =>
     a.name.localeCompare(b.name),
   )) {

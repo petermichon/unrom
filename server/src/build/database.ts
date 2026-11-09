@@ -77,6 +77,17 @@ export interface RegistryCoverage {
   unnamed: number;
 }
 
+/** A curated entry that does not list every model a source reports. */
+export interface RegistryNameGap {
+  vendor: string;
+  vendorName: string;
+  codename: string;
+  /** Canonical names recorded in the registry. */
+  curated: string[];
+  /** Names sources report for the same codename that the entry omits. */
+  observed: string[];
+}
+
 export interface RegistryReport {
   summary: {
     devices: number;
@@ -86,9 +97,11 @@ export interface RegistryReport {
     unnamed: number;
     conflicts: number;
     suspicious: number;
+    nameGaps: number;
   };
   candidates: RegistryCandidate[];
   conflicts: RegistryCandidate[];
+  nameGaps: RegistryNameGap[];
   coverage: RegistryCoverage[];
 }
 
@@ -251,11 +264,13 @@ function buildRegistryReport(
   deviceMap: Map<string, Device>,
   sourceNames: SourceNames,
   catalogKeys: ReadonlySet<string> = new Set(),
+  variantNames: SourceNames = new Map(),
 ): RegistryReport {
   const normalized = (value: string) =>
     value.trim().replace(/\s+/g, " ").toLowerCase();
 
   const candidates: RegistryCandidate[] = [];
+  const nameGaps: RegistryNameGap[] = [];
   const coverage = new Map<string, RegistryCoverage>();
 
   for (const device of deviceMap.values()) {
@@ -278,6 +293,44 @@ function buildRegistryReport(
       row.unnamed++;
     }
     coverage.set(device.vendor, row);
+
+    if (curated && names && names.size > 0) {
+      // Only variant evidence is actionable: a source that explicitly reported
+      // several models for one codename. Cross-ROM spelling differences are
+      // curation noise, not missing models.
+      const variants = variantNames.get(key);
+      if (variants && variants.size > 0) {
+        const curatedNames = deviceNames(device.vendor, device.codename) ?? [];
+        // Compare loosely: punctuation and spacing differ between sources
+        // ("Nexus 7 2013 (LTE)" vs "Nexus 7 (2013, LTE)").
+        const loose = (value: string) =>
+          value
+            .toLowerCase()
+            .replace(/[^\p{L}\p{N}]+/gu, " ")
+            .trim();
+        const known = curatedNames.map(loose);
+        // A name counts as covered when it is a substring of a curated name or
+        // vice versa, so "Zenfone 6" matches "Asus Zenfone 6 (ZS630KL)".
+        const covered = (name: string) => {
+          const value = loose(name);
+          return known.some(
+            (curated) => curated.includes(value) || value.includes(curated),
+          );
+        };
+        const missing = [...variants.keys()]
+          .filter((name) => !covered(name))
+          .sort((a, b) => a.localeCompare(b));
+        if (missing.length > 0) {
+          nameGaps.push({
+            vendor: device.vendor,
+            vendorName: vendorName(device.vendor),
+            codename: device.codename,
+            curated: curatedNames,
+            observed: missing,
+          });
+        }
+      }
+    }
 
     if (curated || catalogKeys.has(key)) continue;
 
@@ -309,6 +362,12 @@ function buildRegistryReport(
       a.codename.localeCompare(b.codename),
   );
   const conflicts = candidates.filter((candidate) => candidate.conflict);
+  nameGaps.sort(
+    (a, b) =>
+      a.vendorName.localeCompare(b.vendorName) ||
+      a.vendor.localeCompare(b.vendor) ||
+      a.codename.localeCompare(b.codename),
+  );
 
   return {
     summary: {
@@ -328,9 +387,11 @@ function buildRegistryReport(
       ),
       conflicts: conflicts.length,
       suspicious: candidates.filter((candidate) => candidate.suspicious).length,
+      nameGaps: nameGaps.length,
     },
     candidates,
     conflicts,
+    nameGaps,
     coverage: [...coverage.values()].sort(
       (a, b) =>
         a.vendorName.localeCompare(b.vendorName) ||
@@ -394,6 +455,10 @@ export function buildDatabase(
   const edgeMap = new Map<string, Edge>();
   const aliasMap = new Map<string, Alias>();
   const sourceNames: SourceNames = new Map();
+  // Names reported by rosters that list several models for one codename. Used
+  // to flag curated entries that omit a model, without treating every source's
+  // spelling of the same name as a gap.
+  const variantNames: SourceNames = new Map();
 
   const ensureDevice = (vendor: string, codename: string): void => {
     const key = `${vendor}\0${codename}`;
@@ -523,13 +588,31 @@ export function buildDatabase(
     }
     deviceMap.set(deviceKey, device);
 
-    if (record.name) {
+    if (record.name || record.names.length > 0) {
+      const observed = new Set(
+        [record.name, ...record.names].filter(
+          (name): name is string => name !== null && name !== "",
+        ),
+      );
       const names =
         sourceNames.get(deviceKey) ?? new Map<string, Set<string>>();
-      const romIds = names.get(record.name) ?? new Set<string>();
-      romIds.add(record.romId);
-      names.set(record.name, romIds);
+      for (const name of observed) {
+        const romIds = names.get(name) ?? new Set<string>();
+        romIds.add(record.romId);
+        names.set(name, romIds);
+      }
       sourceNames.set(deviceKey, names);
+    }
+
+    if (record.names.length > 0) {
+      const variants =
+        variantNames.get(deviceKey) ?? new Map<string, Set<string>>();
+      for (const name of record.names) {
+        const romIds = variants.get(name) ?? new Set<string>();
+        romIds.add(record.romId);
+        variants.set(name, romIds);
+      }
+      variantNames.set(deviceKey, variants);
     }
 
     // Only record aliases that differ beyond casing: lookups are
@@ -653,6 +736,7 @@ export function buildDatabase(
     deviceMap,
     sourceNames,
     catalogKeys,
+    variantNames,
   );
 
   // SOURCE_DATE_EPOCH makes rebuilds deterministic (reproducible builds).

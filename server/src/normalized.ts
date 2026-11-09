@@ -7,6 +7,10 @@ export const normalizedRomDeviceSchema = z.object({
   romName: z.string().min(1),
   codename: z.string().min(1),
   name: z.string().nullable(),
+  // Every model name the source reports for this codename. Rosters that list
+  // hardware variants (e.g. LineageOS `variant: 1|2`) name one model per
+  // variant; collapsing them loses facts, so keep them all.
+  names: z.array(z.string()).default([]),
   brand: z.string().nullable(),
   referenceUrl: z.string().nullable(),
   // How the citation was obtained. `observed` means the source itself named the
