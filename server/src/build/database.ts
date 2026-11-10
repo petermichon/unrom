@@ -417,7 +417,10 @@ export function buildDatabase(
   sqlite.exec(generateDdl());
   const db = drizzle(sqlite);
 
-  // Canonical casing: explicit overrides, then first-seen wins.
+  // Canonical casing: explicit overrides, then the curated registry, then
+  // first-seen wins. The registry owns spelling (`CONTRIBUTING.md`), so seed it
+  // before records and the catalogue; otherwise `fp3` and `FP3` become two
+  // devices and one of them shadows the other's coverage.
   const casing = new Map<string, string>();
   const canonicalCasing = (raw: string): string => {
     const value =
@@ -425,6 +428,10 @@ export function buildDatabase(
     casing.set(raw.toLowerCase(), value);
     return value;
   };
+  for (const key of Object.keys(DEVICE_NAMES)) {
+    const [, codename] = key.split("\0");
+    casing.set(codename.toLowerCase(), codename);
+  }
 
   // Expand combined codenames, resolve casing, and learn each codename's
   // vendor from the records that report a brand (used to fill brand-less ones).
@@ -480,7 +487,7 @@ export function buildDatabase(
     const [vendor, codename] = key.split("\0");
     // The curated names must not resurrect a build target the records dropped.
     if (isExcludedCodename(codename)) continue;
-    ensureDevice(vendor, codename);
+    ensureDevice(vendor, canonicalCasing(codename));
   }
 
   // Curated catalogue devices not reported by any ROM roster. Their names are
@@ -718,8 +725,12 @@ export function buildDatabase(
   // even when no roster currently names the device.
   const registryRows: RegistryRow[] = Object.entries(DEVICE_NAMES)
     .map(([key, names]) => {
-      const [vendor, codename] = key.split("\0");
-      const provenance = registryProvenance(names, sourceNames.get(key));
+      const [vendor, rawCodename] = key.split("\0");
+      const codename = canonicalCasing(rawCodename);
+      const provenance = registryProvenance(
+        names,
+        sourceNames.get(`${vendor}\0${codename}`),
+      );
       return {
         vendor,
         codename,

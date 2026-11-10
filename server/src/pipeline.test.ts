@@ -80,6 +80,27 @@ test("build produces a consistent dataset", async () => {
       "combined codenames became devices",
     );
 
+    // The registry owns casing. A source spelling (`fp3`) and the curated one
+    // (`FP3`) must resolve to one device, or the empty row shadows the coverage.
+    assert.deepEqual(
+      db
+        .prepare(
+          "select vendor, lower(codename) as codename, count(*) as n from devices group by vendor, lower(codename) having n > 1",
+        )
+        .all(),
+      [],
+      "case-only duplicate devices",
+    );
+    const fp3 = db
+      .prepare(
+        "select codename, name, covered from devices where vendor = 'fairphone' and lower(codename) = 'fp3'",
+      )
+      .all() as Array<{ codename: string; name: string; covered: number }>;
+    assert.equal(fp3.length, 1, "one Fairphone 3 device");
+    assert.equal(fp3[0].codename, "FP3");
+    assert.equal(fp3[0].name, "Fairphone 3");
+    assert.equal(fp3[0].covered, 1, "Fairphone 3 keeps its ROM builds");
+
     // Alias resolution is emitted as an artifact; every alias must resolve to a
     // device that actually exists.
     for (const alias of result.aliases) {
