@@ -41,7 +41,12 @@ test("every source parses and yields records", async () => {
 
 test("every raw data file has a normalizer", async () => {
   const covered = new Set(sources.map((source) => source.file));
-  const uncovered = (await listDataFiles()).filter(
+  const files = await listDataFiles();
+  assert.ok(
+    files.includes(PLAY_DEVICES_FILE),
+    `${PLAY_DEVICES_FILE} is required for the catalogue`,
+  );
+  const uncovered = files.filter(
     (file) => !covered.has(file) && file !== PLAY_DEVICES_FILE,
   );
   assert.deepEqual(

@@ -1,5 +1,6 @@
 import { existsSync } from "node:fs";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { join } from "node:path";
 
 import { buildDatabase } from "./database.ts";
 import { generateDdl } from "../db/ddl.ts";
@@ -32,10 +33,17 @@ await mkdir(DIST_DIR, { recursive: true });
 // The DDL is derived from the schema and shipped alongside the exports.
 await writeFile(SCHEMA_SQL_PATH, generateDdl(), "utf8");
 
-const catalogPath = `${DATA_DIR}/${PLAY_DEVICES_FILE}`;
-const catalog = existsSync(catalogPath)
-  ? selectCatalog(parsePlayDevices(await readFile(catalogPath, "utf8"))).entries
-  : [];
+// The Play snapshot supplies most of the catalogue. A missing file would
+// silently shrink the dataset by thousands of devices, so fail loudly.
+const catalogPath = join(DATA_DIR, PLAY_DEVICES_FILE);
+if (!existsSync(catalogPath)) {
+  throw new Error(
+    `Missing ${catalogPath}. Fetch it with: npm run ingest -- play-devices`,
+  );
+}
+const catalog = selectCatalog(
+  parsePlayDevices(await readFile(catalogPath, "utf8")),
+).entries;
 
 const result = buildDatabase(
   records,
