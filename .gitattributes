@@ -1,0 +1,4 @@
+# Raw upstream snapshots are data, not project source: keep them out of the
+# GitHub language bar (JSON/CSV/YAML are already excluded as "data"; the saved
+# HTML pages would otherwise dominate the stats).
+data/** linguist-detectable=false
