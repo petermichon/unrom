@@ -1,5 +1,5 @@
 import { existsSync } from "node:fs";
-import { mkdir, readFile, writeFile } from "node:fs/promises";
+import { mkdir, readFile, stat, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 
 import { buildDatabase } from "./database.ts";
@@ -45,6 +45,12 @@ const catalog = selectCatalog(
   parsePlayDevices(await readFile(catalogPath, "utf8")),
 ).entries;
 
+// Every artifact built from this snapshot must report the same freshness, so
+// take the time from the normalized file rather than this run.
+const generatedAt = process.env.SOURCE_DATE_EPOCH
+  ? new Date(Number(process.env.SOURCE_DATE_EPOCH) * 1000).toISOString()
+  : (await stat(NDJSON_PATH)).mtime.toISOString();
+
 const result = buildDatabase(
   records,
   DB_PATH,
@@ -54,6 +60,7 @@ const result = buildDatabase(
     names: entry.names,
   })),
   readDeadReferences(REFERENCE_OVERRIDES_PATH),
+  generatedAt,
 );
 
 // Alias resolution is a generation-time normalization; the resolved mapping is

@@ -166,6 +166,7 @@ function contentHash(
   edges: Edge[],
   coverage: Coverage[],
   registryRows: RegistryRow[],
+  aliasRows: Alias[],
 ): string {
   const hash = createHash("sha256");
   const key = (vendor: string, codename: string) => `${vendor}\0${codename}`;
@@ -188,6 +189,11 @@ function contentHash(
     hash.update(
       `e\0${edge.romId}\0${edge.vendor}\0${edge.codename}\0${edge.referenceUrl ?? ""}\0${edge.referenceKind}\0${edge.reportedCodename ?? ""}\n`,
     );
+  }
+  for (const alias of [...aliasRows].sort((a, b) =>
+    key(a.vendor, a.alias).localeCompare(key(b.vendor, b.alias)),
+  )) {
+    hash.update(`a\0${alias.vendor}\0${alias.alias}\0${alias.codename}\n`);
   }
   for (const row of [...registryRows].sort((a, b) =>
     key(a.vendor, a.codename).localeCompare(key(b.vendor, b.codename)),
@@ -407,6 +413,7 @@ export function buildDatabase(
   dbPath: string,
   catalog: readonly DeviceSeed[] = [],
   deadReferences: ReadonlySet<string> = new Set(),
+  generatedAt?: string,
 ): BuildResult {
   for (const suffix of ["", "-wal", "-shm"]) {
     rmSync(dbPath + suffix, { force: true });
@@ -774,15 +781,27 @@ export function buildDatabase(
     variantNames,
   );
 
-  // SOURCE_DATE_EPOCH makes rebuilds deterministic (reproducible builds).
-  const generatedAt = process.env.SOURCE_DATE_EPOCH
-    ? new Date(Number(process.env.SOURCE_DATE_EPOCH) * 1000).toISOString()
-    : new Date().toISOString();
+  // The snapshot timestamp, not the moment this database happened to be
+  // written: a partial rebuild must not disagree with the JSON export. The
+  // caller passes the normalized snapshot's time; tests may pass their own.
+  // SOURCE_DATE_EPOCH keeps reproducible builds possible.
+  const builtAt =
+    generatedAt ??
+    (process.env.SOURCE_DATE_EPOCH
+      ? new Date(Number(process.env.SOURCE_DATE_EPOCH) * 1000).toISOString()
+      : new Date().toISOString());
   const metaRows: Array<[string, string]> = [
-    ["generatedAt", generatedAt],
+    ["generatedAt", builtAt],
     [
       "contentHash",
-      contentHash(romMap, deviceMap, edges, coverageRows, registryRows),
+      contentHash(
+        romMap,
+        deviceMap,
+        edges,
+        coverageRows,
+        registryRows,
+        aliasRows,
+      ),
     ],
   ];
 
@@ -845,6 +864,6 @@ export function buildDatabase(
     registryCount: registryRows.length,
     registryReport,
     aliases: aliasRows,
-    generatedAt,
+    generatedAt: builtAt,
   };
 }

@@ -131,6 +131,57 @@ test("build produces a consistent dataset", async () => {
   }
 });
 
+test("the build timestamp comes from the snapshot", () => {
+  const dir = mkdtempSync(join(tmpdir(), "unrom-test-"));
+  const dbPath = join(dir, "unrom.sqlite");
+
+  try {
+    const iso = "2020-01-02T03:04:05.000Z";
+    const built = buildDatabase([], dbPath, [], new Set(), iso);
+    assert.equal(built.generatedAt, iso);
+
+    const api = createApi(dbPath);
+    assert.equal(api.getMeta().generatedAt, iso);
+    api.close();
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("aliases are part of the content hash", () => {
+  const dir = mkdtempSync(join(tmpdir(), "unrom-test-"));
+
+  try {
+    const plainPath = join(dir, "plain.sqlite");
+    const aliasPath = join(dir, "alias.sqlite");
+    const base = {
+      romId: "test-rom",
+      romName: "Test ROM",
+      brand: "Huawei",
+    };
+    const plain = buildRecord({ ...base, codename: "madrid" });
+    const withAlias = buildRecord({ ...base, codename: "HWMRD-M1" });
+
+    const plainBuild = buildDatabase([plain], plainPath);
+    const aliasBuild = buildDatabase([withAlias], aliasPath);
+    assert.deepEqual(plainBuild.aliases, []);
+    assert.deepEqual(
+      aliasBuild.aliases.map((alias) => alias.alias),
+      ["HWMRD-M1"],
+    );
+
+    const hashOf = (path: string) => {
+      const api = createApi(path);
+      const hash = api.getMeta().contentHash;
+      api.close();
+      return hash;
+    };
+    assert.notEqual(hashOf(plainPath), hashOf(aliasPath));
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 test("combined codenames expand to real devices", () => {
   assert.deepEqual(expandCodename("vayu/bhima"), ["vayu", "bhima"]);
   assert.deepEqual(expandCodename("haydnin/haydn"), ["haydnin", "haydn"]);
