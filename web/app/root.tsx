@@ -115,7 +115,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <noscript
           dangerouslySetInnerHTML={{
             __html:
-              "<style>tr[hidden]{display:table-row}[data-requires-js]{display:none}@media (max-width:767px){.nojs-nav{display:flex!important}}[data-nojs-hide]{display:none!important}</style>",
+              "<style>tr[hidden]{display:table-row}[data-requires-js]{display:none}.nojs-nav{display:flex!important}[data-nojs-hide]{display:none!important}</style>",
           }}
         />
       </head>

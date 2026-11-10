@@ -1,13 +1,9 @@
 import { Menu } from "lucide-react";
-import {
-  fetchBrands,
-  fetchDevicesPage,
-  fetchRoms,
-  fetchSummary,
-} from "@/lib/data";
 import { useEffect, useState, type ReactNode } from "react";
-import { Link, NavLink, useNavigation } from "react-router";
+import { Link, useNavigation } from "react-router";
+import { NAV_ITEMS } from "@/lib/nav";
 import CommandPalette from "@/components/CommandPalette";
+import SiteNav from "@/components/SiteNav";
 import { ExportMenu } from "@/components/ExportMenu";
 import { GitHubIcon } from "@/components/GitHubIcon";
 import { ModeToggle } from "@/components/mode-toggle";
@@ -23,7 +19,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { cn } from "@/lib/utils";
 
 interface Props {
   updatedAt?: string;
@@ -31,53 +26,8 @@ interface Props {
   children: ReactNode;
 }
 
-const NAV_ITEMS = [
-  { to: "/devices", label: "Devices" },
-  { to: "/roms", label: "ROMs" },
-];
-
-// Warm the destination's data on intent. The router's own page-data prefetch
-// does not run client loaders, so this is what makes the click instant.
-const NAV_PRELOADS: Record<string, () => Promise<unknown>> = {
-  "/devices": () =>
-    Promise.all([
-      fetchSummary(),
-      fetchBrands(),
-      fetchDevicesPage({ sort: "coverage", limit: 200, offset: 0 }),
-    ]),
-  "/roms": fetchRoms,
-};
-
-type NavItem = (typeof NAV_ITEMS)[number];
-
 const GITHUB_URL = "https://github.com/petermichon/unrom";
 const ODBL_URL = "https://opendatacommons.org/licenses/odbl/1-0/";
-
-function TopNavLink({ item }: { item: NavItem }) {
-  const preload = () => {
-    void NAV_PRELOADS[item.to]?.().catch(() => {});
-  };
-
-  return (
-    <NavLink
-      to={item.to}
-      prefetch="viewport"
-      onMouseEnter={preload}
-      onFocus={preload}
-      onTouchStart={preload}
-      className={({ isActive }) =>
-        cn(
-          "rounded-full px-3.5 py-1.5 text-sm font-semibold transition-colors outline-none focus-visible:ring-3 focus-visible:ring-ring/50",
-          isActive
-            ? "bg-accent text-accent-foreground"
-            : "text-foreground/70 hover:bg-muted hover:text-foreground",
-        )
-      }
-    >
-      {item.label}
-    </NavLink>
-  );
-}
 
 function MobileMenu() {
   return (
@@ -190,7 +140,7 @@ export default function AppShell({ updatedAt, updatedAtIso, children }: Props) {
       <div className="flex min-h-svh flex-col bg-background">
         <header
           data-nosnippet
-          className="sticky top-0 z-10 bg-background/85 backdrop-blur-md"
+          className="sticky top-0 z-10 bg-background/85 backdrop-blur-xl backdrop-saturate-150"
         >
           <div className="mx-auto flex h-16 w-full max-w-6xl items-center gap-2 px-4 sm:px-6">
             <Link
@@ -206,14 +156,7 @@ export default function AppShell({ updatedAt, updatedAtIso, children }: Props) {
               </span>
             </Link>
 
-            <nav
-              aria-label="Main"
-              className="ml-2 hidden items-center gap-1 md:flex"
-            >
-              {NAV_ITEMS.map((item) => (
-                <TopNavLink key={item.to} item={item} />
-              ))}
-            </nav>
+            <SiteNav />
 
             <div className="ml-auto flex items-center gap-2">
               <CommandPalette />
@@ -242,7 +185,7 @@ export default function AppShell({ updatedAt, updatedAtIso, children }: Props) {
           </div>
           <nav
             aria-label="Sections"
-            className="nojs-nav mx-auto hidden w-full max-w-6xl flex-wrap items-center gap-x-5 gap-y-1 border-t border-border px-4 py-2 text-sm font-semibold md:hidden"
+            className="nojs-nav mx-auto hidden w-full max-w-6xl flex-wrap items-center gap-x-5 gap-y-1 border-t border-border px-4 py-2 text-sm font-semibold"
           >
             <a href="/devices" className="text-foreground/70">
               Devices
@@ -279,34 +222,63 @@ export default function AppShell({ updatedAt, updatedAtIso, children }: Props) {
                 (updatedAt ?? "unknown")
               )}
             </p>
-            <nav
-              aria-label="Data access"
-              data-nosnippet
-              className="flex flex-wrap items-center gap-4"
-            >
-              <Link
-                to="/data"
-                prefetch="intent"
-                className="hover:text-foreground hover:underline"
+            <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
+              <nav
+                aria-label="Site"
+                data-nosnippet
+                className="flex flex-wrap items-center gap-4"
               >
-                Data
-              </Link>
-              <Link
-                to="/legal"
-                prefetch="intent"
-                className="hover:text-foreground hover:underline"
+                <Link
+                  to="/devices"
+                  prefetch="intent"
+                  className="hover:text-foreground hover:underline"
+                >
+                  Devices
+                </Link>
+                <Link
+                  to="/roms"
+                  prefetch="intent"
+                  className="hover:text-foreground hover:underline"
+                >
+                  ROMs
+                </Link>
+                <Link
+                  to="/brands"
+                  prefetch="intent"
+                  className="hover:text-foreground hover:underline"
+                >
+                  Brands
+                </Link>
+              </nav>
+              <nav
+                aria-label="Data access"
+                data-nosnippet
+                className="flex flex-wrap items-center gap-4"
               >
-                Legal
-              </Link>
-              <a
-                href={ODBL_URL}
-                target="_blank"
-                rel="noreferrer"
-                className="hover:text-foreground hover:underline"
-              >
-                ODbL license
-              </a>
-            </nav>
+                <Link
+                  to="/data"
+                  prefetch="intent"
+                  className="hover:text-foreground hover:underline"
+                >
+                  Data
+                </Link>
+                <Link
+                  to="/legal"
+                  prefetch="intent"
+                  className="hover:text-foreground hover:underline"
+                >
+                  Legal
+                </Link>
+                <a
+                  href={ODBL_URL}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="hover:text-foreground hover:underline"
+                >
+                  ODbL license
+                </a>
+              </nav>
+            </div>
           </div>
         </footer>
       </div>

@@ -17,7 +17,8 @@ test("repeat client navigations do not hit the network", async ({ page }) => {
   });
 
   const paths = ["/devices", "/roms", "/"];
-  const link = (path: string) => page.locator(`a[href="${path}"]`).first();
+  const link = (path: string) =>
+    page.locator(`a[href="${path}"]:visible`).first();
 
   await page.goto("/");
 
@@ -43,7 +44,7 @@ test("client navigation renders the destination table", async ({ page }) => {
   await page.goto("/");
   await page
     .getByRole("navigation", { name: "Main" })
-    .getByRole("link", { name: "ROMs" })
+    .getByRole("link", { name: "ROMs", exact: true })
     .click();
   await page.waitForURL("**/roms");
   await expect(
