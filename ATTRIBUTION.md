@@ -20,6 +20,7 @@ open an issue.
 | AwakenOS             | `devices.json`                     | https://github.com/Project-Awaken/official_devices                          |
 | AxionOS              | `api/downloads.json`               | https://github.com/AxionAOSP/official_devices                               |
 | AXP.OS               | sitemap                            | https://axpos.org/sitemap.xml                                               |
+| Black Iron Project   | `builds/*.json` (z16)              | https://github.com/Black-Iron-Project/OTA                                   |
 | BlissROMs            | `devices.json`                     | https://github.com/BlissRoms-Devices/official-devices                       |
 | CalyxOS              | install page                       | https://calyxos.org/install/                                                |
 | CandyRoms            | `devices.json`                     | https://github.com/CandyRoms/official_devices                               |
@@ -54,8 +55,10 @@ open an issue.
 | Project PixelAge     | OTA `devices/`                     | https://github.com/ProjectPixelage/pixelage_ota                             |
 | Project Sakura       | OTA `devices.json`                 | https://github.com/ProjectSakura/OTA                                        |
 | RisingOS             | `devices.md`                       | https://github.com/RisingOS-Revived/official_devices                        |
+| SparkOS              | download page (`__NEXT_DATA__`)    | https://spark-os.tech/download                                              |
 | SuperiorOS           | OTA `*.json`                       | https://github.com/SuperiorOS-Devices/official_devices                      |
 | WitAqua              | `data/devices.json`                | https://github.com/WitAqua/WitAquaOTA                                       |
+| YAAP AOSP            | `device-info/*/*.json`             | https://github.com/yaap/device-info                                         |
 
 ## Device catalogues
 

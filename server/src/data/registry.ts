@@ -387,6 +387,7 @@ export const DEVICE_NAMES: Record<string, string[]> = {
   "nothing\0Spacewar": ["Nothing Phone (1)"],
   "nothing\0Tetris": ["CMF Phone 1"],
 
+  "nubia\0cerro": ["Nubia Z60 Ultra"],
   "nubia\0nx512j": ["Nubia Z9 Max"],
   "nubia\0nx563j": ["Nubia Z17"],
   "nubia\0nx606j": ["Nubia Z18"],
@@ -436,6 +437,7 @@ export const DEVICE_NAMES: Record<string, string[]> = {
   "oneplus\0giuliac": ["OnePlus Ace 5"],
   "oneplus\0guacamole": ["OnePlus 7 Pro"],
   "oneplus\0guacamoleb": ["OnePlus 7"],
+  "oneplus\0guacamoles": ["OnePlus 7 Pro 5G"],
   "oneplus\0gunnar": ["OnePlus Nord N20 5G"],
   "oneplus\0hotdog": ["OnePlus 7T Pro"],
   "oneplus\0hotdogb": ["OnePlus 7T"],

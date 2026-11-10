@@ -22,6 +22,9 @@ import { listDevices as listCrDroid } from "./fetch/crdroid.ts";
 import { listDevices as listDerpFest } from "./fetch/derpfest.ts";
 import { listDevices as listDotOS } from "./fetch/dotos.ts";
 import { listDevices as listDroidXUI } from "./fetch/droidxui.ts";
+import { listDevices as listBlackIron } from "./fetch/blackiron.ts";
+import { listDevices as listSparkOS } from "./fetch/sparkos.ts";
+import { listDevices as listYaap } from "./fetch/yaap.ts";
 import {
   listDevices as list2by2,
   listLegacyDevices as list2by2Legacy,
@@ -91,6 +94,9 @@ const sources: Source[] = [
   { id: "derpfest", file: "derpfest.json", fetch: listDerpFest },
   { id: "dotos", file: "dotos.json", fetch: listDotOS },
   { id: "droidxui", file: "droidxui.json", fetch: listDroidXUI },
+  { id: "black-iron-project", file: "blackiron.json", fetch: listBlackIron },
+  { id: "sparkos", file: "sparkos.html", fetch: listSparkOS },
+  { id: "yaap-aosp", file: "yaap.json", fetch: listYaap },
   { id: "2by2-project", file: "2by2.json", fetch: list2by2 },
   { id: "2by2-project", file: "2by2-legacy.json", fetch: list2by2Legacy },
   { id: "etherealos", file: "etherealos.json", fetch: listEtherealOS },

@@ -49,7 +49,7 @@ Out of scope: recoveries, root tools, GSIs and repacks, OEM stock skins.
 - BenzeneOS
 - ❌ Benzo ROM
 - ❌ Bianca Project
-- ❌ Black Iron Project
+- 🟢 Black Iron Project
 - 🟢 BlissROMs
 - ❌ BodyOS
 - ❌ Bootleggers ROM
@@ -246,7 +246,7 @@ Out of scope: recoveries, root tools, GSIs and repacks, OEM stock skins.
 - ❌ SomethingOS
 - ❌ SoniUI
 - ❌ SonyAOSP (SODP)
-- ❌ SparkOS
+- 🟢 SparkOS
 - ❌ Spice OS
 - ❌ Stag OS
 - ❌ StatiX OS
@@ -281,7 +281,7 @@ Out of scope: recoveries, root tools, GSIs and repacks, OEM stock skins.
 - ❌ Xen AOSP
 - ❌ Xenon HD
 - ❌ xiaomi.eu
-- ❌ YAAP AOSP
+- 🟢 YAAP AOSP
 - YAAPex
 - ❌ Yukina Supremacy
 - ❌ ZeusOS

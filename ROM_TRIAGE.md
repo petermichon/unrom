@@ -28,6 +28,10 @@ date so the staleness is visible.
 - The 31 active ROMs were all previously marked ❌, so this is largely a
   re-check of stale evaluations, not first-time discovery.
 
+Progress: Tier 1 (5 ROMs) and three of the four Tier 2 ROMs are implemented,
+taking the catalogue from 40 to 48 ROMs with device data. Project 404 was
+skipped; see Tier 2.
+
 ## Tier 1 — active, one clean JSON file
 
 Best first batch: one fetcher and one normalizer each, stable URLs, current
@@ -52,12 +56,17 @@ tree listing. One shared fetcher (tree API, one request per repo) can serve
 these, but the tree API is rate-limited to 60 requests an hour unauthenticated;
 keep it to one call per repo per refresh.
 
-| ROM                | Devices | Source                                                                      |
-| ------------------ | ------: | --------------------------------------------------------------------------- |
-| Project 404        |      19 | `P-404/android_packages_services_ota/devices/*.json`                        |
-| SparkOS            |      17 | `Spark-Rom/official_devices` `builds/{gapps,vanilla}/*.json` (dedupe names) |
-| YAAP               |      13 | `yaap/device-info/*/*.json` (its site also proxies this through a worker)   |
-| Black Iron Project |      11 | `Black-Iron-Project/OTA/builds/*.json`                                      |
+| ROM                | Devices | Status      | Source                                                                       |
+| ------------------ | ------: | ----------- | ---------------------------------------------------------------------------- |
+| Project 404        |      19 | Skipped     | `P-404/android_packages_services_ota/devices/*.json` — roster frozen in 2023 |
+| SparkOS            |      20 | Implemented | `spark-os.tech/download` `__NEXT_DATA__` (GitHub roster stopped in 2022)     |
+| YAAP               |      13 | Implemented | `yaap/device-info/*/*.json` (its site also proxies this through a worker)    |
+| Black Iron Project |      11 | Implemented | `Black-Iron-Project/OTA/builds/*.json`                                       |
+
+Project 404 is skipped rather than added: its org is active, but the only
+machine-readable roster is the 2023 OTA repository and the current site is
+behind a login. Publishing that list would claim support that has not been
+built since 2023.
 
 ## Tier 3 — discontinued, one clean JSON file
 
@@ -116,8 +125,8 @@ PenguinOS, The Parasite Project, xiaomi.eu.
 
 ## Suggested order
 
-1. Tier 1 (5 ROMs, 30 devices) — smallest change, all active.
-2. Tier 2 (4 ROMs, ~60 devices) — build the shared tree fetcher once.
+1. Tier 1 (5 ROMs, 30 devices) — done.
+2. Tier 2 (3 ROMs, 44 devices) — done; Project 404 skipped as stale.
 3. Tier 3 by file date, newest first (Project Blaze, TequilaOS, PixelStar,
    SomethingOS, Kraken, Lighthouse, …). Skip 2017–2018 files unless the ROM is
    notable enough to carry its last-known roster.

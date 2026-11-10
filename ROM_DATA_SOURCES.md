@@ -28,6 +28,7 @@ are not ROMs with their own device rosters.
 | AwakenOS             | AOSP | ✅ Active       | ✅ GitHub               | Single devices.json file with 15 devices across Xiaomi, Redmi, OnePlus, realme, Motorola                                                                     |
 | AxionOS              | AOSP | ✅ Active       | ✅ GitHub               | `api/downloads.json` from `AxionAOSP/official_devices`; 64 active devices                                                                                    |
 | AXP.OS               | AOSP | ✅ Active       | ⚠️ Website              | Sitemap lists one page per supported device (24 device pages); DivestOS successor                                                                            |
+| Black Iron Project   | AOSP | ✅ Active       | ✅ GitHub               | One `builds/<codename>.json` per device on `z16`; 11 active devices. Two files are malformed JSON and parsed from their raw text                             |
 | BlissROMs            | AOSP | ✅ Active       | ✅ GitHub               |                                                                                                                                                              |
 | CherishOS            | AOSP | ✅ Active       | ✅ API                  | API endpoint with 16 devices, last updated Dec 2025; includes recent devices like Xiaomi 13, OnePlus 13                                                      |
 | Clover               | AOSP | ✅ Active       | ✅ GitHub               | Single `data/devices.json` file with 20 devices across Poco, Motorola, Nothing, Realme, Redmi, Xiaomi; on Android 16                                         |
@@ -59,7 +60,9 @@ are not ROMs with their own device rosters.
 | Project PixelAge     | AOSP | ✅ Active       | ✅ GitHub API           | Individual device JSON files via GitHub API; 15 devices on Android 15, A16 WIP                                                                               |
 | Project Sakura       | AOSP | ✅ Active       | ✅ GitHub               | OTA `devices.json` (Android 16); 2 active devices                                                                                                            |
 | RisingOS             | AOSP | ✅ Active       | ✅ GitHub               | Active upstream: RisingOS-Revived (95 repos, pushes Oct 2026); RisingTechOSS is an Android 14 backup mirror. Device list in official_devices devices.md      |
+| SparkOS              | AOSP | ✅ Active       | ✅ Website              | `spark-os.tech/download` embeds 20 active devices in `__NEXT_DATA__`; the GitHub roster stopped in 2022                                                      |
 | WitAqua              | AOSP | ✅ Active       | ✅ GitHub               | `data/devices.json`; 5 devices with download metadata                                                                                                        |
+| YAAP AOSP            | AOSP | ✅ Active       | ✅ GitHub               | `<codename>/<codename>.json` in `device-info`; 13 active devices                                                                                             |
 
 ### Not Implemented
 
@@ -84,7 +87,6 @@ are not ROMs with their own device rosters.
 | BeastROMs                   | AOSP      | ❌ Discontinued | ⚠️ GitHub   | Last builds Aug 2019 (Android 9); per-device repos only, no centralized list                                                 |
 | Benzo ROM                   | AOSP      | ⚠️ Unclear      | ⚠️ GitHub   | Repos last updated May 2023; Pixel device trees only, no centralized device list                                             |
 | Bianca Project              | AOSP      | ❌ Discontinued | ❌ No data  | AOSP/Proton-derived; GitHub org dormant since Dec 2023, no device list or OTA metadata published.                            |
-| Black Iron Project          | AOSP      | ✅ Active       | ⚠️ GitHub   | LineageOS-based; actively commits May 2026 and emits per-device JSON (e.g. lemonade.json) under OTA/builds.                  |
 | BodyOS                      | AOSP      | ⚠️ Unclear      | ❌ No data  | 33 repos; last push Dec 2025; manifest only, no device roster.                                                               |
 | Bootleggers ROM             | AOSP      | ❌ Discontinued | ✅ GitHub   | AOSP (android-13.0.0_r43); code frozen 2023, site Aug 2024; devices.json generated from `_devices` front matter.             |
 | BsdkOS                      | AOSP      | ❌ Discontinued | ❌ No data  | AOSP fork (Project-Fluid base); org dormant since Nov 2021, no device list or OTA data published.                            |
@@ -202,7 +204,6 @@ are not ROMs with their own device rosters.
 | SomethingOS                 | AOSP      | ❌ Discontinued | ❌ No data  | Archived 2025-04-18 and rebranded ArfoxOS (LineageOS fork, Android 16, active Jun 2026).                                     |
 | SoniUI                      | AOSP      | ❌ Discontinued | ❌ No data  | XOSP-Reborn inactive since May 2021; README says org abandoned at Android 12; no device list.                                |
 | SonyAOSP (SODP)             | AOSP      | ⚠️ Unclear      | ❌ No data  | Sony Open Devices AOSP builds; XDA threads, no central roster.                                                               |
-| SparkOS                     | AOSP      | ✅ Active       | ⚠️ GitHub   | spark-os.tech/download lists 20 official devices (2026); public source repos stale since 2023.                               |
 | Spice OS                    | AOSP      | ❌ Discontinued | ⚠️ GitHub   | AOSP, "Under Rebase"; last commits Mar 2023.                                                                                 |
 | Stag OS                     | AOSP      | ❌ Discontinued | ⚠️ GitHub   | AOSP 14 (android-14.0.0_r54); last commits Sep 2024; no machine-readable list.                                               |
 | StatiX OS                   | AOSP      | ✅ Active       | ⚠️ GitHub   | Frameworks updated Aug 2026; per-device manifest XML, builds listed 13–16.                                                   |
@@ -230,7 +231,6 @@ are not ROMs with their own device rosters.
 | Xen AOSP                    | AOSP      | ⚠️ Unclear      | ❌ No data  | No official GitHub/site or device list found; only the unrelated Linaro xen-aosp hypervisor project                          |
 | Xenon HD                    | AOSP      | ❌ Discontinued | ⚠️ Website  | Dead AOSP/Lineage ROM; last commits Nov 2022, official site stuck on 2018 Pie.                                               |
 | xiaomi.eu                   | MIUI      | ✅ Active       | ⚠️ Website  | Device list in forum thread; community-modified MIUI ROM with multilingual support, requires web scraping                    |
-| YAAP AOSP                   | AOSP      | ✅ Active       | ⚠️ GitHub   | Active AOSP fork; Android 16 QPR2 releases Jan 2026, repos pushed Sep 2026.                                                  |
 | Yukina Supremacy            | AOSP      | ⚠️ Unclear      | ❌ No data  | Named in ROM index lists only; no upstream repos, website, or release feed found.                                            |
 | ZeusOS                      | AOSP      | ❌ Discontinued | ❌ No data  | Dead Android 11 Lineage-based ROM; core repos last updated 2021 (manifest 2023).                                             |
 
@@ -309,6 +309,9 @@ the gate _and_ is unique to one device.
 | Matrixx              | C     | pinned `Matrixx-Devices/official_devices` devices.json                    |
 | AfterlifeOS          | C     | pinned `AfterlifeOS/device_afterlife_ota` devices.json                    |
 | MistOS               | C     | pinned `MistOS-Devices/official_devices` buildDevices.json                |
+| Black Iron Project   | C     | per-device `OTA/builds/<codename>.json` (z16)                             |
+| SparkOS              | C     | pinned `spark-os.tech/download` (`__NEXT_DATA__`)                         |
+| YAAP AOSP            | C     | per-device `device-info/<codename>/<codename>.json`                       |
 | 2by2 Project         | C     | pinned `android_vendor_2by2-ota` and `vendor_2by2-ota` devices.json       |
 | EtherealOS           | C     | pinned `Ethereal-Devices` A14 devices.json                                |
 | GenesisOS            | C     | pinned `Website-Data` devices/DeviceList.json                             |

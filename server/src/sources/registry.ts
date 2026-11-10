@@ -5,6 +5,7 @@ import { parseAICP } from "./aicp.ts";
 import { parseAlphaDroid, parseAlphaDroidJson } from "./alphadroid.ts";
 import { parseAxpOs } from "./axp-os.ts";
 import { parseAxionOs } from "./axionos.ts";
+import { parseBlackIron } from "./blackiron.ts";
 import { parseCalyxOS } from "./calyxos.ts";
 import { parseArrowOS } from "./arrowos.ts";
 import { createEosParser, parseEosHtml } from "./eos.ts";
@@ -19,7 +20,9 @@ import { parseLineageOSMicroG } from "./lineageos-microg.ts";
 import { parseNamelessAosp } from "./nameless-aosp.ts";
 import { parsePixelOS } from "./pixelos.ts";
 import { parseRisingOS } from "./risingos.ts";
+import { parseSparkOS } from "./sparkos.ts";
 import { parseSuperiorOS } from "./superioros.ts";
+import { parseYaap } from "./yaap.ts";
 
 export interface SourceAdapter {
   id: string;
@@ -441,6 +444,24 @@ const specialSources: SourceAdapter[] = [
     romName: "/e/OS",
     file: "eos.html",
     parse: parseEosHtml,
+  },
+  {
+    id: "yaap-aosp",
+    romName: "YAAP AOSP",
+    file: "yaap.json",
+    parse: parseYaap,
+  },
+  {
+    id: "black-iron-project",
+    romName: "Black Iron Project",
+    file: "blackiron.json",
+    parse: parseBlackIron,
+  },
+  {
+    id: "sparkos",
+    romName: "SparkOS",
+    file: "sparkos.html",
+    parse: parseSparkOS,
   },
 ];
 
