@@ -6,7 +6,7 @@ const PAGES = [
   "/legal",
   "/brands",
   "/devices",
-  "/devices?letter=x",
+  "/devices?vendor=xiaomi",
   "/roms",
   "/roms/projectinfinityx",
   "/devices/samsung/a52sxq",
@@ -143,10 +143,7 @@ test("section sitemaps list only canonical, indexable pages", async ({
   expect(pageXml).toContain("<loc>https://unrom.com/legal</loc>");
   expect(pageXml).toContain("<loc>https://unrom.com/brands</loc>");
   expect(pageXml).toContain("<loc>https://unrom.com/devices</loc>");
-  expect(pageXml).toContain("<loc>https://unrom.com/devices?letter=x</loc>");
-  expect(pageXml).not.toContain(
-    "<loc>https://unrom.com/devices?letter=other</loc>",
-  );
+  expect(pageXml).not.toContain("<loc>https://unrom.com/devices?letter=");
   expect(pageXml).not.toContain("<loc>https://unrom.com/registry</loc>");
 
   const deviceXml = await devices.text();
@@ -203,30 +200,11 @@ test("brand aliases redirect to the canonical lowercase URL", async ({
   expect(response.headers()["location"]).toBe("/devices/lenovo");
 });
 
-test("pagination pages without ROM data are not indexable", async ({
-  page,
-  request,
-}) => {
-  const pageSize = 200;
-  const letters = (await (
-    await request.get("http://127.0.0.1:3000/api/devices/letters")
-  ).json()) as Array<{
-    letter: string;
-    deviceCount: number;
-    withRoms: number;
-  }>;
-  const letter = letters.find(
-    (candidate) => candidate.withRoms >= 2 && candidate.deviceCount > pageSize,
-  );
-  expect(letter).toBeTruthy();
-
-  const slug = letter!.letter === "#" ? "0-9" : letter!.letter.toLowerCase();
-  const lastPage = Math.ceil(letter!.deviceCount / pageSize);
-
-  await page.goto(`/devices?letter=${slug}`);
+test("pagination pages are not indexable", async ({ page }) => {
+  await page.goto("/devices");
   await expect(page.locator('meta[name="robots"]')).toHaveCount(0);
 
-  await page.goto(`/devices?letter=${slug}&page=${lastPage}`);
+  await page.goto("/devices?page=2");
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
     "content",
     "noindex",
@@ -254,21 +232,12 @@ test("directory pages with a single ROM device are not indexable", async ({
     );
   }
 
-  const letters = (await (
-    await request.get("http://127.0.0.1:3000/api/devices/letters")
-  ).json()) as Array<{ letter: string; withRoms: number }>;
-  const letter = letters.find((candidate) => candidate.withRoms === 1);
-
-  if (letter) {
-    const slug = letter.letter === "#" ? "0-9" : letter.letter.toLowerCase();
-    await page.goto(`/devices?letter=${slug}`);
+  if (brand) {
+    // The brand-filtered directory duplicates the indexable brand page.
+    await page.goto(`/devices?vendor=${brand.vendor}`);
     await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
       "content",
       "noindex",
-    );
-    const sitemap = await (await request.get("/sitemap-pages.xml")).text();
-    expect(sitemap).not.toContain(
-      `<loc>https://unrom.com/devices?letter=${slug}</loc>`,
     );
   }
 });

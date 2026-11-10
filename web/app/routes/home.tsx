@@ -65,7 +65,7 @@ export default function Home() {
         to: "/devices",
         title: "Devices",
         count: counts.devices,
-        note: "Browse every device A–Z",
+        note: "Search and filter every device",
       },
       {
         to: "/brands",

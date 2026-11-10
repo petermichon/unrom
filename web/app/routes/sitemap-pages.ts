@@ -1,27 +1,10 @@
-import { fetchDeviceLetters, fetchMeta } from "@/lib/data";
-import { isUsefulDirectoryPage } from "@/lib/indexing";
+import { fetchMeta } from "@/lib/data";
 import { sitemapResponse } from "@/lib/sitemap";
 
 export async function loader() {
-  const [letters, meta] = await Promise.all([
-    fetchDeviceLetters(),
-    fetchMeta(),
-  ]);
+  const meta = await fetchMeta();
   return sitemapResponse(
-    [
-      "/",
-      "/data",
-      "/legal",
-      "/devices",
-      ...letters
-        .filter((letter) => isUsefulDirectoryPage(letter.withRoms))
-        .map(
-          (letter) =>
-            `/devices?letter=${letter.letter === "#" ? "0-9" : letter.letter.toLowerCase()}`,
-        ),
-      "/brands",
-      "/roms",
-    ],
+    ["/", "/data", "/legal", "/devices", "/brands", "/roms"],
     meta,
     "pages",
   );

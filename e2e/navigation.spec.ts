@@ -102,63 +102,58 @@ test("a brand page lists its devices", async ({ page }) => {
   await expect(page.locator("a.device-row").first()).toBeVisible();
 });
 
-test("the devices directory links to letter filters", async ({ page }) => {
+test("the devices directory filters by brand", async ({ page }) => {
   await page.goto("/devices");
 
   await expect(
     page.getByRole("heading", { name: "Devices", level: 1, exact: true }),
   ).toBeVisible();
-  await expect(page.locator('a[href="/devices?letter=a"]')).toBeVisible();
-  await expect(page.locator('a[href="/devices?letter=g"]')).toBeVisible();
+
+  const status = page.getByRole("status");
+  const before = await status.textContent();
+  await page.getByRole("combobox", { name: "Brand" }).selectOption("xiaomi");
+  await expect(page).toHaveURL(/vendor=xiaomi/);
+  await expect(status).not.toHaveText(before ?? "");
+  await expect(page.locator("a.device-row").first()).toBeVisible();
 });
 
-test("non-Latin names get their own directory filter", async ({ page }) => {
-  await page.goto("/devices");
+test("the directory shows only devices with ROM data", async ({ page }) => {
+  await page.goto("/devices?roms=1");
 
-  await expect(page.locator('a[href="/devices?letter=other"]')).toBeVisible();
-
-  await page.goto("/devices?letter=other");
   await expect(
-    page.getByRole("heading", { name: "Devices", level: 1, exact: true }),
-  ).toBeVisible();
+    page.getByRole("link", { name: "With ROM data" }),
+  ).toHaveAttribute("aria-current", "page");
   await expect(page.locator("a.device-row").first()).toBeVisible();
-});
-
-test("the directory filters by letter and ROM coverage", async ({ page }) => {
-  await page.goto("/devices?letter=h");
-
-  const letter = page.getByRole("link", { name: "H", exact: true });
-  await expect(letter).toHaveAttribute("aria-current", "page");
-  await expect(page.locator("a.device-row").first()).toBeVisible();
-
-  await page.getByRole("link", { name: "With ROM data" }).click();
-  await expect(page).toHaveURL(/(\?|&)roms=1/);
-  await expect(page.getByText(/^\d[\d,]* devices$/)).toBeVisible();
-  await expect(page.locator("a.device-row").first()).toBeVisible();
+  await expect(page.getByText(/^0 ROMs$/)).toHaveCount(0);
 });
 
 test("the devices directory paginates", async ({ page }) => {
-  await page.goto("/devices?letter=g");
+  await page.goto("/devices?vendor=xiaomi");
   await expect(page.getByText(/Page 1 of \d+/)).toBeVisible();
   await expect(page.locator("a.device-row")).toHaveCount(200);
 
   await page.getByRole("link", { name: "Next" }).click();
-  await expect(page).toHaveURL(/letter=g&page=2$/);
+  await expect(page).toHaveURL(/vendor=xiaomi&page=2$/);
   await expect(page.getByText(/Page 2 of \d+/)).toBeVisible();
   await expect(page.locator("a.device-row")).toHaveCount(200);
 });
 
-test("old letter URLs redirect into the directory filter", async ({ page }) => {
+test("old letter URLs redirect to the directory", async ({ page }) => {
   await page.goto("/devices/letter/g");
-  await page.waitForURL("**/devices?letter=g");
+  await page.waitForURL("**/devices");
   await expect(
     page.getByRole("heading", { name: "Devices", level: 1, exact: true }),
   ).toBeVisible();
 });
 
-test("uppercase letter filters redirect to lowercase", async ({ page }) => {
-  await page.goto("/devices?letter=X");
-  await page.waitForURL("**/devices?letter=x");
+test("old letter filters redirect to the directory", async ({ page }) => {
+  await page.goto("/devices?letter=g");
+  await page.waitForURL("**/devices");
+});
+
+test("uppercase brand filters redirect to lowercase", async ({ page }) => {
+  await page.goto("/devices?vendor=Xiaomi");
+  await page.waitForURL("**/devices?vendor=xiaomi");
   await expect(
     page.getByRole("heading", { name: "Devices", level: 1, exact: true }),
   ).toBeVisible();
