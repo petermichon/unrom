@@ -215,9 +215,10 @@ test("directory pages with a single ROM device are not indexable", async ({
   page,
   request,
 }) => {
-  const brands = (await (
-    await request.get("http://127.0.0.1:3000/api/brands")
-  ).json()) as Array<{ vendor: string; withRoms: number }>;
+  const brands = (await (await request.get("/api/brands")).json()) as Array<{
+    vendor: string;
+    withRoms: number;
+  }>;
   const brand = brands.find((candidate) => candidate.withRoms === 1);
 
   if (brand) {

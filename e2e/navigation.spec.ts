@@ -1,5 +1,6 @@
 import { expect, test } from "@playwright/test";
 import { proxyApi } from "./api-proxy.ts";
+import { WEB_URL } from "./env.ts";
 
 // The dataset is immutable per deployment, so client-side navigations must be
 // served from the in-memory cache: once a route has been visited, going back to
@@ -11,7 +12,7 @@ test("repeat client navigations do not hit the network", async ({ page }) => {
   const network: string[] = [];
   page.on("request", (request) => {
     const url = request.url();
-    if (url.includes(".data") || url.startsWith("http://127.0.0.1:3001/api/")) {
+    if (url.includes(".data") || url.startsWith(`${WEB_URL}/api/`)) {
       network.push(url);
     }
   });
