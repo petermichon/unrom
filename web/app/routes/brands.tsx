@@ -55,12 +55,11 @@ function BrandRow({ brand }: { brand: Brand }) {
       prefetch="intent"
       className="index-row"
     >
-      <span className="min-w-0 flex-1 truncate font-medium">
+      <span className="min-w-0 flex-1 truncate font-semibold">
         {brand.vendorName}
       </span>
       <span className="w-20 shrink-0 text-right text-xs text-muted-foreground tabular-nums">
-        {formatNumber(brand.withRoms)}{" "}
-        {brand.withRoms === 1 ? "ROM" : "ROMs"}
+        {formatNumber(brand.withRoms)} {brand.withRoms === 1 ? "ROM" : "ROMs"}
       </span>
       <span className="w-24 shrink-0 text-right text-xs text-muted-foreground tabular-nums">
         {formatNumber(brand.deviceCount)}{" "}
@@ -124,13 +123,13 @@ export default function BrandsRoute() {
         <div className="flex flex-col gap-2">
           <div
             aria-hidden="true"
-            className="flex items-center gap-3 px-3 text-xs text-muted-foreground"
+            className="flex items-center gap-3 px-4 text-xs font-medium text-muted-foreground"
           >
             <span className="flex-1">Brand</span>
             <span className="w-20 text-right">With ROMs</span>
             <span className="w-24 text-right">Devices</span>
           </div>
-          <ul className="divide-y divide-border/60 overflow-hidden rounded-xl border border-border/60">
+          <ul className="index-frame">
             {filtered.map((brand) => (
               <li key={brand.vendor}>
                 <BrandRow brand={brand} />

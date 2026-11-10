@@ -63,7 +63,7 @@ export default function DevicesRoute() {
               className="directory-row"
             >
               <span className="flex min-w-0 flex-col">
-                <span className="font-heading text-base font-semibold">
+                <span className="font-heading text-2xl font-extrabold tracking-[-0.02em]">
                   {letter.letter === "#"
                     ? "0–9"
                     : letter.letter === "other"

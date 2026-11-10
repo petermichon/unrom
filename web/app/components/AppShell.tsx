@@ -53,10 +53,10 @@ function TopNavLink({ item }: { item: NavItem }) {
       onTouchStart={preload}
       className={({ isActive }) =>
         cn(
-          "rounded-lg px-3 py-1.5 text-sm font-medium transition-colors outline-none focus-visible:ring-3 focus-visible:ring-ring/50",
+          "rounded-full px-3.5 py-1.5 text-sm font-semibold transition-colors outline-none focus-visible:ring-3 focus-visible:ring-ring/50",
           isActive
-            ? "bg-muted text-foreground"
-            : "text-muted-foreground hover:bg-muted/60 hover:text-foreground",
+            ? "bg-accent text-accent-foreground"
+            : "text-foreground/70 hover:bg-muted hover:text-foreground",
         )
       }
     >
@@ -144,20 +144,17 @@ export default function AppShell({ updatedAt, updatedAtIso, children }: Props) {
       <div className="flex min-h-svh flex-col bg-background">
         <header
           data-nosnippet
-          className="sticky top-0 z-10 border-b border-border/60 bg-background/80 backdrop-blur"
+          className="sticky top-0 z-10 bg-background/85 backdrop-blur-md"
         >
-          <div className="mx-auto flex h-14 w-full max-w-5xl items-center gap-2 px-4 sm:px-6">
+          <div className="mx-auto flex h-16 w-full max-w-6xl items-center gap-2 px-4 sm:px-6">
             <Link
               to="/"
               prefetch="viewport"
-              className="flex items-center gap-2 rounded-lg font-heading font-semibold tracking-tight outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
+              className="flex items-center gap-2 rounded-full font-brand text-[1.3rem] font-extrabold tracking-[-0.03em] outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
             >
               <span className="flex items-center gap-2">
                 <span className="font-brand">unrom</span>
-                <Badge
-                  variant="outline"
-                  className="px-1.5 py-0 text-[11px] font-medium text-muted-foreground"
-                >
+                <Badge className="border-0 bg-accent px-2 py-0 text-[11px] font-semibold text-accent-foreground">
                   beta
                 </Badge>
               </span>
@@ -200,11 +197,11 @@ export default function AppShell({ updatedAt, updatedAtIso, children }: Props) {
         </header>
 
         <main id="content" tabIndex={-1} className="flex-1 px-4 py-10 sm:px-6">
-          <div className="mx-auto w-full max-w-5xl">{children}</div>
+          <div className="mx-auto w-full max-w-6xl">{children}</div>
         </main>
 
-        <footer className="border-t border-border/60 px-4 py-6 text-xs text-muted-foreground sm:px-6">
-          <div className="mx-auto flex w-full max-w-5xl flex-wrap items-center justify-between gap-3">
+        <footer className="border-t border-border px-4 py-6 text-xs text-muted-foreground sm:px-6">
+          <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-3">
             <p>
               Last updated{" "}
               {updatedAtIso ? (

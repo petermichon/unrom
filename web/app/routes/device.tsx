@@ -113,7 +113,7 @@ export default function DeviceRoute() {
           badge={
             <Badge
               variant="outline"
-              className="bg-muted font-mono text-xs text-foreground"
+              className="border-0 bg-accent font-mono text-xs text-accent-foreground"
             >
               {device.codename}
             </Badge>
@@ -147,11 +147,11 @@ function DeviceIdentity({ device }: { device: DeviceDetail }) {
   return (
     <section
       aria-labelledby="device-identity"
-      className="rounded-xl border border-border/60 p-4"
+      className="rounded-2xl border border-border bg-card p-5"
     >
       <h2
         id="device-identity"
-        className="mb-3 font-heading text-sm font-semibold"
+        className="mb-3 font-heading text-base font-bold"
       >
         Identity
       </h2>

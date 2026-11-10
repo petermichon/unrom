@@ -36,7 +36,7 @@ export default function LegalRoute() {
       <section aria-labelledby="publisher" className="flex flex-col gap-2">
         <h2
           id="publisher"
-          className="font-heading text-lg font-semibold tracking-tight"
+          className="font-heading text-xl font-bold tracking-tight"
         >
           Publisher
         </h2>
@@ -78,10 +78,7 @@ export default function LegalRoute() {
       </section>
 
       <section aria-labelledby="host" className="flex flex-col gap-2">
-        <h2
-          id="host"
-          className="font-heading text-lg font-semibold tracking-tight"
-        >
+        <h2 id="host" className="font-heading text-xl font-bold tracking-tight">
           Host
         </h2>
         <address className="text-sm text-muted-foreground not-italic">
@@ -115,7 +112,7 @@ export default function LegalRoute() {
       <section aria-labelledby="privacy" className="flex flex-col gap-2">
         <h2
           id="privacy"
-          className="font-heading text-lg font-semibold tracking-tight"
+          className="font-heading text-xl font-bold tracking-tight"
         >
           Privacy
         </h2>
@@ -177,7 +174,7 @@ export default function LegalRoute() {
       <section aria-labelledby="cookies" className="flex flex-col gap-2">
         <h2
           id="cookies"
-          className="font-heading text-lg font-semibold tracking-tight"
+          className="font-heading text-xl font-bold tracking-tight"
         >
           Cookies and local storage
         </h2>
@@ -193,7 +190,7 @@ export default function LegalRoute() {
       <section aria-labelledby="licenses" className="flex flex-col gap-2">
         <h2
           id="licenses"
-          className="font-heading text-lg font-semibold tracking-tight"
+          className="font-heading text-xl font-bold tracking-tight"
         >
           Licenses and attribution
         </h2>
@@ -232,7 +229,7 @@ export default function LegalRoute() {
       <section aria-labelledby="liability" className="flex flex-col gap-2">
         <h2
           id="liability"
-          className="font-heading text-lg font-semibold tracking-tight"
+          className="font-heading text-xl font-bold tracking-tight"
         >
           Liability
         </h2>
@@ -246,7 +243,7 @@ export default function LegalRoute() {
       <section aria-labelledby="contact" className="flex flex-col gap-2">
         <h2
           id="contact"
-          className="font-heading text-lg font-semibold tracking-tight"
+          className="font-heading text-xl font-bold tracking-tight"
         >
           Contact
         </h2>

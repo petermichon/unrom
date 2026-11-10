@@ -1,5 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <!-- Space Grotesk 600, U+0075, from /fonts/space-grotesk-unrom.woff2. -->
+  <!-- Outline of "u" extracted from the previous Space Grotesk wordmark and
+       stored as a path, so the favicon needs no font file. -->
   <rect width="64" height="64" rx="14" fill="#0b0b0c" />
   <path d="M28.88 50Q24.79 50 21.64 48.17Q18.48 46.34 16.76 43.01Q15.04 39.67 15.04 35.23V14H23.22V34.58Q23.22 38.88 25.33 40.96Q27.45 43.04 31.32 43.04Q35.69 43.04 38.24 40.18Q40.78 37.31 40.78 31.93V14H48.96V49.43H40.93V44.48H39.71Q38.78 46.41 36.3 48.21Q33.83 50 28.88 50Z" fill="#fafafa" />
 </svg>

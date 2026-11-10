@@ -2,24 +2,25 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
-/* Self-hosted Inter Variable: latin + latin-ext (see public/fonts/). */
+/* Self-hosted Manrope (interface + headings) and Roboto Mono (identifiers).
+   Latin + latin-ext subsets only (see public/fonts/). */
 @font-face {
-  font-family: "Inter Variable";
+  font-family: "Manrope";
   font-style: normal;
   font-display: swap;
-  font-weight: 100 900;
-  src: url("/fonts/inter-latin-wght-normal.woff2") format("woff2-variations");
+  font-weight: 200 800;
+  src: url("/fonts/manrope-latin-wght-normal.woff2") format("woff2-variations");
   unicode-range:
     U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
     U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212,
     U+2215, U+FEFF, U+FFFD;
 }
 @font-face {
-  font-family: "Inter Variable";
+  font-family: "Manrope";
   font-style: normal;
   font-display: swap;
-  font-weight: 100 900;
-  src: url("/fonts/inter-latin-ext-wght-normal.woff2")
+  font-weight: 200 800;
+  src: url("/fonts/manrope-latin-ext-wght-normal.woff2")
     format("woff2-variations");
   unicode-range:
     U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304,
@@ -51,22 +52,12 @@
     U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 
-/* Wordmark-only subset: u n r o m (Space Grotesk 600, SIL OFL). */
-@font-face {
-  font-family: "Space Grotesk";
-  font-style: normal;
-  font-display: swap;
-  font-weight: 600;
-  src: url("/fonts/space-grotesk-unrom.woff2") format("woff2");
-  unicode-range: U+006D-006F, U+0072, U+0075;
-}
-
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --font-brand: "Space Grotesk", "Inter Variable", sans-serif;
-  --font-heading: var(--font-sans);
-  --font-sans: "Inter Variable", sans-serif;
+  --font-brand: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-heading: "Manrope", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Manrope", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "Roboto Mono Variable", ui-monospace, monospace;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -101,6 +92,8 @@
   --color-brand: var(--brand);
   --color-brand-foreground: var(--brand-foreground);
   --color-derived: var(--derived);
+  --color-panel: var(--panel);
+  --color-panel-foreground: var(--panel-foreground);
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -110,92 +103,102 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
+/* Warm off-white page, white cards, near-black type, indigo accent, and one
+   pale periwinkle panel for the opening statement. */
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --brand: oklch(0.205 0 0);
-  --brand-foreground: oklch(0.985 0 0);
+  --background: #f4f4f2;
+  --foreground: #0d0d0f;
+  --card: #ffffff;
+  --card-foreground: #0d0d0f;
+  --popover: #ffffff;
+  --popover-foreground: #0d0d0f;
+  --primary: #151515;
+  --primary-foreground: #ffffff;
+  --secondary: #ececea;
+  --secondary-foreground: #151515;
+  --muted: #ececea;
+  --muted-foreground: #626269;
+  --accent: #e8ecfc;
+  --accent-foreground: #1d2b6b;
+  --destructive: #c0392b;
+  --border: #e5e5e2;
+  --input: #dcdcd8;
+  --ring: #4a5cf0;
+  --brand: #3049e0;
+  --brand-foreground: #ffffff;
   /* References derived from a codename rather than published by the source. */
-  --derived: oklch(0.47 0.1 70);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --derived: #8a5a00;
+  --panel: #dde4fb;
+  --panel-foreground: #0d1024;
+  --chart-1: #c7d2fe;
+  --chart-2: #818cf8;
+  --chart-3: #4f46e5;
+  --chart-4: #3730a3;
+  --chart-5: #1e1b4b;
+  --radius: 1rem;
+  --sidebar: #ffffff;
+  --sidebar-foreground: #0d0d0f;
+  --sidebar-accent: #ececea;
+  --sidebar-accent-foreground: #151515;
+  --sidebar-border: #e5e5e2;
+  --sidebar-ring: #6b6b70;
 }
 
 .dark {
   color-scheme: dark;
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --brand: oklch(0.985 0 0);
-  --brand-foreground: oklch(0.145 0 0);
-  --derived: oklch(0.79 0.11 80);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --background: #0e0f12;
+  --foreground: #f3f4f6;
+  --card: #16181c;
+  --card-foreground: #f3f4f6;
+  --popover: #1a1d22;
+  --popover-foreground: #f3f4f6;
+  --primary: #f3f4f6;
+  --primary-foreground: #0e0f12;
+  --secondary: #23262c;
+  --secondary-foreground: #f3f4f6;
+  --muted: #1c1f24;
+  --muted-foreground: #a4a8b2;
+  --accent: #1e2438;
+  --accent-foreground: #dbe1ff;
+  --destructive: #f0786a;
+  --border: #262930;
+  --input: #30343b;
+  --ring: #8d9cff;
+  --brand: #a9b6ff;
+  --brand-foreground: #0e0f12;
+  --derived: #e3b45a;
+  /* The periwinkle panel inverted: a deep indigo surface that still reads as
+     the same object rather than a generic dark card. */
+  --panel: #1b2138;
+  --panel-foreground: #e7eaff;
+  --chart-1: #c7d2fe;
+  --chart-2: #818cf8;
+  --chart-3: #4f46e5;
+  --chart-4: #3730a3;
+  --chart-5: #1e1b4b;
+  --sidebar: #16181c;
+  --sidebar-foreground: #f3f4f6;
+  --sidebar-accent: #23262c;
+  --sidebar-accent-foreground: #f3f4f6;
+  --sidebar-border: #262930;
+  --sidebar-ring: #a4a8b2;
 }
 
 @layer components {
   .device-row {
-    @apply flex items-center justify-between gap-3 rounded-lg px-2 py-2.5 outline-none transition-colors hover:bg-muted/40 focus-visible:ring-3 focus-visible:ring-ring/50;
+    @apply flex items-center justify-between gap-3 rounded-xl px-3 py-3 outline-none transition-colors hover:bg-muted/70 focus-visible:ring-3 focus-visible:ring-ring/50;
   }
   .directory-row {
-    @apply flex items-baseline justify-between gap-3 rounded-lg border border-border/60 px-3 py-2.5 outline-none transition-colors hover:border-foreground/20 hover:bg-muted/40 focus-visible:ring-3 focus-visible:ring-ring/50;
+    @apply flex items-baseline justify-between gap-3 rounded-2xl border border-border bg-card px-4 py-3.5 outline-none transition-colors hover:border-brand/40 hover:shadow-sm focus-visible:ring-3 focus-visible:ring-ring/50;
   }
   /* Rows inside a divided list: the container draws the frame, the rows draw
      only hover and focus. */
   .index-row {
-    @apply flex items-center gap-3 px-3 py-2.5 outline-none transition-colors hover:bg-muted/40 focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:ring-inset;
+    @apply flex items-center gap-3 px-4 py-3 outline-none transition-colors hover:bg-muted/60 focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:ring-inset;
+  }
+  /* White rounded container shared by index lists and disclosure blocks. */
+  .index-frame {
+    @apply divide-y divide-border overflow-hidden rounded-2xl border border-border bg-card;
   }
 }
 

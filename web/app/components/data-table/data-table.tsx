@@ -165,9 +165,7 @@ export function DataTable<TData, TValue>({
 
   const cellClass = (columnId: string) =>
     cn(
-      columnId === "search"
-        ? "w-0"
-        : (columnWidths?.[columnId] ?? EQUAL_SHARE),
+      columnId === "search" ? "w-0" : (columnWidths?.[columnId] ?? EQUAL_SHARE),
       columnClassName?.(columnId),
     ) || undefined;
 
@@ -205,7 +203,7 @@ export function DataTable<TData, TValue>({
         {toolbar?.(table)}
         <div
           aria-hidden="true"
-          className="min-h-96 rounded-xl border border-border/60 bg-muted/10"
+          className="min-h-96 rounded-2xl border border-border bg-card"
         />
       </div>
     );
@@ -222,7 +220,7 @@ export function DataTable<TData, TValue>({
     <div className="flex flex-col gap-4">
       {toolbar?.(table)}
 
-      <div className="overflow-x-auto rounded-xl border border-border/60">
+      <div className="overflow-x-auto rounded-2xl border border-border bg-card">
         <Table className={cn("table-fixed", tableClassName)}>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -258,8 +256,7 @@ export function DataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   hidden={
-                    hidesOffPageRows &&
-                    (index < pageStart || index >= pageEnd)
+                    hidesOffPageRows && (index < pageStart || index >= pageEnd)
                   }
                 >
                   {row.getVisibleCells().map((cell) => (

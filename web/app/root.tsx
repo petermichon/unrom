@@ -62,7 +62,7 @@ export const links: Route.LinksFunction = () => [
   { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
   {
     rel: "preload",
-    href: "/fonts/inter-latin-wght-normal.woff2",
+    href: "/fonts/manrope-latin-wght-normal.woff2",
     as: "font",
     type: "font/woff2",
     crossOrigin: "anonymous",
@@ -107,7 +107,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           }}
         />
       </head>
-      <body className="min-h-svh bg-background text-foreground antialiased selection:bg-brand/30">
+      <body className="min-h-svh bg-background text-foreground antialiased selection:bg-brand/25">
         <a
           href="#content"
           className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:rounded-md focus:bg-background focus:px-4 focus:py-2 focus:text-sm focus:ring-2 focus:ring-ring"
@@ -162,7 +162,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
         <p className="font-mono text-sm text-muted-foreground">
           {isRouteErrorResponse(error) ? error.status : "Error"}
         </p>
-        <h1 className="font-heading text-3xl font-semibold tracking-tight">
+        <h1 className="font-heading text-3xl font-extrabold tracking-[-0.02em]">
           {title}
         </h1>
         <p className="text-muted-foreground">{details}</p>

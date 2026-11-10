@@ -62,7 +62,7 @@ export default function DeviceSearch({ examples = [] }: Props) {
     <div className="flex flex-col gap-3">
       <Command
         shouldFilter={false}
-        className="rounded-xl border border-border/60"
+        className="rounded-2xl border border-border bg-popover shadow-sm dark:bg-[#12151f]"
       >
         <CommandInput
           ref={inputRef}

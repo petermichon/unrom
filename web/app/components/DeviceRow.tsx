@@ -17,7 +17,7 @@ export default function DeviceRow({ device, showBrand = true }: Props) {
       className="device-row"
     >
       <span className="flex min-w-0 flex-col">
-        <span className="truncate font-medium">{deviceName(device)}</span>
+        <span className="truncate font-semibold">{deviceName(device)}</span>
         <span className="truncate text-xs text-muted-foreground">
           {showBrand && <>{device.vendorName} · </>}
           <span className="font-mono">{device.codename}</span>

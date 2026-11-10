@@ -110,9 +110,7 @@ function StatRow({
       <dd className="shrink-0 text-right text-sm font-semibold tabular-nums">
         {value}
         {note && (
-          <span className="ml-2 font-normal text-muted-foreground">
-            {note}
-          </span>
+          <span className="ml-2 font-normal text-muted-foreground">{note}</span>
         )}
       </dd>
     </div>
@@ -206,7 +204,7 @@ export default function DataRoute() {
       <section aria-labelledby="downloads" className="flex flex-col gap-3">
         <h2
           id="downloads"
-          className="font-heading text-lg font-semibold tracking-tight"
+          className="font-heading text-xl font-bold tracking-tight"
         >
           Downloads
         </h2>
@@ -232,7 +230,7 @@ export default function DataRoute() {
         <div className="flex flex-wrap items-baseline justify-between gap-2">
           <h2
             id="api"
-            className="font-heading text-lg font-semibold tracking-tight"
+            className="font-heading text-xl font-bold tracking-tight"
           >
             API
           </h2>
@@ -257,7 +255,7 @@ export default function DataRoute() {
           the total in <code>x-total-count</code>. Response shapes are frozen in{" "}
           <code>contract/</code>.
         </p>
-        <ul className="divide-y divide-border/60 rounded-xl border border-border/60">
+        <ul className="index-frame">
           {endpoints.length > 0 ? (
             endpoints.map((endpoint) => {
               const [method, ...rest] = endpoint.split(" ");
@@ -286,7 +284,7 @@ export default function DataRoute() {
       <section aria-labelledby="contents" className="flex flex-col gap-3">
         <h2
           id="contents"
-          className="font-heading text-lg font-semibold tracking-tight"
+          className="font-heading text-xl font-bold tracking-tight"
         >
           What is in the dataset
         </h2>
@@ -318,7 +316,7 @@ export default function DataRoute() {
       <section aria-labelledby="provenance" className="flex flex-col gap-3">
         <h2
           id="provenance"
-          className="font-heading text-lg font-semibold tracking-tight"
+          className="font-heading text-xl font-bold tracking-tight"
         >
           Provenance and license
         </h2>
@@ -388,7 +386,7 @@ export default function DataRoute() {
       <section aria-labelledby="freshness" className="flex flex-col gap-3">
         <h2
           id="freshness"
-          className="font-heading text-lg font-semibold tracking-tight"
+          className="font-heading text-xl font-bold tracking-tight"
         >
           Freshness
         </h2>
@@ -415,7 +413,7 @@ export default function DataRoute() {
       <section aria-labelledby="corrections" className="flex flex-col gap-3">
         <h2
           id="corrections"
-          className="font-heading text-lg font-semibold tracking-tight"
+          className="font-heading text-xl font-bold tracking-tight"
         >
           Corrections
         </h2>

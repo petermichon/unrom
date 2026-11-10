@@ -33,24 +33,34 @@ function romHaystack(rom: RomDetail): string {
     .toLowerCase();
 }
 
-function RomRow({ rom, count }: { rom: RomDetail; count?: boolean }) {
-  const statusClass = cn(
-    "text-xs",
-    rom.status === "active" ? "text-foreground" : "text-muted-foreground",
+function StatusPill({ status }: { status: RomDetail["status"] }) {
+  return (
+    <span
+      className={cn(
+        "w-fit shrink-0 rounded-full px-2.5 py-0.5 text-xs font-semibold",
+        status === "active"
+          ? "bg-accent text-accent-foreground"
+          : "bg-muted text-muted-foreground",
+      )}
+    >
+      {STATUS_LABELS[status]}
+    </span>
   );
+}
 
+function RomRow({ rom, count }: { rom: RomDetail; count?: boolean }) {
   return (
     <Link to={`/roms/${rom.id}`} prefetch="intent" className="index-row">
-      <span className="flex min-w-0 flex-1 flex-col sm:flex-row sm:items-baseline sm:gap-3">
-        <span className="min-w-0 flex-1 truncate font-medium">{rom.name}</span>
-        <span className={cn(statusClass, "sm:hidden")}>
-          {STATUS_LABELS[rom.status]}
+      <span className="flex min-w-0 flex-1 flex-col gap-1 sm:flex-row sm:items-center sm:gap-3">
+        <span className="min-w-0 flex-1 truncate font-semibold">
+          {rom.name}
+        </span>
+        <span className="sm:hidden">
+          <StatusPill status={rom.status} />
         </span>
       </span>
-      <span
-        className={cn(statusClass, "hidden w-20 shrink-0 text-right sm:block")}
-      >
-        {STATUS_LABELS[rom.status]}
+      <span className="hidden w-20 shrink-0 justify-end sm:flex">
+        <StatusPill status={rom.status} />
       </span>
       {count && (
         <span className="w-24 shrink-0 text-right text-xs text-muted-foreground tabular-nums">
@@ -202,19 +212,19 @@ export default function RomsRoute() {
             >
               <h2
                 id="roms-covered"
-                className="font-heading text-lg font-semibold tracking-tight"
+                className="font-heading text-xl font-bold tracking-tight"
               >
                 With device data
               </h2>
               <div
                 aria-hidden="true"
-                className="flex items-center gap-3 px-3 text-xs text-muted-foreground"
+                className="flex items-center gap-3 px-4 text-xs font-medium text-muted-foreground"
               >
                 <span className="flex-1">ROM</span>
                 <span className="hidden w-20 text-right sm:block">Status</span>
                 <span className="w-24 text-right">Devices</span>
               </div>
-              <ul className="divide-y divide-border/60 overflow-hidden rounded-xl border border-border/60">
+              <ul className="index-frame">
                 {filteredCovered.map((rom) => (
                   <li key={rom.id}>
                     <RomRow rom={rom} count />
@@ -228,7 +238,7 @@ export default function RomsRoute() {
             <details
               open={catalogueIsOpen}
               onToggle={(event) => setCatalogueOpen(event.currentTarget.open)}
-              className="rounded-xl border border-border/60"
+              className="index-frame"
             >
               <summary className="cursor-pointer px-4 py-3 text-sm font-medium text-muted-foreground outline-none focus-visible:ring-3 focus-visible:ring-ring/50">
                 Catalogue only: {formatNumber(filteredCatalogue.length)}{" "}

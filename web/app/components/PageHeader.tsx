@@ -21,7 +21,7 @@ export function PageHeader({
     <div className="flex flex-col gap-2">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div className="flex flex-wrap items-center gap-2">
-          <h1 className="font-heading text-2xl font-semibold tracking-tight">
+          <h1 className="font-heading text-3xl font-extrabold tracking-[-0.02em]">
             {title}
           </h1>
           {badge}
@@ -29,7 +29,7 @@ export function PageHeader({
         {actions && <div className="flex items-center gap-2">{actions}</div>}
       </div>
       {description && (
-        <p className="max-w-[68ch] text-sm text-muted-foreground">
+        <p className="max-w-[62ch] text-sm leading-relaxed text-muted-foreground">
           {description}
         </p>
       )}
@@ -40,8 +40,7 @@ export function PageHeader({
             className="font-mono outline-none hover:text-foreground hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
             title="Open this page's API response"
           >
-            <span className="font-semibold text-foreground/60">GET</span>{" "}
-            {endpoint}
+            <span className="font-semibold text-brand">GET</span> {endpoint}
           </a>
         </p>
       )}
