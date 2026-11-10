@@ -12,6 +12,8 @@ import {
   useRouteLoaderData,
 } from "react-router";
 
+import { useEffect, useRef, useSyncExternalStore } from "react";
+
 import type { Route } from "./+types/root";
 import "./app.css";
 import AppShell from "@/components/AppShell";
@@ -151,60 +153,121 @@ export default function App() {
   );
 }
 
+const ISSUES_URL = "https://github.com/petermichon/unrom/issues";
+
+/** Live online status; the server has no opinion and assumes online. */
+function useOnline(): boolean {
+  return useSyncExternalStore(
+    (onChange) => {
+      window.addEventListener("online", onChange);
+      window.addEventListener("offline", onChange);
+      return () => {
+        window.removeEventListener("online", onChange);
+        window.removeEventListener("offline", onChange);
+      };
+    },
+    () => navigator.onLine,
+    () => true,
+  );
+}
+
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   const data = useRouteLoaderData<typeof loader>("root");
   const revalidator = useRevalidator();
+  const online = useOnline();
+  const heading = useRef<HTMLHeadingElement>(null);
   const notFound = isRouteErrorResponse(error) && error.status === 404;
+  const status = isRouteErrorResponse(error) ? error.status : null;
 
-  const title = notFound ? "Page not found" : "Something went wrong";
-  const details = isRouteErrorResponse(error)
-    ? notFound
-      ? "That page doesn't exist. It may have moved, or the link may be wrong."
-      : error.statusText || "An unexpected error occurred."
-    : import.meta.env.DEV && error instanceof Error
-      ? error.message
-      : "An unexpected error occurred.";
+  // A client navigation to an error page leaves focus on <body>; move it to
+  // the heading so the message is announced.
+  useEffect(() => {
+    heading.current?.focus();
+  }, []);
+
+  const title = notFound
+    ? "Page not found"
+    : online
+      ? "We couldn't load this page"
+      : "You appear to be offline";
+
+  const description = notFound
+    ? "That page doesn't exist. It may have moved, or the link may be wrong."
+    : online
+      ? "The server didn't respond as expected. This is usually temporary — try again in a moment."
+      : "Check your connection, then try again.";
+
+  const technical =
+    import.meta.env.DEV && error instanceof Error ? error.message : null;
 
   return (
     <AppShell
       updatedAt={data ? formatDate(data.updatedAt) : undefined}
       updatedAtIso={data?.updatedAt}
     >
-      <div className="flex flex-col gap-4">
-        <p className="font-mono text-sm text-muted-foreground">
-          {isRouteErrorResponse(error) ? error.status : "Error"}
-        </p>
-        <h1 className="font-heading text-3xl font-extrabold tracking-[-0.02em]">
-          {title}
-        </h1>
-        <p className="text-muted-foreground">{details}</p>
-        <div className="flex flex-wrap gap-2">
+      <div className="flex min-h-[55svh] flex-col justify-center gap-4">
+        {status !== null && status >= 500 && (
+          <p className="font-mono text-xs text-muted-foreground">
+            Error {status}
+          </p>
+        )}
+        <div
+          role={notFound ? undefined : "alert"}
+          className="flex flex-col gap-2"
+        >
+          <h1
+            ref={heading}
+            tabIndex={-1}
+            className="font-heading text-3xl font-extrabold tracking-[-0.02em] outline-none"
+          >
+            {title}
+          </h1>
+          <p className="max-w-[52ch] text-muted-foreground">{description}</p>
+        </div>
+        {technical && (
+          <p className="font-mono text-xs text-muted-foreground">{technical}</p>
+        )}
+        <div className="flex flex-wrap items-center gap-2">
           {!notFound && (
             <Button
+              data-nojs-hide
               onClick={() => revalidator.revalidate()}
               disabled={revalidator.state !== "idle"}
             >
               {revalidator.state === "idle" ? "Try again" : "Retrying…"}
             </Button>
           )}
-          <Button nativeButton={false} render={<Link to="/" />}>
+          <Button
+            variant={notFound ? "default" : "outline"}
+            nativeButton={false}
+            render={<Link to="/" />}
+          >
             Back home
           </Button>
-          <Button
-            variant="outline"
-            nativeButton={false}
-            render={<Link to="/devices" />}
-          >
-            Browse devices
-          </Button>
-          <Button
-            variant="outline"
-            nativeButton={false}
-            render={<Link to="/roms" />}
-          >
-            Browse ROMs
-          </Button>
+          {notFound && (
+            <Button
+              variant="outline"
+              nativeButton={false}
+              render={<Link to="/devices" />}
+            >
+              Browse devices
+            </Button>
+          )}
         </div>
+        {!notFound && (
+          <p className="text-sm text-muted-foreground">
+            Still not working?{" "}
+            <a
+              href={ISSUES_URL}
+              target="_blank"
+              rel="noreferrer"
+              className="font-medium text-brand hover:underline"
+            >
+              Report the problem
+            </a>
+            .
+          </p>
+        )}
       </div>
     </AppShell>
   );
