@@ -146,42 +146,42 @@
 
 .dark {
   color-scheme: dark;
-  --background: #0e0f12;
-  --foreground: #f3f4f6;
-  --card: #16181c;
-  --card-foreground: #f3f4f6;
-  --popover: #1a1d22;
-  --popover-foreground: #f3f4f6;
-  --primary: #f3f4f6;
-  --primary-foreground: #0e0f12;
-  --secondary: #23262c;
-  --secondary-foreground: #f3f4f6;
-  --muted: #1c1f24;
-  --muted-foreground: #a4a8b2;
-  --accent: #1e2438;
-  --accent-foreground: #dbe1ff;
+  --background: #101010;
+  --foreground: #f0f0f0;
+  --card: #1d1d1d;
+  --card-foreground: #f0f0f0;
+  --popover: #202020;
+  --popover-foreground: #f0f0f0;
+  --primary: #f0f0f0;
+  --primary-foreground: #101010;
+  --secondary: #242424;
+  --secondary-foreground: #f0f0f0;
+  --muted: #232323;
+  --muted-foreground: #a3a3a3;
+  --accent: #262626;
+  --accent-foreground: #f0f0f0;
   --destructive: #f0786a;
-  --border: #262930;
-  --input: #30343b;
+  --border: #343434;
+  --input: #2a2a2a;
   --ring: #8d9cff;
   --brand: #a9b6ff;
-  --brand-foreground: #0e0f12;
+  --brand-foreground: #101010;
   --derived: #e3b45a;
-  /* The periwinkle panel inverted: a deep indigo surface that still reads as
-     the same object rather than a generic dark card. */
-  --panel: #1b2138;
-  --panel-foreground: #e7eaff;
+  /* Neutral surfaces only. Elevation is read from lightness, not hue, so the
+     brand periwinkle stays on text, links and rings. */
+  --panel: #181818;
+  --panel-foreground: #f0f0f0;
   --chart-1: #c7d2fe;
   --chart-2: #818cf8;
   --chart-3: #4f46e5;
   --chart-4: #3730a3;
   --chart-5: #1e1b4b;
-  --sidebar: #16181c;
-  --sidebar-foreground: #f3f4f6;
-  --sidebar-accent: #23262c;
-  --sidebar-accent-foreground: #f3f4f6;
-  --sidebar-border: #262930;
-  --sidebar-ring: #a4a8b2;
+  --sidebar: #191919;
+  --sidebar-foreground: #f0f0f0;
+  --sidebar-accent: #242424;
+  --sidebar-accent-foreground: #f0f0f0;
+  --sidebar-border: #343434;
+  --sidebar-ring: #a3a3a3;
 }
 
 @layer components {

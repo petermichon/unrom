@@ -75,7 +75,7 @@ export default function DeviceSearch({ examples = [] }: Props) {
       >
         <Command
           shouldFilter={false}
-          className="rounded-2xl border border-border bg-popover shadow-sm dark:bg-[#12151f]"
+          className="rounded-2xl border border-border bg-popover shadow-sm dark:border-white/10 dark:bg-[#232323]"
         >
           <CommandInput
             name="q"

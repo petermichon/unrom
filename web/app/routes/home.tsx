@@ -124,7 +124,7 @@ export default function Home() {
               className="flex flex-col gap-4 rounded-2xl bg-background p-5 text-foreground shadow-lg ring-1 ring-black/5 outline-none transition-colors hover:shadow-xl focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-card dark:ring-white/10 dark:shadow-[0_12px_32px_rgba(0,0,0,0.35)]"
             >
               <span className="flex flex-col gap-1">
-                <span className="text-xs font-semibold text-brand">
+                <span className="text-xs font-semibold text-brand dark:text-muted-foreground">
                   Most supported device
                 </span>
                 <span className="font-heading text-xl font-extrabold tracking-[-0.02em]">
@@ -176,7 +176,7 @@ export default function Home() {
                 prefetch="intent"
                 className="flex h-full flex-col gap-1 rounded-2xl border border-border bg-card p-5 outline-none transition-colors hover:border-brand/40 hover:shadow-sm focus-visible:ring-3 focus-visible:ring-ring/50"
               >
-                <span className="text-sm font-semibold text-brand">
+                <span className="text-sm font-semibold text-brand dark:text-muted-foreground">
                   {section.title}
                 </span>
                 <span className="mt-1 font-heading text-3xl font-extrabold tracking-[-0.02em] tabular-nums">
