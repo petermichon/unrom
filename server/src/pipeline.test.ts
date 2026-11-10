@@ -794,6 +794,11 @@ test("the registry exposes every curated entry", async () => {
         "xiaomi",
       ),
     );
+    assert.equal(
+      api.listRegistry(undefined, "Xiaomi").length,
+      api.listRegistry(undefined, "xiaomi").length,
+      "vendor filter is case-insensitive",
+    );
 
     api.close();
   } finally {

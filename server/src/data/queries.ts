@@ -629,6 +629,7 @@ export function createApi(dbPath: string) {
   function listRegistry(query?: string, vendor?: string): RegistryEntry[] {
     const needle = query?.trim().toLowerCase();
     const terms = needle ? searchTerms(needle) : [];
+    const vendorId = vendor?.trim().toLowerCase();
     // "Supported" means the device has build data, directly or through a
     // covering target, not merely that it exists in the device catalogue.
     const supported = new Set(
@@ -655,7 +656,7 @@ export function createApi(dbPath: string) {
         confidence: row.confidence as RegistryEntry["confidence"],
         sources: parseNames(row.sources),
       }))
-      .filter((entry) => !vendor || entry.vendor === vendor)
+      .filter((entry) => !vendorId || entry.vendor === vendorId)
       .filter(
         (entry) =>
           terms.length === 0 ||
