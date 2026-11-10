@@ -6,20 +6,27 @@
       filtering path now, so there is no component left to polish.
 - [ ] Grow indexable content by adding source-backed device data for ROMs that
       currently have none. Deferred: this needs one adapter per ROM, and many
-      catalogue entries have no usable public device list.
+      catalogue entries have no usable public device list. Next step is triage:
+      list which of the uncovered ROMs publish a machine-readable roster (OTA
+      JSON, GitHub org, downloads page), then add them in batches.
 - [x] ~~Serve `/api` from the standalone web server, or document that it needs a
       reverse proxy. `npm run start --workspace web` cannot reach `/api`
       without Caddy, so the built app is not self-contained.~~
       Done: `web/server.ts` proxies `/api` to `API_URL`, so the standalone web
       server is self-contained.
-- [ ] Keep the detail-page tables usable without JavaScript. `renderAllRows`
+- [x] ~~Keep the detail-page tables usable without JavaScript. `renderAllRows`
       already puts every filtered row in the initial HTML, so crawlers see the
       full set, but rows past the first page carry `hidden`, and sorting,
-      filtering and pagination are still client-only controls.
+      filtering and pagination are still client-only controls.~~
+      Done: a `<noscript>` rule reveals every row and hides the toolbar and
+      pager, so the whole table is readable without scripts; sorting and
+      filtering are no longer needed to reach a row.
 - [ ] Put table state (sort, filter, hidden columns, page) in the URL so a view
       can be shared and survives back/forward navigation.
-- [ ] Remove the dark-theme flash on first paint by applying the stored theme
-      before React hydrates.
+- [x] ~~Remove the dark-theme flash on first paint by applying the stored theme
+      before React hydrates.~~
+      Retired: first-paint polish. It changes no data, access path or URL, so
+      it is out of scope under the project rule.
 - [x] ~~Redirect trailing-slash URLs to the canonical no-slash form. Both
       currently return 200, creating duplicate self-canonical URLs.~~
       Done: `web/server.ts` answers any non-root trailing-slash path with a
