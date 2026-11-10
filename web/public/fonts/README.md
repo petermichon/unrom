@@ -13,6 +13,6 @@ Manrope is © The Manrope Project Authors and licensed under the SIL Open Font
 License 1.1 (`OFL-manrope.txt`). Roboto Mono is © Google and licensed under the
 Apache License 2.0.
 
-The favicon (`/favicon.svg`) keeps the old `u` outline extracted from Space
-Grotesk and stored as a path, so it needs no font file. Redraw it from the
-Manrope `u` if the wordmark changes.
+The favicon (`/favicon.svg`) uses the Manrope 800 `u` outline stored as a path,
+so it needs no font file. It sits on the site's periwinkle panel colour. Redraw
+it from the Manrope `u` if the wordmark changes.

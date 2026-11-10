@@ -1,6 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <!-- Outline of "u" extracted from the previous Space Grotesk wordmark and
-       stored as a path, so the favicon needs no font file. -->
-  <rect width="64" height="64" rx="14" fill="#0b0b0c" />
-  <path d="M28.88 50Q24.79 50 21.64 48.17Q18.48 46.34 16.76 43.01Q15.04 39.67 15.04 35.23V14H23.22V34.58Q23.22 38.88 25.33 40.96Q27.45 43.04 31.32 43.04Q35.69 43.04 38.24 40.18Q40.78 37.31 40.78 31.93V14H48.96V49.43H40.93V44.48H39.71Q38.78 46.41 36.3 48.21Q33.83 50 28.88 50Z" fill="#fafafa" />
+  <!-- "u" from Manrope 800 (U+0075), stored as a path so the tab icon needs
+       no font file. The tile is the site's periwinkle panel colour. -->
+  <rect width="64" height="64" rx="14" fill="#dde4fb" />
+  <g transform="translate(11.734 48.964) scale(0.032374 -0.032374)">
+    <path d="M542 -32Q415 -32 335.0 11.0Q255 54 210.5 120.0Q166 186 147.0 257.5Q128 329 124.0 388.0Q120 447 120 474V1080H396V570Q396 533 400.0 475.5Q404 418 425.0 360.0Q446 302 493.5 263.0Q541 224 628 224Q663 224 703.0 235.0Q743 246 778.0 277.5Q813 309 835.5 370.5Q858 432 858 532L1014 458Q1014 330 962.0 218.0Q910 106 805.5 37.0Q701 -32 542 -32ZM892 0V358H858V1080H1132V0Z" fill="#0d0d0f" />
+  </g>
 </svg>
