@@ -189,21 +189,6 @@ export function createApi(dbPath: string) {
     offset?: number;
   }
 
-  /**
-   * A device has ROM data when a build targets its codename directly or when it
-   * is a hardware variant of a build target. Mirrors `coveredDeviceKeys()`.
-   */
-  function coveredCondition() {
-    const direct = sql`exists (select 1 from rom_devices rd where rd.vendor = ${devices.vendor} and rd.codename = ${devices.codename})`;
-    const inherited = sql`exists (
-      select 1 from device_variants dv
-      join rom_devices rd on rd.vendor = dv.vendor and rd.codename = dv.codename
-      where dv.vendor = ${devices.vendor}
-        and dv.variant_codename = ${devices.codename}
-    )`;
-    return sql`(${direct} or ${inherited})`;
-  }
-
   function deviceFilters(options: DeviceQuery) {
     const filters = [];
     if (options.vendor) {
@@ -231,8 +216,7 @@ export function createApi(dbPath: string) {
       );
     }
     if (options.hasRoms !== undefined) {
-      const covered = coveredCondition();
-      filters.push(options.hasRoms ? covered : sql`not ${covered}`);
+      filters.push(eq(devices.covered, options.hasRoms ? 1 : 0));
     }
     const letter = options.letter?.toUpperCase();
     if (letter) {
@@ -275,22 +259,21 @@ export function createApi(dbPath: string) {
   }
 
   function listBrands(): BrandSummary[] {
-    const covered = coveredDeviceKeys();
-    const brands = new Map<string, BrandSummary>();
-
-    for (const row of db.select().from(devices).all()) {
-      const brand = brands.get(row.vendor) ?? {
+    return db
+      .select({
+        vendor: devices.vendor,
+        deviceCount: sql<number>`count(*)`,
+        withRoms: sql<number>`sum(${devices.covered})`,
+      })
+      .from(devices)
+      .groupBy(devices.vendor)
+      .all()
+      .map((row) => ({
         vendor: row.vendor,
         vendorName: vendorName(row.vendor),
-        deviceCount: 0,
-        withRoms: 0,
-      };
-      brand.deviceCount++;
-      if (covered.has(deviceKey(row.vendor, row.codename))) brand.withRoms++;
-      brands.set(row.vendor, brand);
-    }
-
-    return [...brands.values()];
+        deviceCount: Number(row.deviceCount),
+        withRoms: Number(row.withRoms),
+      }));
   }
 
   function letterCounts(): LetterSummary[] {
@@ -365,8 +348,11 @@ export function createApi(dbPath: string) {
     // Directory pages (a letter or a brand) put ROM-covered devices first, so
     // the first page is useful even when most of the catalogue has no builds.
     // Search and the full export keep their own ordering.
+    // `sort=coverage` orders in SQL, so vendor and letter pages can paginate
+    // without loading the whole directory into memory first.
     const directoryOrder =
       !options.query &&
+      options.sort !== "coverage" &&
       (options.letter !== undefined || options.vendor !== undefined);
     const byName = [
       asc(sql`lower(${displayName})`),
@@ -375,7 +361,7 @@ export function createApi(dbPath: string) {
     ];
     const order =
       !directoryOrder && options.sort === "coverage"
-        ? [desc(coveredCondition()), ...byName]
+        ? [desc(devices.covered), ...byName]
         : byName;
     const rows = db
       .select()
@@ -886,9 +872,21 @@ export function createApi(dbPath: string) {
 
   function getSummary(): Summary {
     const brands = listBrands();
-    const roms = listRoms();
-    const topDevices = listDevices()
-      .filter((device) => device.roms.length > 0)
+    const romCount = Number(
+      db
+        .select({ count: sql<number>`count(*)` })
+        .from(roms)
+        .get()?.count ?? 0,
+    );
+    const coveredRomCount = Number(
+      db
+        .select({ count: sql<number>`count(distinct ${romDevices.romId})` })
+        .from(romDevices)
+        .get()?.count ?? 0,
+    );
+    // Only covered devices can lead the list, so load that slice instead of
+    // the whole 9k catalogue.
+    const topDevices = listDevicesPage({ hasRoms: true })
       .sort(
         (a, b) =>
           b.roms.length - a.roms.length ||
@@ -899,8 +897,8 @@ export function createApi(dbPath: string) {
     return {
       deviceCount: brands.reduce((sum, brand) => sum + brand.deviceCount, 0),
       brandCount: brands.length,
-      romCount: roms.length,
-      coveredRomCount: roms.filter((rom) => rom.deviceCount > 0).length,
+      romCount,
+      coveredRomCount,
       topDevices,
     };
   }

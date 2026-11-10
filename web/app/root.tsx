@@ -17,10 +17,11 @@ import "./app.css";
 import AppShell from "@/components/AppShell";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Button } from "@/components/ui/button";
-import { fetchMeta } from "@/lib/data";
+import { fetchMeta, syncContentHash } from "@/lib/data";
 
 export async function loader() {
   const meta = await fetchMeta();
+  syncContentHash(meta.contentHash);
   const generatedAt = new Date(meta.generatedAt);
   return data(
     {
@@ -41,7 +42,9 @@ export async function loader() {
 }
 
 export async function clientLoader() {
-  return { updatedAt: (await fetchMeta()).generatedAt };
+  const meta = await fetchMeta();
+  syncContentHash(meta.contentHash);
+  return { updatedAt: meta.generatedAt };
 }
 
 // Propagate the loader's validators to every document response.

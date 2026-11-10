@@ -1,6 +1,12 @@
 import { Menu } from "lucide-react";
-import type { ReactNode } from "react";
-import { Link, NavLink } from "react-router";
+import {
+  fetchBrands,
+  fetchDevicesPage,
+  fetchRoms,
+  fetchSummary,
+} from "@/lib/data";
+import { useEffect, useState, type ReactNode } from "react";
+import { Link, NavLink, useNavigation } from "react-router";
 import CommandPalette from "@/components/CommandPalette";
 import { ExportMenu } from "@/components/ExportMenu";
 import { GitHubIcon } from "@/components/GitHubIcon";
@@ -17,7 +23,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { fetchDeviceLetters, fetchRoms } from "@/lib/data";
 import { cn } from "@/lib/utils";
 
 interface Props {
@@ -27,9 +32,21 @@ interface Props {
 }
 
 const NAV_ITEMS = [
-  { to: "/devices", label: "Devices", preload: fetchDeviceLetters },
-  { to: "/roms", label: "ROMs", preload: fetchRoms },
+  { to: "/devices", label: "Devices" },
+  { to: "/roms", label: "ROMs" },
 ];
+
+// Warm the destination's data on intent. The router's own page-data prefetch
+// does not run client loaders, so this is what makes the click instant.
+const NAV_PRELOADS: Record<string, () => Promise<unknown>> = {
+  "/devices": () =>
+    Promise.all([
+      fetchSummary(),
+      fetchBrands(),
+      fetchDevicesPage({ sort: "coverage", limit: 200, offset: 0 }),
+    ]),
+  "/roms": fetchRoms,
+};
 
 type NavItem = (typeof NAV_ITEMS)[number];
 
@@ -37,10 +54,8 @@ const GITHUB_URL = "https://github.com/petermichon/unrom";
 const ODBL_URL = "https://opendatacommons.org/licenses/odbl/1-0/";
 
 function TopNavLink({ item }: { item: NavItem }) {
-  // Start the clientLoader's fetch before the click so navigation does not
-  // wait on the network.
   const preload = () => {
-    void item.preload().catch(() => {});
+    void NAV_PRELOADS[item.to]?.().catch(() => {});
   };
 
   return (
@@ -140,7 +155,35 @@ function MobileMenu() {
   );
 }
 
+/** Appears only if the navigation takes longer than a frame or two. */
+function DelayedBar() {
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => setVisible(true), 120);
+    return () => window.clearTimeout(timer);
+  }, []);
+
+  return visible ? (
+    <span
+      aria-hidden="true"
+      className="absolute inset-x-0 bottom-0 z-10 h-0.5 bg-brand"
+    />
+  ) : null;
+}
+
+/**
+ * A delayed progress bar: instant navigations show nothing at all. The key
+ * remounts the timer for each navigation.
+ */
+function NavigationProgress() {
+  const navigation = useNavigation();
+  if (navigation.state === "idle") return null;
+  return <DelayedBar key={navigation.location?.key ?? "pending"} />;
+}
+
 export default function AppShell({ updatedAt, updatedAtIso, children }: Props) {
+  const navigation = useNavigation();
   return (
     <TooltipProvider>
       <div className="flex min-h-svh flex-col bg-background">
@@ -196,9 +239,15 @@ export default function AppShell({ updatedAt, updatedAtIso, children }: Props) {
               <MobileMenu />
             </div>
           </div>
+          <NavigationProgress />
         </header>
 
-        <main id="content" tabIndex={-1} className="flex-1 px-4 py-10 sm:px-6">
+        <main
+          id="content"
+          tabIndex={-1}
+          aria-busy={navigation.state !== "idle"}
+          className="flex-1 px-4 py-10 sm:px-6"
+        >
           <div className="mx-auto w-full max-w-6xl">{children}</div>
         </main>
 

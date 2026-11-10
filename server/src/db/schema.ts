@@ -1,4 +1,10 @@
-import { sqliteTable, text, primaryKey, index } from "drizzle-orm/sqlite-core";
+import {
+  sqliteTable,
+  text,
+  integer,
+  primaryKey,
+  index,
+} from "drizzle-orm/sqlite-core";
 
 export const roms = sqliteTable("roms", {
   id: text("id").primaryKey(),
@@ -16,8 +22,14 @@ export const devices = sqliteTable(
     name: text("name"),
     // JSON array of every canonical model name for this codename.
     names: text("names"),
+    // 1 when a build targets this codename or a variant main it inherits
+    // from. Derived at build time; see buildDatabase().
+    covered: integer("covered").notNull().default(0),
   },
-  (table) => [primaryKey({ columns: [table.vendor, table.codename] })],
+  (table) => [
+    primaryKey({ columns: [table.vendor, table.codename] }),
+    index("devices_covered_idx").on(table.covered),
+  ],
 );
 
 export const romDevices = sqliteTable(

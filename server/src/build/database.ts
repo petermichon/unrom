@@ -2,6 +2,7 @@ import { rmSync } from "node:fs";
 import { createHash } from "node:crypto";
 
 import Database from "better-sqlite3";
+import { sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/better-sqlite3";
 
 import {
@@ -778,6 +779,21 @@ export function buildDatabase(
     for (const coverage of coverageRows) {
       tx.insert(deviceVariants).values(coverage).run();
     }
+    // Coverage is a fact about the build, so bake it into the row: gets,
+    // filters and ordering can then use a plain integer instead of a
+    // correlated EXISTS over every device.
+    tx.run(sql`
+      update devices set covered = 1
+      where exists (
+        select 1 from rom_devices rd
+        where rd.vendor = devices.vendor and rd.codename = devices.codename
+      ) or exists (
+        select 1 from device_variants dv
+        join rom_devices rd on rd.vendor = dv.vendor and rd.codename = dv.codename
+        where dv.vendor = devices.vendor
+          and dv.variant_codename = devices.codename
+      )
+    `);
     for (const [key, value] of metaRows) {
       tx.insert(meta).values({ key, value }).run();
     }

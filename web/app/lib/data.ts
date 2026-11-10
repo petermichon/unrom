@@ -15,10 +15,7 @@ function apiBase(): string {
   return process.env.API_URL ?? "http://127.0.0.1:3000";
 }
 
-// Every loader queries the API directly. The dataset can be replaced under a
-// running frontend (a deploy may recreate the API without this process), so no
-// response is cached across requests: a stale copy cannot outlive a deploy.
-async function get<T>(path: string): Promise<T> {
+async function fetchJson<T>(path: string): Promise<T> {
   const response = await fetch(`${apiBase()}${path}`);
   if (!response.ok) {
     throw new Response(`API request failed: ${path}`, {
@@ -26,6 +23,60 @@ async function get<T>(path: string): Promise<T> {
     });
   }
   return (await response.json()) as T;
+}
+
+// The browser keeps the responses it has already seen so a navigation back to
+// a page is instant instead of waiting on another round trip. In-flight
+// requests are shared too. A new deploy changes the dataset hash, which clears
+// the cache; the server never caches across requests.
+const CACHE_LIMIT = 40;
+const clientCache = new Map<string, Promise<unknown>>();
+let contentHash: string | null = null;
+
+/** Called with the root meta hash; a new dataset invalidates every page. */
+export function syncContentHash(hash: string): void {
+  if (contentHash === null) {
+    contentHash = hash;
+    return;
+  }
+  if (contentHash === hash) return;
+  contentHash = hash;
+  clientCache.clear();
+}
+
+/**
+ * Cache a browser-side load by key. In-flight promises are shared, and the
+ * least recently used entry is evicted past the limit. The server never
+ * caches.
+ */
+function cached<T>(key: string, load: () => Promise<T>): Promise<T> {
+  if (typeof window === "undefined") return load();
+
+  const hit = clientCache.get(key);
+  if (hit) {
+    // Refresh insertion order so the limit evicts the least recently used.
+    clientCache.delete(key);
+    clientCache.set(key, hit);
+    return hit as Promise<T>;
+  }
+
+  const pending = load().catch((error: unknown) => {
+    clientCache.delete(key);
+    throw error;
+  });
+  clientCache.set(key, pending);
+  if (clientCache.size > CACHE_LIMIT) {
+    const oldest = clientCache.keys().next().value;
+    if (oldest !== undefined) clientCache.delete(oldest);
+  }
+  return pending;
+}
+
+async function get<T>(
+  path: string,
+  { cache = true }: { cache?: boolean } = {},
+): Promise<T> {
+  return cache ? cached(path, () => fetchJson<T>(path)) : fetchJson<T>(path);
 }
 
 export function fetchAllDevices(): Promise<BrowseDevice[]> {
@@ -100,16 +151,18 @@ export async function fetchDevicesPage(options: {
     params.set("hasRoms", String(options.hasRoms));
   }
   if (options.sort) params.set("sort", options.sort);
-  const response = await fetch(`${apiBase()}/api/devices?${params}`);
-  if (!response.ok) {
-    throw new Response("API request failed: /api/devices", {
-      status: response.status,
-    });
-  }
-  return {
-    devices: (await response.json()) as BrowseDevice[],
-    total: Number(response.headers.get("x-total-count") ?? 0),
-  };
+  return cached(`/api/devices?${params}`, async () => {
+    const response = await fetch(`${apiBase()}/api/devices?${params}`);
+    if (!response.ok) {
+      throw new Response("API request failed: /api/devices", {
+        status: response.status,
+      });
+    }
+    return {
+      devices: (await response.json()) as BrowseDevice[],
+      total: Number(response.headers.get("x-total-count") ?? 0),
+    };
+  });
 }
 
 export function fetchDevice(
@@ -129,6 +182,19 @@ export function fetchRom(id: string): Promise<RomDetail> {
   return get<RomDetail>(`/api/roms/${encodeURIComponent(id)}`);
 }
 
+// Meta is the deploy detector, so it bypasses the page cache. A short TTL
+// keeps navigation off the network without delaying a new dataset for long.
+const META_TTL = 10_000;
+let metaCache: { at: number; value: Promise<Meta> } | null = null;
+
 export function fetchMeta(): Promise<Meta> {
-  return get<Meta>("/api/meta");
+  if (typeof window === "undefined") return fetchJson<Meta>("/api/meta");
+  const now = Date.now();
+  if (metaCache && now - metaCache.at < META_TTL) return metaCache.value;
+  const value = fetchJson<Meta>("/api/meta").catch((error: unknown) => {
+    if (metaCache?.value === value) metaCache = null;
+    throw error;
+  });
+  metaCache = { at: now, value };
+  return value;
 }
