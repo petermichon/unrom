@@ -7,7 +7,7 @@ import type { Route } from "./+types/legal";
 const REPO_URL = "https://github.com/petermichon/unrom";
 const ODBL_URL = "https://opendatacommons.org/licenses/odbl/1-0/";
 const CONTACT_EMAIL = "contact@unrom.com";
-const LAST_UPDATED = "2026-11-08";
+const LAST_UPDATED = "2026-11-10";
 
 export const meta: Route.MetaFunction = () => [
   ...pageMeta({
@@ -30,7 +30,7 @@ export default function LegalRoute() {
       />
 
       <p className="text-xs text-muted-foreground">
-        Last updated <time dateTime={LAST_UPDATED}>8 November 2026</time>.
+        Last updated <time dateTime={LAST_UPDATED}>10 November 2026</time>.
       </p>
 
       <section aria-labelledby="publisher" className="flex flex-col gap-2">
@@ -141,8 +141,11 @@ export default function LegalRoute() {
           sites. It records the page URL, referrer, title, screen size,
           language, browser, operating system, device type, and country. The
           server may process your IP address to derive the country and prevent
-          abuse. Analytics is disabled when your browser sends Do Not Track.
-          Retention: up to 12 months.
+          abuse. Analytics is cookieless and aggregate: no IP address is stored
+          and no profile is built across sites. We do not exclude visits based
+          on the Do Not Track header, because it is deprecated and would skew
+          the counts; there is no personal tracking to opt out of. Retention: up
+          to 12 months.
         </p>
         <p className="text-sm text-muted-foreground">
           We do not sell data or share it for advertising. The site and
