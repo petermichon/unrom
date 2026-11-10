@@ -500,6 +500,8 @@ export const DEVICE_NAMES: Record<string, string[]> = {
   "radxa\0radxa02": ["Radxa Zero 2 (S905D3, eMMC only) (Android TV)"],
   "radxa\0radxa02_tab": ["Radxa Zero 2 (S905D3, eMMC only) (Tablet)"],
 
+  "rakuten\0c330ae": ["Rakuten Mini"],
+
   "razer\0aura": ["Razer Phone 2"],
   "razer\0cheryl": ["Razer Phone"],
   "razer\0nicole": ["Razer Edge 5G"],

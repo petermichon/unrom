@@ -1,0 +1,95 @@
+{
+  "devices": [
+    {
+      "name": "Pixel 6a",
+      "codename": "bluejay",
+      "brand": "Google",
+      "maintainer": {
+        "name": "Toufu",
+        "github": "toufune"
+      },
+      "downloadUrl": "https://sourceforge.net/projects/witaqua/files/15.1/bluejay/WitAqua-15.1-20250212-bluejay-v2.1-OFFICIAL.zip/download",
+      "imgsUrl": "https://sourceforge.net/projects/witaqua/files/15.1/bluejay/images/",
+      "archiveUrl": "https://sourceforge.net/projects/witaqua/files/15.1/bluejay",
+      "installUrl": "https://wiki.witaqua.org/devices/bluejay",
+      "latestAndroidVersion": "15.1",
+      "datetime": 1739616725,
+      "filename": "WitAqua-15.1-20250212-bluejay-v2.1-OFFICIAL.zip",
+      "md5": "49ef72b19c9b2addea8db508ca9b00b7",
+      "size": 1418544496
+    },
+    {
+      "name": "Xiaomi Mi 8",
+      "codename": "dipper",
+      "brand": "Xiaomi",
+      "maintainer": {
+        "name": "Neroices",
+        "github": "neroices"
+      },
+      "downloadUrl": "https://sourceforge.net/projects/witaqua/files/15/dipper/WitAqua-15.0-20241222-dipper-v2.0-OFFICIAL.zip/download",
+      "imgsUrl": "https://sourceforge.net/projects/witaqua/files/15/dipper/images/",
+      "archiveUrl": "https://sourceforge.net/projects/witaqua/files/15/dipper/",
+      "installUrl": "https://wiki.witaqua.org/devices/dipper",
+      "latestAndroidVersion": "15",
+      "datetime": 1739616725,
+      "filename": "WitAqua-15.0-20241222-dipper-v2.0-OFFICIAL.zip",
+      "md5": "5660eb5e11e004c5c98910389874bcbe",
+      "size": 1418544496,
+      "deprecated": true
+    },
+    {
+      "name": "Redmi Note 7",
+      "codename": "lavender",
+      "brand": "Xiaomi",
+      "maintainer": {
+        "name": "Neroices",
+        "github": "neroices"
+      },
+      "downloadUrl": "https://sourceforge.net/projects/witaqua/files/15.1/lavender/WitAqua-15.1-20250223-lavender-v2.1-OFFICIAL.zip/download",
+      "imgsUrl": "https://sourceforge.net/projects/witaqua/files/15.1/lavender/images/",
+      "archiveUrl": "https://sourceforge.net/projects/witaqua/files/15.1/lavender/",
+      "installUrl": "https://wiki.witaqua.org/devices/lavender",
+      "latestAndroidVersion": "15.1",
+      "datetime": 1740298709,
+      "filename": "WitAqua-15.1-20250223-lavender-v2.1-OFFICIAL.zip",
+      "md5": "57475669351b14c5129c94da7f498e3b",
+      "size": 1171064849
+    },
+    {
+      "name": "Xiaomi Mi 11 Lite 5G",
+      "codename": "renoir",
+      "brand": "Xiaomi",
+      "maintainer": {
+        "name": "Maitani-Sakura",
+        "github": "Maitani-Sakura"
+      },
+      "downloadUrl": "https://sourceforge.net/projects/witaqua/files/15.1/renoir/WitAqua-15.1-20250223-renoir-v2.1-OFFICIAL.zip/download",
+      "imgsUrl": "https://sourceforge.net/projects/witaqua/files/15.1/renoir/images/",
+      "archiveUrl": "https://sourceforge.net/projects/witaqua/files/15.1/renoir/",
+      "installUrl": "https://wiki.witaqua.org/devices/renoir",
+      "latestAndroidVersion": "15.1",
+      "datetime": 1740306463,
+      "filename": "WitAqua-15.1-20250223-renoir-v2.1-OFFICIAL.zip",
+      "md5": "ce7a0b5a434abe5041fba117bd734b3d",
+      "size": 1459574124
+    },
+    {
+      "name": "Pixel 7",
+      "codename": "panther",
+      "brand": "Google",
+      "maintainer": {
+        "name": "Ruron",
+        "github": "RuronKun3141"
+      },
+      "downloadUrl": "https://sourceforge.net/projects/witaqua/files/15.1/panther/WitAqua-15.1-20250227-panther-v2.1-OFFICIAL.zip/download",
+      "imgsUrl": "https://sourceforge.net/projects/witaqua/files/15.1/panther/images/",
+      "archiveUrl": "https://sourceforge.net/projects/witaqua/files/15.1/panther",
+      "installUrl": "https://wiki.witaqua.org/devices/panther",
+      "latestAndroidVersion": "15.1",
+      "datetime": 1740636347,
+      "filename": "WitAqua-15.1-20250227-panther-v2.1-OFFICIAL.zip",
+      "md5": "86be0c9c18564b878eef6ed8fa886566",
+      "size": 1461948883
+    }
+  ]
+}

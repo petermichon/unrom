@@ -1,0 +1,18 @@
+{
+  "devices": [
+    {
+      "codename": "M06",
+      "manufacturer": "FCNT",
+      "name": "arrows We2 Plus",
+      "version": "16",
+      "recovery_images": ["vendor_boot", "recovery"]
+    },
+    {
+      "codename": "c330ae",
+      "manufacturer": "Rakuten / Tinno",
+      "name": "Rakuten Mini",
+      "version": "16",
+      "recovery_images": ["dtbo", "recovery"]
+    }
+  ]
+}

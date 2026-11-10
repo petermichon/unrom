@@ -11,6 +11,7 @@ open an issue.
 
 | ROM                  | Data source                        | Upstream                                                                    |
 | -------------------- | ---------------------------------- | --------------------------------------------------------------------------- |
+| 2by2 Project         | `devices.json` (+ legacy)          | https://github.com/2by2-Project                                             |
 | AfterlifeOS          | `devices.json`                     | https://github.com/AfterlifeOS/device_afterlife_ota                         |
 | AICP                 | `aicp-build-targets`               | https://github.com/AICP/vendor_jenkins                                      |
 | AlphaDroid           | `data/devices.json` + `devices.md` | https://alphadroid.org                                                      |
@@ -30,7 +31,9 @@ open an issue.
 | dotOS                | `devices.json`                     | https://github.com/DotOS/official_devices                                   |
 | DroidX-UI            | `devices.json`                     | https://github.com/DroidX-UI-Devices/vendor_droidxOTA                       |
 | /e/OS                | official devices page              | https://doc.e.foundation/devices                                            |
+| EtherealOS           | `devices.json` (A14)               | https://github.com/Ethereal-OS/Ethereal-Devices                             |
 | Evolution X          | OTA `builds/`                      | https://github.com/Evolution-X/OTA                                          |
+| GenesisOS            | `devices/DeviceList.json`          | https://github.com/GenesisOS/Website-Data                                   |
 | GrapheneOS           | FAQ device list                    | https://grapheneos.org/faq#supported-devices                                |
 | Havoc-OS             | `devices`                          | https://github.com/Havoc-OS/Devices                                         |
 | iodéOS               | supported-devices page             | https://iode.tech/iodeos-official-supported-devices                         |
@@ -49,8 +52,10 @@ open an issue.
 | PixysOS              | `devices.json`                     | https://github.com/PixysOS/official_devices                                 |
 | Project Infinity X   | `devices.json` (16+17)             | https://github.com/ProjectInfinity-X                                        |
 | Project PixelAge     | OTA `devices/`                     | https://github.com/ProjectPixelage/pixelage_ota                             |
+| Project Sakura       | OTA `devices.json`                 | https://github.com/ProjectSakura/OTA                                        |
 | RisingOS             | `devices.md`                       | https://github.com/RisingOS-Revived/official_devices                        |
 | SuperiorOS           | OTA `*.json`                       | https://github.com/SuperiorOS-Devices/official_devices                      |
+| WitAqua              | `data/devices.json`                | https://github.com/WitAqua/WitAquaOTA                                       |
 
 ## Device catalogues
 

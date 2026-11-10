@@ -33,16 +33,17 @@ date so the staleness is visible.
 Best first batch: one fetcher and one normalizer each, stable URLs, current
 branches.
 
-| ROM           | Devices | File updated | Source                                                                                                 |
-| ------------- | ------: | ------------ | ------------------------------------------------------------------------------------------------------ |
-| 2by2 Project  |       2 | 2026-06-16   | [`devices.json`](https://github.com/2by2-Project/android_vendor_2by2-ota/blob/main/devices.json)       |
-| ProjectSakura |       2 | 2026-09-30   | [`OTA/devices.json`](https://github.com/ProjectSakura/OTA/blob/16/devices.json)                        |
-| WitAqua       |       5 | 2025-03-07   | [`data/devices.json`](https://github.com/WitAqua/WitAquaOTA/blob/main/data/devices.json)               |
-| GenesisOS     |      16 | 2024-09-14   | [`devices/DeviceList.json`](https://github.com/GenesisOS/Website-Data/blob/v2/devices/DeviceList.json) |
-| EtherealOS    |       2 | 2024-07-25   | [`devices.json`](https://github.com/Ethereal-OS/Ethereal-Devices/blob/A13/devices.json)                |
+| ROM           | Devices | File updated | Source                                                                                                                                                                              |
+| ------------- | ------: | ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2by2 Project  |       5 | 2026-06-16   | [`devices.json`](https://github.com/2by2-Project/android_vendor_2by2-ota/blob/main/devices.json) + [legacy](https://github.com/2by2-Project/vendor_2by2-ota/blob/main/devices.json) |
+| ProjectSakura |       2 | 2026-09-30   | [`OTA/devices.json`](https://github.com/ProjectSakura/OTA/blob/16/devices.json)                                                                                                     |
+| WitAqua       |       5 | 2025-03-07   | [`data/devices.json`](https://github.com/WitAqua/WitAquaOTA/blob/main/data/devices.json)                                                                                            |
+| GenesisOS     |      16 | 2024-09-14   | [`devices/DeviceList.json`](https://github.com/GenesisOS/Website-Data/blob/v2/devices/DeviceList.json)                                                                              |
+| EtherealOS    |       2 | 2026-01-01   | [`devices.json`](https://github.com/Ethereal-OS/Ethereal-Devices/blob/A14/devices.json)                                                                                             |
 
-EtherealOS writes one JSON object per device back to back rather than a single
-array, so its parser has to split on object boundaries.
+2by2 publishes one roster per Android branch, so the current `android_vendor_*`
+file and the legacy `vendor_*` file are unioned. EtherealOS's A13 file is
+truncated upstream; the A14 branch is a clean array and is the one to use.
 
 ## Tier 2 — active, a directory of per-device JSON
 
@@ -115,7 +116,7 @@ PenguinOS, The Parasite Project, xiaomi.eu.
 
 ## Suggested order
 
-1. Tier 1 (5 ROMs, 27 devices) — smallest change, all active.
+1. Tier 1 (5 ROMs, 30 devices) — smallest change, all active.
 2. Tier 2 (4 ROMs, ~60 devices) — build the shared tree fetcher once.
 3. Tier 3 by file date, newest first (Project Blaze, TequilaOS, PixelStar,
    SomethingOS, Kraken, Lighthouse, …). Skip 2017–2018 files unless the ROM is

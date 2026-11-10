@@ -8,7 +8,7 @@ Implemented ROMs use unrom's canonical names.
 
 Out of scope: recoveries, root tools, GSIs and repacks, OEM stock skins.
 
-- ❌ 2by2 Project
+- 🟢 2by2 Project
 - Abhix MIUI
 - AetheriaOS
 - AetherOS
@@ -91,7 +91,7 @@ Out of scope: recoveries, root tools, GSIs and repacks, OEM stock skins.
 - ❌ EliteRoms
 - ❌ ElytraOS
 - ❌ Eternity OS
-- ❌ EtherealOS
+- 🟢 EtherealOS
 - ❌ euclidOS
 - ❌ EunoiaOS
 - ❌ Evervolv
@@ -111,7 +111,7 @@ Out of scope: recoveries, root tools, GSIs and repacks, OEM stock skins.
 - Frosty
 - Fundamental OS
 - ❌ Fusion OS
-- ❌ GenesisOS
+- 🟢 GenesisOS
 - ❌ GhostOS
 - Good4Nothing-AOSP
 - 🟢 GrapheneOS
@@ -216,7 +216,7 @@ Out of scope: recoveries, root tools, GSIs and repacks, OEM stock skins.
 - Project Nirwana
 - 🟢 Project PixelAge
 - ❌ Project Radiant
-- ❌ Project Sakura
+- 🟢 Project Sakura
 - Project Shinkai
 - ❌ Project Streak
 - ❌ Project Titanium
@@ -275,7 +275,7 @@ Out of scope: recoveries, root tools, GSIs and repacks, OEM stock skins.
 - ❌ Watchdogs ROM
 - ❌ WaveOS
 - ❌ Weeb Projekt
-- ❌ WitAqua
+- 🟢 WitAqua
 - ❌ Xdroid CAF
 - ❌ Xdroid OS
 - ❌ Xen AOSP

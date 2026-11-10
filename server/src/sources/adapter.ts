@@ -252,6 +252,16 @@ export const selectors = {
       device: isObject(device) ? device : {},
     })),
 
+  // An array where retired entries stay in place behind a boolean flag.
+  arrayEnabled:
+    (enabledKey: string) =>
+    (data: unknown): DeviceEntry[] =>
+      (Array.isArray(data) ? data : [])
+        .filter((device) => keepDevice(device, enabledKey))
+        .map((device) => ({
+          device: isObject(device) ? device : {},
+        })),
+
   devices:
     (key: string, options: { enabledKey?: string } = {}) =>
     (data: unknown): DeviceEntry[] => {

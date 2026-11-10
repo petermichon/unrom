@@ -22,6 +22,14 @@ import { listDevices as listCrDroid } from "./fetch/crdroid.ts";
 import { listDevices as listDerpFest } from "./fetch/derpfest.ts";
 import { listDevices as listDotOS } from "./fetch/dotos.ts";
 import { listDevices as listDroidXUI } from "./fetch/droidxui.ts";
+import {
+  listDevices as list2by2,
+  listLegacyDevices as list2by2Legacy,
+} from "./fetch/2by2.ts";
+import { listDevices as listEtherealOS } from "./fetch/etherealos.ts";
+import { listDevices as listGenesisOS } from "./fetch/genesisos.ts";
+import { listDevices as listProjectSakura } from "./fetch/project-sakura.ts";
+import { listDevices as listWitAqua } from "./fetch/witaqua.ts";
 // /e/OS: its GitLab releases repo is no longer publicly readable, so the
 // `eos-*.yml` snapshots are frozen; the live source is the official devices page.
 import { listDevices as listEos } from "./fetch/eos.ts";
@@ -83,6 +91,12 @@ const sources: Source[] = [
   { id: "derpfest", file: "derpfest.json", fetch: listDerpFest },
   { id: "dotos", file: "dotos.json", fetch: listDotOS },
   { id: "droidxui", file: "droidxui.json", fetch: listDroidXUI },
+  { id: "2by2-project", file: "2by2.json", fetch: list2by2 },
+  { id: "2by2-project", file: "2by2-legacy.json", fetch: list2by2Legacy },
+  { id: "etherealos", file: "etherealos.json", fetch: listEtherealOS },
+  { id: "genesisos", file: "genesisos.json", fetch: listGenesisOS },
+  { id: "project-sakura", file: "sakura.json", fetch: listProjectSakura },
+  { id: "witaqua", file: "witaqua.json", fetch: listWitAqua },
   { id: "eos", file: "eos.html", fetch: listEos },
   { id: "evolutionx", file: "evolutionx.json", fetch: listEvolutionX },
   { id: "grapheneos", file: "grapheneos.html", fetch: listGrapheneOS },

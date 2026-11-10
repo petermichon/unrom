@@ -233,6 +233,64 @@ const configs: DeviceSource[] = [
     referencePage:
       "https://sourceforge.net/projects/projectpixelage/files/{codename}/",
   },
+  {
+    id: "2by2-project",
+    romName: "2by2 Project",
+    file: "2by2.json",
+    select: selectors.devices("devices"),
+    name: ["name"],
+    brand: ["manufacturer"],
+    referencePage:
+      "https://github.com/2by2-Project/android_vendor_2by2-ota/blob/main/devices.json",
+  },
+  {
+    id: "2by2-project",
+    romName: "2by2 Project",
+    file: "2by2-legacy.json",
+    select: selectors.devices("devices"),
+    name: ["name"],
+    brand: ["manufacturer"],
+    referencePage:
+      "https://github.com/2by2-Project/vendor_2by2-ota/blob/main/devices.json",
+  },
+  {
+    id: "project-sakura",
+    romName: "Project Sakura",
+    file: "sakura.json",
+    select: selectors.arrayEnabled("active"),
+    name: ["name"],
+    brand: ["brand"],
+    referencePage: "https://github.com/ProjectSakura/OTA/blob/16/devices.json",
+  },
+  {
+    id: "witaqua",
+    romName: "WitAqua",
+    file: "witaqua.json",
+    select: selectors.devices("devices"),
+    name: ["name"],
+    brand: ["brand"],
+    referencePage:
+      "https://github.com/WitAqua/WitAquaOTA/blob/main/data/devices.json",
+  },
+  {
+    id: "genesisos",
+    romName: "GenesisOS",
+    file: "genesisos.json",
+    select: selectors.devices("devices", { enabledKey: "isMaintained" }),
+    name: ["name"],
+    referencePage:
+      "https://github.com/GenesisOS/Website-Data/blob/v2/devices/DeviceList.json",
+  },
+  {
+    id: "etherealos",
+    romName: "EtherealOS",
+    file: "etherealos.json",
+    select: selectors.array,
+    name: ["name"],
+    brand: ["brand"],
+    referencePage:
+      "https://github.com/Ethereal-OS/Ethereal-Devices/blob/A14/devices.json",
+  },
 ];
 
 // Sources whose raw shape does not fit the config adapter.
