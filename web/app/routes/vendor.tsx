@@ -2,7 +2,13 @@ import { Link, redirect, useLoaderData } from "react-router";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import DeviceRow from "@/components/DeviceRow";
 import { PageHeader } from "@/components/PageHeader";
-import { fetchDevicesPage } from "@/lib/data";
+import {
+  BrandPicker,
+  CoverageToggle,
+  DirectoryPager,
+  DirectorySearch,
+} from "@/components/directory";
+import { fetchBrands, fetchDevicesPage } from "@/lib/data";
 import { isUsefulDirectoryPage } from "@/lib/indexing";
 import { deviceName } from "@/lib/devices";
 import {
@@ -13,18 +19,39 @@ import {
   summarizeNames,
   updatedAtFromMatches,
 } from "@/lib/seo";
+import { bySortKey } from "@/lib/sort";
 import { formatNumber } from "@/lib/utils";
 import type { Route } from "./+types/vendor";
 
 const PAGE_SIZE = 200;
 
+function vendorHref(
+  vendor: string,
+  {
+    q,
+    roms,
+    page,
+  }: {
+    q?: string;
+    roms?: boolean;
+    page?: number;
+  },
+): string {
+  const params = new URLSearchParams();
+  if (q) params.set("q", q);
+  if (roms) params.set("roms", "1");
+  if (page && page > 1) params.set("page", String(page));
+  const search = params.toString();
+  return `/devices/${encodeURIComponent(vendor)}${search ? `?${search}` : ""}`;
+}
+
 export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
   if (error || !loaderData) return errorMeta("Brand not found | unrom");
-  const { vendor, vendorName, devices, total, page, pages } = loaderData;
+  const { vendorName, devices, total, page, pages } = loaderData;
   const updatedAt = updatedAtFromMatches(matches);
   const description =
     total === 0
-      ? `No ${vendorName} devices in the catalogue yet.`
+      ? `No ${vendorName} devices match this search.`
       : `${formatNumber(total)} ${vendorName} device${total === 1 ? "" : "s"}${
           pages > 1 ? `, page ${page} of ${pages}` : ""
         }, including ${summarizeNames(devices.map(deviceName), 3, total)}.`;
@@ -33,7 +60,7 @@ export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
     ...pageMeta({
       title: `${vendorName} custom ROM devices | unrom`,
       description,
-      path: `/devices/${vendor}${page > 1 ? `?page=${page}` : ""}`,
+      path: loaderData.href,
     }),
     ...modifiedMeta(updatedAt),
     ...(loaderData.isIndexable ? [] : [{ name: "robots", content: "noindex" }]),
@@ -53,41 +80,61 @@ export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
   ];
 };
 
-async function load(vendor: string, request: URL) {
+async function load(vendorParam: string, request: URL) {
+  const q = (request.searchParams.get("q") ?? "").trim();
+  const roms = request.searchParams.get("roms") === "1";
   const page = Math.max(
     1,
     Math.trunc(Number(request.searchParams.get("page")) || 1),
   );
+
+  const brands = await fetchBrands();
+  const brand = brands.find(
+    (entry) => entry.vendor === vendorParam.toLowerCase(),
+  );
+  if (!brand) throw new Response("Not found", { status: 404 });
+  if (brand.vendor !== vendorParam) {
+    throw redirect(`/devices/${brand.vendor}${request.search}`, 301);
+  }
+
   const { devices, total } = await fetchDevicesPage({
-    vendor,
+    vendor: brand.vendor,
+    q: q || undefined,
+    hasRoms: roms || undefined,
+    sort: "coverage",
     limit: PAGE_SIZE,
     offset: (page - 1) * PAGE_SIZE,
   });
-  if (devices.length === 0) {
-    throw new Response("Not found", { status: 404 });
-  }
 
-  const canonical = devices[0].vendor;
-  if (canonical !== vendor) {
-    throw redirect(
-      `/devices/${encodeURIComponent(canonical)}${request.search}`,
-      301,
-    );
-  }
-
-  const pages = Math.ceil(total / PAGE_SIZE);
+  const pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
   if (page > pages) throw new Response("Not found", { status: 404 });
 
+  const href = vendorHref(brand.vendor, {
+    q: q || undefined,
+    roms,
+    page,
+  });
+
   return {
-    vendor: canonical,
-    vendorName: devices[0].vendorName,
+    vendor: brand.vendor,
+    vendorName: brand.vendorName,
+    brands: [...brands].sort(
+      (a, b) => bySortKey(a.vendorName, b.vendorName) || 0,
+    ),
+    q,
+    roms,
     devices,
     total,
     page,
     pages,
-    isIndexable: isUsefulDirectoryPage(
-      devices.filter((device) => device.roms.length > 0).length,
-    ),
+    href,
+    isIndexable:
+      page === 1 &&
+      !q &&
+      !roms &&
+      isUsefulDirectoryPage(
+        devices.filter((device) => device.roms.length > 0).length,
+      ),
   };
 }
 
@@ -102,33 +149,8 @@ export async function clientLoader({
   return load(params.vendor, new URL(request.url));
 }
 
-function pageHref(vendor: string, page: number): string {
-  const base = `/devices/${encodeURIComponent(vendor)}`;
-  return page > 1 ? `${base}?page=${page}` : base;
-}
-
-function PageLink({
-  vendor,
-  page,
-  children,
-}: {
-  vendor: string;
-  page: number;
-  children: string;
-}) {
-  return (
-    <Link
-      to={pageHref(vendor, page)}
-      prefetch="intent"
-      className="rounded-lg border border-border/60 px-3 py-2 text-sm font-medium outline-none transition-colors hover:border-foreground/20 hover:bg-muted/40 focus-visible:ring-3 focus-visible:ring-ring/50"
-    >
-      {children}
-    </Link>
-  );
-}
-
 export default function VendorRoute() {
-  const { vendor, vendorName, devices, total, page, pages } =
+  const { vendor, vendorName, brands, q, roms, devices, total, page, pages } =
     useLoaderData<typeof loader>();
 
   return (
@@ -143,52 +165,87 @@ export default function VendorRoute() {
 
       <PageHeader
         title={vendorName}
-        description={`${formatNumber(total)} device${total === 1 ? "" : "s"}. ROM-covered devices first.`}
-        endpoint={`/api/devices?vendor=${vendor}&limit=${PAGE_SIZE}`}
+        description={`${formatNumber(total)} ${vendorName} device${total === 1 ? "" : "s"}. Search within the brand or show only devices with ROM data.`}
+        endpoint={(() => {
+          const params = new URLSearchParams();
+          params.set("vendor", vendor);
+          if (q) params.set("q", q);
+          if (roms) params.set("hasRoms", "true");
+          params.set("sort", "coverage");
+          params.set("limit", String(PAGE_SIZE));
+          return `/api/devices?${params}`;
+        })()}
       />
 
-      <ul className="flex flex-col">
-        {devices.map((device) => (
-          <li key={`${device.vendor}/${device.codename}`}>
-            <DeviceRow device={device} showBrand={false} />
-          </li>
-        ))}
-      </ul>
+      <div className="flex flex-col gap-4">
+        <DirectorySearch
+          action={vendorHref(vendor, {})}
+          q={q}
+          placeholder={`Search ${vendorName} devices by name or codename…`}
+          hidden={{ roms: roms ? "1" : undefined }}
+        />
 
-      {pages > 1 && (
-        <nav
-          aria-label="Pagination"
-          className="flex flex-wrap items-center justify-between gap-3 border-t border-border/60 pt-4"
-        >
-          {page > 1 ? (
-            <PageLink vendor={vendor} page={page - 1}>
-              Previous
-            </PageLink>
-          ) : (
-            <span
-              aria-disabled="true"
-              className="px-3 py-2 text-sm text-muted-foreground"
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div className="flex flex-wrap items-center gap-3">
+            <BrandPicker brands={brands} current={vendor} q={q} roms={roms} />
+            <CoverageToggle
+              allHref={vendorHref(vendor, { q: q || undefined })}
+              romsHref={vendorHref(vendor, { q: q || undefined, roms: true })}
+              roms={roms}
+            />
+          </div>
+
+          <p
+            role="status"
+            aria-live="polite"
+            className="text-sm text-muted-foreground tabular-nums"
+          >
+            {formatNumber(total)} {total === 1 ? "device" : "devices"}
+            {page > 1 && ` · page ${page} of ${pages}`}
+          </p>
+        </div>
+      </div>
+
+      {devices.length === 0 ? (
+        <div className="index-frame px-6 py-16 text-center">
+          <p className="font-heading text-lg font-bold">No devices match</p>
+          <p className="mt-1 text-sm text-muted-foreground">
+            {q
+              ? `Nothing from ${vendorName} matches “${q}”.`
+              : "No device matches these filters."}{" "}
+            <Link
+              to={vendorHref(vendor, {})}
+              className="font-medium text-brand hover:underline"
             >
-              Previous
-            </span>
-          )}
-          <span className="text-sm text-muted-foreground tabular-nums">
-            Page {page} of {pages}
-          </span>
-          {page < pages ? (
-            <PageLink vendor={vendor} page={page + 1}>
-              Next
-            </PageLink>
-          ) : (
-            <span
-              aria-disabled="true"
-              className="px-3 py-2 text-sm text-muted-foreground"
-            >
-              Next
-            </span>
-          )}
-        </nav>
+              Clear the filters
+            </Link>
+            .
+          </p>
+        </div>
+      ) : (
+        <ul className="index-frame">
+          {devices.map((device) => (
+            <li key={`${device.vendor}/${device.codename}`}>
+              <DeviceRow device={device} showBrand={false} />
+            </li>
+          ))}
+        </ul>
       )}
+
+      <DirectoryPager
+        page={page}
+        pages={pages}
+        prevHref={
+          page > 1
+            ? vendorHref(vendor, { q: q || undefined, roms, page: page - 1 })
+            : null
+        }
+        nextHref={
+          page < pages
+            ? vendorHref(vendor, { q: q || undefined, roms, page: page + 1 })
+            : null
+        }
+      />
     </div>
   );
 }

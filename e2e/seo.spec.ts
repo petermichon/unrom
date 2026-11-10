@@ -6,7 +6,7 @@ const PAGES = [
   "/legal",
   "/brands",
   "/devices",
-  "/devices?vendor=xiaomi",
+  "/devices/xiaomi",
   "/roms",
   "/roms/projectinfinityx",
   "/devices/samsung/a52sxq",
@@ -229,15 +229,6 @@ test("directory pages with a single ROM device are not indexable", async ({
     const sitemap = await (await request.get("/sitemap-brands.xml")).text();
     expect(sitemap).not.toContain(
       `<loc>https://unrom.com/devices/${brand.vendor}</loc>`,
-    );
-  }
-
-  if (brand) {
-    // The brand-filtered directory duplicates the indexable brand page.
-    await page.goto(`/devices?vendor=${brand.vendor}`);
-    await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
-      "content",
-      "noindex",
     );
   }
 });

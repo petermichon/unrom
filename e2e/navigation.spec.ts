@@ -102,18 +102,18 @@ test("a brand page lists its devices", async ({ page }) => {
   await expect(page.locator("a.device-row").first()).toBeVisible();
 });
 
-test("the devices directory filters by brand", async ({ page }) => {
+test("the devices directory opens a brand page", async ({ page }) => {
   await page.goto("/devices");
 
   await expect(
     page.getByRole("heading", { name: "Devices", level: 1, exact: true }),
   ).toBeVisible();
 
-  const status = page.getByRole("status");
-  const before = await status.textContent();
   await page.getByRole("combobox", { name: "Brand" }).selectOption("xiaomi");
-  await expect(page).toHaveURL(/vendor=xiaomi/);
-  await expect(status).not.toHaveText(before ?? "");
+  await expect(page).toHaveURL(/\/devices\/xiaomi$/);
+  await expect(
+    page.getByRole("heading", { name: "Xiaomi", level: 1, exact: true }),
+  ).toBeVisible();
   await expect(page.locator("a.device-row").first()).toBeVisible();
 });
 
@@ -127,13 +127,13 @@ test("the directory shows only devices with ROM data", async ({ page }) => {
   await expect(page.getByText(/^0 ROMs$/)).toHaveCount(0);
 });
 
-test("the devices directory paginates", async ({ page }) => {
-  await page.goto("/devices?vendor=xiaomi");
+test("a brand page paginates its devices", async ({ page }) => {
+  await page.goto("/devices/xiaomi");
   await expect(page.getByText(/Page 1 of \d+/)).toBeVisible();
   await expect(page.locator("a.device-row")).toHaveCount(200);
 
   await page.getByRole("link", { name: "Next" }).click();
-  await expect(page).toHaveURL(/vendor=xiaomi&page=2$/);
+  await expect(page).toHaveURL(/\/devices\/xiaomi\?page=2$/);
   await expect(page.getByText(/Page 2 of \d+/)).toBeVisible();
   await expect(page.locator("a.device-row")).toHaveCount(200);
 });
@@ -153,9 +153,9 @@ test("old letter filters redirect to the directory", async ({ page }) => {
 
 test("uppercase brand filters redirect to lowercase", async ({ page }) => {
   await page.goto("/devices?vendor=Xiaomi");
-  await page.waitForURL("**/devices?vendor=xiaomi");
+  await page.waitForURL("**/devices/xiaomi");
   await expect(
-    page.getByRole("heading", { name: "Devices", level: 1, exact: true }),
+    page.getByRole("heading", { name: "Xiaomi", level: 1, exact: true }),
   ).toBeVisible();
 });
 

@@ -17,7 +17,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { fetchBrands, fetchDeviceLetters, fetchRoms } from "@/lib/data";
+import { fetchDeviceLetters, fetchRoms } from "@/lib/data";
 import { cn } from "@/lib/utils";
 
 interface Props {
@@ -29,7 +29,6 @@ interface Props {
 const NAV_ITEMS = [
   { to: "/devices", label: "Devices", preload: fetchDeviceLetters },
   { to: "/roms", label: "ROMs", preload: fetchRoms },
-  { to: "/brands", label: "Brands", preload: fetchBrands },
 ];
 
 type NavItem = (typeof NAV_ITEMS)[number];
@@ -88,6 +87,9 @@ function MobileMenu() {
               {item.label}
             </DropdownMenuItem>
           ))}
+          <DropdownMenuItem render={<Link to="/brands" />}>
+            All brands
+          </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>

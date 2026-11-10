@@ -17,7 +17,6 @@ const PATHS = [
   "/",
   "/brands",
   "/devices",
-  "/devices?vendor=xiaomi",
   "/devices/xiaomi",
   "/roms",
   "/devices/lenovo/A6020",
