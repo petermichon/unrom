@@ -120,7 +120,7 @@ export default function SiteNav() {
                   isActive
                     ? "bg-accent text-accent-foreground"
                     : isOpen
-                      ? "text-foreground"
+                      ? "bg-muted text-foreground"
                       : "text-foreground/70 hover:bg-muted hover:text-foreground",
                 )
               }
