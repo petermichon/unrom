@@ -167,6 +167,18 @@ app.get("/api/devices", (c) => {
     return Number.isInteger(value) ? value : Number.NaN;
   };
   const all = c.req.query("all");
+  const hasRomsRaw = c.req.query("hasRoms");
+  if (
+    hasRomsRaw !== undefined &&
+    hasRomsRaw !== "true" &&
+    hasRomsRaw !== "false"
+  ) {
+    return c.json({ error: `invalid hasRoms: ${hasRomsRaw}` }, 400);
+  }
+  const sortRaw = c.req.query("sort");
+  if (sortRaw !== undefined && sortRaw !== "name" && sortRaw !== "coverage") {
+    return c.json({ error: `invalid sort: ${sortRaw}` }, 400);
+  }
   const limit = parse("limit");
   const offset = parse("offset");
   if (all !== undefined && all !== "true") {
@@ -188,6 +200,8 @@ app.get("/api/devices", (c) => {
     query,
     vendor,
     letter,
+    hasRoms: hasRomsRaw === undefined ? undefined : hasRomsRaw === "true",
+    sort: sortRaw as "name" | "coverage" | undefined,
     limit: all === "true" ? undefined : (limit ?? DEFAULT_DEVICE_LIMIT),
     offset,
   };

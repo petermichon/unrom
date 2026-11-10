@@ -81,8 +81,11 @@ export function fetchBrands(): Promise<BrandSummary[]> {
 }
 
 export async function fetchDevicesPage(options: {
+  q?: string;
   letter?: string;
   vendor?: string;
+  hasRoms?: boolean;
+  sort?: "name" | "coverage";
   limit: number;
   offset: number;
 }): Promise<{ devices: BrowseDevice[]; total: number }> {
@@ -90,8 +93,13 @@ export async function fetchDevicesPage(options: {
     limit: String(options.limit),
     offset: String(options.offset),
   });
+  if (options.q) params.set("q", options.q);
   if (options.letter) params.set("letter", options.letter);
   if (options.vendor) params.set("vendor", options.vendor);
+  if (options.hasRoms !== undefined) {
+    params.set("hasRoms", String(options.hasRoms));
+  }
+  if (options.sort) params.set("sort", options.sort);
   const response = await fetch(`${apiBase()}/api/devices?${params}`);
   if (!response.ok) {
     throw new Response("API request failed: /api/devices", {

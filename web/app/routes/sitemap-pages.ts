@@ -17,7 +17,7 @@ export async function loader() {
         .filter((letter) => isUsefulDirectoryPage(letter.withRoms))
         .map(
           (letter) =>
-            `/devices/letter/${letter.letter === "#" ? "0-9" : letter.letter.toLowerCase()}`,
+            `/devices?letter=${letter.letter === "#" ? "0-9" : letter.letter.toLowerCase()}`,
         ),
       "/brands",
       "/roms",

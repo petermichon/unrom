@@ -1,5 +1,5 @@
 import Database from "better-sqlite3";
-import { and, asc, eq, or, sql } from "drizzle-orm";
+import { and, asc, desc, eq, or, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/better-sqlite3";
 import type {
   BrandSummary,
@@ -181,8 +181,27 @@ export function createApi(dbPath: string) {
      * `other` for non-Latin and punctuation names.
      */
     letter?: string;
+    /** Only devices with (`true`) or without (`false`) any ROM data. */
+    hasRoms?: boolean;
+    /** `coverage` puts ROM-covered devices first, then sorts by name. */
+    sort?: "name" | "coverage";
     limit?: number;
     offset?: number;
+  }
+
+  /**
+   * A device has ROM data when a build targets its codename directly or when it
+   * is a hardware variant of a build target. Mirrors `coveredDeviceKeys()`.
+   */
+  function coveredCondition() {
+    const direct = sql`exists (select 1 from rom_devices rd where rd.vendor = ${devices.vendor} and rd.codename = ${devices.codename})`;
+    const inherited = sql`exists (
+      select 1 from device_variants dv
+      join rom_devices rd on rd.vendor = dv.vendor and rd.codename = dv.codename
+      where dv.vendor = ${devices.vendor}
+        and dv.variant_codename = ${devices.codename}
+    )`;
+    return sql`(${direct} or ${inherited})`;
   }
 
   function deviceFilters(options: DeviceQuery) {
@@ -210,6 +229,10 @@ export function createApi(dbPath: string) {
           }),
         ),
       );
+    }
+    if (options.hasRoms !== undefined) {
+      const covered = coveredCondition();
+      filters.push(options.hasRoms ? covered : sql`not ${covered}`);
     }
     const letter = options.letter?.toUpperCase();
     if (letter) {
@@ -345,15 +368,20 @@ export function createApi(dbPath: string) {
     const directoryOrder =
       !options.query &&
       (options.letter !== undefined || options.vendor !== undefined);
+    const byName = [
+      asc(sql`lower(${displayName})`),
+      asc(devices.vendor),
+      asc(devices.codename),
+    ];
+    const order =
+      !directoryOrder && options.sort === "coverage"
+        ? [desc(coveredCondition()), ...byName]
+        : byName;
     const rows = db
       .select()
       .from(devices)
       .where(filters.length ? and(...filters) : undefined)
-      .orderBy(
-        asc(sql`lower(${displayName})`),
-        asc(devices.vendor),
-        asc(devices.codename),
-      )
+      .orderBy(...order)
       .limit(directoryOrder ? 1_000_000_000 : (limit ?? 1_000_000_000))
       .offset(directoryOrder ? 0 : offset)
       .all();

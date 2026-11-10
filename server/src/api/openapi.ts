@@ -261,6 +261,23 @@ const deviceListParameters = [
     schema: { type: "string", pattern: "^(?:[A-Z#]|other)$" },
   },
   {
+    name: "hasRoms",
+    in: "query",
+    required: false,
+    description:
+      "Only devices with (`true`) or without (`false`) at least one ROM " +
+      "build, counting builds inherited from a covered variant.",
+    schema: { type: "boolean" },
+  },
+  {
+    name: "sort",
+    in: "query",
+    required: false,
+    description:
+      "`name` (default) or `coverage`, which puts devices with ROM data first.",
+    schema: { type: "string", enum: ["name", "coverage"] },
+  },
+  {
     name: "limit",
     in: "query",
     required: false,
