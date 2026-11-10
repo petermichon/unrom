@@ -45,6 +45,7 @@ app.use(
       "Last-Modified",
       "Content-Disposition",
       "Content-Length",
+      "X-Total-Count",
     ],
     maxAge: 86400,
   }),
@@ -72,6 +73,9 @@ const revalidate = async (c: Context, next: () => Promise<void>) => {
 
 for (const path of [
   "/api/meta",
+  "/api/summary",
+  "/api/brands",
+  "/api/search",
   "/api/devices",
   "/api/devices/*",
   "/api/registry",
