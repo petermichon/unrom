@@ -25,10 +25,14 @@ export const devices = sqliteTable(
     // 1 when a build targets this codename or a variant main it inherits
     // from. Derived at build time; see buildDatabase().
     covered: integer("covered").notNull().default(0),
+    // Number of ROMs that support this device, counting builds inherited from
+    // a covered variant. Derived at build time; ranks search results.
+    romCount: integer("rom_count").notNull().default(0),
   },
   (table) => [
     primaryKey({ columns: [table.vendor, table.codename] }),
     index("devices_covered_idx").on(table.covered),
+    index("devices_rom_count_idx").on(table.romCount),
   ],
 );
 

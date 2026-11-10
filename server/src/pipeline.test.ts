@@ -101,6 +101,17 @@ test("build produces a consistent dataset", async () => {
     assert.equal(fp3[0].name, "Fairphone 3");
     assert.equal(fp3[0].covered, 1, "Fairphone 3 keeps its ROM builds");
 
+    // A variant's stored count includes the covering build's ROMs, so search
+    // can rank on it.
+    const variantCounts = db
+      .prepare(
+        "select codename, rom_count from devices where vendor = 'xiaomi' and codename in ('sweet', 'sweetin')",
+      )
+      .all() as Array<{ codename: string; rom_count: number }>;
+    assert.equal(variantCounts.length, 2);
+    assert.ok(variantCounts.every((row) => row.rom_count > 0));
+    assert.equal(variantCounts[0].rom_count, variantCounts[1].rom_count);
+
     // Alias resolution is emitted as an artifact; every alias must resolve to a
     // device that actually exists.
     for (const alias of result.aliases) {
@@ -484,6 +495,26 @@ test("search groups devices, brands and ROMs", async () => {
 
     const xiaomi = api.search("xiaomi");
     assert.ok(xiaomi.brands.some((brand) => brand.vendor === "xiaomi"));
+
+    // Alternate model names are searchable, not only the first name.
+    const alternate = api.search("Redmi Note 10 Pro Max");
+    assert.ok(alternate.devices.some((device) => device.codename === "sweet"));
+
+    // Ranking considers the whole match set, not the first 200 by name.
+    const matches = api.listDevicesPage({ query: "a" });
+    const best = Math.max(...matches.map((device) => device.roms.length));
+    assert.equal(api.search("a").devices[0]?.roms.length, best);
+
+    // Search and the ROM pages agree on variant-inclusive device counts.
+    const lineageos = api
+      .listRomSummaries()
+      .find((rom) => rom.id === "lineageos");
+    assert.ok(lineageos);
+    assert.equal(
+      api.search("lineageos").roms.find((rom) => rom.id === "lineageos")
+        ?.deviceCount,
+      lineageos.deviceCount,
+    );
 
     const catalogue = api.search("aokp");
     assert.equal(catalogue.totals.devices, 0);

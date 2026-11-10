@@ -721,6 +721,29 @@ export function buildDatabase(
   const edges = [...edgeMap.values()];
   const aliasRows = [...aliasMap.values()];
 
+  // ROMs per device, counting builds inherited from a covered variant. Mirrors
+  // the `covered` update below and `chipsFor()` in the API; stored so search
+  // can rank by coverage without walking every edge.
+  const romsByDevice = new Map<string, Set<string>>();
+  const addRom = (vendor: string, codename: string, romId: string) => {
+    const key = `${vendor}\0${codename}`;
+    const roms = romsByDevice.get(key);
+    if (roms) roms.add(romId);
+    else romsByDevice.set(key, new Set([romId]));
+  };
+  for (const edge of edges) addRom(edge.vendor, edge.codename, edge.romId);
+  for (const members of groupMembers.values()) {
+    const union = new Set<string>();
+    for (const member of members) {
+      for (const romId of romsByDevice.get(member) ?? []) union.add(romId);
+    }
+    for (const member of members) {
+      const roms = romsByDevice.get(member) ?? new Set<string>();
+      for (const romId of union) roms.add(romId);
+      romsByDevice.set(member, roms);
+    }
+  }
+
   // The curated registry is independent of source coverage: every entry ships,
   // even when no roster currently names the device.
   const registryRows: RegistryRow[] = Object.entries(DEVICE_NAMES)
@@ -775,6 +798,8 @@ export function buildDatabase(
           codename: device.codename,
           name: device.name,
           names: device.names ? JSON.stringify(device.names) : null,
+          romCount:
+            romsByDevice.get(`${device.vendor}\0${device.codename}`)?.size ?? 0,
         })
         .run();
     }

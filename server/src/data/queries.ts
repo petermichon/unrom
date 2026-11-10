@@ -184,7 +184,7 @@ export function createApi(dbPath: string) {
     /** Only devices with (`true`) or without (`false`) any ROM data. */
     hasRoms?: boolean;
     /** `coverage` puts ROM-covered devices first, then sorts by name. */
-    sort?: "name" | "coverage";
+    sort?: "name" | "coverage" | "roms";
     limit?: number;
     offset?: number;
   }
@@ -207,6 +207,9 @@ export function createApi(dbPath: string) {
             return or(
               sql`instr(lower(${devices.codename}), ${term}) > 0`,
               sql`instr(lower(coalesce(${devices.name}, '')), ${term}) > 0`,
+              // Alternate model names live in a JSON array; matching the text
+              // is enough because every name is a plain string.
+              sql`instr(lower(coalesce(${devices.names}, '')), ${term}) > 0`,
               sql`instr(lower(coalesce(${devices.vendor}, '')), ${term}) > 0`,
               // Match a device by any of its alternate codenames.
               sql`exists (select 1 from aliases a where a.vendor = ${devices.vendor} and a.codename = ${devices.codename} and instr(lower(a.alias), ${term}) > 0)`,
@@ -353,6 +356,7 @@ export function createApi(dbPath: string) {
     const directoryOrder =
       !options.query &&
       options.sort !== "coverage" &&
+      options.sort !== "roms" &&
       (options.letter !== undefined || options.vendor !== undefined);
     const byName = [
       asc(sql`lower(${displayName})`),
@@ -362,7 +366,11 @@ export function createApi(dbPath: string) {
     const order =
       !directoryOrder && options.sort === "coverage"
         ? [desc(devices.covered), ...byName]
-        : byName;
+        : !directoryOrder && options.sort === "roms"
+          ? // Internal: search wants the best-covered matches before it caps the
+            // candidate set, not the alphabetically first ones.
+            [desc(devices.romCount), ...byName]
+          : byName;
     const rows = db
       .select()
       .from(devices)
@@ -672,7 +680,11 @@ export function createApi(dbPath: string) {
    * Per-ROM device counts without the device lists. Mirrors `buildRom`: a
    * build covers its target and every variant that target covers.
    */
-  function listRomSummaries(): RomSummary[] {
+  /**
+   * Per-ROM device counts, counting every variant a build covers. Shared by
+   * `listRomSummaries` and search so the two cannot disagree.
+   */
+  function romDeviceCounts(): Map<string, number> {
     const variantsByMain = new Map<string, string[]>();
     for (const row of db.select().from(deviceVariants).all()) {
       const key = deviceKey(row.vendor, row.codename);
@@ -697,6 +709,17 @@ export function createApi(dbPath: string) {
       }
     }
 
+    return new Map(
+      [...devicesByRom].map(([romId, devices]) => [romId, devices.size]),
+    );
+  }
+
+  /**
+   * Per-ROM device counts without the device lists. Mirrors `buildRom`: a
+   * build covers its target and every variant that target covers.
+   */
+  function listRomSummaries(): RomSummary[] {
+    const counts = romDeviceCounts();
     return db
       .select()
       .from(roms)
@@ -705,7 +728,7 @@ export function createApi(dbPath: string) {
         id: rom.id,
         name: rom.name,
         status: rom.status as RomStatus,
-        deviceCount: devicesByRom.get(rom.id)?.size ?? 0,
+        deviceCount: counts.get(rom.id) ?? 0,
       }))
       .sort(
         (a, b) => b.deviceCount - a.deviceCount || bySortKey(a.name, b.name),
@@ -750,7 +773,11 @@ export function createApi(dbPath: string) {
       return terms.every((term) => lower.includes(term));
     };
 
-    const deviceResults = listDevicesPage({ query: q, limit: 200 })
+    const deviceResults = listDevicesPage({
+      query: q,
+      sort: "roms",
+      limit: 200,
+    })
       .sort(
         (a, b) =>
           b.roms.length - a.roms.length ||
@@ -774,17 +801,7 @@ export function createApi(dbPath: string) {
       )
       .slice(0, 10);
 
-    const deviceCountByRom = new Map<string, number>();
-    for (const row of db
-      .select({
-        romId: romDevices.romId,
-        count: sql<number>`count(*)`,
-      })
-      .from(romDevices)
-      .groupBy(romDevices.romId)
-      .all()) {
-      deviceCountByRom.set(row.romId, Number(row.count));
-    }
+    const deviceCountByRom = romDeviceCounts();
 
     // ROMs also match by supported device names/codenames.
     const haystackByRom = new Map<string, string>();
@@ -792,6 +809,7 @@ export function createApi(dbPath: string) {
       .select({
         romId: romDevices.romId,
         name: devices.name,
+        names: devices.names,
         codename: devices.codename,
       })
       .from(romDevices)
@@ -806,7 +824,7 @@ export function createApi(dbPath: string) {
       const current = haystackByRom.get(row.romId) ?? "";
       haystackByRom.set(
         row.romId,
-        `${current} ${row.name ?? ""} ${row.codename}`.toLowerCase(),
+        `${current} ${row.name ?? ""} ${row.names ?? ""} ${row.codename}`.toLowerCase(),
       );
     }
 
