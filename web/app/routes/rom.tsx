@@ -9,7 +9,6 @@ import {
   itemListLd,
   modifiedMeta,
   pageMeta,
-  summarizeNames,
   updatedAtFromMatches,
 } from "@/lib/seo";
 import { formatNumber } from "@/lib/utils";
@@ -26,10 +25,10 @@ function romDescription(rom: RomDetail): string {
   }
 
   const vendorCount = new Set(rom.devices.map((device) => device.vendor)).size;
-  const names = summarizeNames(
-    rom.devices.map((device) => device.name ?? device.codename),
-    3,
-  );
+  const names = rom.devices
+    .slice(0, 3)
+    .map((device) => device.name ?? device.codename)
+    .join(", ");
 
   return `Supports ${formatNumber(rom.deviceCount)} ${
     rom.deviceCount === 1 ? "device" : "devices"

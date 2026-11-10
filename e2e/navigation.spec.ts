@@ -186,7 +186,7 @@ test("the brands index links to a brand", async ({ page }) => {
     "/devices/xiaomi",
   );
   await expect(page.getByRole("link", { name: /Xiaomi/ })).toContainText(
-    "with ROMs",
+    "ROMs",
   );
 });
 
@@ -204,23 +204,25 @@ test("the brands filter narrows the list", async ({ page }) => {
   await expect(page.getByRole("link", { name: /Xiaomi/ })).toHaveCount(0);
 });
 
-test("mobile shows sections outside the utility menu", async ({ page }) => {
+test("mobile shows sections in the utility menu", async ({ page }) => {
   await proxyApi(page);
 
   await page.setViewportSize({ width: 390, height: 800 });
   await page.goto("/");
 
-  const sections = page.getByRole("navigation", { name: "Sections" });
-  await expect(sections.getByRole("link", { name: "Devices" })).toBeVisible();
+  // The header is a single row on mobile, so the section links live in the
+  // menu rather than a second navigation row.
+  await expect(page.getByRole("navigation", { name: "Main" })).toBeHidden();
 
   const menu = page.getByRole("button", { name: "Open menu" });
   await menu.click();
   await expect(
     page.getByRole("menuitem", { name: "Dataset overview" }),
   ).toBeVisible();
-  await page.keyboard.press("Escape");
 
-  await sections.getByRole("link", { name: "Devices" }).click();
+  const devices = page.getByRole("menuitem", { name: "Devices" });
+  await expect(devices).toBeVisible();
+  await devices.click();
   await expect(page).toHaveURL(/\/devices$/);
   await expect(
     page.getByRole("heading", { name: "Devices", level: 1, exact: true }),

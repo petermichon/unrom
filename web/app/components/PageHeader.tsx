@@ -26,18 +26,24 @@ export function PageHeader({
           </h1>
           {badge}
         </div>
-        <div className="flex items-center gap-2">
-          {endpoint && (
-            <code className="rounded-md border border-border/60 bg-muted/50 px-2 py-0.5 font-mono text-xs text-muted-foreground">
-              <span className="font-semibold text-foreground/70">GET</span>{" "}
-              {endpoint}
-            </code>
-          )}
-          {actions}
-        </div>
+        {actions && <div className="flex items-center gap-2">{actions}</div>}
       </div>
       {description && (
-        <p className="text-sm text-muted-foreground">{description}</p>
+        <p className="max-w-[68ch] text-sm text-muted-foreground">
+          {description}
+        </p>
+      )}
+      {endpoint && (
+        <p className="text-xs text-muted-foreground">
+          <a
+            href={endpoint}
+            className="font-mono outline-none hover:text-foreground hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
+            title="Open this page's API response"
+          >
+            <span className="font-semibold text-foreground/60">GET</span>{" "}
+            {endpoint}
+          </a>
+        </p>
       )}
       {children}
     </div>

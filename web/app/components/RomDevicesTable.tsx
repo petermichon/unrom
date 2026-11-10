@@ -15,7 +15,6 @@ import {
   EmptyTitle,
 } from "@/components/ui/empty";
 import type { DeviceSummary } from "@/lib/types";
-import { useInitialDocument } from "@/lib/use-initial-document";
 import { PackageOpen } from "lucide-react";
 
 const MOBILE_HIDDEN = new Set(["codename"]);
@@ -27,10 +26,6 @@ interface Props {
 }
 
 export default function RomDevicesTable({ devices }: Props) {
-  // Full HTML for crawlers on first load; only the current page in the DOM on
-  // client navigations.
-  const renderAllRows = useInitialDocument();
-
   const columns = useMemo<ColumnDef<DeviceSummary>[]>(
     () => [
       {
@@ -43,7 +38,8 @@ export default function RomDevicesTable({ devices }: Props) {
         cell: () => null,
       },
       {
-        accessorKey: "name",
+        id: "name",
+        accessorFn: (row) => row.name ?? row.codename,
         meta: { title: "Device" },
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="Device" />
@@ -93,7 +89,11 @@ export default function RomDevicesTable({ devices }: Props) {
           <EmptyTitle>No device data yet</EmptyTitle>
           <EmptyDescription>
             unrom tracks this ROM but holds no build data for it. Discontinued
-            projects often lose their device list.
+            projects often lose their device list.{" "}
+            <Link to="/roms" prefetch="intent">
+              Browse ROMs that do have device data
+            </Link>
+            .
           </EmptyDescription>
         </EmptyHeader>
       </Empty>
@@ -105,7 +105,9 @@ export default function RomDevicesTable({ devices }: Props) {
       columns={columns}
       data={devices}
       columnClassName={columnClassName}
-      renderAllRows={renderAllRows}
+      columnWidths={{ name: "md:w-[62%]", codename: "md:w-[38%]" }}
+      paginate={false}
+      countLabel={(count) => `${count} ${count === 1 ? "device" : "devices"}`}
       tableClassName="md:min-w-[36rem]"
       initialState={{
         columnVisibility: { search: false },

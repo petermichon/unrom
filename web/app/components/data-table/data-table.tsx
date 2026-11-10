@@ -40,6 +40,8 @@ interface Props<TData, TValue> {
   data: TData[];
   toolbar?: (table: TanStackTable<TData>) => ReactNode;
   columnClassName?: (columnId: string) => string | undefined;
+  /** Width classes per column, applied in place of the equal-share default. */
+  columnWidths?: Record<string, string>;
   tableClassName?: string;
   /**
    * Render every filtered row into the HTML and hide the ones outside the
@@ -47,6 +49,13 @@ interface Props<TData, TValue> {
    * the table still paginates for interactive use.
    */
   renderAllRows?: boolean;
+  /**
+   * Split the rows into pages. Detail tables turn this off: the full list is
+   * short enough to read in one pass and paging only hides rows.
+   */
+  paginate?: boolean;
+  /** Row-count wording when pagination is off, e.g. "22 ROMs". */
+  countLabel?: (count: number) => string;
   initialState?: {
     columnVisibility?: VisibilityState;
     columnFilters?: ColumnFiltersState;
@@ -100,8 +109,11 @@ export function DataTable<TData, TValue>({
   data,
   toolbar,
   columnClassName,
+  columnWidths,
   tableClassName,
   renderAllRows = false,
+  paginate = true,
+  countLabel,
   initialState,
   columnFilters: controlledFilters,
   onColumnFiltersChange,
@@ -153,7 +165,9 @@ export function DataTable<TData, TValue>({
 
   const cellClass = (columnId: string) =>
     cn(
-      columnId === "search" ? "w-0" : EQUAL_SHARE,
+      columnId === "search"
+        ? "w-0"
+        : (columnWidths?.[columnId] ?? EQUAL_SHARE),
       columnClassName?.(columnId),
     ) || undefined;
 
@@ -197,10 +211,10 @@ export function DataTable<TData, TValue>({
     );
   }
 
-  const visibleRows = table.getRowModel().rows;
-  const renderedRows = renderAllRows
-    ? table.getPrePaginationRowModel().rows
-    : visibleRows;
+  const filteredRows = table.getPrePaginationRowModel().rows;
+  const visibleRows = paginate ? table.getRowModel().rows : filteredRows;
+  const renderedRows = paginate && !renderAllRows ? visibleRows : filteredRows;
+  const hidesOffPageRows = paginate && renderAllRows;
   const pageStart = pagination.pageIndex * pagination.pageSize;
   const pageEnd = pageStart + pagination.pageSize;
 
@@ -244,7 +258,8 @@ export function DataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   hidden={
-                    renderAllRows && (index < pageStart || index >= pageEnd)
+                    hidesOffPageRows &&
+                    (index < pageStart || index >= pageEnd)
                   }
                 >
                   {row.getVisibleCells().map((cell) => (
@@ -278,7 +293,20 @@ export function DataTable<TData, TValue>({
         )}
       </div>
 
-      <DataTablePagination table={table} />
+      {paginate ? (
+        <DataTablePagination table={table} />
+      ) : (
+        countLabel &&
+        visibleRows.length > 0 && (
+          <p
+            role="status"
+            aria-live="polite"
+            className="px-1 text-xs text-muted-foreground tabular-nums"
+          >
+            {countLabel(visibleRows.length)}
+          </p>
+        )
+      )}
     </div>
   );
 }

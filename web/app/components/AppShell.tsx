@@ -82,6 +82,15 @@ function MobileMenu() {
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-52">
         <DropdownMenuGroup>
+          <DropdownMenuLabel>Browse</DropdownMenuLabel>
+          {NAV_ITEMS.map((item) => (
+            <DropdownMenuItem key={item.to} render={<Link to={item.to} />}>
+              {item.label}
+            </DropdownMenuItem>
+          ))}
+        </DropdownMenuGroup>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
           <DropdownMenuLabel>Data</DropdownMenuLabel>
           <DropdownMenuItem
             render={<Link to="/data" aria-label="Dataset overview" />}
@@ -137,7 +146,7 @@ export default function AppShell({ updatedAt, updatedAtIso, children }: Props) {
           data-nosnippet
           className="sticky top-0 z-10 border-b border-border/60 bg-background/80 backdrop-blur"
         >
-          <div className="mx-auto flex h-14 w-full max-w-4xl items-center gap-2 px-4 sm:px-6">
+          <div className="mx-auto flex h-14 w-full max-w-5xl items-center gap-2 px-4 sm:px-6">
             <Link
               to="/"
               prefetch="viewport"
@@ -147,7 +156,7 @@ export default function AppShell({ updatedAt, updatedAtIso, children }: Props) {
                 <span className="font-brand">unrom</span>
                 <Badge
                   variant="outline"
-                  className="px-1.5 py-0 text-[11px] font-medium tracking-wide text-muted-foreground uppercase"
+                  className="px-1.5 py-0 text-[11px] font-medium text-muted-foreground"
                 >
                   beta
                 </Badge>
@@ -188,22 +197,14 @@ export default function AppShell({ updatedAt, updatedAtIso, children }: Props) {
               <MobileMenu />
             </div>
           </div>
-
-          <nav aria-label="Sections" className="md:hidden">
-            <div className="mx-auto flex w-full max-w-4xl items-center gap-1 px-4 pb-2 sm:px-6">
-              {NAV_ITEMS.map((item) => (
-                <TopNavLink key={item.to} item={item} />
-              ))}
-            </div>
-          </nav>
         </header>
 
         <main id="content" tabIndex={-1} className="flex-1 px-4 py-10 sm:px-6">
-          <div className="mx-auto w-full max-w-4xl">{children}</div>
+          <div className="mx-auto w-full max-w-5xl">{children}</div>
         </main>
 
         <footer className="border-t border-border/60 px-4 py-6 text-xs text-muted-foreground sm:px-6">
-          <div className="mx-auto flex w-full max-w-4xl flex-wrap items-center justify-between gap-3">
+          <div className="mx-auto flex w-full max-w-5xl flex-wrap items-center justify-between gap-3">
             <p>
               Last updated{" "}
               {updatedAtIso ? (

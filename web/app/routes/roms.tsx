@@ -14,7 +14,7 @@ import {
 } from "@/lib/seo";
 import { bySortKey } from "@/lib/sort";
 import { useInitialDocument } from "@/lib/use-initial-document";
-import { formatNumber } from "@/lib/utils";
+import { cn, formatNumber } from "@/lib/utils";
 import type { RomDetail } from "@/lib/types";
 import type { Route } from "./+types/roms";
 
@@ -34,25 +34,30 @@ function romHaystack(rom: RomDetail): string {
 }
 
 function RomRow({ rom, count }: { rom: RomDetail; count?: boolean }) {
+  const statusClass = cn(
+    "text-xs",
+    rom.status === "active" ? "text-foreground" : "text-muted-foreground",
+  );
+
   return (
-    <Link to={`/roms/${rom.id}`} prefetch="intent" className="directory-row">
-      <span className="truncate font-medium">{rom.name}</span>
-      <span className="shrink-0 text-xs text-muted-foreground tabular-nums">
-        <span
-          className={
-            rom.status === "active" ? undefined : "text-muted-foreground"
-          }
-        >
+    <Link to={`/roms/${rom.id}`} prefetch="intent" className="index-row">
+      <span className="flex min-w-0 flex-1 flex-col sm:flex-row sm:items-baseline sm:gap-3">
+        <span className="min-w-0 flex-1 truncate font-medium">{rom.name}</span>
+        <span className={cn(statusClass, "sm:hidden")}>
           {STATUS_LABELS[rom.status]}
         </span>
-        {count && (
-          <>
-            {" · "}
-            {formatNumber(rom.deviceCount)}{" "}
-            {rom.deviceCount === 1 ? "device" : "devices"}
-          </>
-        )}
       </span>
+      <span
+        className={cn(statusClass, "hidden w-20 shrink-0 text-right sm:block")}
+      >
+        {STATUS_LABELS[rom.status]}
+      </span>
+      {count && (
+        <span className="w-24 shrink-0 text-right text-xs text-muted-foreground tabular-nums">
+          {formatNumber(rom.deviceCount)}{" "}
+          {rom.deviceCount === 1 ? "device" : "devices"}
+        </span>
+      )}
     </Link>
   );
 }
@@ -193,7 +198,7 @@ export default function RomsRoute() {
           {filteredCovered.length > 0 && (
             <section
               aria-labelledby="roms-covered"
-              className="flex flex-col gap-3"
+              className="flex flex-col gap-2"
             >
               <h2
                 id="roms-covered"
@@ -201,7 +206,15 @@ export default function RomsRoute() {
               >
                 With device data
               </h2>
-              <ul className="grid gap-2 sm:grid-cols-2">
+              <div
+                aria-hidden="true"
+                className="flex items-center gap-3 px-3 text-xs text-muted-foreground"
+              >
+                <span className="flex-1">ROM</span>
+                <span className="hidden w-20 text-right sm:block">Status</span>
+                <span className="w-24 text-right">Devices</span>
+              </div>
+              <ul className="divide-y divide-border/60 overflow-hidden rounded-xl border border-border/60">
                 {filteredCovered.map((rom) => (
                   <li key={rom.id}>
                     <RomRow rom={rom} count />
@@ -236,7 +249,7 @@ export default function RomsRoute() {
                       >
                         {group.letter}
                       </h3>
-                      <ul className="grid gap-2 sm:grid-cols-2">
+                      <ul className="grid gap-x-6 sm:grid-cols-2">
                         {group.roms.map((rom) => (
                           <li key={rom.id}>
                             <RomRow rom={rom} />

@@ -95,15 +95,33 @@ function formatBytes(bytes: number | null): string {
   return `${Math.max(1, Math.round(bytes / 1024))} KB`;
 }
 
-function Stat({ label, value }: { label: string; value: number }) {
+function StatRow({
+  label,
+  value,
+  note,
+}: {
+  label: string;
+  value: string;
+  note?: string;
+}) {
   return (
-    <div className="rounded-xl border border-border/60 p-4">
-      <dt className="text-xs text-muted-foreground">{label}</dt>
-      <dd className="mt-1 text-2xl font-semibold tabular-nums">
-        {formatNumber(value)}
+    <div className="flex items-baseline justify-between gap-3 py-2">
+      <dt className="max-w-[68ch] text-sm text-muted-foreground">{label}</dt>
+      <dd className="shrink-0 text-right text-sm font-semibold tabular-nums">
+        {value}
+        {note && (
+          <span className="ml-2 font-normal text-muted-foreground">
+            {note}
+          </span>
+        )}
       </dd>
     </div>
   );
+}
+
+function percent(part: number, whole: number): string {
+  if (whole <= 0) return "0%";
+  return `${Math.round((part / whole) * 100)}%`;
 }
 
 function DownloadCard({
@@ -159,13 +177,31 @@ export default function DataRoute() {
         endpoint="/api"
       />
 
-      <dl className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-        <Stat label="Devices" value={counts.devices} />
-        <Stat label="Brands" value={counts.brands} />
-        <Stat label="ROMs" value={counts.roms} />
-        <Stat label="ROMs with device data" value={counts.coveredRoms} />
-        <Stat label="Devices with ROM data" value={counts.coveredDevices} />
-      </dl>
+      <div className="grid gap-6 sm:grid-cols-2">
+        <div className="flex flex-col gap-1">
+          <p className="text-xs font-medium text-muted-foreground">Catalogue</p>
+          <dl className="divide-y divide-border/60 border-y border-border/60">
+            <StatRow label="Devices" value={formatNumber(counts.devices)} />
+            <StatRow label="Brands" value={formatNumber(counts.brands)} />
+            <StatRow label="ROMs" value={formatNumber(counts.roms)} />
+          </dl>
+        </div>
+        <div className="flex flex-col gap-1">
+          <p className="text-xs font-medium text-muted-foreground">Coverage</p>
+          <dl className="divide-y divide-border/60 border-y border-border/60">
+            <StatRow
+              label="Devices with ROM data"
+              value={formatNumber(counts.coveredDevices)}
+              note={`${percent(counts.coveredDevices, counts.devices)} of devices`}
+            />
+            <StatRow
+              label="ROMs with device data"
+              value={formatNumber(counts.coveredRoms)}
+              note={`${percent(counts.coveredRoms, counts.roms)} of ROMs`}
+            />
+          </dl>
+        </div>
+      </div>
 
       <section aria-labelledby="downloads" className="flex flex-col gap-3">
         <h2
@@ -215,7 +251,7 @@ export default function DataRoute() {
             </a>
           </div>
         </div>
-        <p className="text-sm text-muted-foreground">
+        <p className="max-w-[68ch] text-sm text-muted-foreground">
           No key and no authentication. Device lists paginate with{" "}
           <code>limit</code> and <code>offset</code> (maximum 200) and return
           the total in <code>x-total-count</code>. Response shapes are frozen in{" "}
@@ -273,7 +309,7 @@ export default function DataRoute() {
             </ul>
           </div>
         </div>
-        <p className="text-sm text-muted-foreground">
+        <p className="max-w-[68ch] text-sm text-muted-foreground">
           Not included: ROM downloads, device specifications, or install
           instructions. Catalogue-only ROMs have no device data yet.
         </p>
@@ -286,7 +322,7 @@ export default function DataRoute() {
         >
           Provenance and license
         </h2>
-        <p className="text-sm text-muted-foreground">
+        <p className="max-w-[68ch] text-sm text-muted-foreground">
           Each mapping keeps the source URL it came from. Device lists are read
           from ROM projects&apos; own sources, with catalogue coverage from
           ROMDB.tel, Customrombay, and the awesome list. Raw snapshots live in{" "}
@@ -356,7 +392,7 @@ export default function DataRoute() {
         >
           Freshness
         </h2>
-        <p className="text-sm text-muted-foreground">
+        <p className="max-w-[68ch] text-sm text-muted-foreground">
           The dataset is rebuilt from the snapshots in <code>data/</code>. The
           content hash changes when the data changes.
         </p>
@@ -383,7 +419,7 @@ export default function DataRoute() {
         >
           Corrections
         </h2>
-        <p className="text-sm text-muted-foreground">
+        <p className="max-w-[68ch] text-sm text-muted-foreground">
           Found a wrong mapping or a missing device? Open an issue or read the
           contribution guide. Changes require a DCO sign-off.
         </p>

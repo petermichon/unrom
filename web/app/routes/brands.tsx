@@ -53,16 +53,16 @@ function BrandRow({ brand }: { brand: Brand }) {
     <Link
       to={`/devices/${brand.vendor}`}
       prefetch="intent"
-      className="directory-row"
+      className="index-row"
     >
-      <span className="flex min-w-0 flex-col">
-        <span className="truncate font-medium">{brand.vendorName}</span>
-        <span className="text-xs text-muted-foreground tabular-nums">
-          {formatNumber(brand.withRoms)} with{" "}
-          {brand.withRoms === 1 ? "ROM" : "ROMs"}
-        </span>
+      <span className="min-w-0 flex-1 truncate font-medium">
+        {brand.vendorName}
       </span>
-      <span className="shrink-0 text-xs text-muted-foreground tabular-nums">
+      <span className="w-20 shrink-0 text-right text-xs text-muted-foreground tabular-nums">
+        {formatNumber(brand.withRoms)}{" "}
+        {brand.withRoms === 1 ? "ROM" : "ROMs"}
+      </span>
+      <span className="w-24 shrink-0 text-right text-xs text-muted-foreground tabular-nums">
         {formatNumber(brand.deviceCount)}{" "}
         {brand.deviceCount === 1 ? "device" : "devices"}
       </span>
@@ -121,13 +121,23 @@ export default function BrandsRoute() {
           No brands match “{query.trim()}”.
         </p>
       ) : (
-        <ul className="grid gap-2 sm:grid-cols-2">
-          {filtered.map((brand) => (
-            <li key={brand.vendor}>
-              <BrandRow brand={brand} />
-            </li>
-          ))}
-        </ul>
+        <div className="flex flex-col gap-2">
+          <div
+            aria-hidden="true"
+            className="flex items-center gap-3 px-3 text-xs text-muted-foreground"
+          >
+            <span className="flex-1">Brand</span>
+            <span className="w-20 text-right">With ROMs</span>
+            <span className="w-24 text-right">Devices</span>
+          </div>
+          <ul className="divide-y divide-border/60 overflow-hidden rounded-xl border border-border/60">
+            {filtered.map((brand) => (
+              <li key={brand.vendor}>
+                <BrandRow brand={brand} />
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
     </div>
   );

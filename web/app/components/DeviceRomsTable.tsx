@@ -82,7 +82,7 @@ export default function DeviceRomsTable({ roms }: Props) {
                 </span>
                 {row.original.referenceKind === "derived" && (
                   <span
-                    className="shrink-0 text-[10px] uppercase tracking-wide text-muted-foreground/70"
+                    className="shrink-0 text-[11px] text-derived"
                     title="Built from the codename; the source does not publish this URL."
                   >
                     generated
@@ -119,7 +119,7 @@ export default function DeviceRomsTable({ roms }: Props) {
                   {referenceLabel(row.original.referenceUrl)}
                 </span>
                 {row.original.referenceKind === "derived" && (
-                  <span className="shrink-0 text-[10px] uppercase tracking-wide text-muted-foreground/70">
+                  <span className="shrink-0 text-[11px] text-derived">
                     generated
                   </span>
                 )}
@@ -152,7 +152,11 @@ export default function DeviceRomsTable({ roms }: Props) {
           </EmptyMedia>
           <EmptyTitle>No ROM data yet</EmptyTitle>
           <EmptyDescription>
-            unrom tracks this device, but no custom ROM reports a build for it.
+            unrom tracks this device, but no custom ROM reports a build for it.{" "}
+            <Link to="/devices" prefetch="intent">
+              Browse devices that do have ROM data
+            </Link>
+            .
           </EmptyDescription>
         </EmptyHeader>
       </Empty>
@@ -164,7 +168,9 @@ export default function DeviceRomsTable({ roms }: Props) {
       columns={columns}
       data={roms}
       columnClassName={columnClassName}
-      renderAllRows
+      columnWidths={{ name: "md:w-[42%]", referenceUrl: "md:w-[58%]" }}
+      paginate={false}
+      countLabel={(count) => `${count} ${count === 1 ? "ROM" : "ROMs"}`}
       tableClassName="md:min-w-[36rem]"
       initialState={{
         columnVisibility: { search: false },

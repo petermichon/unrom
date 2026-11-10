@@ -100,6 +100,7 @@
   --color-background: var(--background);
   --color-brand: var(--brand);
   --color-brand-foreground: var(--brand-foreground);
+  --color-derived: var(--derived);
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -130,6 +131,8 @@
   --ring: oklch(0.708 0 0);
   --brand: oklch(0.205 0 0);
   --brand-foreground: oklch(0.985 0 0);
+  /* References derived from a codename rather than published by the source. */
+  --derived: oklch(0.47 0.1 70);
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
@@ -167,6 +170,7 @@
   --ring: oklch(0.556 0 0);
   --brand: oklch(0.985 0 0);
   --brand-foreground: oklch(0.145 0 0);
+  --derived: oklch(0.79 0.11 80);
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
@@ -187,6 +191,11 @@
   }
   .directory-row {
     @apply flex items-baseline justify-between gap-3 rounded-lg border border-border/60 px-3 py-2.5 outline-none transition-colors hover:border-foreground/20 hover:bg-muted/40 focus-visible:ring-3 focus-visible:ring-ring/50;
+  }
+  /* Rows inside a divided list: the container draws the frame, the rows draw
+     only hover and focus. */
+  .index-row {
+    @apply flex items-center gap-3 px-3 py-2.5 outline-none transition-colors hover:bg-muted/40 focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:ring-inset;
   }
 }
 

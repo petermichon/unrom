@@ -4,12 +4,12 @@ import { expect, test } from "@playwright/test";
 test("device identity shows curation provenance", async ({ page }) => {
   await page.goto("/devices/xiaomi/sweet");
 
-  await expect(page.getByRole("heading", { name: "Identity" })).toBeVisible();
-  await expect(page.getByText("Verified", { exact: true })).toBeVisible();
-  await expect(page.getByRole("link", { name: "lineageos" })).toHaveAttribute(
-    "href",
-    "/roms/lineageos",
-  );
+  const identity = page.getByRole("region", { name: "Identity" });
+  await expect(identity).toBeVisible();
+  await expect(identity.getByText("Verified", { exact: true })).toBeVisible();
+  await expect(
+    identity.getByRole("link", { name: "LineageOS", exact: true }),
+  ).toHaveAttribute("href", "/roms/lineageos");
 });
 
 test("registry-only devices are pages with no ROM data", async ({ page }) => {
