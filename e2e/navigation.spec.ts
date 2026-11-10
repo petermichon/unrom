@@ -50,7 +50,39 @@ test("client navigation renders the destination table", async ({ page }) => {
   await expect(
     page.getByRole("heading", { name: "ROMs", level: 1, exact: true }),
   ).toBeVisible();
-  await expect(page.locator('a[href="/roms/lineageos"]')).toBeVisible();
+  await expect(
+    page.locator('main a[href="/roms/lineageos"]').first(),
+  ).toBeVisible();
+});
+
+test("hovering a section opens its panel", async ({ page }) => {
+  await page.goto("/");
+  await page.waitForLoadState("networkidle");
+
+  const devices = page
+    .getByRole("navigation", { name: "Main" })
+    .getByRole("link", { name: "Devices", exact: true });
+  // Hydration may land after the first pointer move; retry the hover.
+  await expect(async () => {
+    await devices.hover();
+    await expect(page.locator("#nav-panel-devices")).toBeVisible({
+      timeout: 1_000,
+    });
+  }).toPass({ timeout: 10_000 });
+});
+
+test("navigation closes the section panel", async ({ page }) => {
+  await page.goto("/");
+  await page
+    .getByRole("navigation", { name: "Main" })
+    .getByRole("link", { name: "ROMs", exact: true })
+    .click();
+  await page.waitForURL("**/roms");
+
+  // Scroll restoration re-evaluates hover after the route settles; a
+  // stationary pointer must not reopen the panel.
+  await page.waitForTimeout(600);
+  await expect(page.locator("#nav-panel-roms")).toHaveCount(0);
 });
 
 test("client navigation survives a failing /api index", async ({ page }) => {
@@ -167,7 +199,9 @@ test("the ROMs index separates covered from catalogue", async ({ page }) => {
     page.getByRole("heading", { name: "With device data" }),
   ).toBeVisible();
   await expect(page.getByText(/Catalogue only/)).toBeVisible();
-  await expect(page.locator('a[href="/roms/lineageos"]')).toBeVisible();
+  await expect(
+    page.locator('main a[href="/roms/lineageos"]').first(),
+  ).toBeVisible();
 });
 
 test("the ROMs filter opens the catalogue for a match", async ({ page }) => {

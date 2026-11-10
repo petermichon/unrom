@@ -1,6 +1,6 @@
 import { Menu } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
-import { Link, useNavigation } from "react-router";
+import { Link, useLocation, useNavigation } from "react-router";
 import { NAV_ITEMS } from "@/lib/nav";
 import CommandPalette from "@/components/CommandPalette";
 import SiteNav from "@/components/SiteNav";
@@ -135,6 +135,7 @@ function NavigationProgress() {
 
 export default function AppShell({ updatedAt, updatedAtIso, children }: Props) {
   const navigation = useNavigation();
+  const { pathname } = useLocation();
   return (
     <TooltipProvider>
       <div className="flex min-h-svh flex-col bg-background">
@@ -156,7 +157,9 @@ export default function AppShell({ updatedAt, updatedAtIso, children }: Props) {
               </span>
             </Link>
 
-            <SiteNav />
+            {/* Remount per route so an open panel closes on navigation; the
+                pointer can stay over the trigger while the page changes. */}
+            <SiteNav key={pathname} />
 
             <div className="ml-auto flex items-center gap-2">
               <CommandPalette />

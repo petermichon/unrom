@@ -90,7 +90,11 @@ export default function SiteNav() {
           <div
             key={item.to}
             className="flex items-center"
-            onMouseEnter={() => {
+            // Open on real pointer movement, not `mouseenter`: browsers re-fire
+            // hover when layout or scroll changes under a stationary pointer,
+            // which made the panel pop open after navigation.
+            onPointerMove={() => {
+              if (active === item.kind) return;
               open(item.kind);
               void NAV_PRELOADS[item.to]?.().catch(() => {});
             }}
