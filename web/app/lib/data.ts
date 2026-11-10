@@ -28,9 +28,8 @@ async function get<T>(path: string): Promise<T> {
   return (await response.json()) as T;
 }
 
-export function fetchDevices(vendor?: string): Promise<BrowseDevice[]> {
-  const query = vendor ? `?vendor=${encodeURIComponent(vendor)}` : "";
-  return get<BrowseDevice[]>(`/api/devices${query}`);
+export function fetchAllDevices(): Promise<BrowseDevice[]> {
+  return get<BrowseDevice[]>("/api/devices?all=true");
 }
 
 export function fetchSummary(): Promise<Summary> {

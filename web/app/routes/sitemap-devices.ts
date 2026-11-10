@@ -1,8 +1,8 @@
-import { fetchDevices, fetchMeta } from "@/lib/data";
+import { fetchAllDevices, fetchMeta } from "@/lib/data";
 import { sitemapResponse } from "@/lib/sitemap";
 
 export async function loader() {
-  const [devices, meta] = await Promise.all([fetchDevices(), fetchMeta()]);
+  const [devices, meta] = await Promise.all([fetchAllDevices(), fetchMeta()]);
   return sitemapResponse(
     devices
       .filter((device) => device.roms.length > 0)

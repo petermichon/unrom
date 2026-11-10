@@ -264,7 +264,7 @@ const deviceListParameters = [
     name: "limit",
     in: "query",
     required: false,
-    description: "Page size, 1-200. Omit for the full filtered list.",
+    description: "Page size, 1-200. Defaults to 100.",
     schema: { type: "integer", minimum: 1, maximum: 200 },
   },
   {
@@ -273,6 +273,15 @@ const deviceListParameters = [
     required: false,
     description: "Rows to skip. Defaults to 0.",
     schema: { type: "integer", minimum: 0 },
+  },
+  {
+    name: "all",
+    in: "query",
+    required: false,
+    description:
+      "Return the full filtered list instead of a page. Intended for bulk " +
+      "consumers such as sitemaps; cannot be combined with `limit`.",
+    schema: { type: "boolean" },
   },
 ];
 
@@ -468,9 +477,9 @@ export const openapi = {
         tags: ["devices"],
         summary: "Browse devices",
         description:
-          "Returns devices matching the filters. Use `limit`/`offset` and the " +
-          "`x-total-count` response header for paged browsing; without a limit " +
-          "the full filtered list is returned.",
+          "Returns devices matching the filters, paged with `limit`/`offset` " +
+          "(100 by default). The `x-total-count` response header reports the " +
+          "total. Pass `all=true` for the full filtered list.",
         operationId: "listDevices",
         parameters: deviceListParameters,
         responses: {

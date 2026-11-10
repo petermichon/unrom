@@ -14,6 +14,11 @@ import { openapi } from "./openapi.ts";
 const PORT = Number(process.env.PORT ?? 3000);
 const HOST = process.env.HOST ?? "127.0.0.1";
 
+// The device list is large (the catalogue plus every ROM-covered device), so a
+// request without paging gets a bounded first page. Bulk consumers ask for the
+// full filtered list explicitly with `all=true`.
+const DEFAULT_DEVICE_LIMIT = 100;
+
 let api: ReturnType<typeof createApi>;
 try {
   api = createApi(DB_PATH);
@@ -109,7 +114,7 @@ app.get("/api", (c) =>
       "GET /api/openapi.json",
       "GET /api/meta",
       "GET /api/summary",
-      "GET /api/devices?q=&vendor=&letter=&limit=&offset=",
+      "GET /api/devices?q=&vendor=&letter=&limit=&offset=&all=",
       "GET /api/devices/letters",
       "GET /api/brands",
       "GET /api/devices/:vendor/:codename",
@@ -161,8 +166,15 @@ app.get("/api/devices", (c) => {
     const value = Number(raw);
     return Number.isInteger(value) ? value : Number.NaN;
   };
+  const all = c.req.query("all");
   const limit = parse("limit");
   const offset = parse("offset");
+  if (all !== undefined && all !== "true") {
+    return c.json({ error: `invalid all: ${all}` }, 400);
+  }
+  if (all === "true" && limit !== undefined) {
+    return c.json({ error: "all cannot be combined with limit" }, 400);
+  }
   if (
     Number.isNaN(limit) ||
     Number.isNaN(offset) ||
@@ -172,7 +184,13 @@ app.get("/api/devices", (c) => {
     return c.json({ error: "invalid pagination" }, 400);
   }
 
-  const options = { query, vendor, letter, limit, offset };
+  const options = {
+    query,
+    vendor,
+    letter,
+    limit: all === "true" ? undefined : (limit ?? DEFAULT_DEVICE_LIMIT),
+    offset,
+  };
   c.header("x-total-count", String(api.countDevices(options)));
   return c.json(api.listDevicesPage(options));
 });
