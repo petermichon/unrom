@@ -8,6 +8,7 @@ import {
   ScrollRestoration,
   data,
   useLoaderData,
+  useRevalidator,
   useRouteLoaderData,
 } from "react-router";
 
@@ -131,6 +132,7 @@ export default function App() {
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
   const data = useRouteLoaderData<typeof loader>("root");
+  const revalidator = useRevalidator();
   const notFound = isRouteErrorResponse(error) && error.status === 404;
 
   const title = notFound ? "Page not found" : "Something went wrong";
@@ -156,6 +158,14 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
         </h1>
         <p className="text-muted-foreground">{details}</p>
         <div className="flex flex-wrap gap-2">
+          {!notFound && (
+            <Button
+              onClick={() => revalidator.revalidate()}
+              disabled={revalidator.state !== "idle"}
+            >
+              {revalidator.state === "idle" ? "Try again" : "Retrying…"}
+            </Button>
+          )}
           <Button nativeButton={false} render={<Link to="/" />}>
             Back home
           </Button>

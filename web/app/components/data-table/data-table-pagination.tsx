@@ -24,7 +24,12 @@ export function DataTablePagination<TData>({ table }: Props<TData>) {
 
   return (
     <div className="flex items-center justify-between gap-4 px-1">
-      <div className="flex-1 text-xs text-muted-foreground">
+      <div
+        className="flex-1 text-xs text-muted-foreground"
+        role="status"
+        aria-live="polite"
+        aria-atomic="true"
+      >
         {rowCount} {rowCount === 1 ? "row" : "rows"}
       </div>
       <div className="flex items-center gap-6 lg:gap-8">
