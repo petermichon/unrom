@@ -239,11 +239,11 @@ function FeaturedDevice({
         to={`/devices/${device.vendor}/${device.codename}`}
         prefetch="intent"
         aria-label={`Most supported device: ${deviceName(device)}, ${roms.length} ROMs`}
-        className="group relative mx-auto hidden w-[14.5rem] shrink-0 outline-none lg:block"
+        className="group relative mx-auto hidden w-[14.5rem] shrink-0 flex-col items-center outline-none lg:flex"
       >
         <span
           aria-hidden="true"
-          className="absolute inset-x-5 -bottom-3 h-8 rounded-[100%] bg-black/25 blur-2xl dark:bg-black/60"
+          className="absolute inset-x-5 bottom-20 h-8 rounded-[100%] bg-black/25 blur-2xl dark:bg-black/60"
         />
         <span
           aria-hidden="true"
@@ -258,60 +258,34 @@ function FeaturedDevice({
           className="absolute -right-[3px] top-28 h-16 w-[3px] rounded-r-full bg-white/20"
         />
 
-        <span className="relative flex h-[29rem] flex-col overflow-hidden rounded-[2.5rem] bg-[#101011] p-[6px] shadow-[0_24px_60px_rgba(0,0,0,0.35)] ring-1 ring-black/10 group-hover:ring-ring/50 group-focus-visible:ring-3 group-focus-visible:ring-ring/60 dark:bg-[#050506] dark:ring-white/15">
-          <span className="relative flex h-full flex-col overflow-hidden rounded-[2.1rem] bg-white text-[#0d0d0f] dark:bg-[#1d1d1d] dark:text-[#f0f0f0]">
-            <span
-              aria-hidden="true"
-              className="absolute top-2 left-1/2 z-10 h-[18px] w-[68px] -translate-x-1/2 rounded-full bg-[#101011] ring-1 ring-white/10 dark:bg-[#050506]"
-            />
+        <span className="relative flex h-[28rem] w-full flex-col overflow-hidden rounded-[2.5rem] bg-[#101011] p-[6px] shadow-[0_24px_60px_rgba(0,0,0,0.35)] ring-1 ring-black/10 group-hover:ring-ring/50 group-focus-visible:ring-3 group-focus-visible:ring-ring/60 dark:bg-[#050506] dark:ring-white/15">
+          <span
+            aria-hidden="true"
+            className="relative flex h-full flex-col overflow-hidden rounded-[2.1rem] bg-[#0b0d18]"
+          >
+            <span className="absolute inset-0 bg-[#0b0d18]" />
+            <span className="absolute -top-20 -right-16 size-64 rounded-full bg-[#4a5bd8] opacity-70 blur-3xl" />
+            <span className="absolute top-24 -left-20 size-64 rounded-full bg-[#a9b6ff] opacity-40 blur-3xl" />
+            <span className="absolute -bottom-24 left-0 size-64 rounded-full bg-[#6d5bd0] opacity-50 blur-3xl" />
+            <span className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/[0.03] to-white/10" />
 
-            <span className="flex flex-col gap-1 px-4 pt-9">
-              <span className="text-[10px] font-semibold text-brand dark:text-muted-foreground">
-                Most supported device
-              </span>
-              <span className="line-clamp-2 font-heading text-lg leading-tight font-extrabold tracking-[-0.02em]">
-                {deviceName(device)}
-              </span>
-              <span className="truncate text-[11px] text-muted-foreground">
-                {device.vendorName} ·{" "}
-                <span className="font-mono">{device.codename}</span>
-              </span>
-            </span>
+            <span className="absolute top-2.5 left-1/2 z-10 size-2.5 -translate-x-1/2 rounded-full bg-black ring-1 ring-white/20" />
+          </span>
+        </span>
 
-            <span className="mx-4 mt-4 flex items-baseline gap-1.5 border-t border-border pt-3">
-              <span className="font-heading text-2xl font-extrabold tabular-nums">
-                {roms.length}
-              </span>
-              <span className="text-[10px] font-semibold tracking-[0.12em] text-muted-foreground uppercase">
-                ROMs
-              </span>
-            </span>
-
-            <span className="mt-2 flex flex-col gap-1 px-3">
-              {roms.slice(0, 6).map((rom) => (
-                <span
-                  key={rom.id}
-                  className="flex items-center gap-2 rounded-lg bg-muted/70 px-2 py-1.5"
-                >
-                  <span className="grid size-5 shrink-0 place-items-center rounded-full bg-white font-mono text-[9px] font-bold text-muted-foreground dark:bg-[#2a2a2a]">
-                    {rom.name.charAt(0)}
-                  </span>
-                  <span className="truncate text-[11px] font-medium">
-                    {rom.name}
-                  </span>
-                </span>
-              ))}
-              {roms.length > 6 && (
-                <span className="px-2 pt-0.5 text-[10px] text-muted-foreground">
-                  +{roms.length - 6} more
-                </span>
-              )}
-            </span>
-
-            <span className="mt-auto flex items-center justify-between border-t border-border px-4 py-3 text-xs font-semibold text-brand">
-              See all {roms.length} ROMs
-              <ArrowRight className="size-3.5" aria-hidden="true" />
-            </span>
+        <span className="mt-4 flex flex-col items-center gap-0.5 text-center">
+          <span className="text-[10px] font-semibold tracking-[0.14em] text-panel-foreground/70 uppercase">
+            Most supported device
+          </span>
+          <span className="font-heading text-lg font-extrabold tracking-[-0.02em] group-hover:underline">
+            {deviceName(device)}
+          </span>
+          <span className="text-sm font-semibold text-brand">
+            {roms.length} ROMs
+          </span>
+          <span className="text-xs text-panel-foreground/70">
+            {device.vendorName} ·{" "}
+            <span className="font-mono">{device.codename}</span>
           </span>
         </span>
       </Link>
