@@ -167,9 +167,9 @@
   --brand: #a9b6ff;
   --brand-foreground: #101010;
   --derived: #e3b45a;
-  /* Neutral surfaces only. Elevation is read from lightness, not hue, so the
-     brand periwinkle stays on text, links and rings. */
-  --panel: #181818;
+  /* A low-chroma brand tint on the one statement surface. Everything else
+     stays neutral, so the periwinkle reads as the brand, not as a coloured UI. */
+  --panel: #1a1d27;
   --panel-foreground: #f0f0f0;
   --chart-1: #c7d2fe;
   --chart-2: #818cf8;
