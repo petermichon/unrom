@@ -157,6 +157,7 @@ export default function DevicesRoute() {
           if (roms) params.set("hasRoms", "true");
           params.set("sort", "coverage");
           params.set("limit", String(PAGE_SIZE));
+          if (page > 1) params.set("offset", String((page - 1) * PAGE_SIZE));
           return `/api/devices?${params}`;
         })()}
       />
