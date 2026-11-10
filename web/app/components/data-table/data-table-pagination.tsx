@@ -32,7 +32,7 @@ export function DataTablePagination<TData>({ table }: Props<TData>) {
       >
         {rowCount} {rowCount === 1 ? "row" : "rows"}
       </div>
-      <div className="flex items-center gap-6 lg:gap-8">
+      <div data-requires-js className="flex items-center gap-6 lg:gap-8">
         <div className="hidden items-center gap-2 sm:flex">
           <p className="text-sm font-medium">Rows per page</p>
           <Select

@@ -97,6 +97,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
           data-website-id="d94ac089-b728-4feb-9833-bab08f629ad5"
           data-domains="unrom.com"
         />
+        {/* Tables ship every row but hide the ones past the first page. Without
+            scripts nothing can page, so show them all and drop the controls
+            that would do nothing. */}
+        <noscript
+          dangerouslySetInnerHTML={{
+            __html:
+              "<style>tr[hidden]{display:table-row}[data-requires-js]{display:none}</style>",
+          }}
+        />
       </head>
       <body className="min-h-svh bg-background text-foreground antialiased selection:bg-brand/30">
         <a
