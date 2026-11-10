@@ -59,7 +59,7 @@ Out of scope: recoveries, root tools, GSIs and repacks, OEM stock skins.
 - 🟢 CalyxOS
 - 🟢 CandyRoms
 - ❌ Carbon ROM
-- ❌ CatalystOS
+- 🟢 CatalystOS
 - ❌ Cesium OS
 - chaoticOS
 - CharaROM
@@ -183,7 +183,7 @@ Out of scope: recoveries, root tools, GSIs and repacks, OEM stock skins.
 - ❌ Octavi OS
 - ❌ Omni ROM
 - ❌ OrionOS
-- ❌ PalladiumOS
+- 🟢 PalladiumOS
 - 🟢 Paranoid Android
 - ❌ PenguinOS
 - ❌ PhoenixAOSP
@@ -197,20 +197,20 @@ Out of scope: recoveries, root tools, GSIs and repacks, OEM stock skins.
 - PixelOS-CLO
 - PixelOS-GM
 - ❌ PixelPlusUI
-- ❌ PixelStar
+- 🟢 PixelStar
 - 🟢 PixysOS
 - ❌ POSP
 - ❌ Project-1CE
 - ❌ Project 404
 - ❌ Project Arcana
-- ❌ Project Blaze
+- 🟢 Project Blaze
 - Project CiRCLE
 - ❌ Project Elixir
 - Project Flare
 - 🟢 Project Infinity X
 - ❌ Project Kaleidoscope
 - ❌ Project Kasumi
-- ❌ Project Lighthouse
+- 🟢 Project Lighthouse
 - ❌ ProjectLisa-AOSP
 - ❌ Project Mushroom
 - Project Nirwana
@@ -243,7 +243,7 @@ Out of scope: recoveries, root tools, GSIs and repacks, OEM stock skins.
 - ❌ SigmaDroid
 - ❌ SkyLineUI
 - ❌ SlimRoms
-- ❌ SomethingOS
+- 🟢 SomethingOS
 - ❌ SoniUI
 - ❌ SonyAOSP (SODP)
 - 🟢 SparkOS
@@ -254,9 +254,9 @@ Out of scope: recoveries, root tools, GSIs and repacks, OEM stock skins.
 - 🟢 Superior OS
 - ❌ Syberia OS
 - ❌ TenXOS
-- ❌ Tequila OS
+- 🟢 Tequila OS
 - The Diva Project
-- ❌ The Kraken Project
+- 🟢 The Kraken Project
 - ❌ The Parasite Project
 - ❌ The Pixel Project
 - ❌ The Styx Project

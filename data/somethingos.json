@@ -1,0 +1,28 @@
+{
+    "devices": [
+        {
+            "name": "Nothing Phone 2",
+            "manufacturer": "Nothing",
+            "maintainer": "DylanAkp",
+            "codename": "phone2"
+        },
+        {
+            "name": "Poco F5",
+            "manufacturer": "Poco",
+            "maintainer": "Chaitanya",
+            "codename": "marble"
+        },
+        {
+            "name": "POCO X3 Pro",
+            "manufacturer": "Poco",
+            "maintainer": "kuroringo90",
+            "codename": "vayu"
+        },
+        {
+            "name": "OnePlus 9/9 Pro",
+            "manufacturer": "OnePlus",
+            "maintainer": "DylanAkp",
+            "codename": "oneplus9"
+        }
+    ]
+}

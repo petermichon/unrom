@@ -40,6 +40,23 @@ interface TreeEntry {
   type?: unknown;
 }
 
+/** Fetch one upstream document and wrap failures with the source name. */
+export async function fetchSource(
+  label: string,
+  url: string,
+): Promise<string | Error> {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`${url}: ${response.status} ${response.statusText}`);
+    }
+    return await response.text();
+  } catch (error) {
+    const message = error instanceof Error ? error.message : String(error);
+    return new Error(`Failed to fetch ${label} devices: ${message}`);
+  }
+}
+
 /**
  * Snapshot every file in a repository that matches `file`. One tree request
  * lists the paths, then raw.githubusercontent.com serves the documents, so the

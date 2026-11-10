@@ -19,9 +19,11 @@ import { parseLineageOS } from "./lineageos.ts";
 import { parseLineageOSMicroG } from "./lineageos-microg.ts";
 import { parseNamelessAosp } from "./nameless-aosp.ts";
 import { parsePixelOS } from "./pixelos.ts";
+import { parseProjectBlaze } from "./project-blaze.ts";
 import { parseRisingOS } from "./risingos.ts";
 import { parseSparkOS } from "./sparkos.ts";
 import { parseSuperiorOS } from "./superioros.ts";
+import { parseTequilaOS } from "./tequila.ts";
 import { parseYaap } from "./yaap.ts";
 
 export interface SourceAdapter {
@@ -294,6 +296,66 @@ const configs: DeviceSource[] = [
     referencePage:
       "https://github.com/Ethereal-OS/Ethereal-Devices/blob/A14/devices.json",
   },
+  {
+    id: "pixelstar",
+    romName: "PixelStar",
+    file: "pixelstar.json",
+    select: selectors.devices("devices", { enabledKey: "active" }),
+    name: ["model"],
+    brand: ["vendor"],
+    referencePage:
+      "https://github.com/Project-PixelStar/official_devices/blob/15/devices.json",
+  },
+  {
+    id: "somethingos",
+    romName: "SomethingOS",
+    file: "somethingos.json",
+    select: selectors.devices("devices"),
+    name: ["name"],
+    brand: ["manufacturer"],
+    referencePage:
+      "https://github.com/SomethingOS/website_devices/blob/main/devices.json",
+  },
+  {
+    id: "the-kraken-project",
+    romName: "The Kraken Project",
+    file: "kraken.json",
+    select: selectors.array,
+    name: ["name"],
+    brand: ["brand"],
+    referencePage:
+      "https://github.com/AOSPK/official_devices/blob/master/devices.json",
+  },
+  {
+    id: "project-lighthouse",
+    romName: "Project Lighthouse",
+    file: "lighthouse.json",
+    select: selectors.array,
+    name: ["name"],
+    brand: ["brand"],
+    referencePage:
+      "https://github.com/lighthouse-os/official_devices/blob/sailboat/official_devices.json",
+  },
+  {
+    id: "palladiumos",
+    romName: "PalladiumOS",
+    file: "palladium.json",
+    select: selectors.arrayEnabled("active"),
+    name: ["name"],
+    brand: ["brand"],
+    referencePage:
+      "https://github.com/Palladium-OS/official_devices/blob/12.1/devices/official_devices.json",
+  },
+  {
+    id: "catalystos",
+    romName: "CatalystOS",
+    file: "catalyst.json",
+    select: selectors.arrayEnabled("active"),
+    name: ["name"],
+    brand: ["brand"],
+    referencePage:
+      "https://github.com/catalyst-android/OTA/blob/13/devices.json",
+  },
 ];
 
 // Sources whose raw shape does not fit the config adapter.
@@ -462,6 +524,18 @@ const specialSources: SourceAdapter[] = [
     romName: "SparkOS",
     file: "sparkos.html",
     parse: parseSparkOS,
+  },
+  {
+    id: "project-blaze",
+    romName: "Project Blaze",
+    file: "projectblaze.json",
+    parse: parseProjectBlaze,
+  },
+  {
+    id: "tequila-os",
+    romName: "Tequila OS",
+    file: "tequila.json",
+    parse: parseTequilaOS,
   },
 ];
 

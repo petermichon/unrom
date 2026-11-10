@@ -24,6 +24,7 @@ open an issue.
 | BlissROMs            | `devices.json`                     | https://github.com/BlissRoms-Devices/official-devices                       |
 | CalyxOS              | install page                       | https://calyxos.org/install/                                                |
 | CandyRoms            | `devices.json`                     | https://github.com/CandyRoms/official_devices                               |
+| CatalystOS           | `devices.json` (13)                | https://github.com/catalyst-android/OTA                                     |
 | CherishOS            | `/api/devices`                     | https://www.cherishos.com                                                   |
 | Clover               | `devices.json`                     | https://github.com/The-Clover-Project/TheCloverProject.com                  |
 | CorvusOS             | `devices.json`                     | https://github.com/CorvusRom-Devices/jenkins                                |
@@ -46,17 +47,23 @@ open an issue.
 | Project Matrixx      | `devices.json`                     | https://github.com/Matrixx-Devices/official_devices                         |
 | MistOS               | `buildDevices.json`                | https://github.com/MistOS-Devices/official_devices                          |
 | Nameless AOSP        | SourceForge listings               | https://sourceforge.net/projects/nameless-aosp/files/                       |
+| PalladiumOS          | `official_devices.json` (12.1)     | https://github.com/Palladium-OS/official_devices                            |
 | Paranoid Android     | `devices`                          | https://github.com/AOSPA/ota                                                |
 | PixelExtended        | OTA `builds/*.json`                | https://github.com/PixelExtended/OTA                                        |
 | PixelExperience      | `devices.json`                     | https://github.com/PixelExperience/official_devices                         |
 | PixelOS              | `API/devices/*.json` (17)          | https://github.com/PixelOS-AOSP/official_devices                            |
+| PixelStar            | `devices.json` (15)                | https://github.com/Project-PixelStar/official_devices                       |
 | PixysOS              | `devices.json`                     | https://github.com/PixysOS/official_devices                                 |
+| Project Blaze        | `devices.json` (14)                | https://github.com/ProjectBlaze/official_devices                            |
 | Project Infinity X   | `devices.json` (16+17)             | https://github.com/ProjectInfinity-X                                        |
+| Project Lighthouse   | `official_devices.json`            | https://github.com/lighthouse-os/official_devices                           |
 | Project PixelAge     | OTA `devices/`                     | https://github.com/ProjectPixelage/pixelage_ota                             |
 | Project Sakura       | OTA `devices.json`                 | https://github.com/ProjectSakura/OTA                                        |
 | RisingOS             | `devices.md`                       | https://github.com/RisingOS-Revived/official_devices                        |
 | SparkOS              | download page (`__NEXT_DATA__`)    | https://spark-os.tech/download                                              |
+| SomethingOS          | `devices.json`                     | https://github.com/SomethingOS/website_devices                              |
 | SuperiorOS           | OTA `*.json`                       | https://github.com/SuperiorOS-Devices/official_devices                      |
+| Tequila OS           | `devices.json`                     | https://github.com/tequilaOS/tequila_ota                                    |
 | WitAqua              | `data/devices.json`                | https://github.com/WitAqua/WitAquaOTA                                       |
 | YAAP AOSP            | `device-info/*/*.json`             | https://github.com/yaap/device-info                                         |
 

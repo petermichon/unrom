@@ -23,6 +23,14 @@ import { listDevices as listDerpFest } from "./fetch/derpfest.ts";
 import { listDevices as listDotOS } from "./fetch/dotos.ts";
 import { listDevices as listDroidXUI } from "./fetch/droidxui.ts";
 import { listDevices as listBlackIron } from "./fetch/blackiron.ts";
+import { listDevices as listCatalyst } from "./fetch/catalyst.ts";
+import { listDevices as listKraken } from "./fetch/kraken.ts";
+import { listDevices as listLighthouse } from "./fetch/lighthouse.ts";
+import { listDevices as listPalladium } from "./fetch/palladium.ts";
+import { listDevices as listPixelStar } from "./fetch/pixelstar.ts";
+import { listDevices as listProjectBlaze } from "./fetch/project-blaze.ts";
+import { listDevices as listSomethingOS } from "./fetch/somethingos.ts";
+import { listDevices as listTequila } from "./fetch/tequila.ts";
 import { listDevices as listSparkOS } from "./fetch/sparkos.ts";
 import { listDevices as listYaap } from "./fetch/yaap.ts";
 import {
@@ -97,6 +105,14 @@ const sources: Source[] = [
   { id: "black-iron-project", file: "blackiron.json", fetch: listBlackIron },
   { id: "sparkos", file: "sparkos.html", fetch: listSparkOS },
   { id: "yaap-aosp", file: "yaap.json", fetch: listYaap },
+  { id: "project-blaze", file: "projectblaze.json", fetch: listProjectBlaze },
+  { id: "pixelstar", file: "pixelstar.json", fetch: listPixelStar },
+  { id: "tequila-os", file: "tequila.json", fetch: listTequila },
+  { id: "somethingos", file: "somethingos.json", fetch: listSomethingOS },
+  { id: "the-kraken-project", file: "kraken.json", fetch: listKraken },
+  { id: "project-lighthouse", file: "lighthouse.json", fetch: listLighthouse },
+  { id: "palladiumos", file: "palladium.json", fetch: listPalladium },
+  { id: "catalystos", file: "catalyst.json", fetch: listCatalyst },
   { id: "2by2-project", file: "2by2.json", fetch: list2by2 },
   { id: "2by2-project", file: "2by2-legacy.json", fetch: list2by2Legacy },
   { id: "etherealos", file: "etherealos.json", fetch: listEtherealOS },

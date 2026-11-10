@@ -1,0 +1,102 @@
+{
+  "devices": [
+    {
+      "codename": "munch",
+      "vendor": "Xiaomi",
+      "model": "Xiaomi Poco F4",
+      "maintainer_name": "Mudit",
+      "active": true
+    },
+    {
+      "codename": "lemonades",
+      "vendor": "OnePlus",
+      "model": "OnePlus 9R",
+      "maintainer_name": "Tanuj Dhama",
+      "active": true
+    },
+{
+      "codename": "camellia",
+      "vendor": "Redmi",
+      "model": "Redmi Note 10 ",
+      "maintainer_name": "Noah",
+      "active": true
+    },
+    {
+	"codename": "hanoip",
+	"vendor": "Motorola",
+	"model": "Motorola G60 / G40 Fusion",
+	"maintainer_name": "semisapeol",
+	"active": true
+    },
+    {
+      "codename": "stone",
+      "vendor": "Poco",
+      "model": "Poco X5 5g",
+      "maintainer_name": "taki",
+      "active": true
+        },
+    {
+      "codename": "sakura",
+      "vendor": "Redmi",
+      "model": "Redmi 6 Pro",
+      "maintainer_name": "achu",
+      "active": true
+        },
+    {
+      "codename": "cupidr",
+      "vendor": "Realme",
+      "model": "Realme GT 5G",
+      "maintainer_name": "MNoxx74",
+      "active": true
+        },
+    {
+      "codename": "marble",
+      "vendor": "Xiaomi",
+      "model": "Poco F5 / Redmi Note 12T",
+      "maintainer_name": "Chaitanya",
+      "active": true
+        },
+    {
+      "codename": "miatoll",
+      "vendor": "Xiaomi",
+      "model": "Redmi Note 9S / 9 Pro / 9 Pro Max / 10 Lite / POCO M2 Pro",
+      "maintainer_name": "westpain",
+      "active": true
+        },
+    {
+      "codename": "ice",
+      "vendor": "Realme",
+      "model": "Realme 9 Speed edition 5G",
+      "maintainer_name": "Abhayabhi4721",
+      "active": true
+        },
+    {
+      "codename": "veux/peux",
+      "vendor": "Xiaomi",
+      "model": "Redmi Note 11 Pro + 5G / Poco X4 Pro 5G",
+      "maintainer_name": "Rex",
+      "active": true
+        },
+    {
+      "codename": "sky",
+      "vendor": "Xiaomi",
+      "model": "Redmi 12 5G / Poco M6 Pro 5G",
+      "maintainer_name": "Suvojeet Sengupta",
+      "active": true
+      },
+    {
+      "codename": "garnet",
+      "vendor": "Xiaomi",
+      "model": "Redmi Note 13 Pro 5G / Poco X6 5G",
+      "maintainer_name": "JYR_RC",
+      "active": true
+      },
+    {
+      "codename": "redwood",
+      "vendor": "Poco",
+      "model": "Redmi Note 12 Pro SE 5G / Poco X5 Pro 5G",
+      "maintainer_name": "RDX463",
+      "active": true
+      }
+  ]
+}

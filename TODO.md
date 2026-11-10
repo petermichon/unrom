@@ -5,9 +5,9 @@
       `40b9ba3` when devices moved to search + A–Z letter pages. Search is the
       filtering path now, so there is no component left to polish.
 - [ ] Grow indexable content by adding source-backed device data for ROMs that
-      currently have none. Tiers 1 and 2 are implemented (48 of 277 ROMs now
-      have data; Project 404 was skipped as stale). Next: the dormant single-file
-      rosters in `ROM_TRIAGE.md`, newest first.
+      currently have none. Tiers 1, 2 and the recent half of Tier 3 are
+      implemented (56 of 277 ROMs now have data; Project 404 was skipped as
+      stale). Next are the 2021-and-older rosters in `ROM_TRIAGE.md`.
 - [x] ~~Serve `/api` from the standalone web server, or document that it needs a
       reverse proxy. `npm run start --workspace web` cannot reach `/api`
       without Caddy, so the built app is not self-contained.~~

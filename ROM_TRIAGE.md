@@ -28,9 +28,9 @@ date so the staleness is visible.
 - The 31 active ROMs were all previously marked ❌, so this is largely a
   re-check of stale evaluations, not first-time discovery.
 
-Progress: Tier 1 (5 ROMs) and three of the four Tier 2 ROMs are implemented,
-taking the catalogue from 40 to 48 ROMs with device data. Project 404 was
-skipped; see Tier 2.
+Progress: Tier 1, three of the four Tier 2 ROMs, and the recent half of Tier 3
+are implemented, taking the catalogue from 40 to 56 ROMs with device data.
+Project 404 was skipped; see Tier 2.
 
 ## Tier 1 — active, one clean JSON file
 
@@ -74,23 +74,28 @@ Single-file rosters from dormant projects. They still make the ROM page
 indexable and add internal links, but the data is historical; prefer the newer
 files and treat 2017–2020 snapshots as last-known support.
 
-| ROM                | Devices | File updated | Source                                                        |
-| ------------------ | ------: | ------------ | ------------------------------------------------------------- |
-| AOSiP              |      68 | 2021-07-21   | `AOSiP/api/devices.json`                                      |
-| Project Blaze      |      58 | 2024-12-03   | `ProjectBlaze/official_devices/devices.json`                  |
-| SlimRoms           |      54 | 2017-11-05   | `slimroms/slimroms.github.io/data/devices.json`               |
-| The Kraken Project |      36 | 2022-02-07   | `AOSPK/official_devices/devices.json`                         |
-| TequilaOS          |      35 | 2024-03-22   | `tequilaOS/tequila_ota/devices.json`                          |
-| Project Lighthouse |      25 | 2022-04-15   | `lighthouse-os/official_devices/official_devices.json`        |
-| FreakyOS           |      20 | 2020-10-29   | `FreakyOS/ota_config/devices.json`                            |
-| PalladiumOS        |      13 | 2022-03-31   | `Palladium-OS/official_devices/devices/official_devices.json` |
-| PixelStar          |      12 | 2024-12-03   | `Project-PixelStar/official_devices/devices.json`             |
-| ReloadedOS         |      12 | 2021-10-01   | `ReloadedOS/official_devices/device.json`                     |
-| ZeusOS             |       8 | 2021-07-06   | `Zeus-OS/website_data/devices.json`                           |
-| WaveOS             |       6 | 2021-06-16   | `Wave-Project/website-api/devices.json`                       |
-| SomethingOS        |       4 | 2024-07-13   | `SomethingOS/website_devices/devices.json`                    |
-| CatalystOS         |       3 | 2022-11-01   | `catalyst-android/OTA/devices.json`                           |
-| AIM ROM            |       2 | 2020-04-09   | `AIMROM/aimrom.github.io/json/devices.json`                   |
+| ROM                | Devices | File updated | Status      | Source                                                        |
+| ------------------ | ------: | ------------ | ----------- | ------------------------------------------------------------- |
+| AOSiP              |      68 | 2021-07-21   |             | `AOSiP/api/devices.json`                                      |
+| Project Blaze      |      60 | 2024-12-03   | Implemented | `ProjectBlaze/official_devices/devices.json` (branch 14)      |
+| SlimRoms           |      54 | 2017-11-05   |             | `slimroms/slimroms.github.io/data/devices.json`               |
+| The Kraken Project |      36 | 2022-02-07   | Implemented | `AOSPK/official_devices/devices.json`                         |
+| TequilaOS          |       1 | 2024-03-22   | Implemented | `tequilaOS/tequila_ota/devices.json` (34 marked discontinued) |
+| Project Lighthouse |      25 | 2022-04-15   | Implemented | `lighthouse-os/official_devices/official_devices.json`        |
+| FreakyOS           |      20 | 2020-10-29   |             | `FreakyOS/ota_config/devices.json`                            |
+| PalladiumOS        |      13 | 2022-03-31   | Implemented | `Palladium-OS/official_devices/devices/official_devices.json` |
+| PixelStar          |      15 | 2024-12-03   | Implemented | `Project-PixelStar/official_devices/devices.json` (branch 15) |
+| ReloadedOS         |      12 | 2021-10-01   |             | `ReloadedOS/official_devices/device.json`                     |
+| ZeusOS             |       8 | 2021-07-06   |             | `Zeus-OS/website_data/devices.json`                           |
+| WaveOS             |       6 | 2021-06-16   |             | `Wave-Project/website-api/devices.json`                       |
+| SomethingOS        |       4 | 2024-07-13   | Implemented | `SomethingOS/website_devices/devices.json`                    |
+| CatalystOS         |       3 | 2022-11-01   | Implemented | `catalyst-android/OTA/devices.json`                           |
+| AIM ROM            |       2 | 2020-04-09   |             | `AIMROM/aimrom.github.io/json/devices.json`                   |
+
+Project Blaze groups its roster by brand, but three Xiaomi devices sit under the
+"Nothing" group; the parser corrects them and splits the two entries that pack
+several codenames into one string. PixelStar branch 15 is the live roster
+(branch 14 marks every device inactive).
 
 ## Tier 4 — active, roster only in HTML or a site API
 
@@ -127,9 +132,9 @@ PenguinOS, The Parasite Project, xiaomi.eu.
 
 1. Tier 1 (5 ROMs, 30 devices) — done.
 2. Tier 2 (3 ROMs, 44 devices) — done; Project 404 skipped as stale.
-3. Tier 3 by file date, newest first (Project Blaze, TequilaOS, PixelStar,
-   SomethingOS, Kraken, Lighthouse, …). Skip 2017–2018 files unless the ROM is
-   notable enough to carry its last-known roster.
+3. Tier 3 recent half (8 ROMs, ~157 devices) — done. What remains is 2021 and
+   older: AOSiP, ReloadedOS, ZeusOS, WaveOS, FreakyOS, AIM ROM and SlimRoms.
+   Only add those if a last-known roster is worth the staleness.
 4. Tier 4 only where a stable endpoint exists; do not scrape a JS-only site.
 5. Leave Tier 5 alone unless a link turns up from another source.
 

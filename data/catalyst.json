@@ -1,0 +1,35 @@
+[
+    {
+      "brand": "Xiaomi",
+      "name": "POCO F4 / Redmi K40s",
+      "codename": "munch",
+      "maintainer_name": "Umang96",
+      "maintainer_xda": "https://forum.xda-developers.com/m/umang96.4279499",
+      "maintainer_country": "IND",
+      "xda_thread": "",
+      "active": true,
+      "donation_link":"http://paypal.me/umang96"
+    },
+    {
+      "brand": "Xiaomi",
+      "name": "Pocophone X3 PRO",
+      "codename": "vayu",
+      "maintainer_name": "LordShenron",
+      "maintainer_xda": "null",
+      "maintainer_country": "IND",
+      "xda_thread": "null",
+      "active": true,
+      "donation_link":"https://ko-fi.com/lordshen"
+    },
+  {
+      "brand": "Xiaomi",
+      "name": "POCO F3 / Mi 11x / Redmi K40",
+      "codename": "alioth",
+      "maintainer_name": "Eidoron1",
+      "maintainer_xda": "https://forum.xda-developers.com/m/eidoron1.11939237/",
+      "maintainer_country": "NEP",
+      "xda_thread": "",
+      "active": true,
+      "donation_link":"null"
+    }
+  ]

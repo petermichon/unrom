@@ -1,0 +1,152 @@
+{
+    "Google": {
+        "barbet": {
+            "name": "Pixel 5a",
+            "discontinued": true
+        },
+        "bramble": {
+            "name": "Pixel 4a 5G",
+            "discontinued": true
+        },
+        "blueline": {
+            "name": "Pixel 3",
+            "discontinued": true
+        },
+        "crosshatch": {
+            "name": "Pixel 3 XL",
+            "discontinued": true
+        },
+        "redfin": {
+            "name": "Pixel 5",
+            "discontinued": true
+        },
+        "taimen": {
+            "name": "Pixel 2 XL",
+            "discontinued": true
+        },
+        "walleye": {
+            "name": "Pixel 2",
+            "discontinued": true
+        }
+    },
+    "OnePlus": {
+        "enchilada": {
+            "name": "6",
+            "discontinued": true
+        },
+        "kebab": {
+            "name": "8T",
+            "discontinued": true
+        },
+        "lemonadep": {
+            "name": "9 Pro",
+            "discontinued": true
+        }
+    },
+    "Realme": {
+        "X2": {
+            "name": "X2",
+            "discontinued": true
+        }
+    },
+    "Samsung": {
+        "crownlte": {
+            "name": "Galaxy Note9",
+            "discontinued": true
+        },
+        "starlte": {
+            "name": "Galaxy S9",
+            "discontinued": true
+        },
+        "star2lte": {
+            "name": "Galaxy S9+",
+            "discontinued": true
+        }
+    },
+    "Xiaomi": {
+        "alioth": {
+            "name": "Poco F3",
+            "discontinued": true
+        },
+        "andromeda": {
+            "name": "Mi MIX 3 5G",
+            "discontinued": true
+        },
+        "apollo": {
+            "name": "Mi 10T / Mi 10T Pro",
+            "discontinued": true
+        },
+        "beryllium": {
+            "name": "Poco F1",
+            "discontinued": true
+        },
+        "chiron": {
+            "name": "Mi MIX 2",
+            "discontinued": true
+        },
+        "cupid": {
+            "name": "12",
+            "discontinued": true
+        },
+        "davinci": {
+            "name": "Mi 9T / Redmi K20",
+            "discontinued": true
+        },
+        "ginkgo": {
+            "name": "Redmi Note 8",
+            "discontinued": true
+        },
+        "haydn": {
+            "name": "Mi 11i",
+            "discontinued": true
+        },
+        "jasmine_sprout": {
+            "name": "Mi A2",
+            "discontinued": true
+        },
+        "lavender": {
+            "name": "Redmi Note 7",
+            "discontinued": true
+        },
+        "marble": {
+            "name": "Poco F5 / Redmi Note 12 Turbo",
+            "discontinued": true
+        },
+        "miatoll": {
+            "name": "POCO M2 Pro / Redmi Note 9S / Redmi Note 9 Pro / Redmi Note 9 Pro Max / Redmi Note 10 Lite",
+            "maintainer": "clarencelol"
+        },
+        "mido": {
+            "name": "Redmi Note 4",
+            "discontinued": true
+        },
+        "renoir": {
+            "name": "Mi 11 Lite 5G",
+            "discontinued": true
+        },
+        "surya": {
+            "name": "Poco X3 NFC",
+            "discontinued": true
+        },
+        "umi": {
+            "name": "Mi 10",
+            "discontinued": true
+        },
+        "venus": {
+            "name": "Mi 11",
+            "discontinued": true
+        },
+        "wayne": {
+            "name": "Mi 6X",
+            "discontinued": true
+        },
+        "whyred": {
+            "name": "Redmi Note 5",
+            "discontinued": true
+        },
+        "zeus": {
+            "name": "12 Pro",
+            "discontinued": true
+        }
+    }
+}
