@@ -12,19 +12,29 @@
       without Caddy, so the built app is not self-contained.~~
       Done: `web/server.ts` proxies `/api` to `API_URL`, so the standalone web
       server is self-contained.
-- [ ] Keep directory tables usable without JavaScript. Sorting, filtering and
-      pagination are client-side, so the controls are inert with scripts
-      disabled; render the full table or paginate on the server.
+- [ ] Keep the detail-page tables usable without JavaScript. `renderAllRows`
+      already puts every filtered row in the initial HTML, so crawlers see the
+      full set, but rows past the first page carry `hidden`, and sorting,
+      filtering and pagination are still client-only controls.
 - [ ] Put table state (sort, filter, hidden columns, page) in the URL so a view
       can be shared and survives back/forward navigation.
 - [ ] Remove the dark-theme flash on first paint by applying the stored theme
       before React hydrates.
-- [ ] Redirect trailing-slash URLs to the canonical no-slash form. Both
-      currently return 200, creating duplicate self-canonical URLs.
-- [ ] Give the generic error page a retry action instead of a dead end.
-- [ ] Announce table filter result counts with `aria-live` so screen-reader
-      users know the row set changed.
-- [ ] Decide whether `/api/devices` should have a bounded default. Without
+- [x] ~~Redirect trailing-slash URLs to the canonical no-slash form. Both
+      currently return 200, creating duplicate self-canonical URLs.~~
+      Done: `web/server.ts` answers any non-root trailing-slash path with a
+      308 to the no-slash form, preserving the query string.
+- [x] ~~Give the generic error page a retry action. It already offers Back home
+      and browse links (so it is no longer a dead end), but it cannot re-run
+      the failed request.~~
+      Done: non-404 errors render a "Try again" button that revalidates the
+      route.
+- [x] ~~Announce table filter result counts with `aria-live` so screen-reader
+      users know the row set changed.~~
+      Done: the row count in `DataTablePagination` is a polite live region.
+- [x] ~~Decide whether `/api/devices` should have a bounded default. Without
       `limit` it returns the full filtered list (documented behaviour), which
       is costly for casual clients; a default page plus an explicit all-rows
-      opt-in would be safer.
+      opt-in would be safer.~~
+      Done: it defaults to 100 rows; `all=true` returns the full filtered
+      list, and the devices sitemap is the only consumer that asks for it.
