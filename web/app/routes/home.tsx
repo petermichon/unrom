@@ -12,6 +12,7 @@ import {
   updatedAtFromMatches,
 } from "@/lib/seo";
 import { formatNumber } from "@/lib/utils";
+import type { BrowseDevice, RomChip } from "@/lib/types";
 import type { Route } from "./+types/home";
 
 async function load() {
@@ -117,50 +118,7 @@ export default function Home() {
             </div>
           </div>
 
-          {featured && (
-            <Link
-              to={`/devices/${featured.vendor}/${featured.codename}`}
-              prefetch="intent"
-              className="flex flex-col gap-4 rounded-2xl bg-background p-5 text-foreground shadow-lg ring-1 ring-black/5 outline-none transition-colors hover:shadow-xl focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-card dark:ring-white/10 dark:shadow-[0_12px_32px_rgba(0,0,0,0.35)]"
-            >
-              <span className="flex flex-col gap-1">
-                <span className="text-xs font-semibold text-brand dark:text-muted-foreground">
-                  Most supported device
-                </span>
-                <span className="font-heading text-xl font-extrabold tracking-[-0.02em]">
-                  {deviceName(featured)}
-                </span>
-                <span className="text-sm text-muted-foreground">
-                  {featured.vendorName} ·{" "}
-                  <span className="font-mono text-xs">{featured.codename}</span>
-                </span>
-              </span>
-              <span className="flex flex-col gap-1.5">
-                <span className="text-[11px] font-semibold text-muted-foreground">
-                  Popular ROMs
-                </span>
-                <span className="flex flex-wrap gap-1.5">
-                  {featuredRoms.slice(0, 4).map((rom) => (
-                    <span
-                      key={rom.id}
-                      className="rounded-full bg-muted px-2.5 py-1 text-xs font-medium text-foreground"
-                    >
-                      {rom.name}
-                    </span>
-                  ))}
-                  {featuredRoms.length > 4 && (
-                    <span className="rounded-full bg-muted px-2.5 py-1 text-xs font-medium text-muted-foreground">
-                      +{featuredRoms.length - 4} more
-                    </span>
-                  )}
-                </span>
-              </span>
-              <span className="flex items-center gap-1 text-sm font-semibold text-brand">
-                See all {featured.roms.length} ROMs
-                <ArrowRight className="size-4" aria-hidden="true" />
-              </span>
-            </Link>
-          )}
+          {featured && <FeaturedDevice device={featured} roms={featuredRoms} />}
         </div>
       </div>
 
@@ -229,5 +187,134 @@ export default function Home() {
         .
       </p>
     </section>
+  );
+}
+
+/**
+ * The most supported device, presented as a phone rather than another card.
+ * The frame is decoration; the screen is real device and ROM data.
+ */
+function FeaturedDevice({
+  device,
+  roms,
+}: {
+  device: BrowseDevice;
+  roms: RomChip[];
+}) {
+  return (
+    <>
+      <Link
+        to={`/devices/${device.vendor}/${device.codename}`}
+        prefetch="intent"
+        className="flex flex-col gap-3 rounded-2xl bg-background p-5 text-foreground shadow-lg ring-1 ring-black/5 outline-none hover:ring-ring/40 focus-visible:ring-3 focus-visible:ring-ring/50 lg:hidden dark:bg-card dark:ring-white/10"
+      >
+        <span className="flex flex-col gap-1">
+          <span className="text-xs font-semibold text-brand dark:text-muted-foreground">
+            Most supported device
+          </span>
+          <span className="font-heading text-xl font-extrabold tracking-[-0.02em]">
+            {deviceName(device)}
+          </span>
+          <span className="text-sm text-muted-foreground">
+            {device.vendorName} ·{" "}
+            <span className="font-mono text-xs">{device.codename}</span>
+          </span>
+        </span>
+        <span className="block truncate text-xs text-muted-foreground">
+          {roms
+            .slice(0, 3)
+            .map((rom) => rom.name)
+            .join(" · ")}
+          {roms.length > 3 ? ` · +${roms.length - 3} more` : ""}
+        </span>
+        <span className="flex items-center justify-between border-t border-border pt-3">
+          <span className="text-sm font-semibold">{roms.length} ROMs</span>
+          <span className="flex items-center gap-1 text-sm font-semibold text-brand">
+            See all <ArrowRight className="size-4" aria-hidden="true" />
+          </span>
+        </span>
+      </Link>
+
+      <Link
+        to={`/devices/${device.vendor}/${device.codename}`}
+        prefetch="intent"
+        aria-label={`Most supported device: ${deviceName(device)}, ${roms.length} ROMs`}
+        className="group relative mx-auto hidden w-[14.5rem] shrink-0 outline-none lg:block"
+      >
+        <span
+          aria-hidden="true"
+          className="absolute inset-x-5 -bottom-3 h-8 rounded-[100%] bg-black/25 blur-2xl dark:bg-black/60"
+        />
+        <span
+          aria-hidden="true"
+          className="absolute -left-[3px] top-24 h-9 w-[3px] rounded-l-full bg-white/20"
+        />
+        <span
+          aria-hidden="true"
+          className="absolute -left-[3px] top-36 h-14 w-[3px] rounded-l-full bg-white/20"
+        />
+        <span
+          aria-hidden="true"
+          className="absolute -right-[3px] top-28 h-16 w-[3px] rounded-r-full bg-white/20"
+        />
+
+        <span className="relative flex h-[29rem] flex-col overflow-hidden rounded-[2.5rem] bg-[#101011] p-[6px] shadow-[0_24px_60px_rgba(0,0,0,0.35)] ring-1 ring-black/10 group-hover:ring-ring/50 group-focus-visible:ring-3 group-focus-visible:ring-ring/60 dark:bg-[#050506] dark:ring-white/15">
+          <span className="relative flex h-full flex-col overflow-hidden rounded-[2.1rem] bg-white text-[#0d0d0f] dark:bg-[#1d1d1d] dark:text-[#f0f0f0]">
+            <span
+              aria-hidden="true"
+              className="absolute top-2 left-1/2 z-10 h-[18px] w-[68px] -translate-x-1/2 rounded-full bg-[#101011] ring-1 ring-white/10 dark:bg-[#050506]"
+            />
+
+            <span className="flex flex-col gap-1 px-4 pt-9">
+              <span className="text-[10px] font-semibold text-brand dark:text-muted-foreground">
+                Most supported device
+              </span>
+              <span className="line-clamp-2 font-heading text-lg leading-tight font-extrabold tracking-[-0.02em]">
+                {deviceName(device)}
+              </span>
+              <span className="truncate text-[11px] text-muted-foreground">
+                {device.vendorName} ·{" "}
+                <span className="font-mono">{device.codename}</span>
+              </span>
+            </span>
+
+            <span className="mx-4 mt-4 flex items-baseline gap-1.5 border-t border-border pt-3">
+              <span className="font-heading text-2xl font-extrabold tabular-nums">
+                {roms.length}
+              </span>
+              <span className="text-[10px] font-semibold tracking-[0.12em] text-muted-foreground uppercase">
+                ROMs
+              </span>
+            </span>
+
+            <span className="mt-2 flex flex-col gap-1 px-3">
+              {roms.slice(0, 6).map((rom) => (
+                <span
+                  key={rom.id}
+                  className="flex items-center gap-2 rounded-lg bg-muted/70 px-2 py-1.5"
+                >
+                  <span className="grid size-5 shrink-0 place-items-center rounded-full bg-white font-mono text-[9px] font-bold text-muted-foreground dark:bg-[#2a2a2a]">
+                    {rom.name.charAt(0)}
+                  </span>
+                  <span className="truncate text-[11px] font-medium">
+                    {rom.name}
+                  </span>
+                </span>
+              ))}
+              {roms.length > 6 && (
+                <span className="px-2 pt-0.5 text-[10px] text-muted-foreground">
+                  +{roms.length - 6} more
+                </span>
+              )}
+            </span>
+
+            <span className="mt-auto flex items-center justify-between border-t border-border px-4 py-3 text-xs font-semibold text-brand">
+              See all {roms.length} ROMs
+              <ArrowRight className="size-3.5" aria-hidden="true" />
+            </span>
+          </span>
+        </span>
+      </Link>
+    </>
   );
 }
