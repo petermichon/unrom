@@ -181,14 +181,14 @@ function PhoneIllustration() {
       <span className="absolute -left-[3px] top-36 h-14 w-[3px] rounded-l-full bg-white/20" />
       <span className="absolute -right-[3px] top-28 h-16 w-[3px] rounded-r-full bg-white/20" />
 
-      <span className="relative flex h-[28rem] w-full flex-col overflow-hidden rounded-[2.5rem] bg-[#101011] p-[6px] shadow-[0_24px_60px_rgba(0,0,0,0.35)] ring-1 ring-black/10 dark:bg-[#050506] dark:ring-white/15">
-        <span className="relative flex h-full flex-col overflow-hidden rounded-[2.1rem] bg-[#0b0d18]">
-          <span className="absolute inset-0 bg-[#0b0d18]" />
-          <span className="absolute -top-20 -right-16 size-64 rounded-full bg-[#4a5bd8] opacity-70 blur-3xl" />
-          <span className="absolute top-24 -left-20 size-64 rounded-full bg-[#a9b6ff] opacity-40 blur-3xl" />
-          <span className="absolute -bottom-24 left-0 size-64 rounded-full bg-[#6d5bd0] opacity-50 blur-3xl" />
-          <span className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/[0.03] to-white/10" />
-          <span className="absolute top-2.5 left-1/2 size-2.5 -translate-x-1/2 rounded-full bg-black ring-1 ring-white/20" />
+      <span className="relative flex h-[28rem] w-full flex-col overflow-hidden rounded-[2.5rem] bg-[#1d2740] p-[6px] shadow-[0_24px_60px_rgba(0,0,0,0.35)] ring-1 ring-black/15 dark:bg-[#0a0b11] dark:ring-white/15">
+        <span className="relative flex h-full flex-col overflow-hidden rounded-[2.1rem] bg-gradient-to-b from-[#eef2ff] via-[#dde4fb] to-[#9aa8ff] dark:from-[#252b3d] dark:via-[#1a1d27] dark:to-[#10131d]">
+          <span className="absolute inset-0 bg-gradient-to-b from-[#eef2ff] via-[#dde4fb] to-[#9aa8ff] dark:from-[#252b3d] dark:via-[#1a1d27] dark:to-[#10131d]" />
+          <span className="absolute -top-20 -right-16 size-64 rounded-full bg-[#f3f5ff] opacity-80 blur-3xl dark:bg-[#4a5bd8] dark:opacity-60" />
+          <span className="absolute top-24 -left-20 size-64 rounded-full bg-[#a9b6ff] opacity-50 blur-3xl dark:bg-[#a9b6ff] dark:opacity-25" />
+          <span className="absolute -bottom-24 left-0 size-64 rounded-full bg-[#8d9cff] opacity-40 blur-3xl dark:bg-[#2a3048] dark:opacity-80" />
+          <span className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/10 to-white/30 dark:via-white/[0.02] dark:to-white/10" />
+          <span className="absolute top-2.5 left-1/2 size-2.5 -translate-x-1/2 rounded-full bg-[#1d2740] ring-1 ring-white/20 dark:bg-[#0a0b11]" />
         </span>
       </span>
     </div>
