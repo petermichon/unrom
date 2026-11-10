@@ -58,8 +58,9 @@ function BrandRow({ brand }: { brand: Brand }) {
       <span className="min-w-0 flex-1 truncate font-semibold">
         {brand.vendorName}
       </span>
-      <span className="w-20 shrink-0 text-right text-xs text-muted-foreground tabular-nums">
-        {formatNumber(brand.withRoms)} {brand.withRoms === 1 ? "ROM" : "ROMs"}
+      <span className="w-24 shrink-0 text-right font-mono text-xs text-muted-foreground tabular-nums">
+        {formatNumber(brand.withRoms)} with{" "}
+        {brand.withRoms === 1 ? "ROM" : "ROMs"}
       </span>
       <span className="w-24 shrink-0 text-right text-xs text-muted-foreground tabular-nums">
         {formatNumber(brand.deviceCount)}{" "}
@@ -126,7 +127,7 @@ export default function BrandsRoute() {
             className="flex items-center gap-3 px-4 text-xs font-medium text-muted-foreground"
           >
             <span className="flex-1">Brand</span>
-            <span className="w-20 text-right">With ROMs</span>
+            <span className="w-24 text-right">With ROM data</span>
             <span className="w-24 text-right">Devices</span>
           </div>
           <ul className="index-frame">
