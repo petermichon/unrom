@@ -5,10 +5,10 @@
       `40b9ba3` when devices moved to search + A–Z letter pages. Search is the
       filtering path now, so there is no component left to polish.
 - [ ] Grow indexable content by adding source-backed device data for ROMs that
-      currently have none. Deferred: this needs one adapter per ROM, and many
-      catalogue entries have no usable public device list. Next step is triage:
-      list which of the uncovered ROMs publish a machine-readable roster (OTA
-      JSON, GitHub org, downloads page), then add them in batches.
+      currently have none. Deferred: this needs one adapter per ROM. Triage is
+      done in `ROM_TRIAGE.md`: 5 active ROMs have one clean JSON roster, 4 more
+      are a directory of per-device JSON, and 15 dormant ROMs have single-file
+      rosters. Start with the active tier.
 - [x] ~~Serve `/api` from the standalone web server, or document that it needs a
       reverse proxy. `npm run start --workspace web` cannot reach `/api`
       without Caddy, so the built app is not self-contained.~~
