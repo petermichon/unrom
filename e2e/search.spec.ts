@@ -109,7 +109,7 @@ test("example chips show when idle or when nothing matches", async ({
   page,
 }) => {
   await page.goto("/");
-  const example = page.getByRole("button", { name: "Search for Pixel 9" });
+  const example = page.getByRole("button", { name: "Search for Pixel" });
   const input = page.getByPlaceholder(
     "Search by device name, codename, brand, or ROM…",
   );

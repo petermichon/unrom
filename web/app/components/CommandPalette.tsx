@@ -25,6 +25,7 @@ export default function CommandPalette() {
         onClick={() => setOpen(true)}
         aria-label="Search devices, brands, and ROMs"
         aria-keyshortcuts="Control+K Meta+K"
+        data-nojs-hide
         title="Search (⌘K)"
         className="text-muted-foreground"
       >

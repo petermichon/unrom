@@ -13,7 +13,13 @@ export function ExportMenu() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
-        render={<Button variant="outline" aria-label="Export the dataset" />}
+        render={
+          <Button
+            variant="outline"
+            aria-label="Export the dataset"
+            data-nojs-hide
+          />
+        }
       >
         <Download />
         <span className="hidden sm:inline">Export</span>

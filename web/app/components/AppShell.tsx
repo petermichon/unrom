@@ -89,6 +89,7 @@ function MobileMenu() {
             size="icon"
             className="md:hidden"
             aria-label="Open menu"
+            data-nojs-hide
           />
         }
       >
@@ -239,6 +240,23 @@ export default function AppShell({ updatedAt, updatedAtIso, children }: Props) {
               <MobileMenu />
             </div>
           </div>
+          <nav
+            aria-label="Sections"
+            className="nojs-nav mx-auto hidden w-full max-w-6xl flex-wrap items-center gap-x-5 gap-y-1 border-t border-border px-4 py-2 text-sm font-semibold md:hidden"
+          >
+            <a href="/devices" className="text-foreground/70">
+              Devices
+            </a>
+            <a href="/roms" className="text-foreground/70">
+              ROMs
+            </a>
+            <a href="/brands" className="text-foreground/70">
+              Brands
+            </a>
+            <a href="/data" className="text-foreground/70">
+              Data
+            </a>
+          </nav>
           <NavigationProgress />
         </header>
 

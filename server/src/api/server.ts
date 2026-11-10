@@ -121,6 +121,7 @@ app.get("/api", (c) =>
       "GET /api/search?q=",
       "GET /api/registry?q=&vendor=",
       "GET /api/roms",
+      "GET /api/roms/summary",
       "GET /api/roms/:id",
       "GET /api/data",
       "GET /api/export/json",
@@ -228,6 +229,9 @@ app.get("/api/registry", (c) =>
 );
 
 app.get("/api/roms", (c) => c.json(api.listRoms()));
+
+// Lightweight counts for pickers; keeps `/api/roms` for the full device lists.
+app.get("/api/roms/summary", (c) => c.json(api.listRomSummaries()));
 
 app.get("/api/roms/:id", (c) => {
   const id = c.req.param("id");

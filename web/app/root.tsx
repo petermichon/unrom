@@ -88,11 +88,20 @@ export const meta: Route.MetaFunction = ({ error }) => {
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className="dark" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
+        <script
+          // Apply the stored theme before first paint so a dark preference does
+          // not flash light. Without scripts the page stays on the light theme
+          // instead of being forced dark.
+          dangerouslySetInnerHTML={{
+            __html:
+              '(function(){try{var t=localStorage.getItem("theme");var d=t==="dark"||((!t||t==="system")&&window.matchMedia("(prefers-color-scheme: dark)").matches);document.documentElement.classList.toggle("dark",d);}catch(e){}})();',
+          }}
+        />
         <Links />
         <script
           defer
@@ -106,7 +115,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <noscript
           dangerouslySetInnerHTML={{
             __html:
-              "<style>tr[hidden]{display:table-row}[data-requires-js]{display:none}</style>",
+              "<style>tr[hidden]{display:table-row}[data-requires-js]{display:none}@media (max-width:767px){.nojs-nav{display:flex!important}}[data-nojs-hide]{display:none!important}</style>",
           }}
         />
       </head>

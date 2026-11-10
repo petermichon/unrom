@@ -144,6 +144,7 @@ GET /api/search?q=                → SearchResponse
 GET /api/devices/:vendor/:codename → DeviceDetail | 404
 GET /api/registry?q=&vendor=      → RegistryEntry[]
 GET /api/roms                     → RomDetail[]
+GET /api/roms/summary             → RomSummary[] (counts only)
 GET /api/roms/:id                 → RomDetail | 404
 GET /api/data                     → Mapping[]
 GET /api/export/json              → unrom.json (attachment)

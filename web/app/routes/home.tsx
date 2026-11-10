@@ -3,7 +3,7 @@ import { useMemo } from "react";
 import { Link, useLoaderData } from "react-router";
 import DeviceCard from "@/components/DeviceCard";
 import DeviceSearch from "@/components/DeviceSearch";
-import { fetchSummary } from "@/lib/data";
+import { fetchRomSummaries, fetchSummary } from "@/lib/data";
 import { deviceName } from "@/lib/devices";
 import {
   errorMeta,
@@ -15,7 +15,10 @@ import { formatNumber } from "@/lib/utils";
 import type { Route } from "./+types/home";
 
 async function load() {
-  const summary = await fetchSummary();
+  const [summary, roms] = await Promise.all([
+    fetchSummary(),
+    fetchRomSummaries(),
+  ]);
   return {
     counts: {
       devices: summary.deviceCount,
@@ -24,6 +27,9 @@ async function load() {
       coveredRoms: summary.coveredRomCount,
     },
     topDevices: summary.topDevices,
+    romCounts: Object.fromEntries(
+      roms.map((rom) => [rom.id, rom.deviceCount]),
+    ) as Record<string, number>,
   };
 }
 
@@ -52,12 +58,23 @@ export async function clientLoader() {
   return load();
 }
 
-const EXAMPLES = ["Pixel 9", "beryllium", "Xiaomi", "LineageOS"];
+const EXAMPLES = ["Pixel", "beryllium", "Xiaomi", "LineageOS"];
 
 export default function Home() {
-  const { counts, topDevices } = useLoaderData<typeof loader>();
+  const { counts, topDevices, romCounts } = useLoaderData<typeof loader>();
 
   const featured = topDevices[0];
+  const featuredRoms = useMemo(
+    () =>
+      featured
+        ? [...featured.roms].sort(
+            (a, b) =>
+              (romCounts[b.id] ?? 0) - (romCounts[a.id] ?? 0) ||
+              a.name.localeCompare(b.name),
+          )
+        : [],
+    [featured, romCounts],
+  );
 
   const sections = useMemo(
     () => [
@@ -98,18 +115,13 @@ export default function Home() {
             <div className="max-w-2xl">
               <DeviceSearch examples={EXAMPLES} />
             </div>
-            <p className="font-mono text-xs text-panel-foreground/65">
-              {formatNumber(counts.devices)} devices ·{" "}
-              {formatNumber(counts.brands)} brands · {formatNumber(counts.roms)}{" "}
-              ROMs
-            </p>
           </div>
 
           {featured && (
             <Link
               to={`/devices/${featured.vendor}/${featured.codename}`}
               prefetch="intent"
-              className="hidden flex-col gap-4 rounded-2xl bg-background p-5 text-foreground shadow-lg ring-1 ring-black/5 outline-none transition-colors hover:shadow-xl focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-card dark:ring-white/10 dark:shadow-[0_12px_32px_rgba(0,0,0,0.35)] sm:flex"
+              className="flex flex-col gap-4 rounded-2xl bg-background p-5 text-foreground shadow-lg ring-1 ring-black/5 outline-none transition-colors hover:shadow-xl focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-card dark:ring-white/10 dark:shadow-[0_12px_32px_rgba(0,0,0,0.35)]"
             >
               <span className="flex flex-col gap-1">
                 <span className="text-xs font-semibold text-brand">
@@ -123,20 +135,25 @@ export default function Home() {
                   <span className="font-mono text-xs">{featured.codename}</span>
                 </span>
               </span>
-              <span className="flex flex-wrap gap-1.5">
-                {featured.roms.slice(0, 4).map((rom) => (
-                  <span
-                    key={rom.id}
-                    className="rounded-full bg-muted px-2.5 py-1 text-xs font-medium text-foreground"
-                  >
-                    {rom.name}
-                  </span>
-                ))}
-                {featured.roms.length > 4 && (
-                  <span className="rounded-full bg-muted px-2.5 py-1 text-xs font-medium text-muted-foreground">
-                    +{featured.roms.length - 4} more
-                  </span>
-                )}
+              <span className="flex flex-col gap-1.5">
+                <span className="text-[11px] font-semibold text-muted-foreground">
+                  Popular ROMs
+                </span>
+                <span className="flex flex-wrap gap-1.5">
+                  {featuredRoms.slice(0, 4).map((rom) => (
+                    <span
+                      key={rom.id}
+                      className="rounded-full bg-muted px-2.5 py-1 text-xs font-medium text-foreground"
+                    >
+                      {rom.name}
+                    </span>
+                  ))}
+                  {featuredRoms.length > 4 && (
+                    <span className="rounded-full bg-muted px-2.5 py-1 text-xs font-medium text-muted-foreground">
+                      +{featuredRoms.length - 4} more
+                    </span>
+                  )}
+                </span>
               </span>
               <span className="flex items-center gap-1 text-sm font-semibold text-brand">
                 See all {featured.roms.length} ROMs
@@ -175,15 +192,12 @@ export default function Home() {
       </section>
 
       <section aria-labelledby="top-devices" className="flex flex-col gap-4">
-        <div className="flex items-baseline justify-between gap-2">
-          <h2
-            id="top-devices"
-            className="font-heading text-xl font-bold tracking-tight"
-          >
-            Devices with the most ROMs
-          </h2>
-          <span className="text-sm text-muted-foreground">by ROM count</span>
-        </div>
+        <h2
+          id="top-devices"
+          className="font-heading text-xl font-bold tracking-tight"
+        >
+          Devices with the most ROMs
+        </h2>
         <ul className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {topDevices.map((device) => (
             <li key={`${device.vendor}/${device.codename}`}>
@@ -191,13 +205,20 @@ export default function Home() {
             </li>
           ))}
         </ul>
+        <Link
+          to="/devices"
+          prefetch="intent"
+          className="inline-flex w-fit items-center gap-1 text-sm font-semibold text-brand hover:underline"
+        >
+          Browse all devices
+          <ArrowRight className="size-4" aria-hidden="true" />
+        </Link>
       </section>
 
       <p className="max-w-[62ch] text-sm leading-relaxed text-muted-foreground">
-        Each device page lists every custom ROM with a known build, the
-        codename, and the source behind it. The dataset is rebuilt from upstream
-        device lists and refreshed regularly. It is available as JSON, SQLite,
-        and a REST API; see the{" "}
+        Every device page lists its supported ROMs with the source behind each
+        one; the full dataset is available as JSON, SQLite, and a REST API — see
+        the{" "}
         <Link
           to="/data"
           prefetch="intent"

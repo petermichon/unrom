@@ -668,6 +668,50 @@ export function createApi(dbPath: string) {
       );
   }
 
+  /**
+   * Per-ROM device counts without the device lists. Mirrors `buildRom`: a
+   * build covers its target and every variant that target covers.
+   */
+  function listRomSummaries(): RomSummary[] {
+    const variantsByMain = new Map<string, string[]>();
+    for (const row of db.select().from(deviceVariants).all()) {
+      const key = deviceKey(row.vendor, row.codename);
+      const list = variantsByMain.get(key);
+      if (list) list.push(row.variantCodename);
+      else variantsByMain.set(key, [row.variantCodename]);
+    }
+
+    const devicesByRom = new Map<string, Set<string>>();
+    const add = (romId: string, key: string) => {
+      const set = devicesByRom.get(romId);
+      if (set) set.add(key);
+      else devicesByRom.set(romId, new Set([key]));
+    };
+    for (const edge of db.select().from(romDevices).all()) {
+      const vendor = edge.vendor;
+      const codename = edge.codename;
+      add(edge.romId, deviceKey(vendor, codename));
+      for (const variant of variantsByMain.get(deviceKey(vendor, codename)) ??
+        []) {
+        add(edge.romId, deviceKey(vendor, variant));
+      }
+    }
+
+    return db
+      .select()
+      .from(roms)
+      .all()
+      .map((rom) => ({
+        id: rom.id,
+        name: rom.name,
+        status: rom.status as RomStatus,
+        deviceCount: devicesByRom.get(rom.id)?.size ?? 0,
+      }))
+      .sort(
+        (a, b) => b.deviceCount - a.deviceCount || bySortKey(a.name, b.name),
+      );
+  }
+
   function listRoms(): RomDetail[] {
     const { deviceByKey, romCountByDevice, edgesByRom, variantsByMain } =
       indexes();
@@ -926,6 +970,7 @@ export function createApi(dbPath: string) {
     listBrands,
     getDevice,
     listRegistry,
+    listRomSummaries,
     listRoms,
     getRom,
     getSummary,

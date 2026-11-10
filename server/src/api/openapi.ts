@@ -618,6 +618,22 @@ export const openapi = {
         },
       },
     },
+    "/api/roms/summary": {
+      get: {
+        tags: ["roms"],
+        summary: "List ROMs with device counts only",
+        description:
+          "Compact form of `/api/roms`: one row per ROM, without the device " +
+          "lists. Sorted by device count, then name.",
+        operationId: "listRomSummaries",
+        responses: {
+          200: jsonResponse({
+            type: "array",
+            items: { $ref: "#/components/schemas/RomSummary" },
+          }),
+        },
+      },
+    },
     "/api/roms/{id}": {
       get: {
         tags: ["roms"],

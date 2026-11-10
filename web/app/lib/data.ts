@@ -5,6 +5,7 @@ import type {
   LetterSummary,
   Meta,
   RomDetail,
+  RomSummary,
   Summary,
 } from "@/lib/types";
 
@@ -176,6 +177,11 @@ export function fetchDevice(
 
 export function fetchRoms(): Promise<RomDetail[]> {
   return get<RomDetail[]>("/api/roms");
+}
+
+/** One row per ROM with its device count, without the device lists. */
+export function fetchRomSummaries(): Promise<RomSummary[]> {
+  return get<RomSummary[]>("/api/roms/summary");
 }
 
 export function fetchRom(id: string): Promise<RomDetail> {
