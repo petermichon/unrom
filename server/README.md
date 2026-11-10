@@ -3,7 +3,7 @@
 Node API that turns the raw ROM data in `../data` into a device → ROM index.
 
 > Status: **in progress**: ingest, normalize, build and the read-only REST API
-> work end to end, and all 30 sources are normalized. JSON sources use the
+> work end to end, and every registered source is normalized. JSON sources use the
 > config-driven adapter in `src/sources/`; irregular shapes have dedicated
 > parsers alongside it (LineageOS and Evolution X use a two-stage fetch of
 > per-device files; iodéOS is codename-only because its GitLab API is behind an
@@ -19,7 +19,8 @@ Node API that turns the raw ROM data in `../data` into a device → ROM index.
 2. **Normalize**: adapters in `src/sources/` parse each source's own shape into
    the canonical `NormalizedRomDevice` records (validated with Zod), written to
    `dist/normalized.ndjson`.
-3. **Build DB**: read the normalized records, resolve devices/ROMs, and write
+3. **Build DB**: read the normalized records, add the Play catalogue snapshot
+   (`data/play-devices.csv`), resolve devices/ROMs, and write
    `dist/unrom.sqlite`. The DDL is generated from `src/db/schema.ts` (the single
    source of truth) and written to `dist/schema.sql` for the exports. Offline
    and reproducible; no network.
@@ -33,7 +34,7 @@ the build step must stay runnable without the network.
 npm run ingest                       # fetch every source (from repo root)
 npm run ingest -- arrowos havocos    # fetch specific sources only
 npm run build:data                   # normalize + build SQLite + export JSON
-npm run check:references             # report dead reference hosts (no writes)
+npm run check:references             # record dead derived references
 npm run test                         # source coverage + dataset invariants
 ```
 
@@ -41,11 +42,11 @@ npm run test                         # source coverage + dataset invariants
 `ALLOWED_EMPTY_FILES`), so a changed upstream shape breaks the build instead of
 silently dropping data.
 
-`check:references` probes one sample URL per reference host (not every device
-page) and reports hosts that are dead, blocked (alive but rejects automated
-requests, e.g. XDA), or timed out. A dead host means a citation is gone; fix the
-source or move it to the exception list in `ROM_DATA_SOURCES.md`. It exits
-non-zero when any host is dead.
+`check:references` probes every derived reference URL plus one sample URL per
+host. A 404/410 is recorded as dead and the build drops that citation; blocked
+or timed-out requests stay unverified and are left in place. Results are written
+to `server/reference-overrides.json`. A dead host is reported because every
+citation from it needs review.
 
 `dist/` is a derived artifact and is gitignored; `../data` remains the immutable
 source of truth.
@@ -65,15 +66,20 @@ source of truth.
 
 ## Tables
 
-| Table         | Purpose                                          |
-| ------------- | ------------------------------------------------ |
-| `roms`        | One row per ROM/OS (`id`, `name`, `status`)      |
-| `devices`     | One row per `(vendor, codename)` device (`name`) |
-| `rom_devices` | The many-to-many edge (`reference_url`)          |
-| `meta`        | Snapshot metadata (`generatedAt`, `contentHash`) |
+| Table             | Purpose                                           |
+| ----------------- | ------------------------------------------------- |
+| `roms`            | One row per ROM/OS (`id`, `name`, `status`)       |
+| `devices`         | One row per `(vendor, codename)` device (`name`)  |
+| `rom_devices`     | The many-to-many edge (`reference_url`)           |
+| `device_variants` | Build targets that cover each other               |
+| `registry`        | Curated `(vendor, codename)` names and provenance |
+| `aliases`         | Alternate codenames resolving to a device         |
+| `meta`            | Snapshot metadata (`generatedAt`, `contentHash`)  |
 
-Search is a plain `LIKE` over codename/name/vendor. An FTS5 index can be added
-when the dataset is large enough to need it.
+Search uses `instr` for literal substring matching (`LIKE` would treat `%` and
+`_` as wildcards), covers codename, every curated model name, vendor, and
+aliases, and ranks devices by variant-inclusive ROM count. An FTS5 index can be
+added when the dataset is large enough to need it.
 
 The DB is a **derived artifact**, rebuildable from `../data` at any time, so
 the schema can change freely.
@@ -83,11 +89,19 @@ the schema can change freely.
 ```
 GET /api/health                   → { ok: true }
 GET /api/meta                     → { generatedAt, contentHash }
-GET /api/devices?q=pixel&vendor=  → BrowseDevice[]
+GET /api/summary                  → Summary (counts + top devices)
+GET /api/brands                   → BrandSummary[]
+GET /api/devices?q=&vendor=&letter=&hasRoms=&sort=&limit=&offset=&all=
+                                  → BrowseDevice[] + x-total-count
+GET /api/devices/letters          → LetterSummary[]
 GET /api/devices/:vendor/:codename → DeviceDetail | 404
+GET /api/search?q=                → SearchResponse
+GET /api/registry?q=&vendor=      → RegistryEntry[]
 GET /api/roms                     → RomDetail[] (all catalogued ROMs, incl. 0-device)
+GET /api/roms/summary             → RomSummary[]
 GET /api/roms/:id                 → RomDetail | 404
 GET /api/data                     → Mapping[]
+GET /api/openapi.json             → OpenAPI 3.1 document
 GET /api/export/json              → dist/unrom.json (attachment)
 GET /api/export/sqlite            → dist/unrom.sqlite (attachment)
 ```
@@ -113,8 +127,8 @@ Generated by `npm run build:data` into `dist/`:
 - Both exports carry the snapshot timestamp (`meta.generatedAt`).
 
 Both files are served by the API as attachments
-(`GET /api/export/json`, `GET /api/export/sqlite`); wiring the web export
-buttons is still pending.
+(`GET /api/export/json`, `GET /api/export/sqlite`) and linked from the web
+header menu and the `/data` page.
 
 ## License
 
