@@ -353,10 +353,11 @@ export function createApi(dbPath: string) {
     // Search and the full export keep their own ordering.
     // `sort=coverage` orders in SQL, so vendor and letter pages can paginate
     // without loading the whole directory into memory first.
+    // Brand and letter pages default to coverage-first, but an explicit
+    // `sort=name` is a request for alphabetical order and must win.
     const directoryOrder =
       !options.query &&
-      options.sort !== "coverage" &&
-      options.sort !== "roms" &&
+      options.sort === undefined &&
       (options.letter !== undefined || options.vendor !== undefined);
     const byName = [
       asc(sql`lower(${displayName})`),

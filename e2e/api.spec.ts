@@ -29,3 +29,27 @@ test("device lists expose their total to browsers", async ({ request }) => {
     response.headers()["access-control-expose-headers"]?.toLowerCase(),
   ).toContain("x-total-count");
 });
+
+test("sort=name overrides coverage-first on directory pages", async ({
+  request,
+}) => {
+  type Device = { name: string | null; codename: string };
+  const response = await request.get("/api/devices?vendor=amazon&all=true");
+  const devices = (await response.json()) as Device[];
+  const key = (device: Device) =>
+    (device.name ?? device.codename).toLowerCase();
+  const expected = [...devices].sort((a, b) =>
+    key(a) < key(b)
+      ? -1
+      : key(a) > key(b)
+        ? 1
+        : a.codename.localeCompare(b.codename),
+  )[0];
+
+  const first = (
+    (await (
+      await request.get("/api/devices?vendor=amazon&sort=name&limit=1")
+    ).json()) as Device[]
+  )[0];
+  expect(first.codename).toBe(expected.codename);
+});
