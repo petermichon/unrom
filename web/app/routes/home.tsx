@@ -3,8 +3,7 @@ import { useMemo } from "react";
 import { Link, useLoaderData } from "react-router";
 import DeviceCard from "@/components/DeviceCard";
 import DeviceSearch from "@/components/DeviceSearch";
-import { fetchRomSummaries, fetchSummary } from "@/lib/data";
-import { deviceName } from "@/lib/devices";
+import { fetchSummary } from "@/lib/data";
 import {
   errorMeta,
   modifiedMeta,
@@ -12,14 +11,10 @@ import {
   updatedAtFromMatches,
 } from "@/lib/seo";
 import { formatNumber } from "@/lib/utils";
-import type { BrowseDevice, RomChip } from "@/lib/types";
 import type { Route } from "./+types/home";
 
 async function load() {
-  const [summary, roms] = await Promise.all([
-    fetchSummary(),
-    fetchRomSummaries(),
-  ]);
+  const summary = await fetchSummary();
   return {
     counts: {
       devices: summary.deviceCount,
@@ -28,9 +23,6 @@ async function load() {
       coveredRoms: summary.coveredRomCount,
     },
     topDevices: summary.topDevices,
-    romCounts: Object.fromEntries(
-      roms.map((rom) => [rom.id, rom.deviceCount]),
-    ) as Record<string, number>,
   };
 }
 
@@ -62,20 +54,7 @@ export async function clientLoader() {
 const EXAMPLES = ["Pixel", "beryllium", "Xiaomi", "LineageOS"];
 
 export default function Home() {
-  const { counts, topDevices, romCounts } = useLoaderData<typeof loader>();
-
-  const featured = topDevices[0];
-  const featuredRoms = useMemo(
-    () =>
-      featured
-        ? [...featured.roms].sort(
-            (a, b) =>
-              (romCounts[b.id] ?? 0) - (romCounts[a.id] ?? 0) ||
-              a.name.localeCompare(b.name),
-          )
-        : [],
-    [featured, romCounts],
-  );
+  const { counts, topDevices } = useLoaderData<typeof loader>();
 
   const sections = useMemo(
     () => [
@@ -118,7 +97,7 @@ export default function Home() {
             </div>
           </div>
 
-          {featured && <FeaturedDevice device={featured} roms={featuredRoms} />}
+          <PhoneIllustration />
         </div>
       </div>
 
@@ -190,105 +169,28 @@ export default function Home() {
   );
 }
 
-/**
- * The most supported device, presented as a phone rather than another card.
- * The frame is decoration; the screen is real device and ROM data.
- */
-function FeaturedDevice({
-  device,
-  roms,
-}: {
-  device: BrowseDevice;
-  roms: RomChip[];
-}) {
+/** Decorative device shot for the hero: no data, no link, no focus target. */
+function PhoneIllustration() {
   return (
-    <>
-      <Link
-        to={`/devices/${device.vendor}/${device.codename}`}
-        prefetch="intent"
-        className="flex flex-col gap-3 rounded-2xl bg-background p-5 text-foreground shadow-lg ring-1 ring-black/5 outline-none hover:ring-ring/40 focus-visible:ring-3 focus-visible:ring-ring/50 lg:hidden dark:bg-card dark:ring-white/10"
-      >
-        <span className="flex flex-col gap-1">
-          <span className="text-xs font-semibold text-brand dark:text-muted-foreground">
-            Most supported device
-          </span>
-          <span className="font-heading text-xl font-extrabold tracking-[-0.02em]">
-            {deviceName(device)}
-          </span>
-          <span className="text-sm text-muted-foreground">
-            {device.vendorName} ·{" "}
-            <span className="font-mono text-xs">{device.codename}</span>
-          </span>
-        </span>
-        <span className="block truncate text-xs text-muted-foreground">
-          {roms
-            .slice(0, 3)
-            .map((rom) => rom.name)
-            .join(" · ")}
-          {roms.length > 3 ? ` · +${roms.length - 3} more` : ""}
-        </span>
-        <span className="flex items-center justify-between border-t border-border pt-3">
-          <span className="text-sm font-semibold">{roms.length} ROMs</span>
-          <span className="flex items-center gap-1 text-sm font-semibold text-brand">
-            See all <ArrowRight className="size-4" aria-hidden="true" />
-          </span>
-        </span>
-      </Link>
+    <div
+      aria-hidden="true"
+      className="relative mx-auto hidden w-[14.5rem] shrink-0 select-none lg:block"
+    >
+      <span className="absolute inset-x-6 -bottom-4 h-8 rounded-[100%] bg-black/25 blur-2xl dark:bg-black/60" />
+      <span className="absolute -left-[3px] top-24 h-9 w-[3px] rounded-l-full bg-white/20" />
+      <span className="absolute -left-[3px] top-36 h-14 w-[3px] rounded-l-full bg-white/20" />
+      <span className="absolute -right-[3px] top-28 h-16 w-[3px] rounded-r-full bg-white/20" />
 
-      <Link
-        to={`/devices/${device.vendor}/${device.codename}`}
-        prefetch="intent"
-        aria-label={`Most supported device: ${deviceName(device)}, ${roms.length} ROMs`}
-        className="group relative mx-auto hidden w-[14.5rem] shrink-0 flex-col items-center outline-none lg:flex"
-      >
-        <span
-          aria-hidden="true"
-          className="absolute inset-x-5 bottom-20 h-8 rounded-[100%] bg-black/25 blur-2xl dark:bg-black/60"
-        />
-        <span
-          aria-hidden="true"
-          className="absolute -left-[3px] top-24 h-9 w-[3px] rounded-l-full bg-white/20"
-        />
-        <span
-          aria-hidden="true"
-          className="absolute -left-[3px] top-36 h-14 w-[3px] rounded-l-full bg-white/20"
-        />
-        <span
-          aria-hidden="true"
-          className="absolute -right-[3px] top-28 h-16 w-[3px] rounded-r-full bg-white/20"
-        />
-
-        <span className="relative flex h-[28rem] w-full flex-col overflow-hidden rounded-[2.5rem] bg-[#101011] p-[6px] shadow-[0_24px_60px_rgba(0,0,0,0.35)] ring-1 ring-black/10 group-hover:ring-ring/50 group-focus-visible:ring-3 group-focus-visible:ring-ring/60 dark:bg-[#050506] dark:ring-white/15">
-          <span
-            aria-hidden="true"
-            className="relative flex h-full flex-col overflow-hidden rounded-[2.1rem] bg-[#0b0d18]"
-          >
-            <span className="absolute inset-0 bg-[#0b0d18]" />
-            <span className="absolute -top-20 -right-16 size-64 rounded-full bg-[#4a5bd8] opacity-70 blur-3xl" />
-            <span className="absolute top-24 -left-20 size-64 rounded-full bg-[#a9b6ff] opacity-40 blur-3xl" />
-            <span className="absolute -bottom-24 left-0 size-64 rounded-full bg-[#6d5bd0] opacity-50 blur-3xl" />
-            <span className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/[0.03] to-white/10" />
-
-            <span className="absolute top-2.5 left-1/2 z-10 size-2.5 -translate-x-1/2 rounded-full bg-black ring-1 ring-white/20" />
-          </span>
+      <span className="relative flex h-[28rem] w-full flex-col overflow-hidden rounded-[2.5rem] bg-[#101011] p-[6px] shadow-[0_24px_60px_rgba(0,0,0,0.35)] ring-1 ring-black/10 dark:bg-[#050506] dark:ring-white/15">
+        <span className="relative flex h-full flex-col overflow-hidden rounded-[2.1rem] bg-[#0b0d18]">
+          <span className="absolute inset-0 bg-[#0b0d18]" />
+          <span className="absolute -top-20 -right-16 size-64 rounded-full bg-[#4a5bd8] opacity-70 blur-3xl" />
+          <span className="absolute top-24 -left-20 size-64 rounded-full bg-[#a9b6ff] opacity-40 blur-3xl" />
+          <span className="absolute -bottom-24 left-0 size-64 rounded-full bg-[#6d5bd0] opacity-50 blur-3xl" />
+          <span className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/[0.03] to-white/10" />
+          <span className="absolute top-2.5 left-1/2 size-2.5 -translate-x-1/2 rounded-full bg-black ring-1 ring-white/20" />
         </span>
-
-        <span className="mt-4 flex flex-col items-center gap-0.5 text-center">
-          <span className="text-[10px] font-semibold tracking-[0.14em] text-panel-foreground/70 uppercase">
-            Most supported device
-          </span>
-          <span className="font-heading text-lg font-extrabold tracking-[-0.02em] group-hover:underline">
-            {deviceName(device)}
-          </span>
-          <span className="text-sm font-semibold text-brand">
-            {roms.length} ROMs
-          </span>
-          <span className="text-xs text-panel-foreground/70">
-            {device.vendorName} ·{" "}
-            <span className="font-mono">{device.codename}</span>
-          </span>
-        </span>
-      </Link>
-    </>
+      </span>
+    </div>
   );
 }
