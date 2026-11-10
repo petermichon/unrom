@@ -69,6 +69,20 @@ app.use("/api", async (req, res) => {
   }
 });
 
+// `/x/` and `/x` render the same page, so the trailing-slash form redirects to
+// the canonical one instead of exposing a second self-canonical URL.
+app.use((req, res, next) => {
+  const split = req.originalUrl.indexOf("?");
+  const pathname =
+    split === -1 ? req.originalUrl : req.originalUrl.slice(0, split);
+  const search = split === -1 ? "" : req.originalUrl.slice(split);
+  if (pathname.length > 1 && pathname.endsWith("/")) {
+    res.redirect(308, `${pathname.replace(/\/+$/, "")}${search}`);
+    return;
+  }
+  next();
+});
+
 app.use(
   "/assets",
   express.static(path.join(clientDir, "assets"), {
