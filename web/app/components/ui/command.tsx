@@ -69,10 +69,16 @@ function CommandDialog({
 function CommandInput({
   className,
   seamless = false,
+  status,
   ...props
 }: React.ComponentProps<typeof CommandPrimitive.Input> & {
   /** Blend into the surrounding surface instead of drawing its own field. */
   seamless?: boolean;
+  /**
+   * Transient state ("Searching…") rendered inside the field, so a search never
+   * adds or removes a row of its own.
+   */
+  status?: React.ReactNode;
 }) {
   return (
     <div data-slot="command-input-wrapper" className="p-1">
@@ -94,6 +100,15 @@ function CommandInput({
         <InputGroupAddon>
           <SearchIcon className="size-4 shrink-0 opacity-50" />
         </InputGroupAddon>
+        {status ? (
+          <InputGroupAddon
+            align="inline-end"
+            aria-hidden="true"
+            className="text-xs font-normal text-muted-foreground"
+          >
+            {status}
+          </InputGroupAddon>
+        ) : null}
       </InputGroup>
     </div>
   )
