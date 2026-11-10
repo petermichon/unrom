@@ -1,3 +1,5 @@
+import { fetchWithTimeout as fetch } from "./util.ts";
+
 const BASE_URL =
   "https://raw.githubusercontent.com/ProjectSakura/OTA/16/devices.json";
 

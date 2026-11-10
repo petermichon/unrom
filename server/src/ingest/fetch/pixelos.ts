@@ -1,3 +1,5 @@
+import { fetchWithTimeout as fetch, mapLimit } from "./util.ts";
+
 // Every official device has its own file under API/devices/. List the branch
 // tree once, then fetch the files directly from raw.githubusercontent.com.
 const REPO = "PixelOS-AOSP/official_devices";
@@ -35,12 +37,10 @@ export async function listDevices(): Promise<string | Error> {
       throw new Error("no device files in the repository tree");
     }
 
-    const devices = await Promise.all(
-      paths.map(async (path) => {
-        const response = await get(`${RAW_URL}/${path}`);
-        return await response.json();
-      }),
-    );
+    const devices = await mapLimit(paths, 8, async (path) => {
+      const response = await get(`${RAW_URL}/${path}`);
+      return await response.json();
+    });
 
     return JSON.stringify({ devices });
   } catch (error) {

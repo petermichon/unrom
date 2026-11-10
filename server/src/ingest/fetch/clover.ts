@@ -1,3 +1,5 @@
+import { fetchWithTimeout as fetch } from "./util.ts";
+
 const BASE_URL =
   "https://raw.githubusercontent.com/The-Clover-Project/TheCloverProject.com/main/data/devices.json";
 

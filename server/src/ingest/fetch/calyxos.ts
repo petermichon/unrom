@@ -1,3 +1,5 @@
+import { fetchWithTimeout as fetch } from "./util.ts";
+
 const BASE_URL = "https://calyxos.org/install/";
 
 export async function listDevices(): Promise<string | Error> {

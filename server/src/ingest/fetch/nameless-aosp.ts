@@ -1,3 +1,5 @@
+import { fetchWithTimeout as fetch } from "./util.ts";
+
 const AOSP_URL = "https://sourceforge.net/projects/nameless-aosp/files/";
 const CLO_URL = "https://sourceforge.net/projects/nameless-clo/files/";
 

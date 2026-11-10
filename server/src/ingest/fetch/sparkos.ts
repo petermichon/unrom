@@ -1,3 +1,5 @@
+import { fetchWithTimeout as fetch } from "./util.ts";
+
 // The download page is a Next.js app that embeds the current roster in
 // `__NEXT_DATA__`; the GitHub roster stopped in 2022, so the site is the live
 // source. The whole page is snapshotted and the parser extracts the JSON.

@@ -1,3 +1,5 @@
+import { fetchWithTimeout as fetch } from "./util.ts";
+
 const BASE_URL =
   "https://raw.githubusercontent.com/CandyRoms/official_devices/c11/devices.json";
 

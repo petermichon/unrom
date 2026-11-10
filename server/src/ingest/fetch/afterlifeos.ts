@@ -1,3 +1,5 @@
+import { fetchWithTimeout as fetch } from "./util.ts";
+
 const BASE_URL =
   "https://raw.githubusercontent.com/AfterlifeOS/device_afterlife_ota/16.2/devices.json";
 

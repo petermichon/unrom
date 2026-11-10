@@ -1,3 +1,5 @@
+import { fetchWithTimeout as fetch } from "./util.ts";
+
 const TREE_URL =
   "https://gitlab.iode.tech/api/v4/projects/ota%2Frelease/repository/tree?recursive=true";
 const SUPPORTED_URL = "https://iode.tech/iodeos-official-supported-devices/";

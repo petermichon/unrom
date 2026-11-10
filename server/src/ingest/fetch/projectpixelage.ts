@@ -1,3 +1,5 @@
+import { fetchWithTimeout as fetch } from "./util.ts";
+
 const BASE_URL =
   "https://api.github.com/repos/ProjectPixelage/pixelage_ota/contents/devices";
 

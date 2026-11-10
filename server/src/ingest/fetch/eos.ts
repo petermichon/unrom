@@ -1,3 +1,5 @@
+import { fetchWithTimeout as fetch } from "./util.ts";
+
 const BASE_URL = "https://doc.e.foundation/devices";
 
 export async function listDevices(): Promise<string | Error> {

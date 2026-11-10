@@ -1,3 +1,5 @@
+import { fetchWithTimeout as fetch } from "./util.ts";
+
 const BASE_URL =
   "https://raw.githubusercontent.com/AlphaDroid-devices/official_devices/main/devices.md";
 const SITE_URL = "https://alphadroid.org/data/devices.json";

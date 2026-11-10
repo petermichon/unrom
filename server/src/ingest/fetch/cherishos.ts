@@ -1,3 +1,5 @@
+import { fetchWithTimeout as fetch } from "./util.ts";
+
 const BASE_URL = "https://www.cherishos.com/api/devices";
 
 export async function listDevices(): Promise<string | Error> {

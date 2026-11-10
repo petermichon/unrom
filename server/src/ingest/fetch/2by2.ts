@@ -1,3 +1,5 @@
+import { fetchWithTimeout as fetch } from "./util.ts";
+
 // 2by2 keeps one roster per Android branch. The current branch lives in the
 // `android_vendor_*` repo; the older `vendor_*` repo still lists devices that
 // have not moved, so both are snapshotted.

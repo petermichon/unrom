@@ -73,6 +73,7 @@ import { listDevices as listProjectPixelAge } from "./fetch/projectpixelage.ts";
 import { listDevices as listRisingOS } from "./fetch/risingos.ts";
 import { listDevices as listSuperiorOS } from "./fetch/superioros.ts";
 import { DATA_DIR } from "../paths.ts";
+import { mapLimit } from "./fetch/util.ts";
 
 type DeviceList = () => Promise<string | Error>;
 
@@ -194,25 +195,23 @@ console.log(`Writing raw data to ${DATA_DIR}\n`);
 
 let failures = 0;
 
-await Promise.all(
-  selected.map(async ({ id, file, fetch }) => {
-    try {
-      const result = await fetch();
-      if (result instanceof Error) {
-        failures++;
-        console.error(`✗ ${id}: ${result.message}`);
-        return;
-      }
-      await writeFile(join(DATA_DIR, file), result, "utf8");
-      console.log(`✓ ${id} → ${file}`);
-    } catch (error) {
+// A bounded number of sources at once: each adapter may fan out further, and
+// an unbounded start means hundreds of simultaneous requests upstream.
+await mapLimit(selected, 4, async ({ id, file, fetch }) => {
+  try {
+    const result = await fetch();
+    if (result instanceof Error) {
       failures++;
-      console.error(
-        `✗ ${id}: ${error instanceof Error ? error.message : error}`,
-      );
+      console.error(`✗ ${id}: ${result.message}`);
+      return;
     }
-  }),
-);
+    await writeFile(join(DATA_DIR, file), result, "utf8");
+    console.log(`✓ ${id} → ${file}`);
+  } catch (error) {
+    failures++;
+    console.error(`✗ ${id}: ${error instanceof Error ? error.message : error}`);
+  }
+});
 
 if (failures > 0) {
   console.error(`\n${failures} of ${selected.length} source(s) failed`);

@@ -1,3 +1,5 @@
+import { fetchWithTimeout as fetch } from "./util.ts";
+
 // The A14 roster is a clean array; the older A13 file is truncated upstream, so
 // pin the branch that parses.
 const BASE_URL =

@@ -1,3 +1,5 @@
+import { fetchWithTimeout as fetch } from "./util.ts";
+
 const URL = "https://storage.googleapis.com/play_public/supported_devices.csv";
 
 /**

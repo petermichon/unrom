@@ -1,3 +1,5 @@
+import { fetchWithTimeout as fetch, mapLimit } from "./util.ts";
+
 const REPO = "SuperiorOS-Devices/official_devices";
 const BRANCH = "fourteen";
 const TREE_URL = `https://api.github.com/repos/${REPO}/git/trees/${BRANCH}?recursive=1`;
@@ -27,15 +29,13 @@ export async function listDevices(): Promise<string | Error> {
     .filter((path) => /^[^/]+\.json$/.test(path))
     .sort();
 
-  const devices = await Promise.all(
-    files.map(async (file) => {
-      const response = await fetch(`${RAW_BASE}/${file}`);
-      if (!response.ok) {
-        throw new Error(`Failed to fetch ${file}: ${response.statusText}`);
-      }
-      return { file, raw: await response.json() };
-    }),
-  );
+  const devices = await mapLimit(files, 8, async (file) => {
+    const response = await fetch(`${RAW_BASE}/${file}`);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch ${file}: ${response.statusText}`);
+    }
+    return { file, raw: await response.json() };
+  });
 
   return JSON.stringify(
     {

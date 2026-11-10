@@ -1,3 +1,5 @@
+import { fetchWithTimeout as fetch } from "./util.ts";
+
 const BASE_URL =
   "https://raw.githubusercontent.com/DroidX-UI-Devices/vendor_droidxOTA/15/devices.json";
 

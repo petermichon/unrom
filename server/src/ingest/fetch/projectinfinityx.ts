@@ -1,3 +1,5 @@
+import { fetchWithTimeout as fetch } from "./util.ts";
+
 // Union the current Android 17 branch with the older Android 16 branch so
 // devices that have not moved forward stay covered.
 const REFS = ["17", "16"] as const;

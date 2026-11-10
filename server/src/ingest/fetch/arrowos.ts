@@ -1,3 +1,5 @@
+import { fetchWithTimeout as fetch } from "./util.ts";
+
 const BASE_URL =
   "https://raw.githubusercontent.com/ArrowOS/arrow_infrastructure_devices/arrow-13.1/arrow.devices";
 

@@ -1,3 +1,5 @@
+import { fetchWithTimeout as fetch } from "./util.ts";
+
 const BASE_URL = "https://download.lineage.microg.org/";
 
 export async function listDevices(): Promise<string | Error> {

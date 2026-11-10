@@ -1,3 +1,5 @@
+import { fetchWithTimeout as fetch } from "./util.ts";
+
 export async function listDevices(): Promise<string | Error> {
   const url =
     "https://raw.githubusercontent.com/BlissRoms-Devices/official-devices/master/devices.json";

@@ -1,5 +1,25 @@
+const FETCH_TIMEOUT_MS = 30_000;
+const USER_AGENT = "unrom-ingest/1.0 (+https://unrom.com)";
+
+/**
+ * `fetch` with a hard timeout and an identifying user agent. Undici's default
+ * waits minutes, so one unresponsive host could stall an entire refresh.
+ */
+export function fetchWithTimeout(
+  input: Parameters<typeof fetch>[0],
+  init: RequestInit = {},
+  timeoutMs = FETCH_TIMEOUT_MS,
+): Promise<Response> {
+  const headers = new Headers(init.headers);
+  if (!headers.has("user-agent")) headers.set("user-agent", USER_AGENT);
+  const signal = init.signal
+    ? AbortSignal.any([init.signal, AbortSignal.timeout(timeoutMs)])
+    : AbortSignal.timeout(timeoutMs);
+  return fetch(input, { ...init, headers, signal });
+}
+
 export async function fetchJson<T>(url: string): Promise<T> {
-  const response = await fetch(url);
+  const response = await fetchWithTimeout(url);
   if (!response.ok) {
     throw new Error(`${url}: ${response.status} ${response.statusText}`);
   }
@@ -7,7 +27,7 @@ export async function fetchJson<T>(url: string): Promise<T> {
 }
 
 export async function fetchText(url: string): Promise<string> {
-  const response = await fetch(url);
+  const response = await fetchWithTimeout(url);
   if (!response.ok) {
     throw new Error(`${url}: ${response.status} ${response.statusText}`);
   }
@@ -46,7 +66,7 @@ export async function fetchSource(
   url: string,
 ): Promise<string | Error> {
   try {
-    const response = await fetch(url);
+    const response = await fetchWithTimeout(url);
     if (!response.ok) {
       throw new Error(`${url}: ${response.status} ${response.statusText}`);
     }
@@ -74,7 +94,7 @@ export async function fetchTreeSnapshot(options: {
   json?: boolean;
 }): Promise<string | Error> {
   try {
-    const treeResponse = await fetch(
+    const treeResponse = await fetchWithTimeout(
       `https://api.github.com/repos/${options.repo}/git/trees/${options.branch}?recursive=1`,
       { headers: { accept: "application/vnd.github+json" } },
     );
@@ -102,7 +122,7 @@ export async function fetchTreeSnapshot(options: {
     }
 
     const files = await mapLimit(paths, 6, async (path) => {
-      const response = await fetch(
+      const response = await fetchWithTimeout(
         `https://raw.githubusercontent.com/${options.repo}/${options.branch}/${path
           .split("/")
           .map(encodeURIComponent)
