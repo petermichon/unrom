@@ -272,9 +272,6 @@ function MegaPanel({
           <DataPanel data={panel} onNavigate={onNavigate} />
         )}
       </div>
-      <div className="mt-5 border-t border-border pt-3 text-xs text-muted-foreground">
-        Every mapping links its source.
-      </div>
     </div>
   );
 }
