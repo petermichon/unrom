@@ -29,7 +29,7 @@ export const NAV_PRELOADS: Record<string, () => Promise<unknown>> = {
     Promise.all([
       fetchSummary(),
       fetchBrands(),
-      fetchDevicesPage({ sort: "coverage", limit: 200, offset: 0 }),
+      fetchDevicesPage({ sort: "roms", limit: 200, offset: 0 }),
     ]),
   "/brands": () => fetchBrands(),
   "/roms": () => Promise.all([fetchRoms(), fetchRomSummaries()]),

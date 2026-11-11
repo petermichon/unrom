@@ -106,7 +106,7 @@ async function load(request: URL) {
   const { devices, total } = await fetchDevicesPage({
     q: q || undefined,
     hasRoms: roms || undefined,
-    sort: "coverage",
+    sort: "roms",
     limit: PAGE_SIZE,
     offset: (page - 1) * PAGE_SIZE,
   });
@@ -155,7 +155,7 @@ export default function DevicesRoute() {
           const params = new URLSearchParams();
           if (q) params.set("q", q);
           if (roms) params.set("hasRoms", "true");
-          params.set("sort", "coverage");
+          params.set("sort", "roms");
           params.set("limit", String(PAGE_SIZE));
           if (page > 1) params.set("offset", String((page - 1) * PAGE_SIZE));
           return `/api/devices?${params}`;

@@ -274,10 +274,11 @@ const deviceListParameters = [
     in: "query",
     required: false,
     description:
-      "`name` for alphabetical order, or `coverage` to put devices with ROM " +
-      "data first. Brand and letter pages default to `coverage`; pass `name` " +
-      "to force alphabetical order.",
-    schema: { type: "string", enum: ["name", "coverage"] },
+      "`name` for alphabetical order, `coverage` to put devices with ROM " +
+      "data first, or `roms` to order by how many ROMs a device supports. " +
+      "Brand and letter pages default to `coverage`; pass `name` to force " +
+      "alphabetical order.",
+    schema: { type: "string", enum: ["name", "coverage", "roms"] },
   },
   {
     name: "limit",

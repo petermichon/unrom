@@ -137,7 +137,7 @@ export async function fetchDevicesPage(options: {
   letter?: string;
   vendor?: string;
   hasRoms?: boolean;
-  sort?: "name" | "coverage";
+  sort?: "name" | "coverage" | "roms";
   limit: number;
   offset: number;
 }): Promise<{ devices: BrowseDevice[]; total: number }> {

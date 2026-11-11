@@ -53,3 +53,12 @@ test("sort=name overrides coverage-first on directory pages", async ({
   )[0];
   expect(first.codename).toBe(expected.codename);
 });
+
+test("sort=roms orders devices by ROM count", async ({ request }) => {
+  type Device = { roms: unknown[] };
+  const devices = (await (
+    await request.get("/api/devices?sort=roms&limit=10")
+  ).json()) as Device[];
+  const counts = devices.map((device) => device.roms.length);
+  expect(counts).toEqual([...counts].sort((a, b) => b - a));
+});

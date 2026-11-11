@@ -181,7 +181,12 @@ app.get("/api/devices", (c) => {
     return c.json({ error: `invalid hasRoms: ${hasRomsRaw}` }, 400);
   }
   const sortRaw = c.req.query("sort");
-  if (sortRaw !== undefined && sortRaw !== "name" && sortRaw !== "coverage") {
+  if (
+    sortRaw !== undefined &&
+    sortRaw !== "name" &&
+    sortRaw !== "coverage" &&
+    sortRaw !== "roms"
+  ) {
     return c.json({ error: `invalid sort: ${sortRaw}` }, 400);
   }
   const limit = parse("limit");
@@ -206,7 +211,7 @@ app.get("/api/devices", (c) => {
     vendor,
     letter,
     hasRoms: hasRomsRaw === undefined ? undefined : hasRomsRaw === "true",
-    sort: sortRaw as "name" | "coverage" | undefined,
+    sort: sortRaw as "name" | "coverage" | "roms" | undefined,
     limit: all === "true" ? undefined : (limit ?? DEFAULT_DEVICE_LIMIT),
     offset,
   };
