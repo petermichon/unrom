@@ -268,9 +268,8 @@ export default function Home() {
           <div className="flex flex-col gap-1.5">
             <h3 className="font-semibold">Each mapping links its source</h3>
             <p className="text-sm leading-relaxed text-muted-foreground">
-              Every device–ROM pair points at the page that reports it. A
-              reference marked generated was built from the codename and is not
-              evidence that a build exists.
+              Every device–ROM pair points at the page that reports it. Links
+              built from a codename are checked before they are published.
             </p>
           </div>
           <div className="flex flex-col gap-1.5">
@@ -366,14 +365,6 @@ function ExampleMapping({
                     <span className="truncate">
                       {referenceLabel(rom.referenceUrl)}
                     </span>
-                    {rom.referenceKind === "derived" && (
-                      <span
-                        className="shrink-0 text-[11px] text-derived"
-                        title="Built from the codename; the source does not publish this URL."
-                      >
-                        generated
-                      </span>
-                    )}
                     <ExternalLink
                       className="size-3 shrink-0"
                       aria-hidden="true"
