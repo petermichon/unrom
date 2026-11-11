@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
+import { Pause, Play } from "lucide-react";
 import { Link, useLoaderData } from "react-router";
 import DeviceSearch from "@/components/DeviceSearch";
 import { fetchRomSummaries, fetchSummary } from "@/lib/data";
@@ -71,6 +72,19 @@ export default function Home() {
   const [slideIndex, setSlideIndex] = useState(0);
   const slide = slides[slideIndex] ?? slides[0];
 
+  // The palette covers the whole page, header included. The section carries it
+  // server-side for first paint; this extends it to the document for the bar.
+  useEffect(() => {
+    if (!slide) return;
+    const root = document.documentElement;
+    const previous = root.dataset.rom;
+    root.dataset.rom = slide.id;
+    return () => {
+      if (previous) root.dataset.rom = previous;
+      else delete root.dataset.rom;
+    };
+  }, [slide]);
+
   const sections = [
     { to: "/devices", title: "Devices", count: counts.devices },
     { to: "/brands", title: "Brands", count: counts.brands },
@@ -78,10 +92,9 @@ export default function Home() {
   ];
 
   return (
-    <section className="flex flex-col gap-16">
+    <section data-rom={slide?.id} className="rom-page flex flex-col gap-16">
       <div
         data-motion
-        data-rom={slide?.id}
         className="hero-panel relative overflow-hidden rounded-4xl bg-panel px-6 py-10 text-panel-foreground ring-1 ring-black/[0.03] transition-colors sm:px-10 sm:py-12 lg:px-12 lg:py-14 dark:ring-white/[0.06]"
       >
         <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_19rem] lg:items-center xl:grid-cols-[minmax(0,1fr)_20rem]">
@@ -285,41 +298,116 @@ function HeroIllustration({
   onSelect: (position: number) => void;
 }) {
   const slide = slides[index] ?? slides[0];
+  const reducedMotion = useReducedMotion();
+  // null follows the system preference; a toggle overrides it either way.
+  const [auto, setAuto] = useState<boolean | null>(null);
+  const autoplay = auto ?? !reducedMotion;
+  const [hovered, setHovered] = useState(false);
+  const [focused, setFocused] = useState(false);
+  const [hidden, setHidden] = useState(false);
+
+  useEffect(() => {
+    const onVisibility = () => setHidden(document.hidden);
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => document.removeEventListener("visibilitychange", onVisibility);
+  }, []);
+
+  // WCAG 2.2.2: a visible control exists, and the timer also yields to hover,
+  // keyboard focus and a hidden tab so nothing moves under the reader.
+  useEffect(() => {
+    if (!autoplay || hovered || focused || hidden || slides.length < 2) return;
+    const timer = window.setInterval(() => {
+      onSelect((index + 1) % slides.length);
+    }, 7000);
+    return () => window.clearInterval(timer);
+  }, [autoplay, hovered, focused, hidden, index, slides.length, onSelect]);
 
   return (
-    <div className="pointer-events-none absolute right-8 -bottom-12 hidden lg:block xl:right-12">
+    <div
+      className="pointer-events-auto absolute right-8 -bottom-12 hidden lg:block xl:right-12"
+      onPointerEnter={() => setHovered(true)}
+      onPointerLeave={() => setHovered(false)}
+      onFocusCapture={() => setFocused(true)}
+      onBlurCapture={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget as Node)) {
+          setFocused(false);
+        }
+      }}
+    >
       <div className="relative w-[14.5rem]">
         <HeroDevice slides={slides} index={index} />
 
         {slides.length > 1 && (
-          <div className="pointer-events-auto absolute bottom-16 -left-20 flex items-center gap-1">
+          <div
+            role="group"
+            aria-label="Slideshow controls"
+            className="pointer-events-auto absolute bottom-16 -left-32 flex items-center gap-1.5"
+          >
             {slides.map((rom, position) => (
               <button
                 key={rom.id}
                 type="button"
-                onClick={() => onSelect(position)}
+                onClick={() => {
+                  setAuto(false);
+                  onSelect(position);
+                }}
                 aria-label={`Show ${rom.name}`}
                 aria-current={position === index ? "true" : undefined}
                 className="flex size-6 items-center justify-center rounded-full outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
               >
                 <span
                   data-motion
-                  className={`size-2 rounded-full transition-colors ${
+                  className={`h-2 rounded-full transition-all ${
                     position === index
-                      ? "bg-panel-foreground/90"
-                      : "bg-panel-foreground/40 hover:bg-panel-foreground/60"
+                      ? "w-4 bg-panel-foreground/90"
+                      : "w-2 bg-panel-foreground/60 hover:bg-panel-foreground/80"
                   }`}
                 />
               </button>
             ))}
+            <button
+              type="button"
+              onClick={() => {
+                // Starting it is an explicit request, so let it run even while
+                // this button keeps keyboard focus.
+                setFocused(false);
+                setAuto(!autoplay);
+              }}
+              aria-label={
+                autoplay ? "Pause the slideshow" : "Play the slideshow"
+              }
+              title={autoplay ? "Pause the slideshow" : "Play the slideshow"}
+              className="ml-2 flex size-6 items-center justify-center rounded-full text-panel-foreground/60 outline-none hover:text-panel-foreground/80 focus-visible:ring-3 focus-visible:ring-ring/50"
+            >
+              {autoplay ? (
+                <Pause className="size-3.5" aria-hidden="true" />
+              ) : (
+                <Play className="size-3.5" aria-hidden="true" />
+              )}
+            </button>
           </div>
         )}
 
-        <span role="status" aria-live="polite" className="sr-only">
-          {slide.name}
-        </span>
+        {!autoplay && (
+          <span role="status" aria-live="polite" className="sr-only">
+            {slide.name}
+          </span>
+        )}
       </div>
     </div>
+  );
+}
+
+/** Subscribes to the system motion preference; false on the server. */
+function useReducedMotion(): boolean {
+  return useSyncExternalStore(
+    (onChange) => {
+      const media = window.matchMedia("(prefers-reduced-motion: reduce)");
+      media.addEventListener("change", onChange);
+      return () => media.removeEventListener("change", onChange);
+    },
+    () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+    () => false,
   );
 }
 

@@ -245,39 +245,63 @@
   }
 }
 
-/* Hero accents: the carousel tints the whole panel, one colour per ROM. The
-   untouched panel colour stays the default below the carousel's breakpoint. */
-@media (min-width: 64rem) {
-  .hero-panel[data-rom="lineageos"] {
-    --panel: #d5ebe8;
-    --panel-foreground: #0a1a18;
-    --hero-accent: #45c4b8;
-  }
-  .dark .hero-panel[data-rom="lineageos"] {
-    --panel: #0f2523;
-    --panel-foreground: #e9f4f2;
-    --hero-accent: #45c4b8;
-  }
-  .hero-panel[data-rom="grapheneos"] {
-    --panel: #e0e3e7;
-    --panel-foreground: #11151a;
-    --hero-accent: #aab6c2;
-  }
-  .dark .hero-panel[data-rom="grapheneos"] {
-    --panel: #1b1f26;
-    --panel-foreground: #edf0f3;
-    --hero-accent: #aab6c2;
-  }
-  .hero-panel[data-rom="eos"] {
-    --panel: #fae4d3;
-    --panel-foreground: #201208;
-    --hero-accent: #ff7a00;
-  }
-  .dark .hero-panel[data-rom="eos"] {
-    --panel: #241710;
-    --panel-foreground: #fbeade;
-    --hero-accent: #ff8a1f;
-  }
+/* Content palette: the same roles everywhere, values per ROM. The home page
+   adopts the palette of the slide it shows, so surfaces, data accents and the
+   action colour follow the content. Links keep enough contrast on the page
+   background in both themes. */
+.rom-page[data-rom="lineageos"],
+:root[data-rom="lineageos"] {
+  --panel: #d5ebe8;
+  --panel-foreground: #0a1a18;
+  --hero-accent: #45c4b8;
+  --brand: #0f766e;
+  --accent: #d5ebe8;
+  --accent-foreground: #0a1a18;
+}
+.dark .rom-page[data-rom="lineageos"],
+:root.dark[data-rom="lineageos"] {
+  --panel: #0f2523;
+  --panel-foreground: #e9f4f2;
+  --hero-accent: #45c4b8;
+  --brand: #5eead4;
+  --accent: #0f2523;
+  --accent-foreground: #e9f4f2;
+}
+.rom-page[data-rom="grapheneos"],
+:root[data-rom="grapheneos"] {
+  --panel: #e0e3e7;
+  --panel-foreground: #11151a;
+  --hero-accent: #aab6c2;
+  --brand: #475569;
+  --accent: #e0e3e7;
+  --accent-foreground: #11151a;
+}
+.dark .rom-page[data-rom="grapheneos"],
+:root.dark[data-rom="grapheneos"] {
+  --panel: #1b1f26;
+  --panel-foreground: #edf0f3;
+  --hero-accent: #aab6c2;
+  --brand: #cbd5e1;
+  --accent: #1b1f26;
+  --accent-foreground: #edf0f3;
+}
+.rom-page[data-rom="eos"],
+:root[data-rom="eos"] {
+  --panel: #fae4d3;
+  --panel-foreground: #201208;
+  --hero-accent: #ff7a00;
+  --brand: #c2410c;
+  --accent: #fae4d3;
+  --accent-foreground: #201208;
+}
+.dark .rom-page[data-rom="eos"],
+:root.dark[data-rom="eos"] {
+  --panel: #241710;
+  --panel-foreground: #fbeade;
+  --hero-accent: #ff8a1f;
+  --brand: #fdba74;
+  --accent: #241710;
+  --accent-foreground: #fbeade;
 }
 
 ::view-transition-group(root),
