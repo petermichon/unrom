@@ -65,13 +65,20 @@ function formatDate(iso: string): string {
 
 export const links: Route.LinksFunction = () => [
   { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
-  {
-    rel: "preload",
-    href: "/fonts/manrope-latin-wght-normal.woff2",
-    as: "font",
-    type: "font/woff2",
-    crossOrigin: "anonymous",
-  },
+  // The preload only pays off in a built app, where it is consumed once. In
+  // dev Vite injects the stylesheet as modules and the font face is fetched
+  // before the preload can be reused, so Chrome warns that it went unused.
+  ...(import.meta.env.DEV
+    ? []
+    : [
+        {
+          rel: "preload" as const,
+          href: "/fonts/manrope-latin-wght-normal.woff2",
+          as: "font" as const,
+          type: "font/woff2",
+          crossOrigin: "anonymous" as const,
+        },
+      ]),
 ];
 
 // Only used when an error is rendered; normal pages set their own title.
