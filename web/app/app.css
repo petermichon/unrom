@@ -225,12 +225,49 @@
   }
 }
 
-/* No transitions or animations anywhere (by request). */
+/* No transitions or animations anywhere, except the hero carousel: one
+   deliberate moment that answers a click. Everything else stays instant. */
 *,
 ::before,
 ::after {
   transition-duration: 0s !important;
   animation-duration: 0s !important;
+}
+
+[data-motion] {
+  transition-duration: 400ms !important;
+  transition-timing-function: cubic-bezier(0.23, 1, 0.32, 1) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-motion] {
+    transition-duration: 0s !important;
+  }
+}
+
+/* Hero accents: the carousel tints the whole panel, one colour per ROM. The
+   untouched panel colour stays the default below the carousel's breakpoint. */
+@media (min-width: 64rem) {
+  .hero-panel[data-rom="lineageos"] {
+    --panel: #d5ebe8;
+    --panel-foreground: #0a1a18;
+    --hero-accent: #45c4b8;
+  }
+  .dark .hero-panel[data-rom="lineageos"] {
+    --panel: #0f2523;
+    --panel-foreground: #e9f4f2;
+    --hero-accent: #45c4b8;
+  }
+  .hero-panel[data-rom="grapheneos"] {
+    --panel: #e0e3e7;
+    --panel-foreground: #11151a;
+    --hero-accent: #aab6c2;
+  }
+  .dark .hero-panel[data-rom="grapheneos"] {
+    --panel: #1b1f26;
+    --panel-foreground: #edf0f3;
+    --hero-accent: #aab6c2;
+  }
 }
 
 ::view-transition-group(root),

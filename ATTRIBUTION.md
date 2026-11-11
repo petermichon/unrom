@@ -80,3 +80,14 @@ they are not ROM compatibility data.
 
 Google's list is used as an upstream reference under Google's terms; it is not
 relicensed here. Brand and model names remain the trademarks of their owners.
+
+## Brand assets
+
+The home page illustration shows the marks of two ROM projects. Both are used
+only to identify the project, are not modified beyond being rendered in one
+colour, and unrom is not affiliated with either.
+
+| Asset                             | Source                                     | Terms                                                                         |
+| --------------------------------- | ------------------------------------------ | ----------------------------------------------------------------------------- |
+| `web/public/brand/lineageos.png`  | https://wiki.lineageos.org/images/logo.png | LineageOS wiki content is CC BY-SA 3.0; the mark is a LineageOS trademark.    |
+| `web/public/brand/grapheneos.svg` | https://grapheneos.org/favicon.svg         | MIT (https://grapheneos.org/LICENSE.txt); the mark is a GrapheneOS trademark. |
