@@ -9,7 +9,7 @@ test.beforeEach(async ({ page }) => {
 test("home search shows matching devices while typing", async ({ page }) => {
   await page.goto("/");
   await page
-    .getByPlaceholder("Search by device name, codename, brand, or ROM…")
+    .getByPlaceholder("Search by device, codename, brand, or ROM…")
     .fill("poco");
   await expect(page.getByRole("option").first()).toBeVisible();
 });
@@ -17,7 +17,7 @@ test("home search shows matching devices while typing", async ({ page }) => {
 test("home search also matches ROMs", async ({ page }) => {
   await page.goto("/");
   await page
-    .getByPlaceholder("Search by device name, codename, brand, or ROM…")
+    .getByPlaceholder("Search by device, codename, brand, or ROM…")
     .fill("lineage");
   await expect(
     page.getByRole("option", { name: /lineageos/i }).first(),
@@ -27,7 +27,7 @@ test("home search also matches ROMs", async ({ page }) => {
 test("home search matches a device by a variant codename", async ({ page }) => {
   await page.goto("/");
   await page
-    .getByPlaceholder("Search by device name, codename, brand, or ROM…")
+    .getByPlaceholder("Search by device, codename, brand, or ROM…")
     .fill("sweetin");
   await expect(
     page.getByRole("option", { name: /Redmi Note 10 Pro/ }).first(),
@@ -52,7 +52,7 @@ test("a renamed codename redirects to the canonical device", async ({
 test("home search says nothing was found for a bad query", async ({ page }) => {
   await page.goto("/");
   await page
-    .getByPlaceholder("Search by device name, codename, brand, or ROM…")
+    .getByPlaceholder("Search by device, codename, brand, or ROM…")
     .fill("zzzzzzzz");
   await expect(page.getByText(/No matches for/)).toBeVisible();
 });
@@ -60,7 +60,7 @@ test("home search says nothing was found for a bad query", async ({ page }) => {
 test("home search finds a catalogue-only ROM", async ({ page }) => {
   await page.goto("/");
   await page
-    .getByPlaceholder("Search by device name, codename, brand, or ROM…")
+    .getByPlaceholder("Search by device, codename, brand, or ROM…")
     .fill("aokp");
 
   const rom = page.getByRole("option", { name: /AOKP/ }).first();
@@ -86,7 +86,7 @@ test("home links to the three directories", async ({ page }) => {
 test("home search shows matching brands", async ({ page }) => {
   await page.goto("/");
   await page
-    .getByPlaceholder("Search by device name, codename, brand, or ROM…")
+    .getByPlaceholder("Search by device, codename, brand, or ROM…")
     .fill("samsung");
   const brand = page.getByRole("option", { name: /^Samsung/ }).first();
   await expect(brand).toBeVisible();
@@ -96,12 +96,12 @@ test("home search shows matching brands", async ({ page }) => {
 
 test("clicking an example fills the search", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Search for beryllium" }).click();
+  await page.getByRole("button", { name: "Search for sweet" }).click();
   await expect(
-    page.getByPlaceholder("Search by device name, codename, brand, or ROM…"),
-  ).toHaveValue("beryllium");
+    page.getByPlaceholder("Search by device, codename, brand, or ROM…"),
+  ).toHaveValue("sweet");
   await expect(
-    page.getByRole("option", { name: /POCO F1/ }).first(),
+    page.getByRole("option", { name: /Redmi Note 10 Pro/ }).first(),
   ).toBeVisible();
 });
 
@@ -111,7 +111,7 @@ test("example chips show when idle or when nothing matches", async ({
   await page.goto("/");
   const example = page.getByRole("button", { name: "Search for Pixel" });
   const input = page.getByPlaceholder(
-    "Search by device name, codename, brand, or ROM…",
+    "Search by device, codename, brand, or ROM…",
   );
 
   await expect(example).toBeVisible();

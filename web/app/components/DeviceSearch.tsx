@@ -16,8 +16,8 @@ interface Props {
   examples?: string[];
 }
 
-const SEARCH_PLACEHOLDER = "Search by device name, codename, brand, or ROM…";
-const MOBILE_SEARCH_PLACEHOLDER = "Search devices or ROMs…";
+const SEARCH_PLACEHOLDER = "Search by device, codename, brand, or ROM…";
+const MOBILE_SEARCH_PLACEHOLDER = "Search devices, brands, or ROMs…";
 
 function useMediaQuery(query: string): boolean {
   return useSyncExternalStore(
@@ -75,7 +75,7 @@ export default function DeviceSearch({ examples = [] }: Props) {
       >
         <Command
           shouldFilter={false}
-          className="rounded-2xl border border-border bg-popover shadow-sm dark:border-white/10 dark:bg-[#232323]"
+          className="rounded-2xl border border-border bg-popover shadow-sm dark:border-white/10 dark:bg-[#171b26]"
         >
           <CommandInput
             name="q"
@@ -248,7 +248,7 @@ export default function DeviceSearch({ examples = [] }: Props) {
           data-nojs-hide
           className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground"
         >
-          <span>Try:</span>
+          <span className="text-panel-foreground/70">Try:</span>
           {examples.map((example) => (
             <Badge
               key={example}
@@ -260,7 +260,7 @@ export default function DeviceSearch({ examples = [] }: Props) {
                   onClick={() => tryExample(example)}
                 />
               }
-              className="h-auto cursor-pointer px-2.5 py-1 text-xs font-normal text-muted-foreground hover:border-foreground/30 hover:text-foreground"
+              className="h-auto cursor-pointer border-transparent bg-panel-foreground/[0.06] px-2.5 py-1 text-xs font-normal text-panel-foreground/70 hover:bg-panel-foreground/10 hover:text-panel-foreground"
             >
               {example}
             </Badge>

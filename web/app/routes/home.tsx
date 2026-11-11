@@ -51,7 +51,7 @@ export async function clientLoader() {
   return load();
 }
 
-const EXAMPLES = ["Pixel", "beryllium", "Xiaomi", "LineageOS"];
+const EXAMPLES = ["Pixel", "sweet", "LineageOS"];
 
 export default function Home() {
   const { counts, topDevices } = useLoaderData<typeof loader>();
@@ -82,15 +82,15 @@ export default function Home() {
 
   return (
     <section className="flex flex-col gap-12">
-      <div className="rounded-[2rem] bg-panel px-6 py-10 text-panel-foreground sm:px-10 sm:py-12 lg:px-14 lg:py-14">
+      <div className="rounded-[2rem] bg-panel px-6 py-10 text-panel-foreground ring-1 ring-black/[0.03] sm:px-10 sm:py-12 lg:px-14 lg:py-14 dark:ring-white/[0.06]">
         <div className="flex flex-col gap-8 lg:grid lg:grid-cols-[minmax(0,1fr)_20rem] lg:items-center lg:gap-10 xl:grid-cols-[minmax(0,1fr)_22rem]">
           <div className="flex max-w-3xl flex-col gap-6">
             <h1 className="text-balance font-heading text-4xl leading-[1.05] font-extrabold tracking-[-0.035em] sm:text-5xl lg:text-[3rem] xl:text-[3.25rem]">
               Find the custom ROMs that support your device
             </h1>
             <p className="max-w-[52ch] text-lg leading-relaxed text-panel-foreground/75">
-              The open database for device–ROM compatibility. Search by device
-              name, codename, brand, or ROM to see what supports it.
+              The open database for device–ROM compatibility, with the source
+              behind each mapping.
             </p>
             <div className="max-w-2xl">
               <DeviceSearch examples={EXAMPLES} />
