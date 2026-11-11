@@ -51,6 +51,21 @@ test.describe("phone below the copy", () => {
   });
 });
 
+test("opening a menu does not lock page scroll", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: "Export the dataset" }).click();
+
+  await expect(
+    page.getByRole("menuitem", { name: "Download SQLite database" }),
+  ).toBeVisible();
+
+  expect(
+    await page.evaluate(
+      () => getComputedStyle(document.documentElement).overflowY,
+    ),
+  ).not.toBe("hidden");
+});
+
 test("menu options use a pointer cursor", async ({ page }) => {
   await page.goto("/");
   await page.waitForLoadState("networkidle");
