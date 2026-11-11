@@ -106,7 +106,8 @@ GET /api/export/json              → dist/unrom.json (attachment)
 GET /api/export/sqlite            → dist/unrom.sqlite (attachment)
 ```
 
-Run it with `npm run dev:api` (watch) or `npm run api` (from the repo root).
+Run it with `npm run dev --workspace server` (watch) or `npm run api` (from the
+repo root).
 Listens on `127.0.0.1:$PORT` (default 3000); override `PORT`, `DB_PATH`, `OUT_DIR`.
 
 The API response shapes are frozen in the shared `@unrom/contract` workspace

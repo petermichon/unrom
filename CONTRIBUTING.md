@@ -75,4 +75,32 @@ npm run verify:all
 
 Use `npm run build:data` if you want to rebuild the dataset and exports locally.
 
+## Ports
+
+Development uses two fixed loopback ports: web on `5200`, API on `5201`
+(`WEB_PORT` / `API_PORT` override them). They are private upstreams — the app
+is reached at `http://unrom.localhost:7357` through a host-routing dev proxy
+that runs on the machine, so the ports never appear in a URL and another
+project's servers cannot collide with them at the address level.
+
+The proxy is machine setup, not repository code: its registry lives in
+`~/.config/dev/proxy.json`, mapping each hostname to one upstream port. Point a
+checkout's ports at the upstreams a project uses and add the hostname there;
+`--strictPort` keeps the mapping honest.
+
+## Checking on a phone
+
+Plug the phone in with USB debugging enabled and map the proxy port once:
+
+```sh
+dev-tunnel
+```
+
+Open the same `http://unrom.localhost:7357` on the phone. `adb reverse` carries
+it over the cable — the phone's `localhost` is this machine's loopback, so no
+Wi-Fi, LAN address or firewall rule is involved, and relative `/api` requests
+keep working. `dev-tunnel --watch` re-applies the mapping after a reconnect.
+Chrome on Android resolves `*.localhost` itself; tools that use the Android
+system resolver need the upstream port mapped separately.
+
 Report wrong mappings via an issue rather than editing generated artifacts.
