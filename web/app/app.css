@@ -268,6 +268,16 @@
     --panel-foreground: #edf0f3;
     --hero-accent: #aab6c2;
   }
+  .hero-panel[data-rom="eos"] {
+    --panel: #fae4d3;
+    --panel-foreground: #201208;
+    --hero-accent: #ff7a00;
+  }
+  .dark .hero-panel[data-rom="eos"] {
+    --panel: #241710;
+    --panel-foreground: #fbeade;
+    --hero-accent: #ff8a1f;
+  }
 }
 
 ::view-transition-group(root),

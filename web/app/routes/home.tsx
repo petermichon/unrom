@@ -1,4 +1,3 @@
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useState } from "react";
 import { Link, useLoaderData } from "react-router";
 import DeviceSearch from "@/components/DeviceSearch";
@@ -22,7 +21,7 @@ async function load() {
 
   // The two ROMs the hero rotates through: the most-supported one, and the
   // privacy-focused one people look for by name.
-  const slides = ["lineageos", "grapheneos"]
+  const slides = ["lineageos", "grapheneos", "eos"]
     .map((id) => roms.find((rom) => rom.id === id))
     .filter((rom): rom is RomSummary => rom !== undefined);
 
@@ -71,10 +70,6 @@ export default function Home() {
 
   const [slideIndex, setSlideIndex] = useState(0);
   const slide = slides[slideIndex] ?? slides[0];
-  const moveSlide = (delta: number) =>
-    setSlideIndex(
-      (current) => (current + delta + slides.length) % slides.length,
-    );
 
   const sections = [
     { to: "/devices", title: "Devices", count: counts.devices },
@@ -117,7 +112,7 @@ export default function Home() {
           <HeroIllustration
             slides={slides}
             index={slideIndex}
-            onMove={moveSlide}
+            onSelect={setSlideIndex}
           />
         )}
       </div>
@@ -283,11 +278,11 @@ export default function Home() {
 function HeroIllustration({
   slides,
   index,
-  onMove,
+  onSelect,
 }: {
   slides: RomSummary[];
   index: number;
-  onMove: (delta: number) => void;
+  onSelect: (position: number) => void;
 }) {
   const slide = slides[index] ?? slides[0];
 
@@ -297,29 +292,26 @@ function HeroIllustration({
         <HeroDevice slides={slides} index={index} />
 
         {slides.length > 1 && (
-          <div className="pointer-events-auto absolute bottom-16 -left-28 flex items-center gap-1">
-            <button
-              type="button"
-              onClick={() => onMove(-1)}
-              aria-label="Previous ROM"
-              className="flex size-7 items-center justify-center rounded-full border border-black/10 bg-white/45 text-panel-foreground/70 outline-none hover:bg-white/70 focus-visible:ring-3 focus-visible:ring-ring/50 dark:border-white/15 dark:bg-white/10 dark:text-white/70 dark:hover:bg-white/15"
-            >
-              <ChevronLeft className="size-4" aria-hidden="true" />
-            </button>
-            <span
-              aria-hidden="true"
-              className="w-9 text-center text-xs tabular-nums text-panel-foreground/70"
-            >
-              {index + 1} / {slides.length}
-            </span>
-            <button
-              type="button"
-              onClick={() => onMove(1)}
-              aria-label="Next ROM"
-              className="flex size-7 items-center justify-center rounded-full border border-black/10 bg-white/45 text-panel-foreground/70 outline-none hover:bg-white/70 focus-visible:ring-3 focus-visible:ring-ring/50 dark:border-white/15 dark:bg-white/10 dark:text-white/70 dark:hover:bg-white/15"
-            >
-              <ChevronRight className="size-4" aria-hidden="true" />
-            </button>
+          <div className="pointer-events-auto absolute bottom-16 -left-20 flex items-center gap-1">
+            {slides.map((rom, position) => (
+              <button
+                key={rom.id}
+                type="button"
+                onClick={() => onSelect(position)}
+                aria-label={`Show ${rom.name}`}
+                aria-current={position === index ? "true" : undefined}
+                className="flex size-6 items-center justify-center rounded-full outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
+              >
+                <span
+                  data-motion
+                  className={`size-2 rounded-full transition-colors ${
+                    position === index
+                      ? "bg-panel-foreground/90"
+                      : "bg-panel-foreground/40 hover:bg-panel-foreground/60"
+                  }`}
+                />
+              </button>
+            ))}
           </div>
         )}
 
@@ -335,6 +327,7 @@ function HeroIllustration({
 const ROM_LOGOS: Record<string, string> = {
   lineageos: "/brand/lineageos.png",
   grapheneos: "/brand/grapheneos.svg",
+  eos: "/brand/eos.png",
 };
 
 /**

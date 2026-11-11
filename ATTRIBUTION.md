@@ -83,9 +83,10 @@ relicensed here. Brand and model names remain the trademarks of their owners.
 
 ## Brand assets
 
-The home page illustration shows the marks of two ROM projects. Both are used
-only to identify the project, are not modified beyond being rendered in one
-colour, and unrom is not affiliated with either.
+The home page illustration shows the marks of three ROM projects. They are used
+only to identify the project and unrom is not affiliated with any of them: two
+are rendered in one colour, while the /e/ mark keeps its original colours with
+the background removed.
 
 | Asset                             | Source                                     | Terms                                                                         |
 | --------------------------------- | ------------------------------------------ | ----------------------------------------------------------------------------- |
