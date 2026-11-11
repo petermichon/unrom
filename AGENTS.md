@@ -37,3 +37,17 @@ Three things are exceptions, because they were never compatibility:
   decision, not a cleanup.
 - **`data/` is permanent raw provenance.** Never rewrite snapshots to make a
   refactor or removal easier; fix the normalizer instead.
+
+## Verification
+
+Match verification effort to the change:
+
+- **Trivial** (copy, class, a single line): formatting and lint, plus one
+  screenshot when visual.
+- **Normal**: add the type check and the relevant test file, not the whole
+  suite.
+- **Risky** (data pipeline, build, API): run the full suite.
+
+Skip extra viewports and screenshots unless the change is responsive. When
+speed matters more than certainty, cut verification to what the change
+actually needs.
