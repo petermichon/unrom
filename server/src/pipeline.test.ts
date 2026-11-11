@@ -491,6 +491,13 @@ test("compatibility groups share one build's coverage", async () => {
       ["sweetin"],
     );
 
+    // The home page's top list samples one device per brand, so it does not
+    // collapse into a single vendor's largest support matrix.
+    const topVendors = api
+      .getSummary()
+      .topDevices.map((device) => device.vendor);
+    assert.equal(new Set(topVendors).size, topVendors.length);
+
     api.close();
   } finally {
     rmSync(dir, { recursive: true, force: true });

@@ -234,21 +234,21 @@ export default function AppShell({ updatedAt, updatedAtIso, children }: Props) {
                 <Link
                   to="/devices"
                   prefetch="intent"
-                  className="hover:text-foreground hover:underline"
+                  className="py-1 hover:text-foreground hover:underline"
                 >
                   Devices
                 </Link>
                 <Link
                   to="/roms"
                   prefetch="intent"
-                  className="hover:text-foreground hover:underline"
+                  className="py-1 hover:text-foreground hover:underline"
                 >
                   ROMs
                 </Link>
                 <Link
                   to="/brands"
                   prefetch="intent"
-                  className="hover:text-foreground hover:underline"
+                  className="py-1 hover:text-foreground hover:underline"
                 >
                   Brands
                 </Link>
@@ -261,14 +261,14 @@ export default function AppShell({ updatedAt, updatedAtIso, children }: Props) {
                 <Link
                   to="/data"
                   prefetch="intent"
-                  className="hover:text-foreground hover:underline"
+                  className="py-1 hover:text-foreground hover:underline"
                 >
                   Data
                 </Link>
                 <Link
                   to="/legal"
                   prefetch="intent"
-                  className="hover:text-foreground hover:underline"
+                  className="py-1 hover:text-foreground hover:underline"
                 >
                   Legal
                 </Link>
@@ -276,7 +276,7 @@ export default function AppShell({ updatedAt, updatedAtIso, children }: Props) {
                   href={ODBL_URL}
                   target="_blank"
                   rel="noreferrer"
-                  className="hover:text-foreground hover:underline"
+                  className="py-1 hover:text-foreground hover:underline"
                 >
                   ODbL license
                 </a>

@@ -1,8 +1,8 @@
-import { useEffect, useState, useSyncExternalStore } from "react";
-import { Pause, Play } from "lucide-react";
+import { useEffect, useState } from "react";
+import { ExternalLink, Pause, Play } from "lucide-react";
 import { Link, useLoaderData } from "react-router";
 import DeviceSearch from "@/components/DeviceSearch";
-import { fetchRomSummaries, fetchSummary } from "@/lib/data";
+import { fetchDevice, fetchRomSummaries, fetchSummary } from "@/lib/data";
 import { deviceName } from "@/lib/devices";
 import {
   errorMeta,
@@ -10,8 +10,10 @@ import {
   pageMeta,
   updatedAtFromMatches,
 } from "@/lib/seo";
+import { referenceLabel } from "@/lib/sort";
+import { useMediaQuery } from "@/lib/use-media-query";
 import { formatNumber } from "@/lib/utils";
-import type { RomSummary } from "@/lib/types";
+import type { DeviceDetail, RomSummary } from "@/lib/types";
 import type { Route } from "./+types/home";
 
 async function load() {
@@ -20,11 +22,41 @@ async function load() {
     fetchRomSummaries().catch(() => [] as RomSummary[]),
   ]);
 
+  const rankedRoms = [...roms].sort((a, b) => b.deviceCount - a.deviceCount);
+  const romCounts = new Map(rankedRoms.map((rom) => [rom.id, rom.deviceCount]));
+
   // The two ROMs the hero rotates through: the most-supported one, and the
   // privacy-focused one people look for by name.
   const slides = ["lineageos", "grapheneos", "eos"]
     .map((id) => roms.find((rom) => rom.id === id))
     .filter((rom): rom is RomSummary => rom !== undefined);
+
+  // The summary only carries ROM ids, so the example needs one detail request
+  // to show the reference behind each ROM. A failure must not take the page
+  // down; without it the example block is simply omitted.
+  const featured = summary.topDevices[0] ?? null;
+  const example = featured
+    ? await fetchDevice(featured.vendor, featured.codename).catch(() => null)
+    : null;
+
+  // Lead the example with the ROMs people know, not the alphabetically first,
+  // and don't let a branded variant (LineageOS for microG) take a second slot
+  // from the plain project.
+  const exampleRoms: DeviceDetail["roms"] = [];
+  const shownNames: string[] = [];
+  for (const rom of example
+    ? [...example.roms].sort(
+        (a, b) =>
+          (romCounts.get(b.id) ?? 0) - (romCounts.get(a.id) ?? 0) ||
+          a.name.localeCompare(b.name),
+      )
+    : []) {
+    const name = rom.name.toLowerCase();
+    if (shownNames.some((shown) => name.startsWith(shown))) continue;
+    shownNames.push(name);
+    exampleRoms.push(rom);
+    if (exampleRoms.length === 3) break;
+  }
 
   return {
     counts: {
@@ -33,9 +65,17 @@ async function load() {
       roms: summary.romCount,
       coveredRoms: summary.coveredRomCount,
     },
-    topDevices: summary.topDevices,
+    // The example already shows this device, so leave it out of the list.
+    topDevices: summary.topDevices.filter(
+      (device) =>
+        !example ||
+        device.vendor !== example.vendor ||
+        device.codename !== example.codename,
+    ),
+    example,
+    exampleRoms,
     slides,
-    roms: [...roms].sort((a, b) => b.deviceCount - a.deviceCount).slice(0, 8),
+    roms: rankedRoms.slice(0, 8),
   };
 }
 
@@ -67,7 +107,8 @@ export async function clientLoader() {
 const EXAMPLES = ["Pixel", "sweet", "LineageOS"];
 
 export default function Home() {
-  const { counts, topDevices, slides, roms } = useLoaderData<typeof loader>();
+  const { counts, topDevices, example, exampleRoms, slides, roms } =
+    useLoaderData<typeof loader>();
 
   const [slideIndex, setSlideIndex] = useState(0);
   const slide = slides[slideIndex] ?? slides[0];
@@ -84,12 +125,6 @@ export default function Home() {
       else delete root.dataset.rom;
     };
   }, [slide]);
-
-  const sections = [
-    { to: "/devices", title: "Devices", count: counts.devices },
-    { to: "/brands", title: "Brands", count: counts.brands },
-    { to: "/roms", title: "ROMs", count: counts.roms },
-  ];
 
   return (
     <section data-rom={slide?.id} className="rom-page flex flex-col gap-16">
@@ -122,35 +157,22 @@ export default function Home() {
         </div>
 
         {slides.length > 0 && (
-          <HeroIllustration
-            slides={slides}
-            index={slideIndex}
-            onSelect={setSlideIndex}
-          />
+          <>
+            <HeroPhoneBelow
+              slides={slides}
+              index={slideIndex}
+              onSelect={setSlideIndex}
+            />
+            <HeroIllustration
+              slides={slides}
+              index={slideIndex}
+              onSelect={setSlideIndex}
+            />
+          </>
         )}
       </div>
 
-      <section aria-labelledby="browse">
-        <h2 id="browse" className="sr-only">
-          Browse the database
-        </h2>
-        <ul className="grid divide-y divide-border overflow-hidden rounded-xl border border-border bg-card sm:grid-cols-3 sm:divide-x sm:divide-y-0">
-          {sections.map((section) => (
-            <li key={section.to}>
-              <Link
-                to={section.to}
-                prefetch="intent"
-                className="flex items-baseline gap-3 px-4 py-3.5 outline-none hover:bg-muted/60 focus-visible:ring-3 focus-visible:ring-ring/50 focus-visible:ring-inset"
-              >
-                <span className="font-semibold">{section.title}</span>
-                <span className="ml-auto text-sm text-muted-foreground tabular-nums">
-                  {formatNumber(section.count)}
-                </span>
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </section>
+      {example && <ExampleMapping device={example} roms={exampleRoms} />}
 
       {roms.length > 0 && (
         <section aria-labelledby="browse-roms" className="flex flex-col gap-3">
@@ -195,7 +217,7 @@ export default function Home() {
             id="top-devices"
             className="font-heading text-xl font-bold tracking-tight"
           >
-            Devices with the most ROMs
+            Most ROMs per brand
           </h2>
           <Link
             to="/devices"
@@ -281,6 +303,121 @@ export default function Home() {
 }
 
 /**
+ * A real mapping from the dataset: one device, three of its ROMs and the page
+ * each one was taken from. It is the home page's proof that the numbers above
+ * stand for source-linked data, not just a catalogue.
+ */
+function ExampleMapping({
+  device,
+  roms,
+}: {
+  device: DeviceDetail;
+  roms: DeviceDetail["roms"];
+}) {
+  const total = device.roms.length;
+
+  return (
+    <section aria-labelledby="example-device">
+      <div className="rounded-2xl border border-border bg-card p-5 sm:p-6">
+        <div className="grid gap-6 md:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] md:gap-10">
+          <div className="flex min-w-0 flex-col items-start">
+            <p className="text-xs font-semibold text-muted-foreground">
+              Example mapping
+            </p>
+            <h2
+              id="example-device"
+              className="mt-1 font-heading text-2xl font-bold tracking-tight"
+            >
+              {deviceName(device)}
+            </h2>
+            <p className="mt-1 text-sm text-muted-foreground">
+              {device.vendorName} ·{" "}
+              <span className="font-mono">{device.codename}</span> ·{" "}
+              {formatNumber(total)} {total === 1 ? "ROM" : "ROMs"}
+            </p>
+            <Link
+              to={`/devices/${device.vendor}/${device.codename}`}
+              prefetch="intent"
+              className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-brand outline-none hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
+            >
+              See all {formatNumber(total)} {total === 1 ? "ROM" : "ROMs"}
+              <span aria-hidden="true">→</span>
+            </Link>
+          </div>
+
+          <ul className="flex min-w-0 flex-col divide-y divide-border border-t border-border md:border-t-0 md:border-l md:pl-8">
+            {roms.map((rom) => (
+              <li key={rom.id} className="flex min-w-0 flex-col gap-0.5 py-2.5">
+                <Link
+                  to={`/roms/${rom.id}`}
+                  prefetch="intent"
+                  className="w-fit max-w-full truncate font-medium outline-none hover:text-brand hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
+                >
+                  {rom.name}
+                </Link>
+                {rom.referenceUrl ? (
+                  <a
+                    href={rom.referenceUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    title={rom.referenceUrl}
+                    className="inline-flex max-w-full items-center gap-1 text-xs text-muted-foreground underline underline-offset-4 hover:text-foreground"
+                  >
+                    <span className="truncate">
+                      {referenceLabel(rom.referenceUrl)}
+                    </span>
+                    {rom.referenceKind === "derived" && (
+                      <span
+                        className="shrink-0 text-[11px] text-derived"
+                        title="Built from the codename; the source does not publish this URL."
+                      >
+                        generated
+                      </span>
+                    )}
+                    <ExternalLink
+                      className="size-3 shrink-0"
+                      aria-hidden="true"
+                    />
+                  </a>
+                ) : (
+                  <span className="text-xs text-muted-foreground">
+                    No reference
+                  </span>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-1 border-t border-border pt-3 text-sm font-medium">
+          <Link
+            to="/devices"
+            prefetch="intent"
+            className="py-1 text-muted-foreground hover:text-foreground hover:underline"
+          >
+            All devices
+          </Link>
+          <Link
+            to="/brands"
+            prefetch="intent"
+            className="py-1 text-muted-foreground hover:text-foreground hover:underline"
+          >
+            All brands
+          </Link>
+          <Link
+            to="/roms"
+            prefetch="intent"
+            className="py-1 text-muted-foreground hover:text-foreground hover:underline"
+          >
+            All ROMs
+          </Link>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/**
  * The hero visual: a phone running a custom ROM, not a screenshot of unrom.
  *
  * Two slides — the most-supported ROM and the privacy-focused one people ask
@@ -298,7 +435,10 @@ function HeroIllustration({
   onSelect: (position: number) => void;
 }) {
   const slide = slides[index] ?? slides[0];
-  const reducedMotion = useReducedMotion();
+  const reducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)");
+  // Autoplay belongs to the large illustration. The phone below `lg` is
+  // stepped by hand, so the palette never changes on its own there.
+  const visible = useMediaQuery("(min-width: 64rem)");
   // null follows the system preference; a toggle overrides it either way.
   const [auto, setAuto] = useState<boolean | null>(null);
   const autoplay = auto ?? !reducedMotion;
@@ -315,12 +455,29 @@ function HeroIllustration({
   // WCAG 2.2.2: a visible control exists, and the timer also yields to hover,
   // keyboard focus and a hidden tab so nothing moves under the reader.
   useEffect(() => {
-    if (!autoplay || hovered || focused || hidden || slides.length < 2) return;
+    if (
+      !visible ||
+      !autoplay ||
+      hovered ||
+      focused ||
+      hidden ||
+      slides.length < 2
+    )
+      return;
     const timer = window.setInterval(() => {
       onSelect((index + 1) % slides.length);
     }, 7000);
     return () => window.clearInterval(timer);
-  }, [autoplay, hovered, focused, hidden, index, slides.length, onSelect]);
+  }, [
+    visible,
+    autoplay,
+    hovered,
+    focused,
+    hidden,
+    index,
+    slides.length,
+    onSelect,
+  ]);
 
   return (
     <div
@@ -343,28 +500,14 @@ function HeroIllustration({
             aria-label="Slideshow controls"
             className="pointer-events-auto absolute bottom-16 -left-32 flex items-center gap-1.5"
           >
-            {slides.map((rom, position) => (
-              <button
-                key={rom.id}
-                type="button"
-                onClick={() => {
-                  setAuto(false);
-                  onSelect(position);
-                }}
-                aria-label={`Show ${rom.name}`}
-                aria-current={position === index ? "true" : undefined}
-                className="flex size-6 items-center justify-center rounded-full outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
-              >
-                <span
-                  data-motion
-                  className={`h-2 rounded-full transition-all ${
-                    position === index
-                      ? "w-4 bg-panel-foreground/90"
-                      : "w-2 bg-panel-foreground/60 hover:bg-panel-foreground/80"
-                  }`}
-                />
-              </button>
-            ))}
+            <SlideDots
+              slides={slides}
+              index={index}
+              onSelect={(position) => {
+                setAuto(false);
+                onSelect(position);
+              }}
+            />
             <button
               type="button"
               onClick={() => {
@@ -398,16 +541,85 @@ function HeroIllustration({
   );
 }
 
-/** Subscribes to the system motion preference; false on the server. */
-function useReducedMotion(): boolean {
-  return useSyncExternalStore(
-    (onChange) => {
-      const media = window.matchMedia("(prefers-reduced-motion: reduce)");
-      media.addEventListener("change", onChange);
-      return () => media.removeEventListener("change", onChange);
-    },
-    () => window.matchMedia("(prefers-reduced-motion: reduce)").matches,
-    () => false,
+/**
+ * The hero below `lg`: the same phone, smaller and below the copy, cropped by
+ * the panel exactly like the large illustration. The negative bottom margin is
+ * what lets the panel clip it; the dots step the slide by hand, so the palette
+ * never moves on its own there.
+ */
+function HeroPhoneBelow({
+  slides,
+  index,
+  onSelect,
+}: {
+  slides: RomSummary[];
+  index: number;
+  onSelect: (position: number) => void;
+}) {
+  return (
+    <div className="relative mx-auto mt-8 -mb-[5.5rem] h-[16.5rem] w-32 sm:-mb-24 lg:hidden">
+      <div className="origin-top-left scale-[0.55]">
+        <HeroDevice slides={slides} index={index} />
+      </div>
+      {slides.length > 1 && (
+        <div
+          role="group"
+          aria-label="Slideshow controls"
+          className="absolute bottom-16 left-1/2 flex -translate-x-1/2 items-center"
+        >
+          <SlideDots
+            slides={slides}
+            index={index}
+            onSelect={onSelect}
+            buttonClassName="size-8"
+            tone="screen"
+          />
+        </div>
+      )}
+    </div>
+  );
+}
+
+/** The dot buttons, shared by the large illustration and the phone below. */
+function SlideDots({
+  slides,
+  index,
+  onSelect,
+  buttonClassName = "size-6",
+  tone = "panel",
+}: {
+  slides: RomSummary[];
+  index: number;
+  onSelect: (position: number) => void;
+  buttonClassName?: string;
+  tone?: "panel" | "screen";
+}) {
+  const active = tone === "screen" ? "bg-white/90" : "bg-panel-foreground/90";
+  const idle =
+    tone === "screen"
+      ? "bg-white/50 hover:bg-white/70"
+      : "bg-panel-foreground/60 hover:bg-panel-foreground/80";
+
+  return (
+    <>
+      {slides.map((rom, position) => (
+        <button
+          key={rom.id}
+          type="button"
+          onClick={() => onSelect(position)}
+          aria-label={`Show ${rom.name}`}
+          aria-current={position === index ? "true" : undefined}
+          className={`flex ${buttonClassName} items-center justify-center rounded-full outline-none focus-visible:ring-3 focus-visible:ring-ring/50`}
+        >
+          <span
+            data-motion
+            className={`h-2 rounded-full transition-all ${
+              position === index ? `w-4 ${active}` : `w-2 ${idle}`
+            }`}
+          />
+        </button>
+      ))}
+    </>
   );
 }
 

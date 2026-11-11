@@ -1,4 +1,4 @@
-import { useRef, useState, useSyncExternalStore } from "react";
+import { useRef, useState } from "react";
 import { Form, Link, useNavigate } from "react-router";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -8,6 +8,7 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
+import { useMediaQuery } from "@/lib/use-media-query";
 import { tokenize } from "@/lib/search";
 import { cn } from "@/lib/utils";
 import { useSearch } from "@/lib/use-search";
@@ -18,18 +19,6 @@ interface Props {
 
 const SEARCH_PLACEHOLDER = "Search by device, codename, brand, or ROM…";
 const MOBILE_SEARCH_PLACEHOLDER = "Search devices, brands, or ROMs…";
-
-function useMediaQuery(query: string): boolean {
-  return useSyncExternalStore(
-    (onChange) => {
-      const media = window.matchMedia(query);
-      media.addEventListener("change", onChange);
-      return () => media.removeEventListener("change", onChange);
-    },
-    () => window.matchMedia(query).matches,
-    () => false,
-  );
-}
 
 export default function DeviceSearch({ examples = [] }: Props) {
   const navigate = useNavigate();
@@ -261,7 +250,7 @@ export default function DeviceSearch({ examples = [] }: Props) {
                   onClick={() => tryExample(example)}
                 />
               }
-              className="h-auto cursor-pointer border-transparent bg-panel-foreground/[0.06] px-2.5 py-1 text-xs font-normal text-panel-foreground/70 hover:bg-panel-foreground/10 hover:text-panel-foreground"
+              className="h-auto min-h-9 cursor-pointer border-transparent bg-panel-foreground/[0.06] px-2.5 py-1.5 text-xs font-normal text-panel-foreground/70 hover:bg-panel-foreground/10 hover:text-panel-foreground"
             >
               {example}
             </Badge>

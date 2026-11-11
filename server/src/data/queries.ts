@@ -949,13 +949,20 @@ export function createApi(dbPath: string) {
         .get()?.count ?? 0,
     );
     // Only covered devices can lead the list, so load that slice instead of
-    // the whole 9k catalogue.
+    // the whole 9k catalogue. One device per brand keeps the sample from
+    // collapsing into whatever vendor has the largest single support matrix.
+    const seenVendors = new Set<string>();
     const topDevices = listDevicesPage({ hasRoms: true })
       .sort(
         (a, b) =>
           b.roms.length - a.roms.length ||
           bySortKey(a.name ?? a.codename, b.name ?? b.codename),
       )
+      .filter((device) => {
+        if (seenVendors.has(device.vendor)) return false;
+        seenVendors.add(device.vendor);
+        return true;
+      })
       .slice(0, 6);
 
     return {

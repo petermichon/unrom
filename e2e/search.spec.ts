@@ -71,16 +71,28 @@ test("home search finds a catalogue-only ROM", async ({ page }) => {
 test("home links to the three directories", async ({ page }) => {
   await page.goto("/");
 
-  const browse = page.getByRole("region", { name: "Browse the database" });
+  const browse = page.locator("section[aria-labelledby='example-device']");
   for (const [label, href] of [
-    ["Devices", "/devices"],
-    ["Brands", "/brands"],
-    ["ROMs", "/roms"],
+    ["All devices", "/devices"],
+    ["All brands", "/brands"],
+    ["All ROMs", "/roms"],
   ]) {
-    const link = browse.getByRole("link", { name: new RegExp(`^${label}`) });
+    const link = browse.getByRole("link", { name: label, exact: true });
     await expect(link).toHaveAttribute("href", href);
-    await expect(link).toContainText(/\d/);
   }
+});
+
+test("home leads with a real device mapping and its sources", async ({
+  page,
+}) => {
+  await page.goto("/");
+
+  const example = page.locator("section[aria-labelledby='example-device']");
+  await expect(example).toBeVisible();
+  await expect(
+    example.getByRole("link", { name: /See all \d+ ROMs/ }),
+  ).toBeVisible();
+  await expect(example.locator('a[target="_blank"]').first()).toBeVisible();
 });
 
 test("home search shows matching brands", async ({ page }) => {
