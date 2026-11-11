@@ -199,14 +199,8 @@ export default function SiteNav() {
 }
 
 interface PanelData {
-  summary: Summary | null;
-  brands: BrandSummary[] | null;
-  roms: RomSummary[] | null;
   loading: boolean;
   failed: boolean;
-  coveredDevices?: number;
-  coveredBrands?: number;
-  coveredRoms?: number;
   topDevices: BrowseDevice[] | null;
   topBrands: BrandSummary[] | null;
   topRoms: RomSummary[] | null;
@@ -237,20 +231,17 @@ function MegaPanel({
       )
     : null;
   const sortedRoms = roms
-    ? [...roms].sort(
-        (a, b) => b.deviceCount - a.deviceCount || a.name.localeCompare(b.name),
-      )
+    ? roms
+        .filter((rom) => rom.status !== "discontinued")
+        .sort(
+          (a, b) =>
+            b.deviceCount - a.deviceCount || a.name.localeCompare(b.name),
+        )
     : null;
 
   const panel: PanelData = {
-    summary,
-    brands,
-    roms,
     loading: !data && !failed,
     failed,
-    coveredDevices: brands?.reduce((total, brand) => total + brand.withRoms, 0),
-    coveredBrands: brands?.filter((brand) => brand.withRoms > 0).length,
-    coveredRoms: roms?.filter((rom) => rom.deviceCount > 0).length,
     topDevices: summary?.topDevices ?? null,
     topBrands: sortedBrands?.slice(0, 12) ?? null,
     topRoms: sortedRoms?.slice(0, 10) ?? null,
@@ -268,9 +259,7 @@ function MegaPanel({
         {active === "roms" && (
           <RomsPanel data={panel} onNavigate={onNavigate} />
         )}
-        {active === "data" && (
-          <DataPanel data={panel} onNavigate={onNavigate} />
-        )}
+        {active === "data" && <DataPanel onNavigate={onNavigate} />}
       </div>
     </div>
   );
@@ -283,16 +272,11 @@ function DevicesPanel({
   data: PanelData;
   onNavigate: () => void;
 }) {
-  const { summary, topDevices, loading, failed, coveredDevices } = data;
+  const { topDevices, loading, failed } = data;
 
   return (
     <>
       <Column title="Top devices">
-        <Count>
-          {summary ? `${formatNumber(summary.deviceCount)} devices` : "Devices"}
-          {coveredDevices !== undefined &&
-            ` · ${formatNumber(coveredDevices)} with ROM data`}
-        </Count>
         <Shortcuts loading={loading} failed={failed}>
           {topDevices?.slice(0, 6).map((device) => (
             <MenuRow
@@ -312,13 +296,6 @@ function DevicesPanel({
         </FootLink>
       </Column>
       <Rail>
-        <RailNote>
-          {coveredDevices !== undefined && summary
-            ? `${formatNumber(coveredDevices)} of ${formatNumber(
-                summary.deviceCount,
-              )} devices have ROM data.`
-            : "Device-to-ROM mappings with the source behind every one."}
-        </RailNote>
         <RailLink to="/devices?roms=1" onNavigate={onNavigate}>
           Devices with ROMs
         </RailLink>
@@ -337,16 +314,11 @@ function BrandsPanel({
   data: PanelData;
   onNavigate: () => void;
 }) {
-  const { brands, topBrands, loading, failed, coveredBrands } = data;
+  const { topBrands, loading, failed } = data;
 
   return (
     <>
       <Column title="Top brands by ROM coverage">
-        <Count>
-          {brands ? `${formatNumber(brands.length)} brands` : "Brands"}
-          {coveredBrands !== undefined &&
-            ` · ${formatNumber(coveredBrands)} with ROM data`}
-        </Count>
         <Shortcuts loading={loading} failed={failed}>
           <div className="grid grid-cols-2 gap-x-6">
             {topBrands?.map((brand) => (
@@ -368,13 +340,6 @@ function BrandsPanel({
         </FootLink>
       </Column>
       <Rail>
-        <RailNote>
-          {coveredBrands !== undefined && brands
-            ? `${formatNumber(coveredBrands)} of ${formatNumber(
-                brands.length,
-              )} brands have ROM data.`
-            : "Brands ranked by how many of their devices have a known ROM."}
-        </RailNote>
         <RailLink to="/devices?roms=1" onNavigate={onNavigate}>
           Devices with ROMs
         </RailLink>
@@ -393,16 +358,11 @@ function RomsPanel({
   data: PanelData;
   onNavigate: () => void;
 }) {
-  const { roms, topRoms, loading, failed, coveredRoms } = data;
+  const { topRoms, loading, failed } = data;
 
   return (
     <>
-      <Column title="Most supported ROMs">
-        <Count>
-          {roms ? `${formatNumber(roms.length)} ROMs` : "ROMs"}
-          {coveredRoms !== undefined &&
-            ` · ${formatNumber(coveredRoms)} with device data`}
-        </Count>
+      <Column title="Active ROMs by support">
         <Shortcuts loading={loading} failed={failed}>
           <div className="grid grid-cols-2 gap-x-6">
             {topRoms?.map((rom) => (
@@ -424,13 +384,6 @@ function RomsPanel({
         </FootLink>
       </Column>
       <Rail>
-        <RailNote>
-          {coveredRoms !== undefined && roms
-            ? `${formatNumber(coveredRoms)} of ${formatNumber(
-                roms.length,
-              )} ROMs have device data.`
-            : "ROMs ranked by how many devices they support."}
-        </RailNote>
         <RailLink to="/devices?roms=1" onNavigate={onNavigate}>
           Devices with ROMs
         </RailLink>
@@ -442,15 +395,7 @@ function RomsPanel({
   );
 }
 
-function DataPanel({
-  data,
-  onNavigate,
-}: {
-  data: PanelData;
-  onNavigate: () => void;
-}) {
-  const { summary, roms, coveredDevices, coveredRoms } = data;
-
+function DataPanel({ onNavigate }: { onNavigate: () => void }) {
   return (
     <>
       <Column title="Open data">
@@ -517,19 +462,6 @@ function DataPanel({
         </div>
       </Column>
       <Rail>
-        <RailNote>
-          {coveredRoms !== undefined && roms
-            ? `${formatNumber(coveredRoms)} of ${formatNumber(
-                roms.length,
-              )} ROMs have device data.`
-            : "Every mapping links its source."}
-        </RailNote>
-        {coveredDevices !== undefined && summary && (
-          <RailNote>
-            {formatNumber(coveredDevices)} of{" "}
-            {formatNumber(summary.deviceCount)} devices have ROM data.
-          </RailNote>
-        )}
         <RailLink to="/devices" onNavigate={onNavigate}>
           All devices
         </RailLink>
@@ -555,14 +487,6 @@ function Column({ title, children }: { title: string; children: ReactNode }) {
   );
 }
 
-function Count({ children }: { children: ReactNode }) {
-  return (
-    <p className="px-2 pb-1 text-xs text-muted-foreground tabular-nums">
-      {children}
-    </p>
-  );
-}
-
 function Subhead({ children }: { children: ReactNode }) {
   return (
     <p className="px-2 pb-1 text-xs font-semibold text-muted-foreground">
@@ -574,14 +498,10 @@ function Subhead({ children }: { children: ReactNode }) {
 function Rail({ children }: { children: ReactNode }) {
   return (
     <div className="flex flex-col gap-2 self-start rounded-xl bg-muted/50 p-4">
-      <p className="text-xs font-semibold text-muted-foreground">At a glance</p>
+      <p className="text-xs font-semibold text-muted-foreground">More</p>
       {children}
     </div>
   );
-}
-
-function RailNote({ children }: { children: ReactNode }) {
-  return <p className="text-sm leading-relaxed">{children}</p>;
 }
 
 function RailLink({

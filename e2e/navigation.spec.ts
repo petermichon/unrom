@@ -97,7 +97,7 @@ test("each trigger opens its own panel", async ({ page }) => {
   ).toBeVisible();
 
   await show("ROMs");
-  await expect(menu.getByText("Most supported ROMs")).toBeVisible();
+  await expect(menu.getByText("Active ROMs by support")).toBeVisible();
   await expect(
     menu.getByRole("link", { name: "All ROMs", exact: true }),
   ).toBeVisible();
@@ -203,6 +203,26 @@ test("the devices directory opens a brand page", async ({ page }) => {
     page.getByRole("heading", { name: "Xiaomi", level: 1, exact: true }),
   ).toBeVisible();
   await expect(page.locator("a.device-row").first()).toBeVisible();
+});
+
+test("the LineageOS page shows the ROM mark and palette", async ({ page }) => {
+  await page.goto("/roms/lineageos");
+
+  const hero = page.locator("main .hero-panel");
+  await expect(hero).toBeVisible();
+  await expect(
+    hero.locator('img[src="/brand/lineageos.png"]:visible'),
+  ).toBeVisible();
+});
+
+test("the devices directory leads with the most-supported devices", async ({
+  page,
+}) => {
+  await page.goto("/devices");
+
+  const first = page.locator("main ul.index-frame > li").first();
+  await expect(first).toContainText("POCO M2 Pro");
+  await expect(first).toContainText("36 ROMs");
 });
 
 test("the directory shows only devices with ROM data", async ({ page }) => {

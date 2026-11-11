@@ -130,6 +130,7 @@
   --ring: #4a5cf0;
   --brand: #3049e0;
   --brand-foreground: #ffffff;
+  --hero-accent: var(--brand);
   --panel: #dde4fb;
   --panel-foreground: #0d1024;
   --chart-1: #c7d2fe;
