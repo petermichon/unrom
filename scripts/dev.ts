@@ -1,12 +1,16 @@
 #!/usr/bin/env node
 /**
- * Start the API and the web app on their fixed loopback ports.
+ * Start the API and the web app.
  *
- *   npm run dev
+ *   npm run dev        vanilla: API on 3000, web on Vite's default port
+ *   npm run dev:host   proxied: web on 5200, API on 5201, loopback only
  *
- * The ports are private upstreams for the host-routing dev proxy
- * (`http://unrom.localhost:7357`), so they never appear in a URL. Point the
- * proxy's `proxy.json` at them; override with WEB_PORT / API_PORT.
+ * The host mode uses the fixed upstream ports the machine-level dev proxy
+ * points at (`http://unrom.localhost:7357`), and binds IPv4 loopback so the
+ * proxy and `adb reverse` can reach it. The vanilla mode behaves like any other
+ * Vite project: no port is claimed and Vite picks the first free one.
+ *
+ * WEB_PORT / API_PORT override the ports in either mode.
  */
 import { spawn } from "node:child_process";
 import net from "node:net";
@@ -14,8 +18,9 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const WEB_PORT = Number(process.env.WEB_PORT ?? 5200);
-const API_PORT = Number(process.env.API_PORT ?? 5201);
+const hostMode = process.argv.includes("--host");
+const API_PORT = Number(process.env.API_PORT ?? (hostMode ? 5201 : 3000));
+const WEB_PORT = hostMode ? Number(process.env.WEB_PORT ?? 5200) : null;
 
 function canConnect(host: string, port: number): Promise<boolean> {
   return new Promise((resolve) => {
@@ -52,19 +57,23 @@ async function waitFor(port: number, label: string): Promise<void> {
 }
 
 async function main(): Promise<void> {
-  for (const [label, port, variable] of [
-    ["web", WEB_PORT, "WEB_PORT"],
-    ["API", API_PORT, "API_PORT"],
-  ] as const) {
-    if (await isBusy(port)) {
-      throw new Error(
-        `Port ${port} is already in use. Stop that process or set ${variable}.`,
-      );
-    }
+  if (await isBusy(API_PORT)) {
+    throw new Error(
+      `Port ${API_PORT} is already in use. Stop that process or set API_PORT.`,
+    );
+  }
+  if (WEB_PORT !== null && (await isBusy(WEB_PORT))) {
+    throw new Error(
+      `Port ${WEB_PORT} is already in use. Stop that process or set WEB_PORT.`,
+    );
   }
 
-  console.log(`[dev] web http://localhost:${WEB_PORT}`);
   console.log(`[dev] api http://127.0.0.1:${API_PORT}`);
+  console.log(
+    WEB_PORT === null
+      ? "[dev] web Vite's default port (printed below)"
+      : `[dev] web http://localhost:${WEB_PORT}`,
+  );
 
   const children: ReturnType<typeof spawn>[] = [];
 
@@ -95,22 +104,25 @@ async function main(): Promise<void> {
   });
   await waitFor(API_PORT, "The API");
 
-  const web = start(
-    [
-      "run",
-      "dev",
-      "--workspace",
-      "web",
+  const webArgs = ["run", "dev", "--workspace", "web"];
+  if (WEB_PORT !== null) {
+    webArgs.push(
       "--",
       "--port",
       String(WEB_PORT),
       "--strictPort",
       "--host",
       "127.0.0.1",
-    ],
-    { API_URL: `http://127.0.0.1:${API_PORT}` },
-  );
-  await waitFor(WEB_PORT, "The dev server");
+    );
+  }
+
+  const web = start(webArgs, {
+    API_URL: `http://127.0.0.1:${API_PORT}`,
+  });
+
+  if (WEB_PORT !== null) {
+    await waitFor(WEB_PORT, "The dev server");
+  }
 
   for (const child of [api, web]) {
     child.on("exit", (code) => shutdown(code ?? 1));

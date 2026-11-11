@@ -77,20 +77,23 @@ Use `npm run build:data` if you want to rebuild the dataset and exports locally.
 
 ## Ports
 
-Development uses two fixed loopback ports: web on `5200`, API on `5201`
-(`WEB_PORT` / `API_PORT` override them). They are private upstreams — the app
-is reached at `http://unrom.localhost:7357` through a host-routing dev proxy
-that runs on the machine, so the ports never appear in a URL and another
-project's servers cannot collide with them at the address level.
+`npm run dev` is vanilla: the API on `3000` and the web app on Vite's default
+port, like any other Vite project.
 
-The proxy is machine setup, not repository code: its registry lives in
-`~/.config/dev/proxy.json`, mapping each hostname to one upstream port. Point a
-checkout's ports at the upstreams a project uses and add the hostname there;
-`--strictPort` keeps the mapping honest.
+`npm run dev:host` is the proxied mode: web on `5200`, API on `5201`, both bound
+to IPv4 loopback. Those are the private upstreams the machine-level dev proxy
+points at, so the app is reached at `http://unrom.localhost:7357` and the ports
+never appear in a URL. `WEB_PORT` / `API_PORT` override either mode; a checkout
+that needs different upstreams sets them and adds the matching hostname to
+`~/.config/dev/proxy.json`.
+
+The proxy is machine setup, not repository code. `--strictPort` in host mode
+keeps its mapping honest.
 
 ## Checking on a phone
 
-Plug the phone in with USB debugging enabled and map the proxy port once:
+Run the app in host mode (`npm run dev:host`), then plug the phone in with USB
+debugging enabled and map the proxy port once:
 
 ```sh
 dev-tunnel
