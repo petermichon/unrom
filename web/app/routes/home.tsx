@@ -174,7 +174,7 @@ function PhoneIllustration() {
   return (
     <div
       aria-hidden="true"
-      className="relative mx-auto hidden w-[14.5rem] shrink-0 select-none lg:block"
+      className="relative mx-auto hidden w-[14rem] shrink-0 select-none lg:block"
     >
       <span className="absolute -inset-4 rounded-[3rem] bg-transparent blur-2xl dark:bg-[#4a5bd8]/15" />
       <span className="absolute inset-x-6 -bottom-4 h-8 rounded-[100%] bg-black/25 blur-2xl dark:bg-black/70" />
@@ -182,7 +182,7 @@ function PhoneIllustration() {
       <span className="absolute -left-[3px] top-36 h-14 w-[3px] rounded-l-full bg-white/20" />
       <span className="absolute -right-[3px] top-28 h-16 w-[3px] rounded-r-full bg-white/20" />
 
-      <span className="relative flex h-[28rem] w-full flex-col overflow-hidden rounded-[2.5rem] bg-[#1d2740] p-[6px] shadow-[0_24px_60px_rgba(0,0,0,0.35)] ring-1 ring-black/15 dark:bg-[#0c0f18] dark:shadow-[0_24px_60px_rgba(0,0,0,0.55)] dark:ring-white/25">
+      <span className="relative flex h-[27rem] w-full flex-col overflow-hidden rounded-[2.5rem] bg-[#1d2740] p-[6px] shadow-[0_24px_60px_rgba(0,0,0,0.35)] ring-1 ring-black/15 dark:bg-[#0c0f18] dark:shadow-[0_24px_60px_rgba(0,0,0,0.55)] dark:ring-white/25">
         <span className="relative flex h-full flex-col overflow-hidden rounded-[2.1rem] bg-gradient-to-b from-[#eef2ff] via-[#dde4fb] to-[#9aa8ff] dark:from-[#3d4a73] dark:via-[#232b45] dark:to-[#121722]">
           <span className="absolute inset-0 bg-gradient-to-b from-[#eef2ff] via-[#dde4fb] to-[#9aa8ff] dark:from-[#3d4a73] dark:via-[#232b45] dark:to-[#121722]" />
           <span className="absolute -top-20 -right-16 size-64 rounded-full bg-[#f3f5ff] opacity-80 blur-3xl dark:bg-[#6d7cff] dark:opacity-70" />
