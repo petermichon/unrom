@@ -40,14 +40,29 @@ Three things are exceptions, because they were never compatibility:
 
 ## Verification
 
-Match verification effort to the change:
+Match verification to the change. The full suite is for changes that can alter
+the dataset, the API contract or the build — not for polish.
 
-- **Trivial** (copy, class, a single line): formatting and lint, plus one
-  screenshot when visual.
-- **Normal**: add the type check and the relevant test file, not the whole
-  suite.
-- **Risky** (data pipeline, build, API): run the full suite.
+**Trivial** — copy, CSS class or colour, a logo/data map entry, a one- or
+two-line edit:
 
-Skip extra viewports and screenshots unless the change is responsive. When
-speed matters more than certainty, cut verification to what the change
-actually needs.
+- `npm run format:check` and `npm run lint`.
+- One screenshot at the affected viewport if the change is visual.
+- Do **not** run `npm run check`, the server tests or the e2e suite.
+
+**Normal** — component behaviour, a new UI state, route logic, an API query or
+response whose shape is unchanged, a test change:
+
+- The trivial checks, plus `npm run check` and the affected e2e spec
+  (`npx playwright test e2e/<name>.spec.ts`).
+
+**Risky** — ingest, normalize, build, database schema, `contract/` shapes,
+deploy:
+
+- `npm run check`, `npm run test` and the full `npx playwright test`.
+
+Screenshots: take one; add a second viewport only when the change specifically
+affects both layouts. Reuse an existing script before writing a new one, and
+never build a test harness for a one-line change. Do not run the full suite
+“to be safe”. If speed matters more than certainty, say so and cut to the
+minimum.
