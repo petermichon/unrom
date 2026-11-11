@@ -56,7 +56,7 @@ test("client navigation renders the destination table", async ({ page }) => {
   ).toBeVisible();
 });
 
-test("hovering a section opens its panel", async ({ page }) => {
+test("hovering a section opens the mega menu", async ({ page }) => {
   await page.goto("/");
   await page.waitForLoadState("networkidle");
 
@@ -66,13 +66,67 @@ test("hovering a section opens its panel", async ({ page }) => {
   // Hydration may land after the first pointer move; retry the hover.
   await expect(async () => {
     await devices.hover();
-    await expect(page.locator("#nav-panel-devices")).toBeVisible({
+    await expect(page.locator("#mega-menu")).toBeVisible({
       timeout: 1_000,
     });
   }).toPass({ timeout: 10_000 });
+  await expect(devices).toHaveAttribute("aria-expanded", "true");
 });
 
-test("navigation closes the section panel", async ({ page }) => {
+test("each trigger opens its own panel", async ({ page }) => {
+  await page.goto("/");
+  await page.waitForLoadState("networkidle");
+
+  const nav = page.getByRole("navigation", { name: "Main" });
+  const menu = page.locator("#mega-menu");
+  const show = async (name: string) => {
+    await nav.getByRole("link", { name, exact: true }).hover();
+    await expect(menu).toBeVisible();
+  };
+
+  await show("Devices");
+  await expect(menu.getByText("Top devices")).toBeVisible();
+  await expect(
+    menu.getByRole("link", { name: "All devices", exact: true }),
+  ).toBeVisible();
+
+  await show("Brands");
+  await expect(menu.getByText("Top brands by ROM coverage")).toBeVisible();
+  await expect(
+    menu.getByRole("link", { name: "All brands", exact: true }),
+  ).toBeVisible();
+
+  await show("ROMs");
+  await expect(menu.getByText("Most supported ROMs")).toBeVisible();
+  await expect(
+    menu.getByRole("link", { name: "All ROMs", exact: true }),
+  ).toBeVisible();
+
+  await show("Data");
+  await expect(menu.getByText("Open data")).toBeVisible();
+  await expect(menu.getByRole("link", { name: /^REST API/ })).toBeVisible();
+});
+
+test("mega menu opens from the keyboard and closes with Escape", async ({
+  page,
+}) => {
+  await page.goto("/");
+
+  const devices = page
+    .getByRole("navigation", { name: "Main" })
+    .getByRole("link", { name: "Devices", exact: true });
+  await devices.focus();
+  await page.keyboard.press("ArrowDown");
+
+  await expect(page.locator("#mega-menu")).toBeVisible();
+  await expect(page.locator("#mega-menu")).toBeFocused();
+
+  await page.keyboard.press("Escape");
+  await expect(page.locator("#mega-menu")).toHaveCount(0);
+  await expect(devices).toBeFocused();
+});
+
+test("navigation closes the mega menu", async ({ page }) => {
   await page.goto("/");
   await page
     .getByRole("navigation", { name: "Main" })
@@ -83,7 +137,7 @@ test("navigation closes the section panel", async ({ page }) => {
   // Scroll restoration re-evaluates hover after the route settles; a
   // stationary pointer must not reopen the panel.
   await page.waitForTimeout(600);
-  await expect(page.locator("#nav-panel-roms")).toHaveCount(0);
+  await expect(page.locator("#mega-menu")).toHaveCount(0);
 });
 
 test("client navigation survives a failing /api index", async ({ page }) => {

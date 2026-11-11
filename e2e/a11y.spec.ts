@@ -32,6 +32,23 @@ for (const path of PATHS) {
   });
 }
 
+test("open mega menu has no accessibility violations", async ({ page }) => {
+  await page.goto("/");
+  await page.waitForLoadState("networkidle");
+  const devices = page
+    .getByRole("navigation", { name: "Main" })
+    .getByRole("link", { name: "Devices", exact: true });
+
+  // Hydration may land after the first pointer move; retry the hover.
+  await expect(async () => {
+    await devices.hover();
+    await expect(page.locator("#mega-menu")).toBeVisible({ timeout: 1_000 });
+  }).toPass({ timeout: 10_000 });
+
+  const { violations } = await analyze(page);
+  expect(violations).toEqual([]);
+});
+
 test("404 page has no accessibility violations", async ({ page }) => {
   const response = await page.goto("/does-not-exist");
   expect(response?.status()).toBe(404);

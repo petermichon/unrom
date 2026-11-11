@@ -37,7 +37,7 @@ function MobileMenu() {
           <Button
             variant="outline"
             size="icon"
-            className="md:hidden"
+            className="lg:hidden"
             aria-label="Open menu"
             data-nojs-hide
           />
@@ -48,14 +48,11 @@ function MobileMenu() {
       <DropdownMenuContent align="end" className="w-52">
         <DropdownMenuGroup>
           <DropdownMenuLabel>Browse</DropdownMenuLabel>
-          {NAV_ITEMS.map((item) => (
+          {NAV_ITEMS.filter((item) => item.kind !== "data").map((item) => (
             <DropdownMenuItem key={item.to} render={<Link to={item.to} />}>
               {item.label}
             </DropdownMenuItem>
           ))}
-          <DropdownMenuItem render={<Link to="/brands" />}>
-            All brands
-          </DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
