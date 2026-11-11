@@ -26,22 +26,27 @@ export function PageHeader({
           </h1>
           {badge}
         </div>
-        {actions && <div className="flex items-center gap-2">{actions}</div>}
+        {(endpoint || actions) && (
+          <div className="flex items-center gap-3">
+            {endpoint && (
+              <a
+                href={endpoint}
+                title={`API response: ${endpoint}`}
+                aria-label={`API response: ${endpoint}`}
+                className="text-xs font-semibold text-muted-foreground outline-none hover:text-foreground hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
+              >
+                API
+              </a>
+            )}
+            {actions && (
+              <div className="flex items-center gap-2">{actions}</div>
+            )}
+          </div>
+        )}
       </div>
       {description && (
         <p className="max-w-[62ch] text-sm leading-relaxed text-muted-foreground">
           {description}
-        </p>
-      )}
-      {endpoint && (
-        <p className="text-xs text-muted-foreground">
-          <a
-            href={endpoint}
-            className="font-mono outline-none hover:text-foreground hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
-            title="Open this page's API response"
-          >
-            <span className="font-semibold text-brand">GET</span> {endpoint}
-          </a>
         </p>
       )}
       {children}

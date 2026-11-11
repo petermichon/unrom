@@ -58,7 +58,7 @@ function BrandRow({ brand }: { brand: Brand }) {
       <span className="min-w-0 flex-1 truncate font-semibold">
         {brand.vendorName}
       </span>
-      <span className="w-24 shrink-0 text-right font-mono text-xs text-muted-foreground tabular-nums">
+      <span className="w-24 shrink-0 text-right text-xs text-muted-foreground tabular-nums">
         {formatNumber(brand.withRoms)} with{" "}
         {brand.withRoms === 1 ? "ROM" : "ROMs"}
       </span>

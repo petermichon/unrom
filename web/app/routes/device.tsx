@@ -120,17 +120,20 @@ export default function DeviceRoute() {
           }
           description={
             device.roms.length === 0
-              ? `${device.vendorName} · No custom ROM data yet`
-              : `${device.vendorName} · Supported by ${device.roms.length} ${
+              ? "No custom ROM data yet."
+              : `Supported by ${device.roms.length} custom ${
                   device.roms.length === 1 ? "ROM" : "ROMs"
-                }`
+                }.`
           }
         />
       </div>
 
-      <DeviceIdentity device={device} />
+      <DeviceRomsTable
+        roms={device.roms}
+        apiEndpoint={`/api/devices/${device.vendor}/${device.codename}`}
+      />
 
-      <DeviceRomsTable roms={device.roms} />
+      <DeviceIdentity device={device} />
     </div>
   );
 }

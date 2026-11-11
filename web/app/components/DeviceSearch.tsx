@@ -75,7 +75,7 @@ export default function DeviceSearch({ examples = [] }: Props) {
       >
         <Command
           shouldFilter={false}
-          className="rounded-2xl border border-border bg-popover shadow-sm dark:border-white/10 dark:bg-[#171b26]"
+          className="border border-border bg-popover shadow-sm focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/50 dark:border-white/15 dark:bg-white/[0.06]"
         >
           <CommandInput
             name="q"
@@ -144,7 +144,8 @@ export default function DeviceSearch({ examples = [] }: Props) {
                           {device.name ?? device.codename}
                         </span>
                         <span className="truncate text-xs text-muted-foreground">
-                          {[device.vendorName, device.codename].join(" · ")}
+                          {device.vendorName}{" "}
+                          <span className="font-mono">({device.codename})</span>
                         </span>
                       </span>
                       <Badge

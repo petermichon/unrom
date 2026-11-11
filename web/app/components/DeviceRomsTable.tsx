@@ -29,9 +29,11 @@ const columnClassName = (id: string) =>
 
 interface Props {
   roms: RomSupport[];
+  /** The API response for this device, offered when the table is empty. */
+  apiEndpoint?: string;
 }
 
-export default function DeviceRomsTable({ roms }: Props) {
+export default function DeviceRomsTable({ roms, apiEndpoint }: Props) {
   const columns = useMemo<ColumnDef<RomSupport>[]>(
     () => [
       {
@@ -152,10 +154,18 @@ export default function DeviceRomsTable({ roms }: Props) {
           </EmptyMedia>
           <EmptyTitle>No ROM data yet</EmptyTitle>
           <EmptyDescription>
-            unrom tracks this device, but no custom ROM reports a build for it.{" "}
+            unrom tracks this device, but no custom ROM reports a build for it
+            yet.{" "}
             <Link to="/devices" prefetch="intent">
-              Browse devices that do have ROM data
+              Browse devices that have ROM data
             </Link>
+            {apiEndpoint && (
+              <>
+                {" "}
+                or{" "}
+                <a href={apiEndpoint}>open the API response for this device</a>
+              </>
+            )}
             .
           </EmptyDescription>
         </EmptyHeader>

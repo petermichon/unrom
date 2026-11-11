@@ -104,7 +104,12 @@
 }
 
 /* Warm off-white page, white cards, near-black type, indigo accent, and one
-   pale periwinkle panel for the opening statement. */
+   pale periwinkle panel for the opening statement.
+
+   Shape rule: every radius comes from the scale below, never from a bracket
+   value. Controls (buttons, inputs) are `md`; rows and small surfaces are
+   `xl`; cards and popovers are `2xl`; the opening panel is `4xl`, the one
+   deliberately soft surface. A new surface picks a step from this list. */
 :root {
   --background: #f4f4f2;
   --foreground: #0d0d0f;
@@ -135,7 +140,7 @@
   --chart-3: #4f46e5;
   --chart-4: #3730a3;
   --chart-5: #1e1b4b;
-  --radius: 1rem;
+  --radius: 0.75rem;
   --sidebar: #ffffff;
   --sidebar-foreground: #0d0d0f;
   --sidebar-accent: #ececea;
@@ -189,7 +194,7 @@
     @apply flex items-center justify-between gap-3 rounded-xl px-3 py-3 outline-none transition-colors hover:bg-muted/70 focus-visible:ring-3 focus-visible:ring-ring/50;
   }
   .directory-row {
-    @apply flex items-baseline justify-between gap-3 rounded-2xl border border-border bg-card px-4 py-3.5 outline-none transition-colors hover:border-brand/40 hover:shadow-sm focus-visible:ring-3 focus-visible:ring-ring/50;
+    @apply flex items-baseline justify-between gap-3 rounded-xl border border-border bg-card px-4 py-3.5 outline-none transition-colors hover:border-brand/40 focus-visible:ring-3 focus-visible:ring-ring/50;
   }
   /* Rows inside a divided list: the container draws the frame, the rows draw
      only hover and focus. */

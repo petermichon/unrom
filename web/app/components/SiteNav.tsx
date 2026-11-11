@@ -218,7 +218,7 @@ function DevicesPanel({ onNavigate }: { onNavigate: () => void }) {
             <li key={brand.vendor}>
               <Row to={`/devices/${brand.vendor}`} onClick={onNavigate}>
                 <span className="truncate font-medium">{brand.vendorName}</span>
-                <span className="shrink-0 font-mono text-[11px] text-muted-foreground tabular-nums">
+                <span className="shrink-0 text-[11px] text-muted-foreground tabular-nums">
                   {formatNumber(brand.withRoms)} with ROMs
                 </span>
               </Row>
@@ -277,7 +277,7 @@ function RomsPanel({ onNavigate }: { onNavigate: () => void }) {
             <li key={rom.id}>
               <Row to={`/roms/${rom.id}`} onClick={onNavigate}>
                 <span className="truncate font-medium">{rom.name}</span>
-                <span className="shrink-0 font-mono text-[11px] text-muted-foreground tabular-nums">
+                <span className="shrink-0 text-[11px] text-muted-foreground tabular-nums">
                   {formatNumber(rom.deviceCount)}
                 </span>
               </Row>
