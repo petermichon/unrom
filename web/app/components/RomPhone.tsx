@@ -3,12 +3,19 @@ export interface RomPhoneSlide {
   name: string;
 }
 
-/** White marks for the ROMs that have one, from their own projects. */
+/** Marks for the ROMs that have one, from their own projects. */
 export const ROM_LOGOS: Record<string, string> = {
+  alphadroid: "/brand/alphadroid.svg",
+  crdroid: "/brand/crdroid.svg",
+  derpfest: "/brand/derpfest.png",
+  eos: "/brand/eos.png",
+  evolutionx: "/brand/evolutionx.svg",
+  grapheneos: "/brand/grapheneos.svg",
+  "kali-nethunter": "/brand/kali-nethunter.png",
   lineageos: "/brand/lineageos.png",
   "lineageos-microg": "/brand/lineageos.png",
-  grapheneos: "/brand/grapheneos.svg",
-  eos: "/brand/eos.png",
+  pixelos: "/brand/pixelos.svg",
+  projectinfinityx: "/brand/projectinfinityx.svg",
 };
 
 /** Vector marks for large decorative uses such as the ROM page watermark. */
