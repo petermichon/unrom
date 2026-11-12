@@ -1,6 +1,7 @@
 import { useLoaderData } from "react-router";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ROM_LOGOS, ROM_MARKS } from "@/components/RomPhone";
+import { RomMark } from "@/components/RomMark";
 import { StatusPill } from "@/components/StatusPill";
 import { useRomPalette } from "@/lib/use-rom-palette";
 import RomDevicesTable from "@/components/RomDevicesTable";
@@ -118,7 +119,7 @@ export default function RomRoute() {
         ]}
       />
 
-      <div className="hero-panel relative flex flex-col gap-6 overflow-hidden rounded-4xl bg-panel px-6 py-8 text-panel-foreground ring-1 ring-black/[0.03] sm:px-8 sm:py-10 dark:ring-white/[0.06]">
+      <div className="hero-panel relative flex flex-col gap-6 overflow-hidden rounded-4xl bg-panel px-6 py-8 text-panel-foreground ring-1 ring-black/[0.03] sm:px-8 sm:py-10 dark:ring-white/[0.08]">
         <div className="relative z-10 flex min-w-0 flex-col gap-6">
           <div className="flex min-w-0 flex-col gap-3">
             <h1 className="font-heading text-3xl font-extrabold tracking-[-0.03em] sm:text-4xl">
@@ -141,20 +142,10 @@ export default function RomRoute() {
         </div>
 
         {mark && (
-          <div
-            aria-hidden="true"
-            data-rom-mark={rom.id}
-            className="pointer-events-none order-last h-24 w-60 self-end sm:absolute sm:top-1/2 sm:right-6 sm:order-none sm:h-24 sm:w-40 sm:-translate-y-1/2 md:h-28 md:w-56 lg:h-44 lg:w-[27.6rem]"
-            style={{
-              backgroundColor:
-                "color-mix(in oklab, var(--panel) 88%, var(--panel-foreground))",
-              WebkitMaskImage: `url("${mark}")`,
-              maskImage: `url("${mark}")`,
-              WebkitMaskSize: "contain",
-              maskSize: "contain",
-              WebkitMaskRepeat: "no-repeat",
-              maskRepeat: "no-repeat",
-            }}
+          <RomMark
+            id={rom.id}
+            src={mark}
+            className="order-last h-24 w-60 self-end sm:absolute sm:top-1/2 sm:right-6 sm:order-none sm:h-24 sm:w-40 sm:-translate-y-1/2 md:h-28 md:w-56"
           />
         )}
       </div>

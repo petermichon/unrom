@@ -317,11 +317,11 @@
 }
 .dark .rom-page[data-rom="crdroid"],
 :root.dark[data-rom="crdroid"] {
-  --panel: #122120;
+  --panel: #0d2221;
   --panel-foreground: #ebfdfc;
   --hero-accent: #04ecd7;
   --brand: #67e8f9;
-  --accent: #122120;
+  --accent: #0d2221;
   --accent-foreground: #ebfdfc;
 }
 .rom-page[data-rom="derpfest"],
@@ -335,11 +335,11 @@
 }
 .dark .rom-page[data-rom="derpfest"],
 :root.dark[data-rom="derpfest"] {
-  --panel: #132026;
+  --panel: #0f2129;
   --panel-foreground: #effaff;
   --hero-accent: #33bbff;
   --brand: #7dd3fc;
-  --accent: #132026;
+  --accent: #0f2129;
   --accent-foreground: #effaff;
 }
 .rom-page[data-rom="evolutionx"],
@@ -353,11 +353,11 @@
 }
 .dark .rom-page[data-rom="evolutionx"],
 :root.dark[data-rom="evolutionx"] {
-  --panel: #191f28;
+  --panel: #171f2b;
   --panel-foreground: #ebf2ff;
   --hero-accent: #4d8cff;
   --brand: #93c5fd;
-  --accent: #191f28;
+  --accent: #171f2b;
   --accent-foreground: #ebf2ff;
 }
 .rom-page[data-rom="kali-nethunter"],
@@ -371,11 +371,11 @@
 }
 .dark .rom-page[data-rom="kali-nethunter"],
 :root.dark[data-rom="kali-nethunter"] {
-  --panel: #162028;
+  --panel: #13202a;
   --panel-foreground: #eef3f8;
   --hero-accent: #3f83bf;
   --brand: #a3c4e8;
-  --accent: #162028;
+  --accent: #13202a;
   --accent-foreground: #eef3f8;
 }
 .rom-page[data-rom="pixelos"],
@@ -389,11 +389,11 @@
 }
 .dark .rom-page[data-rom="pixelos"],
 :root.dark[data-rom="pixelos"] {
-  --panel: #231e15;
+  --panel: #241e12;
   --panel-foreground: #f6f4f2;
   --hero-accent: #a2906f;
   --brand: #d6c8b0;
-  --accent: #231e15;
+  --accent: #241e12;
   --accent-foreground: #f6f4f2;
 }
 .rom-page[data-rom="alphadroid"],
@@ -407,11 +407,11 @@
 }
 .dark .rom-page[data-rom="alphadroid"],
 :root.dark[data-rom="alphadroid"] {
-  --panel: #1f1d27;
+  --panel: #201d29;
   --panel-foreground: #f3f1f8;
   --hero-accent: #7c5cc4;
   --brand: #c4b5fd;
-  --accent: #1f1d27;
+  --accent: #201d29;
   --accent-foreground: #f3f1f8;
 }
 .rom-page[data-rom="projectinfinityx"],
@@ -425,23 +425,36 @@
 }
 .dark .rom-page[data-rom="projectinfinityx"],
 :root.dark[data-rom="projectinfinityx"] {
-  --panel: #1b1e28;
+  --panel: #191e2b;
   --panel-foreground: #eef2fd;
   --hero-accent: #4b74e8;
   --brand: #a5b8f5;
-  --accent: #1b1e28;
+  --accent: #191e2b;
   --accent-foreground: #eef2fd;
 }
 
-/* On narrow screens the mark sits below the copy, so pin it to the right edge
-   of its box; on wide screens it is the centred watermark. */
-[data-rom-mark] {
+/* The ROM mark is a flat silhouette: the artwork only supplies the shape, the
+   panel supplies the colour. The caller fixes the box; the mask fits inside
+   it. On narrow screens the mark sits below the copy, so it anchors right;
+   once it is in the hero it centres. */
+.rom-mark {
+  background-color: color-mix(
+    in oklab,
+    var(--panel) 88%,
+    var(--panel-foreground)
+  );
+  -webkit-mask-image: var(--rom-mark);
+  mask-image: var(--rom-mark);
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
   -webkit-mask-position: right center;
   mask-position: right center;
 }
 
 @media (min-width: 40rem) {
-  [data-rom-mark] {
+  .rom-mark {
     -webkit-mask-position: center;
     mask-position: center;
   }
