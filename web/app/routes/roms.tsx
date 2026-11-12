@@ -14,15 +14,10 @@ import {
 } from "@/lib/seo";
 import { bySortKey } from "@/lib/sort";
 import { useInitialDocument } from "@/lib/use-initial-document";
-import { cn, formatNumber } from "@/lib/utils";
+import { formatNumber } from "@/lib/utils";
+import { StatusPill } from "@/components/StatusPill";
 import type { RomDetail } from "@/lib/types";
 import type { Route } from "./+types/roms";
-
-const STATUS_LABELS: Record<RomDetail["status"], string> = {
-  active: "Active",
-  discontinued: "Discontinued",
-  unknown: "Unknown",
-};
 
 function romHaystack(rom: RomDetail): string {
   return [
@@ -31,21 +26,6 @@ function romHaystack(rom: RomDetail): string {
   ]
     .join(" ")
     .toLowerCase();
-}
-
-function StatusPill({ status }: { status: RomDetail["status"] }) {
-  return (
-    <span
-      className={cn(
-        "w-fit shrink-0 rounded-full px-2.5 py-0.5 text-xs font-semibold",
-        status === "active"
-          ? "bg-accent text-accent-foreground"
-          : "bg-muted text-muted-foreground",
-      )}
-    >
-      {STATUS_LABELS[status]}
-    </span>
-  );
 }
 
 function RomRow({ rom, count }: { rom: RomDetail; count?: boolean }) {

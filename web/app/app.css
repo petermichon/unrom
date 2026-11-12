@@ -307,6 +307,20 @@
   --accent-foreground: #fbeade;
 }
 
+/* On narrow screens the mark sits below the copy, so pin it to the right edge
+   of its box; on wide screens it is the centred watermark. */
+[data-rom-mark] {
+  -webkit-mask-position: right center;
+  mask-position: right center;
+}
+
+@media (min-width: 40rem) {
+  [data-rom-mark] {
+    -webkit-mask-position: center;
+    mask-position: center;
+  }
+}
+
 ::view-transition-group(root),
 ::view-transition-old(root),
 ::view-transition-new(root) {
