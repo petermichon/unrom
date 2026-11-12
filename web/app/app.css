@@ -244,193 +244,90 @@
   }
 }
 
-/* Content palette: the same roles everywhere, values per ROM. The home page
-   adopts the palette of the slide it shows, so surfaces, data accents and the
-   action colour follow the content. Links keep enough contrast on the page
-   background in both themes. */
+/* Content palette. Each ROM supplies its own hue, tint strength and accent;
+   the roles themselves are derived from those three values so a new project is
+   one block, not six colours per theme. Light panels sit at OKLCH L .925 and
+   dark at .238, which is the band the hand-picked palettes settled on. */
+.rom-page[data-rom],
+:root[data-rom] {
+  --panel: oklch(0.925 var(--rom-chroma) var(--rom-hue));
+  --panel-foreground: oklch(0.19 0.015 var(--rom-hue));
+  --hero-accent: var(--rom-accent);
+  --brand: oklch(0.45 calc(var(--rom-chroma) * 4) var(--rom-hue));
+  --accent: var(--panel);
+  --accent-foreground: var(--panel-foreground);
+}
+.dark .rom-page[data-rom],
+:root.dark[data-rom] {
+  --panel: oklch(0.238 min(calc(var(--rom-chroma) * 1.2), 0.03) var(--rom-hue));
+  --panel-foreground: oklch(0.97 0.01 var(--rom-hue));
+  --hero-accent: var(--rom-accent);
+  --brand: oklch(0.8 calc(var(--rom-chroma) * 3) var(--rom-hue));
+  --accent: var(--panel);
+  --accent-foreground: var(--panel-foreground);
+}
+
 .rom-page[data-rom="lineageos"],
 .rom-page[data-rom="lineageos-microg"],
 :root[data-rom="lineageos"],
 :root[data-rom="lineageos-microg"] {
-  --panel: #d5ebe8;
-  --panel-foreground: #0a1a18;
-  --hero-accent: #45c4b8;
-  --brand: #0f766e;
-  --accent: #d5ebe8;
-  --accent-foreground: #0a1a18;
-}
-.dark .rom-page[data-rom="lineageos"],
-.dark .rom-page[data-rom="lineageos-microg"],
-:root.dark[data-rom="lineageos"],
-:root.dark[data-rom="lineageos-microg"] {
-  --panel: #0f2523;
-  --panel-foreground: #e9f4f2;
-  --hero-accent: #45c4b8;
-  --brand: #5eead4;
-  --accent: #0f2523;
-  --accent-foreground: #e9f4f2;
+  --rom-hue: 187;
+  --rom-chroma: 0.024;
+  --rom-accent: #45c4b8;
 }
 .rom-page[data-rom="grapheneos"],
 :root[data-rom="grapheneos"] {
-  --panel: #e0e3e7;
-  --panel-foreground: #11151a;
-  --hero-accent: #aab6c2;
-  --brand: #475569;
-  --accent: #e0e3e7;
-  --accent-foreground: #11151a;
-}
-.dark .rom-page[data-rom="grapheneos"],
-:root.dark[data-rom="grapheneos"] {
-  --panel: #1b1f26;
-  --panel-foreground: #edf0f3;
-  --hero-accent: #aab6c2;
-  --brand: #cbd5e1;
-  --accent: #1b1f26;
-  --accent-foreground: #edf0f3;
+  --rom-hue: 256;
+  --rom-chroma: 0.006;
+  --rom-accent: #aab6c2;
 }
 .rom-page[data-rom="eos"],
 :root[data-rom="eos"] {
-  --panel: #fae4d3;
-  --panel-foreground: #201208;
-  --hero-accent: #ff7a00;
-  --brand: #c2410c;
-  --accent: #fae4d3;
-  --accent-foreground: #201208;
-}
-.dark .rom-page[data-rom="eos"],
-:root.dark[data-rom="eos"] {
-  --panel: #241710;
-  --panel-foreground: #fbeade;
-  --hero-accent: #ff8a1f;
-  --brand: #fdba74;
-  --accent: #241710;
-  --accent-foreground: #fbeade;
+  --rom-hue: 60;
+  --rom-chroma: 0.033;
+  --rom-accent: #ff7a00;
 }
 .rom-page[data-rom="crdroid"],
 :root[data-rom="crdroid"] {
-  --panel: #d3eae8;
-  --panel-foreground: #000e0d;
-  --hero-accent: #04ecd7;
-  --brand: #0e7490;
-  --accent: #d3eae8;
-  --accent-foreground: #000e0d;
-}
-.dark .rom-page[data-rom="crdroid"],
-:root.dark[data-rom="crdroid"] {
-  --panel: #0d2221;
-  --panel-foreground: #ebfdfc;
-  --hero-accent: #04ecd7;
-  --brand: #67e8f9;
-  --accent: #0d2221;
-  --accent-foreground: #ebfdfc;
+  --rom-hue: 274;
+  --rom-chroma: 0.021;
+  --rom-accent: #5777ba;
 }
 .rom-page[data-rom="derpfest"],
 :root[data-rom="derpfest"] {
-  --panel: #d6e8f2;
-  --panel-foreground: #041016;
-  --hero-accent: #33bbff;
-  --brand: #0369a1;
-  --accent: #d6e8f2;
-  --accent-foreground: #041016;
-}
-.dark .rom-page[data-rom="derpfest"],
-:root.dark[data-rom="derpfest"] {
-  --panel: #0f2129;
-  --panel-foreground: #effaff;
-  --hero-accent: #33bbff;
-  --brand: #7dd3fc;
-  --accent: #0f2129;
-  --accent-foreground: #effaff;
+  --rom-hue: 232;
+  --rom-chroma: 0.024;
+  --rom-accent: #33bbff;
 }
 .rom-page[data-rom="evolutionx"],
 :root[data-rom="evolutionx"] {
-  --panel: #dee6f4;
-  --panel-foreground: #020a1a;
-  --hero-accent: #0060ff;
-  --brand: #1d4ed8;
-  --accent: #dee6f4;
-  --accent-foreground: #020a1a;
-}
-.dark .rom-page[data-rom="evolutionx"],
-:root.dark[data-rom="evolutionx"] {
-  --panel: #171f2b;
-  --panel-foreground: #ebf2ff;
-  --hero-accent: #4d8cff;
-  --brand: #93c5fd;
-  --accent: #171f2b;
-  --accent-foreground: #ebf2ff;
+  --rom-hue: 262;
+  --rom-chroma: 0.021;
+  --rom-accent: #0060ff;
 }
 .rom-page[data-rom="kali-nethunter"],
 :root[data-rom="kali-nethunter"] {
-  --panel: #dae7f4;
-  --panel-foreground: #050a10;
-  --hero-accent: #2f6fa8;
-  --brand: #1e4e79;
-  --accent: #dae7f4;
-  --accent-foreground: #050a10;
-}
-.dark .rom-page[data-rom="kali-nethunter"],
-:root.dark[data-rom="kali-nethunter"] {
-  --panel: #13202a;
-  --panel-foreground: #eef3f8;
-  --hero-accent: #3f83bf;
-  --brand: #a3c4e8;
-  --accent: #13202a;
-  --accent-foreground: #eef3f8;
+  --rom-hue: 248;
+  --rom-chroma: 0.023;
+  --rom-accent: #2f6fa8;
 }
 .rom-page[data-rom="pixelos"],
 :root[data-rom="pixelos"] {
-  --panel: #ede4d6;
-  --panel-foreground: #0b0a08;
-  --hero-accent: #8a7a5c;
-  --brand: #7c6a4e;
-  --accent: #ede4d6;
-  --accent-foreground: #0b0a08;
-}
-.dark .rom-page[data-rom="pixelos"],
-:root.dark[data-rom="pixelos"] {
-  --panel: #241e12;
-  --panel-foreground: #f6f4f2;
-  --hero-accent: #a2906f;
-  --brand: #d6c8b0;
-  --accent: #241e12;
-  --accent-foreground: #f6f4f2;
+  --rom-hue: 79;
+  --rom-chroma: 0.021;
+  --rom-accent: #8a7a5c;
 }
 .rom-page[data-rom="alphadroid"],
 :root[data-rom="alphadroid"] {
-  --panel: #e7e3f2;
-  --panel-foreground: #090613;
-  --hero-accent: #6750a4;
-  --brand: #6d28d9;
-  --accent: #e7e3f2;
-  --accent-foreground: #090613;
-}
-.dark .rom-page[data-rom="alphadroid"],
-:root.dark[data-rom="alphadroid"] {
-  --panel: #201d29;
-  --panel-foreground: #f3f1f8;
-  --hero-accent: #7c5cc4;
-  --brand: #c4b5fd;
-  --accent: #201d29;
-  --accent-foreground: #f3f1f8;
+  --rom-hue: 298;
+  --rom-chroma: 0.021;
+  --rom-accent: #6750a4;
 }
 .rom-page[data-rom="projectinfinityx"],
 :root[data-rom="projectinfinityx"] {
-  --panel: #e0e5f4;
-  --panel-foreground: #040a18;
-  --hero-accent: #2f5fe0;
-  --brand: #1e40af;
-  --accent: #e0e5f4;
-  --accent-foreground: #040a18;
-}
-.dark .rom-page[data-rom="projectinfinityx"],
-:root.dark[data-rom="projectinfinityx"] {
-  --panel: #191e2b;
-  --panel-foreground: #eef2fd;
-  --hero-accent: #4b74e8;
-  --brand: #a5b8f5;
-  --accent: #191e2b;
-  --accent-foreground: #eef2fd;
+  --rom-hue: 271;
+  --rom-chroma: 0.021;
+  --rom-accent: #2f5fe0;
 }
 
 /* The ROM mark is a flat silhouette: the artwork only supplies the shape, the

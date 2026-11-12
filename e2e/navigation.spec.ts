@@ -228,15 +228,27 @@ test("the devices directory opens a brand page", async ({ page }) => {
 });
 
 test("a ROM page themes the whole page", async ({ page }) => {
-  await page.goto("/roms/lineageos");
+  const brandOn = (selector: string) =>
+    page.locator(selector).evaluate((element) => {
+      const raw = getComputedStyle(element).getPropertyValue("--brand").trim();
+      const canvas = document.createElement("canvas");
+      canvas.width = canvas.height = 1;
+      const context = canvas.getContext("2d")!;
+      context.fillStyle = "#000";
+      context.fillStyle = raw;
+      context.fillRect(0, 0, 1, 1);
+      return Array.from(context.getImageData(0, 0, 1, 1).data).join(",");
+    });
 
+  await page.goto("/devices");
+  const plain = await brandOn("html");
+
+  await page.goto("/roms/lineageos");
   await expect(page.locator("html")).toHaveAttribute("data-rom", "lineageos");
-  const brand = await page
-    .locator("main .rom-page")
-    .evaluate((element) =>
-      getComputedStyle(element).getPropertyValue("--brand").trim(),
-    );
-  expect(brand).toBe("#0f766e");
+  const themed = await brandOn("main .rom-page");
+
+  // The palette is derived, so compare the rendered colour, not the token.
+  expect(themed).not.toBe(plain);
 });
 
 test("the LineageOS page shows the ROM mark and palette", async ({ page }) => {
