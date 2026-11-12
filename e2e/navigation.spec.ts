@@ -126,6 +126,27 @@ test("mega menu opens from the keyboard and closes with Escape", async ({
   await expect(devices).toBeFocused();
 });
 
+test("the mega menu paints above page content", async ({ page }) => {
+  await page.goto("/roms/lineageos");
+  await page.waitForLoadState("networkidle");
+
+  const devices = page
+    .getByRole("navigation", { name: "Main" })
+    .getByRole("link", { name: "Devices", exact: true });
+  await expect(async () => {
+    await devices.hover();
+    await expect(page.locator("#mega-menu")).toBeVisible({ timeout: 1_000 });
+  }).toPass({ timeout: 10_000 });
+
+  const top = await page.evaluate(() => {
+    const element = document.elementFromPoint(500, 250);
+    return element?.closest("#mega-menu")
+      ? "menu"
+      : (element?.tagName ?? "none");
+  });
+  expect(top).toBe("menu");
+});
+
 test("navigation closes the mega menu", async ({ page }) => {
   await page.goto("/");
   await page
@@ -205,14 +226,24 @@ test("the devices directory opens a brand page", async ({ page }) => {
   await expect(page.locator("a.device-row").first()).toBeVisible();
 });
 
+test("a ROM page themes the whole page", async ({ page }) => {
+  await page.goto("/roms/lineageos");
+
+  await expect(page.locator("html")).toHaveAttribute("data-rom", "lineageos");
+  const brand = await page
+    .locator("main .rom-page")
+    .evaluate((element) =>
+      getComputedStyle(element).getPropertyValue("--brand").trim(),
+    );
+  expect(brand).toBe("#0f766e");
+});
+
 test("the LineageOS page shows the ROM mark and palette", async ({ page }) => {
   await page.goto("/roms/lineageos");
 
   const hero = page.locator("main .hero-panel");
   await expect(hero).toBeVisible();
-  await expect(
-    hero.locator('img[src="/brand/lineageos.png"]:visible'),
-  ).toBeVisible();
+  await expect(hero.locator('[data-rom-mark="lineageos"]')).toBeVisible();
 });
 
 test("the devices directory leads with the most-supported devices", async ({

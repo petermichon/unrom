@@ -249,7 +249,9 @@
    action colour follow the content. Links keep enough contrast on the page
    background in both themes. */
 .rom-page[data-rom="lineageos"],
-:root[data-rom="lineageos"] {
+.rom-page[data-rom="lineageos-microg"],
+:root[data-rom="lineageos"],
+:root[data-rom="lineageos-microg"] {
   --panel: #d5ebe8;
   --panel-foreground: #0a1a18;
   --hero-accent: #45c4b8;
@@ -258,7 +260,9 @@
   --accent-foreground: #0a1a18;
 }
 .dark .rom-page[data-rom="lineageos"],
-:root.dark[data-rom="lineageos"] {
+.dark .rom-page[data-rom="lineageos-microg"],
+:root.dark[data-rom="lineageos"],
+:root.dark[data-rom="lineageos-microg"] {
   --panel: #0f2523;
   --panel-foreground: #e9f4f2;
   --hero-accent: #45c4b8;

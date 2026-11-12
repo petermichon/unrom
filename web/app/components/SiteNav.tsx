@@ -1,6 +1,12 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import { ArrowRight } from "lucide-react";
 import { Link, NavLink } from "react-router";
-import { fetchBrands, fetchRomSummaries, fetchSummary } from "@/lib/data";
+import {
+  fetchBrands,
+  fetchDevicesPage,
+  fetchRomSummaries,
+  fetchSummary,
+} from "@/lib/data";
 import { deviceName } from "@/lib/devices";
 import { NAV_ITEMS, NAV_PRELOADS, type NavKind } from "@/lib/nav";
 import { cn, formatNumber } from "@/lib/utils";
@@ -15,7 +21,10 @@ interface MenuData {
   summary: Summary;
   brands: BrandSummary[];
   roms: RomSummary[];
+  devices: BrowseDevice[];
 }
+
+const GITHUB_URL = "https://github.com/petermichon/unrom";
 
 /**
  * One header-width panel shared by every section. The trigger opens the whole
@@ -76,9 +85,34 @@ export default function SiteNav() {
   useEffect(() => {
     if (!active || menu || failed) return;
     let cancelled = false;
-    Promise.all([fetchSummary(), fetchBrands(), fetchRomSummaries()])
-      .then(([summary, brands, roms]) => {
-        if (!cancelled) setMenu({ summary, brands, roms });
+    Promise.all([
+      fetchSummary(),
+      fetchBrands(),
+      fetchRomSummaries(),
+      fetchDevicesPage({ sort: "roms", limit: 50, offset: 0 })
+        .then((page) => {
+          const seenGroups = new Set<string>();
+          const seenNames = new Set<string>();
+          return page.devices
+            .filter((device) => {
+              const group = (
+                device.group.length ? device.group : [device.codename]
+              )
+                .slice()
+                .sort()
+                .join("/");
+              const name = deviceName(device).toLowerCase();
+              if (seenGroups.has(group) || seenNames.has(name)) return false;
+              seenGroups.add(group);
+              seenNames.add(name);
+              return true;
+            })
+            .slice(0, 12);
+        })
+        .catch(() => [] as BrowseDevice[]),
+    ])
+      .then(([summary, brands, roms, devices]) => {
+        if (!cancelled) setMenu({ summary, brands, roms, devices });
       })
       .catch(() => {
         if (!cancelled) setFailed(true);
@@ -221,6 +255,7 @@ function MegaPanel({
   const summary = data?.summary ?? null;
   const brands = data?.brands ?? null;
   const roms = data?.roms ?? null;
+  const devices = data?.devices ?? null;
 
   const sortedBrands = brands
     ? [...brands].sort(
@@ -242,14 +277,14 @@ function MegaPanel({
   const panel: PanelData = {
     loading: !data && !failed,
     failed,
-    topDevices: summary?.topDevices ?? null,
+    topDevices: devices?.length ? devices : (summary?.topDevices ?? null),
     topBrands: sortedBrands?.slice(0, 12) ?? null,
     topRoms: sortedRoms?.slice(0, 10) ?? null,
   };
 
   return (
     <div className="max-h-[calc(100dvh-5rem)] overflow-y-auto rounded-2xl border border-border bg-card p-5 shadow-xl sm:p-6">
-      <div className="grid min-h-64 grid-cols-[minmax(0,1fr)_18rem] gap-10">
+      <div className="grid min-h-52 grid-cols-[minmax(0,1fr)_18rem] gap-10">
         {active === "devices" && (
           <DevicesPanel data={panel} onNavigate={onNavigate} />
         )}
@@ -278,18 +313,22 @@ function DevicesPanel({
     <>
       <Column title="Top devices">
         <Shortcuts loading={loading} failed={failed}>
-          {topDevices?.slice(0, 6).map((device) => (
-            <MenuRow
-              key={`${device.vendor}/${device.codename}`}
-              to={`/devices/${device.vendor}/${device.codename}`}
-              onNavigate={onNavigate}
-            >
-              <span className="truncate font-medium">{deviceName(device)}</span>
-              <span className="shrink-0 text-[11px] text-muted-foreground tabular-nums">
-                {formatNumber(device.roms.length)} ROMs
-              </span>
-            </MenuRow>
-          ))}
+          <div className="grid grid-cols-2 gap-x-6">
+            {topDevices?.slice(0, 12).map((device) => (
+              <MenuRow
+                key={`${device.vendor}/${device.codename}`}
+                to={`/devices/${device.vendor}/${device.codename}`}
+                onNavigate={onNavigate}
+              >
+                <span className="truncate font-medium">
+                  {deviceName(device)}
+                </span>
+                <span className="shrink-0 text-[11px] text-muted-foreground tabular-nums">
+                  {formatNumber(device.roms.length)} ROMs
+                </span>
+              </MenuRow>
+            ))}
+          </div>
         </Shortcuts>
         <FootLink to="/devices" onNavigate={onNavigate}>
           All devices
@@ -439,25 +478,23 @@ function DataPanel({ onNavigate }: { onNavigate: () => void }) {
             </MenuAnchor>
           </div>
           <div className="flex min-w-0 flex-col gap-1">
-            <Subhead>Provenance</Subhead>
-            <MenuRow to="/data#provenance" onNavigate={onNavigate}>
-              <span className="font-medium">Sources</span>
+            <Subhead>Project</Subhead>
+            <MenuRow to="/legal" onNavigate={onNavigate}>
+              <span className="font-medium">Legal</span>
               <span className="shrink-0 text-[11px] text-muted-foreground">
-                Method
+                Licence
               </span>
             </MenuRow>
-            <MenuRow to="/data#freshness" onNavigate={onNavigate}>
-              <span className="font-medium">Freshness</span>
+            <MenuAnchor
+              href={GITHUB_URL}
+              target="_blank"
+              onNavigate={onNavigate}
+            >
+              <span className="font-medium">GitHub</span>
               <span className="shrink-0 text-[11px] text-muted-foreground">
-                Updated
+                Source
               </span>
-            </MenuRow>
-            <MenuRow to="/data#corrections" onNavigate={onNavigate}>
-              <span className="font-medium">Corrections</span>
-              <span className="shrink-0 text-[11px] text-muted-foreground">
-                Report
-              </span>
-            </MenuRow>
+            </MenuAnchor>
           </div>
         </div>
       </Column>
@@ -517,9 +554,10 @@ function RailLink({
     <Link
       to={to}
       onClick={onNavigate}
-      className="w-fit rounded text-sm font-semibold text-brand outline-none hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
+      className="inline-flex w-fit items-center gap-1 rounded text-sm font-semibold text-brand outline-none hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
     >
-      {children} <span aria-hidden="true">→</span>
+      {children}
+      <ArrowRight className="size-3.5" aria-hidden="true" />
     </Link>
   );
 }
@@ -606,9 +644,10 @@ function FootLink({
     <Link
       to={to}
       onClick={onNavigate}
-      className="mt-1 rounded-lg px-2 py-1.5 text-sm font-semibold text-brand outline-none hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
+      className="mt-1 inline-flex w-fit items-center gap-1 rounded-lg px-2 py-1.5 text-sm font-semibold text-brand outline-none hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
     >
-      {children} <span aria-hidden="true">→</span>
+      {children}
+      <ArrowRight className="size-3.5" aria-hidden="true" />
     </Link>
   );
 }

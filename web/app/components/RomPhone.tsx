@@ -11,6 +11,12 @@ export const ROM_LOGOS: Record<string, string> = {
   eos: "/brand/eos.png",
 };
 
+/** Vector marks for large decorative uses such as the ROM page watermark. */
+export const ROM_MARKS: Record<string, string> = {
+  lineageos: "/brand/lineageos.svg",
+  "lineageos-microg": "/brand/lineageos.svg",
+};
+
 /**
  * The phone used by the home hero and ROM pages. Device geometry, not a UI
  * surface, so the radii and shadow sit outside the interface's shape scale.

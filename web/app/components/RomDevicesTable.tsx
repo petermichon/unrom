@@ -52,7 +52,7 @@ export default function RomDevicesTable({ devices }: Props) {
                 to={`/devices/${row.original.vendor}/${row.original.codename}`}
                 prefetch="intent"
                 title={name}
-                className="w-fit max-w-full truncate font-medium hover:underline"
+                className="w-fit max-w-full truncate font-medium hover:text-brand hover:underline"
               >
                 {name}
               </Link>

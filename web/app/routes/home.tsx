@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { ExternalLink, Pause, Play } from "lucide-react";
+import { ArrowRight, ExternalLink, Pause, Play } from "lucide-react";
 import { Link, useLoaderData } from "react-router";
 import DeviceSearch from "@/components/DeviceSearch";
 import { RomPhone } from "@/components/RomPhone";
@@ -13,6 +13,7 @@ import {
 } from "@/lib/seo";
 import { referenceLabel } from "@/lib/sort";
 import { useMediaQuery } from "@/lib/use-media-query";
+import { useRomPalette } from "@/lib/use-rom-palette";
 import { formatNumber } from "@/lib/utils";
 import type { DeviceDetail, RomSummary } from "@/lib/types";
 import type { Route } from "./+types/home";
@@ -114,18 +115,9 @@ export default function Home() {
   const [slideIndex, setSlideIndex] = useState(0);
   const slide = slides[slideIndex] ?? slides[0];
 
-  // The palette covers the whole page, header included. The section carries it
-  // server-side for first paint; this extends it to the document for the bar.
-  useEffect(() => {
-    if (!slide) return;
-    const root = document.documentElement;
-    const previous = root.dataset.rom;
-    root.dataset.rom = slide.id;
-    return () => {
-      if (previous) root.dataset.rom = previous;
-      else delete root.dataset.rom;
-    };
-  }, [slide]);
+  // The section carries the palette server-side for first paint; this extends
+  // it to the document so the header follows too.
+  useRomPalette(slide?.id);
 
   return (
     <section data-rom={slide?.id} className="rom-page flex flex-col gap-16">
@@ -341,7 +333,7 @@ function ExampleMapping({
               className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-brand outline-none hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
             >
               See all {formatNumber(total)} {total === 1 ? "ROM" : "ROMs"}
-              <span aria-hidden="true">→</span>
+              <ArrowRight className="size-3.5" aria-hidden="true" />
             </Link>
           </div>
 

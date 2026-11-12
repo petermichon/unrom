@@ -88,7 +88,8 @@ only to identify the project and unrom is not affiliated with any of them: two
 are rendered in one colour, while the /e/ mark keeps its original colours with
 the background removed.
 
-| Asset                             | Source                                     | Terms                                                                         |
-| --------------------------------- | ------------------------------------------ | ----------------------------------------------------------------------------- |
-| `web/public/brand/lineageos.png`  | https://wiki.lineageos.org/images/logo.png | LineageOS wiki content is CC BY-SA 3.0; the mark is a LineageOS trademark.    |
-| `web/public/brand/grapheneos.svg` | https://grapheneos.org/favicon.svg         | MIT (https://grapheneos.org/LICENSE.txt); the mark is a GrapheneOS trademark. |
+| Asset                             | Source                                                      | Terms                                                                         |
+| --------------------------------- | ----------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| `web/public/brand/lineageos.png`  | https://wiki.lineageos.org/images/logo.png                  | LineageOS wiki content is CC BY-SA 3.0; the mark is a LineageOS trademark.    |
+| `web/public/brand/lineageos.svg`  | https://commons.wikimedia.org/wiki/File:Lineage_OS_logo.svg | Public domain text logo; the mark is a LineageOS trademark.                   |
+| `web/public/brand/grapheneos.svg` | https://grapheneos.org/favicon.svg                          | MIT (https://grapheneos.org/LICENSE.txt); the mark is a GrapheneOS trademark. |

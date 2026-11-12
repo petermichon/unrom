@@ -1,6 +1,7 @@
 import { Link, useLoaderData } from "react-router";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import { ROM_LOGOS } from "@/components/RomPhone";
+import { ROM_LOGOS, ROM_MARKS } from "@/components/RomPhone";
+import { useRomPalette } from "@/lib/use-rom-palette";
 import RomDevicesTable from "@/components/RomDevicesTable";
 import { fetchRom } from "@/lib/data";
 import {
@@ -94,6 +95,8 @@ export default function RomRoute() {
   const { rom } = useLoaderData<typeof loader>();
 
   const description = romDescription(rom);
+  const mark = ROM_MARKS[rom.id] ?? ROM_LOGOS[rom.id];
+  useRomPalette(rom.id);
   const deviceLabel =
     rom.deviceCount === 0
       ? "No device builds"
@@ -102,7 +105,7 @@ export default function RomRoute() {
         }`;
 
   return (
-    <div className="flex flex-col gap-8">
+    <div className="rom-page flex flex-col gap-8" data-rom={rom.id}>
       <Breadcrumbs
         items={[
           { label: "Home", to: "/" },
@@ -111,52 +114,59 @@ export default function RomRoute() {
         ]}
       />
 
-      <div className="rom-page" data-rom={rom.id}>
-        <div className="hero-panel relative overflow-hidden rounded-4xl bg-panel px-6 py-8 text-panel-foreground ring-1 ring-black/[0.03] sm:px-8 sm:py-10 dark:ring-white/[0.06]">
-          <div className="flex min-w-0 flex-col gap-6 lg:flex-row lg:items-center lg:justify-between lg:gap-10">
-            <div className="flex min-w-0 flex-col gap-3">
-              <div className="flex items-center gap-3">
-                {ROM_LOGOS[rom.id] && (
-                  <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-[#101318] lg:hidden">
-                    <img
-                      src={ROM_LOGOS[rom.id]}
-                      alt=""
-                      className="h-4 w-auto"
-                    />
-                  </span>
-                )}
-                <h1 className="font-heading text-3xl font-extrabold tracking-[-0.03em] sm:text-4xl">
-                  {rom.name}
-                </h1>
-              </div>
-              <p className="max-w-[62ch] text-sm leading-relaxed text-panel-foreground/75">
-                {description}
-              </p>
-              <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
-                <span className="text-panel-foreground/70 tabular-nums">
-                  {deviceLabel}
+      <div className="hero-panel relative overflow-hidden rounded-4xl bg-panel px-6 py-8 text-panel-foreground ring-1 ring-black/[0.03] sm:px-8 sm:py-10 dark:ring-white/[0.06]">
+        {mark && (
+          <div
+            aria-hidden="true"
+            data-rom-mark={rom.id}
+            className="pointer-events-none absolute top-1/2 right-6 hidden h-44 w-[27.6rem] -translate-y-1/2 lg:block"
+            style={{
+              backgroundColor:
+                "color-mix(in oklab, var(--panel) 88%, var(--panel-foreground))",
+              WebkitMaskImage: `url("${mark}")`,
+              maskImage: `url("${mark}")`,
+              WebkitMaskSize: "contain",
+              maskSize: "contain",
+              WebkitMaskRepeat: "no-repeat",
+              maskRepeat: "no-repeat",
+              WebkitMaskPosition: "center",
+              maskPosition: "center",
+            }}
+          />
+        )}
+        <div className="relative flex min-w-0 flex-col gap-6">
+          <div className="flex min-w-0 flex-col gap-3">
+            <div className="flex items-center gap-3">
+              {ROM_LOGOS[rom.id] && (
+                <span className="flex size-11 shrink-0 items-center justify-center rounded-xl bg-[#101318] lg:hidden">
+                  <img src={ROM_LOGOS[rom.id]} alt="" className="h-4 w-auto" />
                 </span>
-                <a
-                  href={`/api/roms/${rom.id}`}
-                  title={`API response: /api/roms/${rom.id}`}
-                  className="font-semibold text-panel-foreground/70 underline underline-offset-4 outline-none hover:text-panel-foreground focus-visible:ring-3 focus-visible:ring-ring/50"
-                >
-                  API
-                </a>
-                <Link
-                  to="/roms"
-                  className="font-semibold text-brand hover:underline"
-                >
-                  All ROMs
-                </Link>
-              </div>
+              )}
+              <h1 className="font-heading text-3xl font-extrabold tracking-[-0.03em] sm:text-4xl">
+                {rom.name}
+              </h1>
             </div>
-
-            {ROM_LOGOS[rom.id] && (
-              <div className="hidden size-20 shrink-0 items-center justify-center rounded-2xl bg-[#101318] shadow-[0_18px_30px_-22px_rgba(13,16,36,0.6)] ring-1 ring-black/10 lg:flex dark:ring-white/15">
-                <img src={ROM_LOGOS[rom.id]} alt="" className="h-6 w-auto" />
-              </div>
-            )}
+            <p className="max-w-[62ch] text-sm leading-relaxed text-panel-foreground/75">
+              {description}
+            </p>
+            <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
+              <span className="text-panel-foreground/70 tabular-nums">
+                {deviceLabel}
+              </span>
+              <a
+                href={`/api/roms/${rom.id}`}
+                title={`API response: /api/roms/${rom.id}`}
+                className="font-semibold text-panel-foreground/70 underline underline-offset-4 outline-none hover:text-panel-foreground focus-visible:ring-3 focus-visible:ring-ring/50"
+              >
+                API
+              </a>
+              <Link
+                to="/roms"
+                className="font-semibold text-brand hover:underline"
+              >
+                All ROMs
+              </Link>
+            </div>
           </div>
         </div>
       </div>
