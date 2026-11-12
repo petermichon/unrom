@@ -16,6 +16,25 @@ Roles:
 improves **data quality** or **data accessibility**. Anything that doesn't is out of
 scope. No features, polish, or infrastructure for their own sake.
 
+## Neutrality
+
+Describe the software, not the people. A record carries facts a reader can check
+— a source URL, a build status, a device count — and never a judgement about a
+project's ethics, its maintainers, or their standing in other communities. A
+concern earns a place only with technical evidence: a commit, a missing
+licence, a build that cannot be reproduced. "Banned", "notorious",
+"trustworthy" and their relatives are out, however true someone believes them
+to be.
+
+Two consequences, because they are the ones that come up:
+
+- A project that publishes source gets that recorded even if it copies other
+  code, and one that does not gets "no public source" as a fact, not as an
+  accusation.
+- Nothing ranks projects by quality or safety. Counts describe coverage,
+  `status` describes whether builds still ship, and both come from the
+  projects' own data.
+
 ## Product priority
 
 - The **data + API is the product**. The frontend is a neutral access layer whose job is to make the data viewable and usable.
