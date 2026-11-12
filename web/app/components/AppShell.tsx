@@ -4,7 +4,6 @@ import { Link, useLocation, useNavigation } from "react-router";
 import { NAV_ITEMS } from "@/lib/nav";
 import CommandPalette from "@/components/CommandPalette";
 import SiteNav from "@/components/SiteNav";
-import { ExportMenu } from "@/components/ExportMenu";
 import { GitHubIcon } from "@/components/GitHubIcon";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Badge } from "@/components/ui/badge";
@@ -161,7 +160,6 @@ export default function AppShell({ updatedAt, updatedAtIso, children }: Props) {
             <div className="ml-auto flex items-center gap-2">
               <CommandPalette />
               <div className="hidden items-center gap-2 md:flex">
-                <ExportMenu />
                 <Button
                   variant="outline"
                   size="icon"

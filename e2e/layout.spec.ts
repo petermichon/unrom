@@ -53,10 +53,10 @@ test.describe("phone below the copy", () => {
 
 test("opening a menu does not lock page scroll", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Export the dataset" }).click();
+  await page.getByRole("button", { name: "Toggle theme" }).click();
 
   await expect(
-    page.getByRole("menuitem", { name: "Download SQLite database" }),
+    page.getByRole("menuitemradio", { name: "Light" }),
   ).toBeVisible();
 
   expect(
@@ -69,11 +69,9 @@ test("opening a menu does not lock page scroll", async ({ page }) => {
 test("menu options use a pointer cursor", async ({ page }) => {
   await page.goto("/");
   await page.waitForLoadState("networkidle");
-  await page.getByRole("button", { name: "Export the dataset" }).click();
+  await page.getByRole("button", { name: "Toggle theme" }).click();
 
-  const option = page.getByRole("menuitem", {
-    name: "Download SQLite database",
-  });
+  const option = page.getByRole("menuitemradio", { name: "Light" });
   await expect(option).toBeVisible();
   expect(await option.evaluate((el) => getComputedStyle(el).cursor)).toBe(
     "pointer",

@@ -24,8 +24,6 @@ interface MenuData {
   devices: BrowseDevice[];
 }
 
-const GITHUB_URL = "https://github.com/petermichon/unrom";
-
 /**
  * One header-width panel shared by every section. The trigger opens the whole
  * directory, so Brands and Data are one hover away instead of living in a
@@ -141,7 +139,9 @@ export default function SiteNav() {
     const next =
       NAV_ITEMS[(index + direction + NAV_ITEMS.length) % NAV_ITEMS.length];
     linkRefs.current[next.kind]?.focus();
-    if (active) open(next.kind);
+    if (!active) return;
+    if (next.kind === "data") setActive(null);
+    else open(next.kind);
   };
 
   return (
@@ -159,7 +159,9 @@ export default function SiteNav() {
       }}
     >
       {NAV_ITEMS.map((item) => {
-        const isOpen = active === item.kind;
+        // Data is a single page, so it is a plain link rather than a trigger.
+        const hasPanel = item.kind !== "data";
+        const isOpen = hasPanel && active === item.kind;
         return (
           <div key={item.to} className="flex items-center">
             <NavLink
@@ -168,18 +170,23 @@ export default function SiteNav() {
               }}
               to={item.to}
               prefetch="viewport"
-              aria-expanded={isOpen}
+              aria-expanded={hasPanel ? isOpen : undefined}
               aria-controls={isOpen ? "mega-menu" : undefined}
               onClick={() => setActive(null)}
               // Open on real pointer movement, not `mouseenter`: browsers re-fire
               // hover when layout or scroll changes under a stationary pointer,
               // which made the panel pop open after navigation.
               onPointerMove={() => {
+                if (!hasPanel) {
+                  setActive(null);
+                  return;
+                }
                 if (active === item.kind) return;
                 open(item.kind);
                 void NAV_PRELOADS[item.to]?.().catch(() => {});
               }}
               onKeyDown={(event) => {
+                if (!hasPanel) return;
                 if (event.key === "ArrowDown") {
                   event.preventDefault();
                   focusOnOpen.current = true;
@@ -294,7 +301,6 @@ function MegaPanel({
         {active === "roms" && (
           <RomsPanel data={panel} onNavigate={onNavigate} />
         )}
-        {active === "data" && <DataPanel onNavigate={onNavigate} />}
       </div>
     </div>
   );
@@ -434,85 +440,6 @@ function RomsPanel({
   );
 }
 
-function DataPanel({ onNavigate }: { onNavigate: () => void }) {
-  return (
-    <>
-      <Column title="Open data">
-        <div className="grid grid-cols-3 gap-x-8">
-          <div className="flex min-w-0 flex-col gap-1">
-            <Subhead>API</Subhead>
-            <MenuRow to="/data" onNavigate={onNavigate}>
-              <span className="font-medium">Data page</span>
-              <span className="shrink-0 text-[11px] text-muted-foreground">
-                Overview
-              </span>
-            </MenuRow>
-            <MenuAnchor href="/api" target="_blank" onNavigate={onNavigate}>
-              <span className="font-medium">REST API</span>
-              <span className="shrink-0 text-[11px] text-muted-foreground">
-                Endpoints
-              </span>
-            </MenuAnchor>
-          </div>
-          <div className="flex min-w-0 flex-col gap-1">
-            <Subhead>Exports</Subhead>
-            <MenuAnchor
-              href="/api/export/json"
-              download="unrom.json"
-              onNavigate={onNavigate}
-            >
-              <span className="font-medium">JSON export</span>
-              <span className="shrink-0 text-[11px] text-muted-foreground">
-                Full dataset
-              </span>
-            </MenuAnchor>
-            <MenuAnchor
-              href="/api/export/sqlite"
-              download="unrom.sqlite"
-              onNavigate={onNavigate}
-            >
-              <span className="font-medium">SQLite export</span>
-              <span className="shrink-0 text-[11px] text-muted-foreground">
-                Database
-              </span>
-            </MenuAnchor>
-          </div>
-          <div className="flex min-w-0 flex-col gap-1">
-            <Subhead>Project</Subhead>
-            <MenuRow to="/legal" onNavigate={onNavigate}>
-              <span className="font-medium">Legal</span>
-              <span className="shrink-0 text-[11px] text-muted-foreground">
-                Licence
-              </span>
-            </MenuRow>
-            <MenuAnchor
-              href={GITHUB_URL}
-              target="_blank"
-              onNavigate={onNavigate}
-            >
-              <span className="font-medium">GitHub</span>
-              <span className="shrink-0 text-[11px] text-muted-foreground">
-                Source
-              </span>
-            </MenuAnchor>
-          </div>
-        </div>
-      </Column>
-      <Rail>
-        <RailLink to="/devices" onNavigate={onNavigate}>
-          All devices
-        </RailLink>
-        <RailLink to="/brands" onNavigate={onNavigate}>
-          All brands
-        </RailLink>
-        <RailLink to="/roms" onNavigate={onNavigate}>
-          All ROMs
-        </RailLink>
-      </Rail>
-    </>
-  );
-}
-
 function Column({ title, children }: { title: string; children: ReactNode }) {
   return (
     <div className="flex min-w-0 flex-col gap-1">
@@ -521,14 +448,6 @@ function Column({ title, children }: { title: string; children: ReactNode }) {
       </p>
       {children}
     </div>
-  );
-}
-
-function Subhead({ children }: { children: ReactNode }) {
-  return (
-    <p className="px-2 pb-1 text-xs font-semibold text-muted-foreground">
-      {children}
-    </p>
   );
 }
 
@@ -601,33 +520,6 @@ function MenuRow({
     >
       {children}
     </Link>
-  );
-}
-
-function MenuAnchor({
-  href,
-  target,
-  download,
-  onNavigate,
-  children,
-}: {
-  href: string;
-  target?: string;
-  download?: string;
-  onNavigate: () => void;
-  children: ReactNode;
-}) {
-  return (
-    <a
-      href={href}
-      target={target}
-      rel={target === "_blank" ? "noreferrer" : undefined}
-      download={download}
-      onClick={onNavigate}
-      className="flex min-w-0 items-center justify-between gap-3 rounded-lg px-2 py-1.5 text-sm outline-none hover:bg-muted focus-visible:ring-3 focus-visible:ring-ring/50"
-    >
-      {children}
-    </a>
   );
 }
 

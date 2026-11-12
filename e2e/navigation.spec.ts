@@ -102,9 +102,10 @@ test("each trigger opens its own panel", async ({ page }) => {
     menu.getByRole("link", { name: "All ROMs", exact: true }),
   ).toBeVisible();
 
-  await show("Data");
-  await expect(menu.getByText("Open data")).toBeVisible();
-  await expect(menu.getByRole("link", { name: /^REST API/ })).toBeVisible();
+  // Data is one page, so it is a plain link: hovering it closes the panel
+  // instead of opening one of its own.
+  await nav.getByRole("link", { name: "Data", exact: true }).hover();
+  await expect(menu).toBeHidden();
 });
 
 test("mega menu opens from the keyboard and closes with Escape", async ({

@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils"
 import { ChevronRightIcon, CheckIcon } from "lucide-react"
 
 /**
- * Menus are non-modal by default: opening Export or Theme must not lock page
+ * Menus are non-modal by default: opening the theme menu must not lock page
  * scroll or take the scrollbar away. Base UI is modal unless told otherwise.
  */
 function DropdownMenu({

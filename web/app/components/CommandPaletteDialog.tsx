@@ -10,10 +10,12 @@ import {
 } from "@/components/ui/command";
 import { tokenize } from "@/lib/search";
 import { useSearch } from "@/lib/use-search";
+import type { Suggestions } from "@/components/CommandPalette";
 
 interface Props {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  suggestions: Suggestions | null;
 }
 
 /** Centred message for the list area, so state changes never resize the dialog. */
@@ -36,7 +38,11 @@ function Notice({
 }
 
 // Mounted by `CommandPalette` while the dialog is open.
-export default function CommandPaletteDialog({ open, onOpenChange }: Props) {
+export default function CommandPaletteDialog({
+  open,
+  onOpenChange,
+  suggestions,
+}: Props) {
   const [query, setQuery] = useState("");
   const { data, loading, error } = useSearch(query);
   const terms = tokenize(query);
@@ -88,6 +94,43 @@ export default function CommandPaletteDialog({ open, onOpenChange }: Props) {
         </div>
         <div className="relative min-h-0 flex-1">
           <CommandList className="h-full max-h-none">
+            {!error && terms.length === 0 && suggestions?.devices.length ? (
+              <CommandGroup heading="Top devices">
+                {suggestions.devices.map((device) => (
+                  <CommandItem
+                    key={`suggest-${device.vendor}-${device.codename}`}
+                    value={`suggest-${device.vendor}-${device.codename}`}
+                    onSelect={() =>
+                      go(`/devices/${device.vendor}/${device.codename}`)
+                    }
+                  >
+                    <span className="truncate">
+                      {device.name ?? device.codename}
+                    </span>
+                    <span className="ml-auto text-xs text-muted-foreground">
+                      {device.roms.length}{" "}
+                      {device.roms.length === 1 ? "ROM" : "ROMs"}
+                    </span>
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            ) : null}
+            {!error && terms.length === 0 && suggestions?.roms.length ? (
+              <CommandGroup heading="Top ROMs">
+                {suggestions.roms.map((rom) => (
+                  <CommandItem
+                    key={`suggest-${rom.id}`}
+                    value={`suggest-${rom.name}`}
+                    onSelect={() => go(`/roms/${rom.id}`)}
+                  >
+                    {rom.name}
+                    <span className="ml-auto text-xs text-muted-foreground">
+                      {rom.deviceCount} devices
+                    </span>
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            ) : null}
             {!error && data.brands.length > 0 && (
               <CommandGroup heading="Brands">
                 {data.brands.map((brand) => (
@@ -145,10 +188,33 @@ export default function CommandPaletteDialog({ open, onOpenChange }: Props) {
                 ))}
               </CommandGroup>
             )}
+            {!error &&
+              terms.length > 0 &&
+              !loading &&
+              data.totals.devices > 0 && (
+                <CommandGroup heading="All results">
+                  <CommandItem
+                    value="all-devices"
+                    onSelect={() =>
+                      go(`/devices?q=${encodeURIComponent(query.trim())}`)
+                    }
+                  >
+                    <span className="truncate">
+                      Every device matching “{query.trim()}”
+                    </span>
+                    <span className="ml-auto text-xs text-muted-foreground tabular-nums">
+                      {data.totals.devices}
+                    </span>
+                  </CommandItem>
+                </CommandGroup>
+              )}
           </CommandList>
           {error ? (
             <Notice status>Search is unavailable right now.</Notice>
-          ) : terms.length === 0 ? (
+          ) : terms.length === 0 &&
+            (!suggestions ||
+              (suggestions.devices.length === 0 &&
+                suggestions.roms.length === 0)) ? (
             <Notice>Type to search devices, brands, and ROMs.</Notice>
           ) : noResults ? (
             <Notice status>No results found.</Notice>
