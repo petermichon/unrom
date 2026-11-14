@@ -2,6 +2,9 @@ import Database from "better-sqlite3";
 import { and, asc, desc, eq, or, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/better-sqlite3";
 import type {
+  BootloaderPolicy,
+  BootloaderPolicyScope,
+  BootloaderPolicyStatus,
   BrandSummary,
   BrowseDevice,
   DeviceDetail,
@@ -22,6 +25,7 @@ import type {
 
 import {
   aliases,
+  bootloaderPolicies,
   deviceVariants,
   devices,
   meta,
@@ -58,7 +62,7 @@ function searchTerms(query: string): string[] {
   return query.toLowerCase().split(/\s+/).filter(Boolean).slice(0, 8);
 }
 
-function parseNames(value: string | null): string[] {
+function parseStringArray(value: string | null): string[] {
   if (!value) return [];
   try {
     const parsed: unknown = JSON.parse(value);
@@ -99,7 +103,7 @@ export function createApi(dbPath: string) {
     for (const row of db.select().from(registry).all()) {
       map.set(deviceKey(row.vendor, row.codename), {
         confidence: row.confidence as RegistryEntry["confidence"],
-        sources: parseNames(row.sources),
+        sources: parseStringArray(row.sources),
       });
     }
     return map;
@@ -279,6 +283,39 @@ export function createApi(dbPath: string) {
       }));
   }
 
+  function toBootloaderPolicy(
+    row: typeof bootloaderPolicies.$inferSelect,
+  ): BootloaderPolicy {
+    return {
+      vendor: row.vendor,
+      vendorName: row.vendorName,
+      status: row.status as BootloaderPolicyStatus,
+      scope: row.scope as BootloaderPolicyScope,
+      summary: row.summary,
+      conditions: parseStringArray(row.conditions),
+      sourceUrl: row.sourceUrl,
+      verifiedAt: row.verifiedAt,
+    };
+  }
+
+  function listBootloaderPolicies(): BootloaderPolicy[] {
+    return db
+      .select()
+      .from(bootloaderPolicies)
+      .all()
+      .map(toBootloaderPolicy)
+      .sort((a, b) => a.vendorName.localeCompare(b.vendorName));
+  }
+
+  function getBootloaderPolicy(vendor: string): BootloaderPolicy | null {
+    const row = db
+      .select()
+      .from(bootloaderPolicies)
+      .where(eq(sql`lower(${bootloaderPolicies.vendor})`, vendor.toLowerCase()))
+      .get();
+    return row ? toBootloaderPolicy(row) : null;
+  }
+
   function letterCounts(): LetterSummary[] {
     const covered = coveredDeviceKeys();
     const counts = new Map<
@@ -405,7 +442,7 @@ export function createApi(dbPath: string) {
         vendorName: vendorName(device.vendor),
         codename: device.codename,
         name: device.name,
-        names: parseNames(device.names),
+        names: parseStringArray(device.names),
         aliases: aliasMap.get(key) ?? [],
         group: [
           device.codename,
@@ -520,7 +557,7 @@ export function createApi(dbPath: string) {
       vendorName: vendorName(device.vendor),
       codename: device.codename,
       name: device.name,
-      names: parseNames(device.names),
+      names: parseStringArray(device.names),
       aliases: deviceAliases,
       // Every codename a single build covers, including this one.
       group: [
@@ -652,10 +689,10 @@ export function createApi(dbPath: string) {
         vendorName: vendorName(row.vendor),
         codename: row.codename,
         name: row.name,
-        names: parseNames(row.names),
+        names: parseStringArray(row.names),
         supported: supported.has(deviceKey(row.vendor, row.codename)),
         confidence: row.confidence as RegistryEntry["confidence"],
-        sources: parseNames(row.sources),
+        sources: parseStringArray(row.sources),
       }))
       .filter((entry) => !vendorId || entry.vendor === vendorId)
       .filter(
@@ -995,6 +1032,8 @@ export function createApi(dbPath: string) {
     countDevices,
     letterCounts,
     listBrands,
+    listBootloaderPolicies,
+    getBootloaderPolicy,
     getDevice,
     listRegistry,
     listRomSummaries,

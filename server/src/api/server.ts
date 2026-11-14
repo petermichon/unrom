@@ -78,6 +78,8 @@ for (const path of [
   "/api/search",
   "/api/devices",
   "/api/devices/*",
+  "/api/bootloader-policies",
+  "/api/bootloader-policies/*",
   "/api/registry",
   "/api/roms",
   "/api/roms/*",
@@ -121,6 +123,8 @@ app.get("/api", (c) =>
       "GET /api/devices?q=&vendor=&letter=&limit=&offset=&all=",
       "GET /api/devices/letters",
       "GET /api/brands",
+      "GET /api/bootloader-policies",
+      "GET /api/bootloader-policies/:vendor",
       "GET /api/devices/:vendor/:codename",
       "GET /api/search?q=",
       "GET /api/registry?q=&vendor=",
@@ -154,6 +158,18 @@ app.get("/api/summary", (c) => c.json(api.getSummary()));
 app.get("/api/devices/letters", (c) => c.json(api.letterCounts()));
 
 app.get("/api/brands", (c) => c.json(api.listBrands()));
+
+app.get("/api/bootloader-policies", (c) =>
+  c.json(api.listBootloaderPolicies()),
+);
+
+app.get("/api/bootloader-policies/:vendor", (c) => {
+  const vendor = c.req.param("vendor");
+  const policy = api.getBootloaderPolicy(vendor);
+  return policy
+    ? c.json(policy)
+    : c.json({ error: `bootloader policy not found: ${vendor}` }, 404);
+});
 
 app.get("/api/search", (c) => c.json(api.search(c.req.query("q") ?? "")));
 

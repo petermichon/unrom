@@ -1,4 +1,5 @@
 import { Link, redirect, useLoaderData } from "react-router";
+import { BootloaderPolicyCard } from "@/components/BootloaderPolicyCard";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import DeviceRow from "@/components/DeviceRow";
 import { PageHeader } from "@/components/PageHeader";
@@ -8,7 +9,11 @@ import {
   DirectoryPager,
   DirectorySearch,
 } from "@/components/directory";
-import { fetchBrands, fetchDevicesPage } from "@/lib/data";
+import {
+  fetchBootloaderPolicy,
+  fetchBrands,
+  fetchDevicesPage,
+} from "@/lib/data";
 import { isUsefulDirectoryPage } from "@/lib/indexing";
 import { deviceName } from "@/lib/devices";
 import {
@@ -88,7 +93,10 @@ async function load(vendorParam: string, request: URL) {
     Math.trunc(Number(request.searchParams.get("page")) || 1),
   );
 
-  const brands = await fetchBrands();
+  const [brands, bootloaderPolicy] = await Promise.all([
+    fetchBrands(),
+    fetchBootloaderPolicy(vendorParam),
+  ]);
   const brand = brands.find(
     (entry) => entry.vendor === vendorParam.toLowerCase(),
   );
@@ -128,6 +136,7 @@ async function load(vendorParam: string, request: URL) {
     page,
     pages,
     href,
+    bootloaderPolicy,
     isIndexable:
       page === 1 &&
       !q &&
@@ -150,8 +159,18 @@ export async function clientLoader({
 }
 
 export default function VendorRoute() {
-  const { vendor, vendorName, brands, q, roms, devices, total, page, pages } =
-    useLoaderData<typeof loader>();
+  const {
+    vendor,
+    vendorName,
+    brands,
+    q,
+    roms,
+    devices,
+    total,
+    page,
+    pages,
+    bootloaderPolicy,
+  } = useLoaderData<typeof loader>();
 
   return (
     <div className="flex flex-col gap-6">
@@ -177,6 +196,8 @@ export default function VendorRoute() {
           return `/api/devices?${params}`;
         })()}
       />
+
+      {bootloaderPolicy && <BootloaderPolicyCard policy={bootloaderPolicy} />}
 
       <div className="flex flex-col gap-4">
         <DirectorySearch

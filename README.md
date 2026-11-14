@@ -142,6 +142,8 @@ GET /api/meta                     → { generatedAt, contentHash }
 GET /api/devices?q=&vendor=&letter=&hasRoms=&sort=&limit=&offset= → BrowseDevice[] (x-total-count)
 GET /api/search?q=                → SearchResponse
 GET /api/devices/:vendor/:codename → DeviceDetail | 404
+GET /api/bootloader-policies      → BootloaderPolicy[]
+GET /api/bootloader-policies/:vendor → BootloaderPolicy | 404
 GET /api/registry?q=&vendor=      → RegistryEntry[]
 GET /api/roms                     → RomDetail[]
 GET /api/roms/summary             → RomSummary[] (counts only)

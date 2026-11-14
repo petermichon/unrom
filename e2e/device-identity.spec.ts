@@ -21,3 +21,29 @@ test("registry-only devices are pages with no ROM data", async ({ page }) => {
   await expect(page.getByText("No custom ROM data yet")).toBeVisible();
   await expect(page.getByText("No ROM data yet")).toBeVisible();
 });
+
+test("device pages show the vendor bootloader policy", async ({ page }) => {
+  await page.goto("/devices/fairphone/FP5");
+
+  const policy = page.getByRole("region", { name: "Bootloader unlock" });
+  await expect(policy).toBeVisible();
+  await expect(policy.getByText("Supported", { exact: true })).toBeVisible();
+  await expect(policy.getByText("All models", { exact: true })).toBeVisible();
+  await expect(
+    policy.getByRole("link", { name: "Official source" }),
+  ).toHaveAttribute(
+    "href",
+    "https://support.fairphone.com/hc/en-us/articles/10492476238865-How-to-unlock-or-lock-your-Fairphone-s-bootloader",
+  );
+});
+
+test("brand pages show the vendor bootloader policy", async ({ page }) => {
+  await page.goto("/devices/xiaomi");
+
+  const policy = page.getByRole("region", { name: "Bootloader unlock" });
+  await expect(policy).toBeVisible();
+  await expect(policy.getByText("Conditional", { exact: true })).toBeVisible();
+  await expect(
+    policy.getByText("Waiting periods and annual device quotas apply."),
+  ).toBeVisible();
+});

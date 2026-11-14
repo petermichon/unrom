@@ -8,6 +8,7 @@ const api = createApi(DB_PATH);
 const payload = {
   meta: api.getMeta(),
   devices: api.listDevices(),
+  bootloaderPolicies: api.listBootloaderPolicies(),
   registry: api.listRegistry(),
   roms: api.listRoms(),
   mappings: api.listMappings(),
@@ -20,5 +21,6 @@ await writeFile(JSON_PATH, JSON.stringify(payload, null, 2) + "\n", "utf8");
 
 console.log(
   `Exported ${JSON_PATH}\n  ${payload.devices.length} device(s), ${payload.registry.length} registry entr(ies), ` +
-    `${payload.roms.length} ROM(s), ${payload.mappings.length} mapping(s)`,
+    `${payload.roms.length} ROM(s), ${payload.mappings.length} mapping(s), ` +
+    `${payload.bootloaderPolicies.length} bootloader policy(ies)`,
 );

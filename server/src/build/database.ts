@@ -5,6 +5,9 @@ import Database from "better-sqlite3";
 import { sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/better-sqlite3";
 
+import type { BootloaderPolicy } from "@unrom/contract";
+
+import { BOOTLOADER_POLICIES } from "../data/bootloader.ts";
 import {
   CANONICAL_CODENAMES,
   DECLARED_GROUPS,
@@ -25,6 +28,7 @@ import type { RomCatalogEntry } from "../data/roms.ts";
 import { generateDdl } from "../db/ddl.ts";
 import {
   aliases,
+  bootloaderPolicies,
   deviceVariants,
   devices,
   meta,
@@ -167,6 +171,7 @@ function contentHash(
   coverage: Coverage[],
   registryRows: RegistryRow[],
   aliasRows: Alias[],
+  policies: readonly BootloaderPolicy[],
 ): string {
   const hash = createHash("sha256");
   const key = (vendor: string, codename: string) => `${vendor}\0${codename}`;
@@ -209,6 +214,13 @@ function contentHash(
   )) {
     hash.update(
       `v\0${row.vendor}\0${row.codename}\0${row.variantCodename}\0${row.source}\0${row.evidence}\n`,
+    );
+  }
+  for (const policy of [...policies].sort((a, b) =>
+    a.vendor.localeCompare(b.vendor),
+  )) {
+    hash.update(
+      `b\0${policy.vendor}\0${policy.status}\0${policy.scope}\0${policy.summary}\0${policy.conditions.join("|")}\0${policy.sourceUrl}\0${policy.verifiedAt}\n`,
     );
   }
 
@@ -801,6 +813,7 @@ export function buildDatabase(
         coverageRows,
         registryRows,
         aliasRows,
+        BOOTLOADER_POLICIES,
       ),
     ],
   ];
@@ -824,6 +837,14 @@ export function buildDatabase(
     }
     for (const row of registryRows) {
       tx.insert(registry).values(row).run();
+    }
+    for (const policy of BOOTLOADER_POLICIES) {
+      tx.insert(bootloaderPolicies)
+        .values({
+          ...policy,
+          conditions: JSON.stringify(policy.conditions),
+        })
+        .run();
     }
     for (const edge of edges) {
       tx.insert(romDevices).values(edge).run();

@@ -1,9 +1,10 @@
 import { Link, redirect, useLoaderData } from "react-router";
+import { BootloaderPolicyCard } from "@/components/BootloaderPolicyCard";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import DeviceRomsTable from "@/components/DeviceRomsTable";
 import { PageHeader } from "@/components/PageHeader";
 import { Badge } from "@/components/ui/badge";
-import { fetchDevice } from "@/lib/data";
+import { fetchBootloaderPolicy, fetchDevice } from "@/lib/data";
 import { brandedDeviceName } from "@/lib/devices";
 import {
   SITE_URL,
@@ -20,11 +21,14 @@ import type { Route } from "./+types/device";
 // An alternate codename (alias) resolves to the canonical device; redirect so
 // the URL and every generated link agree on one canonical address.
 async function loadDevice(params: { vendor: string; codename: string }) {
-  const device = await fetchDevice(params.vendor, params.codename);
+  const [device, bootloaderPolicy] = await Promise.all([
+    fetchDevice(params.vendor, params.codename),
+    fetchBootloaderPolicy(params.vendor),
+  ]);
   if (device.vendor !== params.vendor || device.codename !== params.codename) {
     throw redirect(`/devices/${device.vendor}/${device.codename}`, 301);
   }
-  return { device };
+  return { device, bootloaderPolicy };
 }
 
 export async function loader({ params }: Route.LoaderArgs) {
@@ -93,7 +97,7 @@ export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
 };
 
 export default function DeviceRoute() {
-  const { device } = useLoaderData<typeof loader>();
+  const { device, bootloaderPolicy } = useLoaderData<typeof loader>();
 
   return (
     <div className="flex flex-col gap-8">
@@ -127,6 +131,8 @@ export default function DeviceRoute() {
           }
         />
       </div>
+
+      {bootloaderPolicy && <BootloaderPolicyCard policy={bootloaderPolicy} />}
 
       <DeviceRomsTable
         roms={device.roms}

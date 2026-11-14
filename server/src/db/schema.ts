@@ -95,6 +95,19 @@ export const registry = sqliteTable(
 // Alternate codenames that resolve to a canonical `(vendor, codename)` device.
 // Kept as a table (not just a build-time artifact) so the API can resolve alias
 // URLs and search them.
+// Vendor-level bootloader-unlock policies. The source and verification date are
+// part of the row because the policy is a curated claim, not a device property.
+export const bootloaderPolicies = sqliteTable("bootloader_policies", {
+  vendor: text("vendor").primaryKey(),
+  vendorName: text("vendor_name").notNull(),
+  status: text("status").notNull(),
+  scope: text("scope").notNull(),
+  summary: text("summary").notNull(),
+  conditions: text("conditions").notNull(),
+  sourceUrl: text("source_url").notNull(),
+  verifiedAt: text("verified_at").notNull(),
+});
+
 export const aliases = sqliteTable(
   "aliases",
   {
@@ -121,6 +134,7 @@ export const tables = [
   roms,
   devices,
   registry,
+  bootloaderPolicies,
   romDevices,
   aliases,
   deviceVariants,

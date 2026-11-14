@@ -8,6 +8,7 @@ const CACHED_PATHS = [
   "/api/brands",
   "/api/search?q=pixel",
   "/api/devices?limit=1",
+  "/api/bootloader-policies",
   "/api/roms/summary",
 ];
 
@@ -19,6 +20,27 @@ test("dataset endpoints carry cache validators", async ({ request }) => {
     expect(response.headers()["etag"], path).toBeTruthy();
     expect(response.headers()["last-modified"], path).toBeTruthy();
   }
+});
+
+test("bootloader policies expose vendor provenance", async ({ request }) => {
+  type Policy = {
+    vendor: string;
+    status: string;
+    sourceUrl: string;
+    verifiedAt: string;
+  };
+
+  const response = await request.get("/api/bootloader-policies/fairphone");
+  expect(response.ok()).toBe(true);
+  const policy = (await response.json()) as Policy;
+  expect(policy.vendor).toBe("fairphone");
+  expect(policy.status).toBe("supported");
+  expect(policy.sourceUrl).toMatch(/^https:/);
+  expect(policy.verifiedAt).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+
+  expect(
+    (await request.get("/api/bootloader-policies/no-such-vendor")).status(),
+  ).toBe(404);
 });
 
 test("device lists expose their total to browsers", async ({ request }) => {

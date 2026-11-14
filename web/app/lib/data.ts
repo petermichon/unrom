@@ -1,4 +1,5 @@
 import type {
+  BootloaderPolicy,
   BrandSummary,
   BrowseDevice,
   DeviceDetail,
@@ -130,6 +131,23 @@ export function fetchDeviceLetters(): Promise<LetterSummary[]> {
 
 export function fetchBrands(): Promise<BrandSummary[]> {
   return get<BrandSummary[]>("/api/brands");
+}
+
+/** Vendor-level policy; `null` means no policy has been curated for the vendor. */
+export function fetchBootloaderPolicy(
+  vendor: string,
+): Promise<BootloaderPolicy | null> {
+  const path = `/api/bootloader-policies/${encodeURIComponent(vendor)}`;
+  return cached(path, async () => {
+    const response = await fetch(`${apiBase()}${path}`);
+    if (response.status === 404) return null;
+    if (!response.ok) {
+      throw new Response(`API request failed: ${path}`, {
+        status: response.status,
+      });
+    }
+    return (await response.json()) as BootloaderPolicy;
+  });
 }
 
 export async function fetchDevicesPage(options: {

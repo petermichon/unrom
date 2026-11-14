@@ -141,6 +141,43 @@ const deviceDetailSchema = {
   },
 };
 
+const bootloaderPolicySchema = {
+  type: "object",
+  required: [
+    "vendor",
+    "vendorName",
+    "status",
+    "scope",
+    "summary",
+    "conditions",
+    "sourceUrl",
+    "verifiedAt",
+  ],
+  properties: {
+    vendor: { type: "string" },
+    vendorName: { type: "string" },
+    status: {
+      type: "string",
+      enum: ["supported", "conditional", "unsupported", "unknown"],
+      description: "The vendor's official position, not a per-device check.",
+    },
+    scope: {
+      type: "string",
+      enum: ["all", "most", "some", "unknown"],
+      description:
+        "How much of the vendor's lineup the policy is meant to cover.",
+    },
+    summary: { type: "string" },
+    conditions: { type: "array", items: { type: "string" } },
+    sourceUrl: { type: "string", format: "uri" },
+    verifiedAt: {
+      type: "string",
+      format: "date",
+      description: "Date the vendor source was last checked.",
+    },
+  },
+};
+
 const registryEntrySchema = {
   type: "object",
   required: [
@@ -409,7 +446,7 @@ export const openapi = {
   openapi: "3.1.0",
   info: {
     title: "unrom API",
-    version: "1.8.0",
+    version: "1.9.0",
     summary: "Open database for device–ROM compatibility.",
     description:
       "Which custom Android ROMs support which devices. Every response is " +
@@ -433,6 +470,10 @@ export const openapi = {
     { name: "meta", description: "Health and dataset freshness." },
     { name: "devices", description: "Devices and their ROM support." },
     { name: "brands", description: "Device counts by vendor." },
+    {
+      name: "bootloader",
+      description: "Vendor-level bootloader-unlock policies.",
+    },
     { name: "roms", description: "ROMs and the devices they support." },
     { name: "registry", description: "Curated device name mappings." },
     { name: "data", description: "Flat mappings and bulk exports." },
@@ -553,6 +594,43 @@ export const openapi = {
             type: "array",
             items: { $ref: "#/components/schemas/BrandSummary" },
           }),
+        },
+      },
+    },
+    "/api/bootloader-policies": {
+      get: {
+        tags: ["bootloader"],
+        summary: "List vendor-level bootloader-unlock policies",
+        description:
+          "Policies are vendor-level only. Carrier, region, variant and " +
+          "firmware conditions can change the result for an individual device.",
+        operationId: "listBootloaderPolicies",
+        responses: {
+          200: jsonResponse({
+            type: "array",
+            items: { $ref: "#/components/schemas/BootloaderPolicy" },
+          }),
+        },
+      },
+    },
+    "/api/bootloader-policies/{vendor}": {
+      get: {
+        tags: ["bootloader"],
+        summary: "Get one vendor's bootloader-unlock policy",
+        operationId: "getBootloaderPolicy",
+        parameters: [
+          {
+            name: "vendor",
+            in: "path",
+            required: true,
+            schema: { type: "string" },
+          },
+        ],
+        responses: {
+          200: jsonResponse({
+            $ref: "#/components/schemas/BootloaderPolicy",
+          }),
+          404: notFound,
         },
       },
     },
@@ -725,6 +803,7 @@ export const openapi = {
       Summary: summarySchema,
       SearchResponse: searchResponseSchema,
       DeviceDetail: deviceDetailSchema,
+      BootloaderPolicy: bootloaderPolicySchema,
       RegistryEntry: registryEntrySchema,
       RomDetail: romDetailSchema,
       Mapping: mappingSchema,

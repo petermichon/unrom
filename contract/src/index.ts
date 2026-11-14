@@ -43,6 +43,29 @@ export interface DeviceDetail {
   sources: string[];
 }
 
+/** A vendor's official position on unlocking its devices' bootloaders. */
+export type BootloaderPolicyStatus =
+  "supported" | "conditional" | "unsupported" | "unknown";
+
+/** How much of a vendor's current lineup a policy is meant to cover. */
+export type BootloaderPolicyScope = "all" | "most" | "some" | "unknown";
+
+/**
+ * Vendor-level only. A device can still differ by carrier, region, model
+ * variant, or firmware; the conditions carry those caveats.
+ */
+export interface BootloaderPolicy {
+  vendor: string;
+  vendorName: string;
+  status: BootloaderPolicyStatus;
+  scope: BootloaderPolicyScope;
+  summary: string;
+  conditions: string[];
+  sourceUrl: string;
+  /** Date the vendor source was last checked, ISO `YYYY-MM-DD`. */
+  verifiedAt: string;
+}
+
 /** A curated `(vendor, codename)` → model name mapping. */
 export type RegistryConfidence =
   "verified" | "inferred" | "manual" | "unverified";

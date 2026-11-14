@@ -95,6 +95,8 @@ GET /api/devices?q=&vendor=&letter=&hasRoms=&sort=&limit=&offset=&all=
                                   → BrowseDevice[] + x-total-count
 GET /api/devices/letters          → LetterSummary[]
 GET /api/devices/:vendor/:codename → DeviceDetail | 404
+GET /api/bootloader-policies      → BootloaderPolicy[]
+GET /api/bootloader-policies/:vendor → BootloaderPolicy | 404
 GET /api/search?q=                → SearchResponse
 GET /api/registry?q=&vendor=      → RegistryEntry[]
 GET /api/roms                     → RomDetail[] (all catalogued ROMs, incl. 0-device)
