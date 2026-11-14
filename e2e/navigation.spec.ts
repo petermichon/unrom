@@ -109,7 +109,7 @@ test("each trigger opens its own panel", async ({ page }) => {
   ).toHaveCount(0);
   await expect(
     page
-      .getByRole("navigation", { name: "Data access" })
+      .getByRole("navigation", { name: "Project" })
       .getByRole("link", { name: "Data", exact: true }),
   ).toBeVisible();
 });
@@ -184,7 +184,7 @@ test("client navigation survives a failing /api index", async ({ page }) => {
 
   await page.goto("/");
   await page
-    .getByRole("navigation", { name: "Data access" })
+    .getByRole("navigation", { name: "Project" })
     .getByRole("link", { name: "Data" })
     .click();
   await page.waitForURL("**/data");
@@ -200,7 +200,7 @@ test("the standalone server proxies /api for client navigation", async ({
 }) => {
   await page.goto("/");
   await page
-    .getByRole("navigation", { name: "Data access" })
+    .getByRole("navigation", { name: "Project" })
     .getByRole("link", { name: "Data" })
     .click();
   await page.waitForURL("**/data");

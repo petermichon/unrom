@@ -220,7 +220,7 @@ export default function AppShell({ updatedAt, updatedAtIso, children }: Props) {
               </p>
               <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
                 <nav
-                  aria-label="Data access"
+                  aria-label="Project"
                   data-nosnippet
                   className="flex flex-wrap items-center gap-4"
                 >
@@ -245,6 +245,14 @@ export default function AppShell({ updatedAt, updatedAtIso, children }: Props) {
                     className="py-1 hover:text-foreground hover:underline"
                   >
                     ODbL license
+                  </a>
+                  <a
+                    href={GITHUB_URL}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="py-1 hover:text-foreground hover:underline"
+                  >
+                    GitHub
                   </a>
                 </nav>
               </div>
