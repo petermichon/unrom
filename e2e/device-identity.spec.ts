@@ -29,12 +29,18 @@ test("registry-only devices are pages with no ROM data", async ({ page }) => {
   await expect(page.getByText("No ROM data yet")).toBeVisible();
 });
 
-test("device pages warn when every ROM is discontinued", async ({ page }) => {
+test("device pages say when every ROM is discontinued", async ({ page }) => {
   await page.goto("/devices/lenovo/jd2019");
-
   await expect(
     page.getByText(
-      "Every ROM listed for this device is marked discontinued upstream.",
+      "Supported by 3 custom ROMs, all marked discontinued upstream.",
+    ),
+  ).toBeVisible();
+
+  await page.goto("/devices/lenovo/jd2019p");
+  await expect(
+    page.getByText(
+      "The only custom ROM listed is marked discontinued upstream.",
     ),
   ).toBeVisible();
 });

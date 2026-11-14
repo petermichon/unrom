@@ -49,21 +49,36 @@ export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   return loadDevice(params);
 }
 
+/** Every listed ROM belongs to a project that stopped shipping builds. */
+function allRomsDiscontinued(
+  device: DeviceDetail,
+  statuses: Record<string, RomStatus> | undefined,
+): boolean {
+  return (
+    device.roms.length > 0 &&
+    device.roms.every((rom) => statuses?.[rom.id] === "discontinued")
+  );
+}
+
 export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
   const device = loaderData?.device;
   if (error || !device) return errorMeta("Device not found | unrom");
 
   const updatedAt = updatedAtFromMatches(matches);
   const name = brandedDeviceName(device);
+  const discontinued = allRomsDiscontinued(device, loaderData?.statuses);
+  const count = device.roms.length;
   const description =
-    device.roms.length === 0
+    count === 0
       ? `The ${name} (${device.codename}). unrom tracks this device but holds no custom ROM build data for it yet.`
-      : `The ${name} (${device.codename}) is supported by ${device.roms.length} custom ${
-          device.roms.length === 1 ? "ROM" : "ROMs"
-        }, including ${summarizeNames(
-          device.roms.map((rom) => rom.name),
-          3,
-        )}.`;
+      : discontinued
+        ? `Every custom ROM listed for the ${name} (${device.codename}) is marked discontinued upstream.`
+        : `The ${name} (${device.codename}) is supported by ${count} custom ${
+            count === 1 ? "ROM" : "ROMs"
+          }, including ${summarizeNames(
+            device.roms.map((rom) => rom.name),
+            3,
+          )}.`;
 
   return [
     ...pageMeta({
@@ -108,9 +123,16 @@ export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
 
 export default function DeviceRoute() {
   const { device, bootloaderPolicy, statuses } = useLoaderData<typeof loader>();
-  const allDiscontinued =
-    device.roms.length > 0 &&
-    device.roms.every((rom) => statuses[rom.id] === "discontinued");
+  const discontinued = allRomsDiscontinued(device, statuses);
+  const count = device.roms.length;
+  const description =
+    count === 0
+      ? "No custom ROM data yet."
+      : discontinued
+        ? count === 1
+          ? "The only custom ROM listed is marked discontinued upstream."
+          : `Supported by ${count} custom ROMs, all marked discontinued upstream.`
+        : `Supported by ${count} custom ${count === 1 ? "ROM" : "ROMs"}.`;
 
   return (
     <div className="flex flex-col gap-8">
@@ -135,23 +157,11 @@ export default function DeviceRoute() {
               {device.codename}
             </Badge>
           }
-          description={
-            device.roms.length === 0
-              ? "No custom ROM data yet."
-              : `Supported by ${device.roms.length} custom ${
-                  device.roms.length === 1 ? "ROM" : "ROMs"
-                }.`
-          }
+          description={description}
         />
       </div>
 
       {bootloaderPolicy && <BootloaderPolicyCard policy={bootloaderPolicy} />}
-
-      {allDiscontinued && (
-        <p className="rounded-xl border border-border bg-muted/40 px-4 py-3 text-sm text-muted-foreground">
-          Every ROM listed for this device is marked discontinued upstream.
-        </p>
-      )}
 
       <DeviceRomsTable
         roms={device.roms}
