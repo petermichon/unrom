@@ -83,7 +83,7 @@ export default function LegalRoute() {
           <a
             href="https://www.ovhcloud.com"
             target="_blank"
-            rel="noreferrer"
+            rel="noopener"
             className="hover:text-foreground hover:underline"
           >
             ovhcloud.com
@@ -118,7 +118,7 @@ export default function LegalRoute() {
             <a
               href="https://stats.unrom.com"
               target="_blank"
-              rel="noreferrer"
+              rel="noopener"
               className="hover:text-foreground hover:underline"
             >
               stats.unrom.com
@@ -151,7 +151,7 @@ export default function LegalRoute() {
             <a
               href="https://www.cnil.fr"
               target="_blank"
-              rel="noreferrer"
+              rel="noopener"
               className="hover:text-foreground hover:underline"
             >
               cnil.fr

@@ -90,7 +90,7 @@ function MobileMenu() {
             <a
               href={GITHUB_URL}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener"
               aria-label="GitHub repository"
             />
           }
@@ -167,7 +167,7 @@ export default function AppShell({ updatedAt, updatedAtIso, children }: Props) {
                       <a
                         href={GITHUB_URL}
                         target="_blank"
-                        rel="noreferrer"
+                        rel="noopener"
                         aria-label="GitHub repository"
                       />
                     }
@@ -241,7 +241,7 @@ export default function AppShell({ updatedAt, updatedAtIso, children }: Props) {
                   <a
                     href={ODBL_URL}
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noopener"
                     className="py-1 hover:text-foreground hover:underline"
                   >
                     ODbL license
@@ -249,7 +249,7 @@ export default function AppShell({ updatedAt, updatedAtIso, children }: Props) {
                   <a
                     href={GITHUB_URL}
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noopener"
                     className="py-1 hover:text-foreground hover:underline"
                   >
                     GitHub

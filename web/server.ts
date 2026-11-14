@@ -22,6 +22,15 @@ const apiUrl = process.env.API_URL ?? "http://127.0.0.1:3000";
 const app = express();
 app.disable("x-powered-by");
 
+// Outbound links reveal the site origin, never the page: a ROM project's
+// analytics can see that unrom sent a reader, but not which device or ROM was
+// open. Stated as a header rather than per link so a new anchor cannot leak a
+// path by forgetting its `rel`.
+app.use((_req, res, next) => {
+  res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
+  next();
+});
+
 app.use("/api", async (req, res) => {
   try {
     const headers = new Headers();

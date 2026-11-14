@@ -353,7 +353,7 @@ function ExampleMapping({
                   <a
                     href={rom.referenceUrl}
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noopener"
                     title={rom.referenceUrl}
                     className="inline-flex max-w-full items-center gap-1 text-xs text-muted-foreground underline underline-offset-4 hover:text-foreground"
                   >

@@ -273,7 +273,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
             <a
               href={ISSUES_URL}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener"
               className="font-medium text-brand hover:underline"
             >
               Report the problem

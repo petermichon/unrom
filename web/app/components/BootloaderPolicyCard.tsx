@@ -48,7 +48,7 @@ export function BootloaderPolicyCard({ policy }: { policy: BootloaderPolicy }) {
         <a
           href={policy.sourceUrl}
           target="_blank"
-          rel="noreferrer"
+          rel="noopener"
           className="font-medium text-brand hover:underline"
         >
           Official source

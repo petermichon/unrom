@@ -85,7 +85,7 @@ export default function DeviceRomsTable({
               <a
                 href={row.original.referenceUrl}
                 target="_blank"
-                rel="noreferrer"
+                rel="noopener"
                 title={row.original.referenceUrl}
                 className="inline-flex max-w-full items-center gap-1 text-xs text-muted-foreground underline underline-offset-4 hover:text-foreground md:hidden"
               >
@@ -113,7 +113,7 @@ export default function DeviceRomsTable({
                   <a
                     href={row.original.referenceUrl}
                     target="_blank"
-                    rel="noreferrer"
+                    rel="noopener"
                     aria-label={`Open reference: ${row.original.referenceUrl}`}
                     className="inline-flex max-w-full items-center gap-1 text-xs text-muted-foreground underline underline-offset-4 hover:text-foreground"
                   />

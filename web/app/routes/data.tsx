@@ -340,7 +340,7 @@ export default function DataRoute() {
             <a
               href={`${REPO_URL}/blob/main/ATTRIBUTION.md`}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener"
               className="text-muted-foreground hover:text-foreground hover:underline"
             >
               Attribution
@@ -350,7 +350,7 @@ export default function DataRoute() {
             <a
               href={`${REPO_URL}/blob/main/ROM_DATA_SOURCES.md`}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener"
               className="text-muted-foreground hover:text-foreground hover:underline"
             >
               Data sources
@@ -360,7 +360,7 @@ export default function DataRoute() {
             <a
               href={ODBL_URL}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener"
               className="text-muted-foreground hover:text-foreground hover:underline"
             >
               ODbL-1.0
@@ -370,7 +370,7 @@ export default function DataRoute() {
             <a
               href={`${REPO_URL}/blob/main/LICENSE`}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener"
               className="text-muted-foreground hover:text-foreground hover:underline"
             >
               AGPL-3.0-only
@@ -434,7 +434,7 @@ export default function DataRoute() {
             <a
               href={`${REPO_URL}/issues`}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener"
               className="text-muted-foreground hover:text-foreground hover:underline"
             >
               Open an issue
@@ -444,7 +444,7 @@ export default function DataRoute() {
             <a
               href={`${REPO_URL}/blob/main/CONTRIBUTING.md`}
               target="_blank"
-              rel="noreferrer"
+              rel="noopener"
               className="text-muted-foreground hover:text-foreground hover:underline"
             >
               Contributing

@@ -109,6 +109,23 @@ test("HTML responses carry cache validators", async ({ request }) => {
   expect(headers["last-modified"]).toBeTruthy();
 });
 
+test("outbound citations send only the site origin", async ({
+  page,
+  request,
+}) => {
+  const response = await request.get("/");
+  expect(response.headers()["referrer-policy"]).toBe(
+    "strict-origin-when-cross-origin",
+  );
+
+  await page.goto("/");
+  const github = page
+    .getByRole("contentinfo")
+    .getByRole("link", { name: "GitHub" });
+  await expect(github).toHaveAttribute("rel", /noopener/);
+  await expect(github).not.toHaveAttribute("rel", /noreferrer/);
+});
+
 test("sitemap index points at each section sitemap", async ({ request }) => {
   const response = await request.get("/sitemap.xml");
   expect(response.status()).toBe(200);
