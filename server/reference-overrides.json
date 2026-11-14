@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-09T21:43:45.398Z",
+  "generatedAt": "2026-11-14T22:06:17.935Z",
   "dead": [
     "https://doc.e.foundation/devices/DRG",
     "https://doc.e.foundation/devices/PL2",
@@ -8,6 +8,7 @@
     "https://doc.e.foundation/devices/evert",
     "https://doc.e.foundation/devices/ocean",
     "https://doc.e.foundation/devices/wade",
+    "https://sourceforge.net/projects/derpfest/files/olivewood/",
     "https://thecloverproject.com/download/Asteroids"
   ],
   "unverified": [],

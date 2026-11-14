@@ -288,7 +288,7 @@ the gate _and_ is unique to one device.
 | CherishOS            | B     | `cherishos.com/devices/<codename>`                                        |
 | CorvusOS             | C     | pinned `CorvusRom-Devices/jenkins` devices.json (download host dead)      |
 | crDroid              | B     | `crdroid.net/<codename>/<major>` (site index), else pinned OTA JSON       |
-| DerpFest             | C     | SourceForge `files/<codename>/`, else pinned `devices-index.json`         |
+| DerpFest             | B     | SourceForge `files/<codename>/`, else pinned `devices-index.json`         |
 | Lunaris AOSP         | C     | pinned OTA `builds/<codename>.json` (unique thread when present)          |
 | PixelExtended        | A/C   | unique `forum_url`/`xda_thread`, else pinned OTA `builds/<codename>.json` |
 | Project PixelAge     | C     | SourceForge `files/<codename>/`                                           |

@@ -26,6 +26,12 @@ export interface DeviceSource {
   /** Deterministic per-device page, built from the codename when `referenceUrl`
    * is absent. A `{codename}` placeholder is substituted. */
   referencePage?: string;
+  /**
+   * Force the citation kind when the selected value is one the pipeline built
+   * (DerpFest's SourceForge folder), not one the source published. Such a URL
+   * must be probed before it is published.
+   */
+  referenceKind?: "observed" | "derived";
   /** Correct display names where upstream mislabels a codename. */
   nameCorrections?: Record<string, string>;
   codenameCorrections?: Record<string, string>;
@@ -238,8 +244,11 @@ export function createParser(
             ? source.referencePage.replace("{codename}", draft.codename)
             : null),
         // A URL the source published is observed; a page we build from the
-        // codename is only a guess until it is verified.
-        referenceKind: citation || !derivedPage ? "observed" : "derived",
+        // codename is only a guess until it is verified. A source can also
+        // declare that what it selected was built by the pipeline.
+        referenceKind:
+          source.referenceKind ??
+          (citation || !derivedPage ? "observed" : "derived"),
         reportedCodename: draft.reportedCodename,
       });
     });

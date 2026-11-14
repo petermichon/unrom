@@ -142,8 +142,11 @@ const configs: DeviceSource[] = [
     file: "derpfest.json",
     select: selectors.array,
     name: ["displayName"],
-    referenceUrl: ["reference", "url"],
+    // The folder is derived from the build URL, so it is a class B citation and
+    // must be probed: a project that removes a device deletes its folder.
+    referenceUrl: ["reference"],
     referencePage: "https://derpfest.org/devices-index.json",
+    referenceKind: "derived",
     // DerpFest's override data mislabels `lunaa` as "Motorola Moto G9"; the
     // codename is the Realme GT Master Edition (Moto G9 is `guamp`).
     nameCorrections: { lunaa: "Realme GT Master Edition" },

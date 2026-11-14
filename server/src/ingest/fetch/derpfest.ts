@@ -5,10 +5,18 @@ import { fetchJson } from "./util.ts";
 // build per device (the OTA repo itself is stale for many devices).
 const INDEX_URL = "https://derpfest.org/devices-index.json";
 
-// Derive a per-device SourceForge folder from a build's file URL, e.g.
-// `…/projects/derpfest/files/vayu/DerpFest-…zip/download` -> `…/files/vayu/`.
+// Derive a per-device SourceForge folder from a build's file URL. The dated
+// build directory goes away when a project cleans up old builds, and the
+// citation must not: `…/files/vayu/20240101-1200/DerpFest-….zip/download`
+// becomes `…/files/vayu/`.
 const SOURCEFORGE_FOLDER =
-  /^(https:\/\/sourceforge\.net\/projects\/[^/]+\/files\/.*\/)[^/]+\.zip\/download$/i;
+  /^(https:\/\/sourceforge\.net\/projects\/[^/]+\/files\/[^/]+\/)/i;
+
+/** The device folder a build came from, or the pinned index when unparseable. */
+export function deriveReference(buildUrl: string): string {
+  const folder = SOURCEFORGE_FOLDER.exec(buildUrl);
+  return folder ? folder[1] : INDEX_URL;
+}
 
 interface DerpIndex {
   devices?: unknown;
@@ -33,10 +41,9 @@ export async function listDevices(): Promise<string | Error> {
       .map((device) => {
         const latest = (device.latest ?? {}) as { url?: unknown };
         const url = typeof latest.url === "string" ? latest.url : "";
-        const folder = SOURCEFORGE_FOLDER.exec(url);
         return {
           ...device,
-          reference: folder ? folder[1] : INDEX_URL,
+          reference: deriveReference(url),
         };
       })
       .filter((device) => {
