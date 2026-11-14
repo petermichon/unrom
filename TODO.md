@@ -45,10 +45,10 @@
       Done: it defaults to 100 rows; `all=true` returns the full filtered
       list, and the devices sitemap is the only consumer that asks for it.
 - [ ] Record bootloader-unlock status per device. The demand is logged in
-      `USER_EVIDENCE.md` (2026-11-12): a recommendation thread names the site,
-      then says outright that neither it nor the other directory guarantees an
-      unlockable bootloader. Search already covers vendor, model and codename,
-      so the gap is coverage, not discovery. Open questions: one field or a
+      `USER_EVIDENCE.md` (2026-11-12 and 2026-11-14): two independent
+      recommendations name the site and then point readers to bootloader-unlock
+      information. Search already covers vendor, model and codename, so the gap
+      is coverage, not discovery. Open questions: one field or a
       tri-state (unlockable / locked / unknown); an authoritative per-vendor
       source for each; whether it belongs in `contract/` (a versioning
       decision); and how to validate 9,104 devices rather than assume them.
