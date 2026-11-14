@@ -197,12 +197,17 @@ export const EXCLUDED_CODENAMES = new Set<string>([
 // `gsi_arm64`, `treble_gsi`, ...), so match the shape rather than a fixed list.
 const NON_DEVICE_PATTERN = /(^|[_-])gsi([_-]|$)|^treble([_-]|$)/i;
 
+// Emulator images come from Play's catalogue as well as from rosters:
+// `generic_x86_64`, `generic_x86_arm`, `emu64xa`, `sdk_gphone64_x86_64`.
+const EMULATOR_PATTERN = /^(generic_|emu\d|sdk_gphone|sdk_phone)/i;
+
 /** True for emulator images, GSIs and other unified build targets. */
 export function isExcludedCodename(codename: string): boolean {
   const value = codename.trim();
   return (
     EXCLUDED_CODENAMES.has(value.toLowerCase()) ||
-    NON_DEVICE_PATTERN.test(value)
+    NON_DEVICE_PATTERN.test(value) ||
+    EMULATOR_PATTERN.test(value)
   );
 }
 

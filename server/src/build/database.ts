@@ -513,6 +513,8 @@ export function buildDatabase(
   // source-named rather than curated, so they stay outside the registry report.
   const catalogKeys = new Set<string>();
   for (const device of catalog) {
+    // Play's catalogue includes emulator and SDK images; they are not devices.
+    if (isExcludedCodename(device.codename)) continue;
     const canonical = canonicalCodename(
       device.vendor,
       canonicalCasing(device.codename),

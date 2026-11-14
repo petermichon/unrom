@@ -950,6 +950,42 @@ test("cross-vendor collisions resolve to distinct devices", async () => {
   }
 });
 
+test("catalogue emulator images are not devices", () => {
+  const dir = mkdtempSync(join(tmpdir(), "unrom-test-"));
+  const dbPath = join(dir, "unrom.sqlite");
+
+  try {
+    buildDatabase([], dbPath, [
+      { vendor: "google", codename: "tokay", names: ["Pixel 9"] },
+      { vendor: "google", codename: "generic_x86_64", names: ["Emulator"] },
+      { vendor: "google", codename: "generic_x86_arm", names: ["Emualtor"] },
+      { vendor: "google", codename: "emu64xa", names: ["emulator"] },
+      {
+        vendor: "google",
+        codename: "generic_64bitonly_x86_64",
+        names: ["gcar emulator"],
+      },
+    ]);
+
+    const db = new Database(dbPath, { readonly: true });
+    const found = (codename: string) =>
+      db.prepare("select 1 from devices where codename = ?").get(codename);
+
+    for (const codename of [
+      "generic_x86_64",
+      "generic_x86_arm",
+      "emu64xa",
+      "generic_64bitonly_x86_64",
+    ]) {
+      assert.equal(found(codename), undefined, `${codename} became a device`);
+    }
+    assert.ok(found("tokay"), "a real catalogue device was dropped");
+    db.close();
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 test("brand and letter summaries cover the whole catalogue", () => {
   const dir = mkdtempSync(join(tmpdir(), "unrom-test-"));
   const dbPath = join(dir, "unrom.sqlite");
