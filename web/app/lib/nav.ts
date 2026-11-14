@@ -1,5 +1,4 @@
 import {
-  fetchApiIndex,
   fetchBrands,
   fetchDevicesPage,
   fetchRoms,
@@ -7,7 +6,7 @@ import {
   fetchSummary,
 } from "@/lib/data";
 
-export type NavKind = "devices" | "brands" | "roms" | "data";
+export type NavKind = "devices" | "brands" | "roms";
 
 export interface NavItem {
   to: string;
@@ -19,7 +18,6 @@ export const NAV_ITEMS: NavItem[] = [
   { to: "/devices", label: "Devices", kind: "devices" },
   { to: "/brands", label: "Brands", kind: "brands" },
   { to: "/roms", label: "ROMs", kind: "roms" },
-  { to: "/data", label: "Data", kind: "data" },
 ];
 
 // Warm the destination's data on intent. The router's own page-data prefetch
@@ -33,5 +31,4 @@ export const NAV_PRELOADS: Record<string, () => Promise<unknown>> = {
     ]),
   "/brands": () => fetchBrands(),
   "/roms": () => Promise.all([fetchRoms(), fetchRomSummaries()]),
-  "/data": () => fetchApiIndex(),
 };

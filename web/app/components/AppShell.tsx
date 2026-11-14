@@ -47,7 +47,7 @@ function MobileMenu() {
       <DropdownMenuContent align="end" className="w-52">
         <DropdownMenuGroup>
           <DropdownMenuLabel>Browse</DropdownMenuLabel>
-          {NAV_ITEMS.filter((item) => item.kind !== "data").map((item) => (
+          {NAV_ITEMS.map((item) => (
             <DropdownMenuItem key={item.to} render={<Link to={item.to} />}>
               {item.label}
             </DropdownMenuItem>

@@ -102,10 +102,16 @@ test("each trigger opens its own panel", async ({ page }) => {
     menu.getByRole("link", { name: "All ROMs", exact: true }),
   ).toBeVisible();
 
-  // Data is one page, so it is a plain link: hovering it closes the panel
-  // instead of opening one of its own.
-  await nav.getByRole("link", { name: "Data", exact: true }).hover();
-  await expect(menu).toBeHidden();
+  // Data is a page, not a section, so it lives in the footer rather than as a
+  // header trigger. The panel keeps a data rail in every section.
+  await expect(
+    nav.getByRole("link", { name: "Data", exact: true }),
+  ).toHaveCount(0);
+  await expect(
+    page
+      .getByRole("navigation", { name: "Data access" })
+      .getByRole("link", { name: "Data", exact: true }),
+  ).toBeVisible();
 });
 
 test("mega menu opens from the keyboard and closes with Escape", async ({

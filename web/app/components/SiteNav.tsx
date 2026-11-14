@@ -140,8 +140,7 @@ export default function SiteNav() {
       NAV_ITEMS[(index + direction + NAV_ITEMS.length) % NAV_ITEMS.length];
     linkRefs.current[next.kind]?.focus();
     if (!active) return;
-    if (next.kind === "data") setActive(null);
-    else open(next.kind);
+    open(next.kind);
   };
 
   return (
@@ -159,9 +158,7 @@ export default function SiteNav() {
       }}
     >
       {NAV_ITEMS.map((item) => {
-        // Data is a single page, so it is a plain link rather than a trigger.
-        const hasPanel = item.kind !== "data";
-        const isOpen = hasPanel && active === item.kind;
+        const isOpen = active === item.kind;
         return (
           <div key={item.to} className="flex items-center">
             <NavLink
@@ -170,23 +167,18 @@ export default function SiteNav() {
               }}
               to={item.to}
               prefetch="viewport"
-              aria-expanded={hasPanel ? isOpen : undefined}
+              aria-expanded={isOpen}
               aria-controls={isOpen ? "mega-menu" : undefined}
               onClick={() => setActive(null)}
               // Open on real pointer movement, not `mouseenter`: browsers re-fire
               // hover when layout or scroll changes under a stationary pointer,
               // which made the panel pop open after navigation.
               onPointerMove={() => {
-                if (!hasPanel) {
-                  setActive(null);
-                  return;
-                }
                 if (active === item.kind) return;
                 open(item.kind);
                 void NAV_PRELOADS[item.to]?.().catch(() => {});
               }}
               onKeyDown={(event) => {
-                if (!hasPanel) return;
                 if (event.key === "ArrowDown") {
                   event.preventDefault();
                   focusOnOpen.current = true;
