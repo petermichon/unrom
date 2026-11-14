@@ -1,7 +1,7 @@
 import type { BrowseDevice } from "@/lib/types";
 
 // Short enough for the narrowest phone (198px of field at 320px); the full
-// list of what is searchable lives in each field's accessible label.
+// list of what is searchable lives in the field's accessible label.
 export const SEARCH_PLACEHOLDER = "Search devices or ROMs…";
 
 // Bounded so a pathological query cannot turn into unbounded work or SQL.

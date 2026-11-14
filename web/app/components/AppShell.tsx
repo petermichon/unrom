@@ -136,10 +136,7 @@ export default function AppShell({ updatedAt, updatedAtIso, children }: Props) {
     <TooltipProvider>
       <SearchProvider>
         <div className="flex min-h-svh flex-col bg-background">
-          <header
-            data-nosnippet
-            className="sticky top-0 z-40 bg-background/85 backdrop-blur-xl backdrop-saturate-150"
-          >
+          <header data-nosnippet className="sticky top-0 z-40 bg-background">
             <div className="mx-auto flex h-16 w-full max-w-6xl items-center gap-2 px-4 sm:px-6">
               <Link
                 to="/"

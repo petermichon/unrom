@@ -3,7 +3,6 @@ import {
   useContext,
   useEffect,
   useState,
-  useSyncExternalStore,
   type ReactNode,
 } from "react";
 import { Search } from "lucide-react";
@@ -30,20 +29,6 @@ export function useSearchDialog(): SearchDialog {
     throw new Error("useSearchDialog must be used inside SearchProvider");
   }
   return dialog;
-}
-
-const subscribe = () => () => {};
-
-/** The shortcut keycap reads the platform on the client, null on the server. */
-function useShortcutLabel(): string | null {
-  return useSyncExternalStore(
-    subscribe,
-    () =>
-      /mac|iphone|ipad|ipod/i.test(navigator.platform || navigator.userAgent)
-        ? "⌘K"
-        : "Ctrl K",
-    () => null,
-  );
 }
 
 /**
@@ -115,7 +100,6 @@ export function SearchProvider({ children }: { children: ReactNode }) {
 
 export default function CommandPalette() {
   const { openSearch } = useSearchDialog();
-  const shortcut = useShortcutLabel();
 
   return (
     <Button
@@ -125,16 +109,10 @@ export default function CommandPalette() {
       aria-label="Search devices, brands, and ROMs"
       aria-keyshortcuts="Control+K Meta+K"
       data-nojs-hide
-      title={shortcut ? `Search (${shortcut})` : "Search"}
-      className="text-muted-foreground"
+      className="text-muted-foreground max-sm:w-9 max-sm:px-0"
     >
       <Search className="size-4" />
       <span className="hidden sm:inline">Search</span>
-      {shortcut && (
-        <kbd className="ml-1 hidden rounded border border-border px-1.5 py-0.5 font-mono text-[10px] leading-none text-muted-foreground md:inline-block">
-          {shortcut}
-        </kbd>
-      )}
     </Button>
   );
 }

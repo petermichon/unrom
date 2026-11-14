@@ -1,28 +1,43 @@
-import { expect, test } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
 import { proxyApi } from "./api-proxy.ts";
 
-// Home and the command palette call the search API; forward it to the server.
+// The search dialog calls the search API; forward it to the server.
 test.beforeEach(async ({ page }) => {
   await proxyApi(page);
 });
 
-test("home search shows matching devices while typing", async ({ page }) => {
+const HERO_SEARCH = { name: "Search devices, brands, and ROMs", exact: true };
+
+/** The hero is a link into the one search surface; open it, return its field. */
+async function openSearch(page: Page) {
   await page.goto("/");
-  await page.getByPlaceholder("Search devices or ROMs…").fill("poco");
+  await page.getByRole("link", HERO_SEARCH).click();
+  const field = page.getByPlaceholder("Search devices or ROMs…");
+  await expect(field).toBeVisible();
+  return field;
+}
+
+test("the hero search shows matching devices while typing", async ({
+  page,
+}) => {
+  const field = await openSearch(page);
+  await field.fill("poco");
   await expect(page.getByRole("option").first()).toBeVisible();
 });
 
-test("home search also matches ROMs", async ({ page }) => {
-  await page.goto("/");
-  await page.getByPlaceholder("Search devices or ROMs…").fill("lineage");
+test("the hero search also matches ROMs", async ({ page }) => {
+  const field = await openSearch(page);
+  await field.fill("lineage");
   await expect(
     page.getByRole("option", { name: /lineageos/i }).first(),
   ).toBeVisible();
 });
 
-test("home search matches a device by a variant codename", async ({ page }) => {
-  await page.goto("/");
-  await page.getByPlaceholder("Search devices or ROMs…").fill("sweetin");
+test("the hero search matches a device by a variant codename", async ({
+  page,
+}) => {
+  const field = await openSearch(page);
+  await field.fill("sweetin");
   await expect(
     page.getByRole("option", { name: /Redmi Note 10 Pro/ }).first(),
   ).toBeVisible();
@@ -43,15 +58,17 @@ test("a renamed codename redirects to the canonical device", async ({
   await expect(page.getByText("sirius", { exact: true })).toBeVisible();
 });
 
-test("home search says nothing was found for a bad query", async ({ page }) => {
-  await page.goto("/");
-  await page.getByPlaceholder("Search devices or ROMs…").fill("zzzzzzzz");
-  await expect(page.getByText(/No matches for/)).toBeVisible();
+test("the hero search says nothing was found for a bad query", async ({
+  page,
+}) => {
+  const field = await openSearch(page);
+  await field.fill("zzzzzzzz");
+  await expect(page.getByText("No results found.")).toBeVisible();
 });
 
-test("home search finds a catalogue-only ROM", async ({ page }) => {
-  await page.goto("/");
-  await page.getByPlaceholder("Search devices or ROMs…").fill("aokp");
+test("the hero search finds a catalogue-only ROM", async ({ page }) => {
+  const field = await openSearch(page);
+  await field.fill("aokp");
 
   const rom = page.getByRole("option", { name: /AOKP/ }).first();
   await expect(rom).toBeVisible();
@@ -85,18 +102,18 @@ test("home leads with a real device mapping and its sources", async ({
   await expect(example.locator('a[target="_blank"]').first()).toBeVisible();
 });
 
-test("home search shows matching brands", async ({ page }) => {
-  await page.goto("/");
-  await page.getByPlaceholder("Search devices or ROMs…").fill("samsung");
+test("the hero search shows matching brands", async ({ page }) => {
+  const field = await openSearch(page);
+  await field.fill("samsung");
   const brand = page.getByRole("option", { name: /^Samsung/ }).first();
   await expect(brand).toBeVisible();
   await brand.click();
   await page.waitForURL("**/devices/samsung");
 });
 
-test("home search offers the full result list", async ({ page }) => {
-  await page.goto("/");
-  await page.getByPlaceholder("Search devices or ROMs…").fill("pixel");
+test("the hero search offers the full result list", async ({ page }) => {
+  const field = await openSearch(page);
+  await field.fill("pixel");
 
   const all = page.getByRole("option", { name: /Every device matching/ });
   await expect(all).toBeVisible();
@@ -104,32 +121,31 @@ test("home search offers the full result list", async ({ page }) => {
   await page.waitForURL("**/devices?q=pixel");
 });
 
-test("clicking an example fills the search", async ({ page }) => {
+test("an example opens the search dialog already searching", async ({
+  page,
+}) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Search for sweet" }).click();
-  await expect(page.getByPlaceholder("Search devices or ROMs…")).toHaveValue(
-    "sweet",
-  );
+
+  const field = page
+    .getByRole("dialog")
+    .getByPlaceholder("Search devices or ROMs…");
+  await expect(field).toHaveValue("sweet");
   await expect(
     page.getByRole("option", { name: /Redmi Note 10 Pro/ }).first(),
   ).toBeVisible();
 });
 
-test("example chips show when idle or when nothing matches", async ({
-  page,
-}) => {
-  await page.goto("/");
-  const example = page.getByRole("button", { name: "Search for Pixel" });
-  const input = page.getByPlaceholder("Search devices or ROMs…");
+test.describe("without scripts", () => {
+  test.use({ javaScriptEnabled: false });
 
-  await expect(example).toBeVisible();
-
-  await input.fill("pixel");
-  await expect(example).toBeHidden();
-
-  await input.fill("zzzzzz");
-  await expect(page.getByText(/No matches for/)).toBeVisible();
-  await expect(example).toBeVisible();
+  test("the hero search falls back to the device directory", async ({
+    page,
+  }) => {
+    await page.goto("/");
+    await page.getByRole("link", HERO_SEARCH).click();
+    await page.waitForURL("**/devices");
+  });
 });
 
 test("command palette shows matches while typing", async ({ page }) => {
@@ -155,10 +171,10 @@ test.describe("one search on a phone", () => {
     hasTouch: true,
   });
 
-  test("the hero field opens the shared dialog as a card", async ({ page }) => {
+  test("the hero opens the shared dialog as a card", async ({ page }) => {
     await page.goto("/");
 
-    await page.getByPlaceholder("Search devices or ROMs…").tap();
+    await page.getByRole("link", HERO_SEARCH).tap();
     const dialog = page.getByRole("dialog");
     await expect(dialog).toBeVisible();
 
@@ -187,7 +203,7 @@ test.describe("one search on a phone", () => {
     await page.goto("/");
 
     const dialog = page.getByRole("dialog");
-    await page.getByPlaceholder("Search devices or ROMs…").tap();
+    await page.getByRole("link", HERO_SEARCH).tap();
     await expect(dialog).toBeVisible();
     const fromHero = await dialog.boundingBox();
     await page.keyboard.press("Escape");
@@ -218,7 +234,7 @@ test.describe("one search on a phone", () => {
   test("closing returns to the page where it was left", async ({ page }) => {
     await page.goto("/");
     await page.evaluate(() => window.scrollTo(0, 200));
-    await page.getByPlaceholder("Search devices or ROMs…").tap();
+    await page.getByRole("link", HERO_SEARCH).tap();
     await page.keyboard.type("pixel");
     await expect(page.getByRole("option").first()).toBeVisible();
 

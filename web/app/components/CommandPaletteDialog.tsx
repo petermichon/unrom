@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from "react";
+import { useLayoutEffect, useState, type ReactNode } from "react";
 import { useNavigate } from "react-router";
 import {
   Command,
@@ -66,11 +66,20 @@ export default function CommandPaletteDialog({
 
   // Base UI locks the document with `overflow: hidden` on <html>, which iOS
   // ignores: the page behind a modal still pans, and the keyboard's reveal
-  // scroll drags it. Pinning the body is the lock that holds there.
-  useEffect(() => {
+  // scroll drags it. Pinning the body is the lock that holds there. Taking the
+  // <html> overflow first also stops Base UI layering its own lock on top: it
+  // would snapshot the pinned body and restore that snapshot on close, leaving
+  // the page stuck. `scrollbar-gutter` keeps the page from shifting when the
+  // scrollbar goes.
+  useLayoutEffect(() => {
+    const html = document.documentElement;
     const body = document.body;
     const scrollY = window.scrollY;
+    const previousOverflow = html.style.overflow;
+    const previousGutter = html.style.scrollbarGutter;
     const previous = body.style.cssText;
+    html.style.overflow = "hidden";
+    html.style.scrollbarGutter = "stable";
     body.style.position = "fixed";
     body.style.top = `-${scrollY}px`;
     body.style.left = "0";
@@ -78,6 +87,8 @@ export default function CommandPaletteDialog({
     body.style.width = "100%";
     return () => {
       body.style.cssText = previous;
+      html.style.overflow = previousOverflow;
+      html.style.scrollbarGutter = previousGutter;
       window.scrollTo(0, scrollY);
     };
   }, []);
