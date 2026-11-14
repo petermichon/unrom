@@ -29,6 +29,16 @@ test("registry-only devices are pages with no ROM data", async ({ page }) => {
   await expect(page.getByText("No ROM data yet")).toBeVisible();
 });
 
+test("device pages warn when every ROM is discontinued", async ({ page }) => {
+  await page.goto("/devices/lenovo/jd2019");
+
+  await expect(
+    page.getByText(
+      "Every ROM listed for this device is marked discontinued upstream.",
+    ),
+  ).toBeVisible();
+});
+
 test("device pages show the vendor bootloader policy", async ({ page }) => {
   await page.goto("/devices/fairphone/FP5");
 

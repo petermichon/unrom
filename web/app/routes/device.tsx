@@ -108,6 +108,9 @@ export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
 
 export default function DeviceRoute() {
   const { device, bootloaderPolicy, statuses } = useLoaderData<typeof loader>();
+  const allDiscontinued =
+    device.roms.length > 0 &&
+    device.roms.every((rom) => statuses[rom.id] === "discontinued");
 
   return (
     <div className="flex flex-col gap-8">
@@ -143,6 +146,12 @@ export default function DeviceRoute() {
       </div>
 
       {bootloaderPolicy && <BootloaderPolicyCard policy={bootloaderPolicy} />}
+
+      {allDiscontinued && (
+        <p className="rounded-xl border border-border bg-muted/40 px-4 py-3 text-sm text-muted-foreground">
+          Every ROM listed for this device is marked discontinued upstream.
+        </p>
+      )}
 
       <DeviceRomsTable
         roms={device.roms}
