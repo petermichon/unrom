@@ -2,7 +2,7 @@ import { Menu } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
 import { Link, useLocation, useNavigation } from "react-router";
 import { NAV_ITEMS } from "@/lib/nav";
-import CommandPalette from "@/components/CommandPalette";
+import CommandPalette, { SearchProvider } from "@/components/CommandPalette";
 import SiteNav from "@/components/SiteNav";
 import { GitHubIcon } from "@/components/GitHubIcon";
 import { ModeToggle } from "@/components/mode-toggle";
@@ -134,152 +134,154 @@ export default function AppShell({ updatedAt, updatedAtIso, children }: Props) {
   const { pathname } = useLocation();
   return (
     <TooltipProvider>
-      <div className="flex min-h-svh flex-col bg-background">
-        <header
-          data-nosnippet
-          className="sticky top-0 z-40 bg-background/85 backdrop-blur-xl backdrop-saturate-150"
-        >
-          <div className="mx-auto flex h-16 w-full max-w-6xl items-center gap-2 px-4 sm:px-6">
-            <Link
-              to="/"
-              prefetch="viewport"
-              className="flex items-center gap-2 rounded-full font-brand text-[1.3rem] font-extrabold tracking-[-0.03em] outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
-            >
-              <span className="flex items-center gap-2">
-                <span className="font-brand">unrom</span>
-                <Badge className="border-0 bg-accent px-2 py-0 text-[11px] font-semibold text-accent-foreground">
-                  beta
-                </Badge>
-              </span>
-            </Link>
-
-            {/* Remount per route so an open panel closes on navigation; the
-                pointer can stay over the trigger while the page changes. */}
-            <SiteNav key={pathname} />
-
-            <div className="ml-auto flex items-center gap-2">
-              <CommandPalette />
-              <div className="hidden items-center gap-2 md:flex">
-                <Button
-                  variant="outline"
-                  size="icon"
-                  nativeButton={false}
-                  aria-label="GitHub repository"
-                  render={
-                    <a
-                      href={GITHUB_URL}
-                      target="_blank"
-                      rel="noreferrer"
-                      aria-label="GitHub repository"
-                    />
-                  }
-                >
-                  <GitHubIcon className="size-4" />
-                </Button>
-              </div>
-              <ModeToggle />
-              <MobileMenu />
-            </div>
-          </div>
-          <nav
-            aria-label="Sections"
-            className="nojs-nav mx-auto hidden w-full max-w-6xl flex-wrap items-center gap-x-5 gap-y-1 border-t border-border px-4 py-2 text-sm font-semibold"
+      <SearchProvider>
+        <div className="flex min-h-svh flex-col bg-background">
+          <header
+            data-nosnippet
+            className="sticky top-0 z-40 bg-background/85 backdrop-blur-xl backdrop-saturate-150"
           >
-            <a href="/devices" className="text-foreground/70">
-              Devices
-            </a>
-            <a href="/roms" className="text-foreground/70">
-              ROMs
-            </a>
-            <a href="/brands" className="text-foreground/70">
-              Brands
-            </a>
-            <a href="/data" className="text-foreground/70">
-              Data
-            </a>
-          </nav>
-          <NavigationProgress />
-        </header>
-
-        <main
-          id="content"
-          tabIndex={-1}
-          aria-busy={navigation.state !== "idle"}
-          className="flex-1 px-4 py-10 sm:px-6"
-        >
-          <div className="mx-auto w-full max-w-6xl">{children}</div>
-        </main>
-
-        <footer className="border-t border-border px-4 py-6 text-xs text-muted-foreground sm:px-6">
-          <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-3">
-            <p>
-              Last updated{" "}
-              {updatedAtIso ? (
-                <time dateTime={updatedAtIso}>{updatedAt ?? "unknown"}</time>
-              ) : (
-                (updatedAt ?? "unknown")
-              )}
-            </p>
-            <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
-              <nav
-                aria-label="Site"
-                data-nosnippet
-                className="flex flex-wrap items-center gap-4"
+            <div className="mx-auto flex h-16 w-full max-w-6xl items-center gap-2 px-4 sm:px-6">
+              <Link
+                to="/"
+                prefetch="viewport"
+                className="flex items-center gap-2 rounded-full font-brand text-[1.3rem] font-extrabold tracking-[-0.03em] outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
               >
-                <Link
-                  to="/devices"
-                  prefetch="intent"
-                  className="py-1 hover:text-foreground hover:underline"
-                >
-                  Devices
-                </Link>
-                <Link
-                  to="/roms"
-                  prefetch="intent"
-                  className="py-1 hover:text-foreground hover:underline"
-                >
-                  ROMs
-                </Link>
-                <Link
-                  to="/brands"
-                  prefetch="intent"
-                  className="py-1 hover:text-foreground hover:underline"
-                >
-                  Brands
-                </Link>
-              </nav>
-              <nav
-                aria-label="Data access"
-                data-nosnippet
-                className="flex flex-wrap items-center gap-4"
-              >
-                <Link
-                  to="/data"
-                  prefetch="intent"
-                  className="py-1 hover:text-foreground hover:underline"
-                >
-                  Data
-                </Link>
-                <Link
-                  to="/legal"
-                  prefetch="intent"
-                  className="py-1 hover:text-foreground hover:underline"
-                >
-                  Legal
-                </Link>
-                <a
-                  href={ODBL_URL}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="py-1 hover:text-foreground hover:underline"
-                >
-                  ODbL license
-                </a>
-              </nav>
+                <span className="flex items-center gap-2">
+                  <span className="font-brand">unrom</span>
+                  <Badge className="border-0 bg-accent px-2 py-0 text-[11px] font-semibold text-accent-foreground">
+                    beta
+                  </Badge>
+                </span>
+              </Link>
+
+              {/* Remount per route so an open panel closes on navigation; the
+                pointer can stay over the trigger while the page changes. */}
+              <SiteNav key={pathname} />
+
+              <div className="ml-auto flex items-center gap-2">
+                <CommandPalette />
+                <div className="hidden items-center gap-2 md:flex">
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    nativeButton={false}
+                    aria-label="GitHub repository"
+                    render={
+                      <a
+                        href={GITHUB_URL}
+                        target="_blank"
+                        rel="noreferrer"
+                        aria-label="GitHub repository"
+                      />
+                    }
+                  >
+                    <GitHubIcon className="size-4" />
+                  </Button>
+                </div>
+                <ModeToggle />
+                <MobileMenu />
+              </div>
             </div>
-          </div>
-        </footer>
-      </div>
+            <nav
+              aria-label="Sections"
+              className="nojs-nav mx-auto hidden w-full max-w-6xl flex-wrap items-center gap-x-5 gap-y-1 border-t border-border px-4 py-2 text-sm font-semibold"
+            >
+              <a href="/devices" className="text-foreground/70">
+                Devices
+              </a>
+              <a href="/roms" className="text-foreground/70">
+                ROMs
+              </a>
+              <a href="/brands" className="text-foreground/70">
+                Brands
+              </a>
+              <a href="/data" className="text-foreground/70">
+                Data
+              </a>
+            </nav>
+            <NavigationProgress />
+          </header>
+
+          <main
+            id="content"
+            tabIndex={-1}
+            aria-busy={navigation.state !== "idle"}
+            className="flex-1 px-4 py-10 sm:px-6"
+          >
+            <div className="mx-auto w-full max-w-6xl">{children}</div>
+          </main>
+
+          <footer className="border-t border-border px-4 py-6 text-xs text-muted-foreground sm:px-6">
+            <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-3">
+              <p>
+                Last updated{" "}
+                {updatedAtIso ? (
+                  <time dateTime={updatedAtIso}>{updatedAt ?? "unknown"}</time>
+                ) : (
+                  (updatedAt ?? "unknown")
+                )}
+              </p>
+              <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
+                <nav
+                  aria-label="Site"
+                  data-nosnippet
+                  className="flex flex-wrap items-center gap-4"
+                >
+                  <Link
+                    to="/devices"
+                    prefetch="intent"
+                    className="py-1 hover:text-foreground hover:underline"
+                  >
+                    Devices
+                  </Link>
+                  <Link
+                    to="/roms"
+                    prefetch="intent"
+                    className="py-1 hover:text-foreground hover:underline"
+                  >
+                    ROMs
+                  </Link>
+                  <Link
+                    to="/brands"
+                    prefetch="intent"
+                    className="py-1 hover:text-foreground hover:underline"
+                  >
+                    Brands
+                  </Link>
+                </nav>
+                <nav
+                  aria-label="Data access"
+                  data-nosnippet
+                  className="flex flex-wrap items-center gap-4"
+                >
+                  <Link
+                    to="/data"
+                    prefetch="intent"
+                    className="py-1 hover:text-foreground hover:underline"
+                  >
+                    Data
+                  </Link>
+                  <Link
+                    to="/legal"
+                    prefetch="intent"
+                    className="py-1 hover:text-foreground hover:underline"
+                  >
+                    Legal
+                  </Link>
+                  <a
+                    href={ODBL_URL}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="py-1 hover:text-foreground hover:underline"
+                  >
+                    ODbL license
+                  </a>
+                </nav>
+              </div>
+            </div>
+          </footer>
+        </div>
+      </SearchProvider>
     </TooltipProvider>
   );
 }

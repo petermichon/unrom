@@ -55,3 +55,15 @@ test("404 page has no accessibility violations", async ({ page }) => {
   const { violations } = await analyze(page);
   expect(violations).toEqual([]);
 });
+
+test("the search dialog has no accessibility violations", async ({ page }) => {
+  await page.goto("/");
+  await page.waitForLoadState("networkidle");
+  await page
+    .getByRole("button", { name: "Search devices, brands, and ROMs" })
+    .click();
+  await expect(page.getByRole("dialog")).toBeVisible();
+
+  const { violations } = await analyze(page);
+  expect(violations).toEqual([]);
+});

@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { useNavigate } from "react-router";
 import {
   Command,
@@ -8,7 +8,7 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { tokenize } from "@/lib/search";
+import { SEARCH_PLACEHOLDER, tokenize } from "@/lib/search";
 import { useSearch } from "@/lib/use-search";
 import type { Suggestions } from "@/components/CommandPalette";
 
@@ -16,6 +16,8 @@ interface Props {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   suggestions: Suggestions | null;
+  /** Query to start with, for a caller that already knows what was asked. */
+  initialQuery?: string;
 }
 
 /** Centred message for the list area, so state changes never resize the dialog. */
@@ -42,8 +44,9 @@ export default function CommandPaletteDialog({
   open,
   onOpenChange,
   suggestions,
+  initialQuery = "",
 }: Props) {
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState(initialQuery);
   const { data, loading, error } = useSearch(query);
   const terms = tokenize(query);
   const navigate = useNavigate();
@@ -61,20 +64,38 @@ export default function CommandPaletteDialog({
     data.totals.brands === 0 &&
     data.totals.roms === 0;
 
+  // Base UI locks the document with `overflow: hidden` on <html>, which iOS
+  // ignores: the page behind a modal still pans, and the keyboard's reveal
+  // scroll drags it. Pinning the body is the lock that holds there.
+  useEffect(() => {
+    const body = document.body;
+    const scrollY = window.scrollY;
+    const previous = body.style.cssText;
+    body.style.position = "fixed";
+    body.style.top = `-${scrollY}px`;
+    body.style.left = "0";
+    body.style.right = "0";
+    body.style.width = "100%";
+    return () => {
+      body.style.cssText = previous;
+      window.scrollTo(0, scrollY);
+    };
+  }, []);
+
   return (
     <CommandDialog
       open={open}
       onOpenChange={onOpenChange}
       title="Search unrom"
       description="Find a device, brand, or ROM"
-      className="h-[min(28rem,calc(67svh-2rem))] grid-rows-[1fr]"
+      className="top-4! h-[min(28rem,calc(100dvh-2rem))] grid-rows-[1fr]"
     >
       <Command shouldFilter={false}>
         <CommandInput
           seamless
           className="text-base"
           aria-label="Search devices, brands, and ROMs"
-          placeholder="Search devices, brands, and ROMs…"
+          placeholder={SEARCH_PLACEHOLDER}
           value={query}
           onValueChange={setQuery}
           status={loading ? "Searching…" : null}
@@ -93,7 +114,7 @@ export default function CommandPaletteDialog({
               : null}
         </div>
         <div className="relative min-h-0 flex-1">
-          <CommandList className="h-full max-h-none">
+          <CommandList className="h-full max-h-none overscroll-contain">
             {!error && terms.length === 0 && suggestions?.devices.length ? (
               <CommandGroup heading="Top devices">
                 {suggestions.devices.map((device) => (

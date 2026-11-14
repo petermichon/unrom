@@ -127,17 +127,19 @@ export default function Home() {
       >
         <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_19rem] lg:items-center xl:grid-cols-[minmax(0,1fr)_20rem]">
           <div className="flex min-w-0 max-w-2xl flex-col gap-6">
-            <h1 className="text-balance font-heading text-[2.6rem] leading-[1.02] font-extrabold tracking-[-0.045em] sm:text-5xl lg:text-[3.4rem]">
+            <h1 className="max-lg:order-1 text-balance font-heading text-[2.6rem] leading-[1.02] font-extrabold tracking-[-0.045em] sm:text-5xl lg:text-[3.4rem]">
               Find the ROMs your device can run
             </h1>
-            <p className="max-w-[46ch] text-lg leading-relaxed text-panel-foreground/75">
+            <p className="max-lg:order-3 max-w-[46ch] text-lg leading-relaxed text-panel-foreground/75">
               Device-to-ROM mappings taken from each project's own build pages,
               with the source behind every one.
             </p>
-            <div className="max-w-xl">
+            {/* Below `lg` the field follows the headline: at 320px wide the
+                lead paragraph pushed it to the bottom of the first screen. */}
+            <div className="max-lg:order-2 max-w-xl">
               <DeviceSearch examples={EXAMPLES} />
             </div>
-            <p className="max-w-[52ch] text-sm leading-relaxed text-panel-foreground/70 tabular-nums">
+            <p className="max-lg:order-4 max-w-[52ch] text-sm leading-relaxed text-panel-foreground/70 tabular-nums">
               {formatNumber(counts.devices)} devices,{" "}
               {formatNumber(counts.brands)} brands and{" "}
               {formatNumber(counts.roms)} ROMs.{" "}

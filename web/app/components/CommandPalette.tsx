@@ -1,4 +1,11 @@
-import { useEffect, useState, useSyncExternalStore } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useSyncExternalStore,
+  type ReactNode,
+} from "react";
 import { Search } from "lucide-react";
 import CommandPaletteDialog from "@/components/CommandPaletteDialog";
 import { Button } from "@/components/ui/button";
@@ -8,6 +15,21 @@ import type { BrowseDevice, RomSummary } from "@/lib/types";
 export interface Suggestions {
   devices: BrowseDevice[];
   roms: RomSummary[];
+}
+
+interface SearchDialog {
+  /** Opens the one search surface, optionally already searching for something. */
+  openSearch: (query?: string) => void;
+}
+
+const SearchContext = createContext<SearchDialog | null>(null);
+
+export function useSearchDialog(): SearchDialog {
+  const dialog = useContext(SearchContext);
+  if (!dialog) {
+    throw new Error("useSearchDialog must be used inside SearchProvider");
+  }
+  return dialog;
 }
 
 const subscribe = () => () => {};
@@ -24,10 +46,19 @@ function useShortcutLabel(): string | null {
   );
 }
 
-export default function CommandPalette() {
+/**
+ * Owns the single search dialog for the whole shell, so the header button and
+ * the home page field open the same thing instead of two lookalikes.
+ */
+export function SearchProvider({ children }: { children: ReactNode }) {
   const [open, setOpen] = useState(false);
+  const [initialQuery, setInitialQuery] = useState("");
   const [suggestions, setSuggestions] = useState<Suggestions | null>(null);
-  const shortcut = useShortcutLabel();
+
+  const openSearch = (query?: string) => {
+    setInitialQuery(query ?? "");
+    setOpen(true);
+  };
 
   // The empty state is the mega menu's shortcut list. Load it on the first
   // open and keep it for the session, so reopening costs nothing.
@@ -68,33 +99,42 @@ export default function CommandPalette() {
   }, []);
 
   return (
-    <>
-      <Button
-        type="button"
-        variant="outline"
-        onClick={() => setOpen(true)}
-        aria-label="Search devices, brands, and ROMs"
-        aria-keyshortcuts="Control+K Meta+K"
-        data-nojs-hide
-        title={shortcut ? `Search (${shortcut})` : "Search"}
-        className="text-muted-foreground"
-      >
-        <Search className="size-4" />
-        <span className="hidden sm:inline">Search</span>
-        {shortcut && (
-          <kbd className="ml-1 hidden rounded border border-border px-1.5 py-0.5 font-mono text-[10px] leading-none text-muted-foreground md:inline-block">
-            {shortcut}
-          </kbd>
-        )}
-      </Button>
-
+    <SearchContext.Provider value={{ openSearch }}>
+      {children}
       {open && (
         <CommandPaletteDialog
           open={open}
           onOpenChange={setOpen}
           suggestions={suggestions}
+          initialQuery={initialQuery}
         />
       )}
-    </>
+    </SearchContext.Provider>
+  );
+}
+
+export default function CommandPalette() {
+  const { openSearch } = useSearchDialog();
+  const shortcut = useShortcutLabel();
+
+  return (
+    <Button
+      type="button"
+      variant="outline"
+      onClick={() => openSearch()}
+      aria-label="Search devices, brands, and ROMs"
+      aria-keyshortcuts="Control+K Meta+K"
+      data-nojs-hide
+      title={shortcut ? `Search (${shortcut})` : "Search"}
+      className="text-muted-foreground"
+    >
+      <Search className="size-4" />
+      <span className="hidden sm:inline">Search</span>
+      {shortcut && (
+        <kbd className="ml-1 hidden rounded border border-border px-1.5 py-0.5 font-mono text-[10px] leading-none text-muted-foreground md:inline-block">
+          {shortcut}
+        </kbd>
+      )}
+    </Button>
   );
 }

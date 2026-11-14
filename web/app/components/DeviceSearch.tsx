@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { Form, Link, useNavigate } from "react-router";
+import { useSearchDialog } from "@/components/CommandPalette";
 import { Badge } from "@/components/ui/badge";
 import {
   Command,
@@ -8,8 +9,7 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { useMediaQuery } from "@/lib/use-media-query";
-import { tokenize } from "@/lib/search";
+import { SEARCH_PLACEHOLDER, tokenize } from "@/lib/search";
 import { cn } from "@/lib/utils";
 import { useSearch } from "@/lib/use-search";
 
@@ -17,18 +17,25 @@ interface Props {
   examples?: string[];
 }
 
-const SEARCH_PLACEHOLDER = "Search by device, codename, brand, or ROM…";
-const MOBILE_SEARCH_PLACEHOLDER = "Search devices, brands, or ROMs…";
+/**
+ * Below this width the hero field is a way into the one search surface rather
+ * than a second one: the dialog owns the screen, the keyboard and the results.
+ */
+const COMPACT_QUERY = "(max-width: 1023px)";
+
+function isCompact(): boolean {
+  return window.matchMedia(COMPACT_QUERY).matches;
+}
 
 export default function DeviceSearch({ examples = [] }: Props) {
   const navigate = useNavigate();
   const inputRef = useRef<HTMLInputElement>(null);
   const [query, setQuery] = useState("");
-  const placeholder = useMediaQuery("(max-width: 640px)")
-    ? MOBILE_SEARCH_PLACEHOLDER
-    : SEARCH_PLACEHOLDER;
+  const { openSearch } = useSearchDialog();
   const { data, loading, error } = useSearch(query);
   const terms = tokenize(query);
+  const hasResults =
+    data.devices.length > 0 || data.brands.length > 0 || data.roms.length > 0;
 
   const noResults =
     !error &&
@@ -37,12 +44,12 @@ export default function DeviceSearch({ examples = [] }: Props) {
     data.totals.devices === 0 &&
     data.totals.brands === 0 &&
     data.totals.roms === 0;
-  const truncated =
-    data.totals.devices > data.devices.length ||
-    data.totals.brands > data.brands.length ||
-    data.totals.roms > data.roms.length;
 
   const tryExample = (example: string) => {
+    if (isCompact()) {
+      openSearch(example);
+      return;
+    }
     setQuery(example);
     inputRef.current?.focus();
   };
@@ -70,11 +77,23 @@ export default function DeviceSearch({ examples = [] }: Props) {
             name="q"
             ref={inputRef}
             seamless
+            inputMode="search"
             className="text-base"
             aria-label="Search devices, brands, and ROMs"
-            placeholder={placeholder}
+            placeholder={SEARCH_PLACEHOLDER}
+            autoCapitalize="none"
+            enterKeyHint="search"
             value={query}
             onValueChange={setQuery}
+            // Opens on release like any button. Suppressing the pointerdown's
+            // default keeps the caret and keyboard from flashing here first;
+            // the dialog's own field takes focus. Click still fires.
+            onPointerDown={(event) => {
+              if (isCompact()) event.preventDefault();
+            }}
+            onClick={() => {
+              if (isCompact()) openSearch();
+            }}
             status={loading ? "Searching…" : null}
             onKeyDown={(event) => {
               if (event.key !== "Enter") return;
@@ -88,9 +107,16 @@ export default function DeviceSearch({ examples = [] }: Props) {
               navigate(`/devices?q=${encodeURIComponent(value)}`);
             }}
           />
-          <div className="relative">
+          <div>
             <CommandList
-              className={cn("max-h-none", terms.length > 0 && "h-80 sm:h-96")}
+              className={cn(
+                "overscroll-contain",
+                // Grows with its content: a fixed height left an empty panel
+                // under the field while loading and when nothing matched, and
+                // could not fit above a phone keyboard.
+                terms.length > 0 ? "max-h-[min(22rem,50dvh)]" : "max-h-none",
+                loading && !hasResults && "min-h-24",
+              )}
             >
               {!error && data.brands.length > 0 && (
                 <CommandGroup heading="Brands">
@@ -173,44 +199,55 @@ export default function DeviceSearch({ examples = [] }: Props) {
                   ))}
                 </CommandGroup>
               )}
-              {!error && truncated && (
-                <p className="px-3 py-2 text-xs text-muted-foreground">
-                  Showing top matches. Refine your search.
-                </p>
-              )}
+              {!error &&
+                terms.length > 0 &&
+                !loading &&
+                data.totals.devices > 0 && (
+                  <CommandGroup heading="All results">
+                    <CommandItem
+                      value="all-devices"
+                      onSelect={() =>
+                        navigate(
+                          `/devices?q=${encodeURIComponent(query.trim())}`,
+                        )
+                      }
+                      className="gap-3"
+                    >
+                      <span className="min-w-0 flex-1 truncate font-medium">
+                        Every device matching “{query.trim()}”
+                      </span>
+                      <Badge
+                        variant="outline"
+                        className="shrink-0 text-[11px] font-normal text-muted-foreground tabular-nums"
+                      >
+                        {data.totals.devices}
+                      </Badge>
+                    </CommandItem>
+                  </CommandGroup>
+                )}
             </CommandList>
             {error && (
-              <div className="absolute inset-0 grid place-items-center px-4 py-6 text-center">
-                <p className="text-sm text-muted-foreground">
-                  Search is unavailable right now. Check your connection and try
-                  again.
-                </p>
-              </div>
+              <p className="px-4 py-6 text-center text-sm text-muted-foreground">
+                Search is unavailable right now. Check your connection and try
+                again.
+              </p>
             )}
             {noResults && (
-              <div className="absolute inset-0 grid place-items-center px-4 py-6 text-center">
-                <p className="text-sm text-muted-foreground">
-                  No matches for “{query.trim()}”. Try a codename, or browse{" "}
-                  <Link
-                    to="/devices"
-                    className="text-foreground hover:underline"
-                  >
-                    devices
-                  </Link>
-                  ,{" "}
-                  <Link
-                    to="/brands"
-                    className="text-foreground hover:underline"
-                  >
-                    brands
-                  </Link>
-                  , or{" "}
-                  <Link to="/roms" className="text-foreground hover:underline">
-                    ROMs
-                  </Link>
-                  .
-                </p>
-              </div>
+              <p className="px-4 py-6 text-center text-sm text-muted-foreground">
+                No matches for “{query.trim()}”. Try a codename, or browse{" "}
+                <Link to="/devices" className="text-foreground hover:underline">
+                  devices
+                </Link>
+                ,{" "}
+                <Link to="/brands" className="text-foreground hover:underline">
+                  brands
+                </Link>
+                , or{" "}
+                <Link to="/roms" className="text-foreground hover:underline">
+                  ROMs
+                </Link>
+                .
+              </p>
             )}
           </div>
           {/* Live region only: the visible state lives inside the field, so the
@@ -236,7 +273,7 @@ export default function DeviceSearch({ examples = [] }: Props) {
       {examples.length > 0 && (terms.length === 0 || noResults) && (
         <div
           data-nojs-hide
-          className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground"
+          className="flex flex-wrap items-center gap-1.5 text-xs text-muted-foreground"
         >
           <span className="text-panel-foreground/70">Try:</span>
           {examples.map((example) => (
@@ -250,7 +287,7 @@ export default function DeviceSearch({ examples = [] }: Props) {
                   onClick={() => tryExample(example)}
                 />
               }
-              className="h-auto min-h-9 cursor-pointer border-transparent bg-panel-foreground/[0.06] px-2.5 py-1.5 text-xs font-normal text-panel-foreground/70 hover:bg-panel-foreground/10 hover:text-panel-foreground"
+              className="h-auto min-h-11 cursor-pointer border-transparent bg-panel-foreground/[0.06] px-2.5 py-2 text-xs font-normal text-panel-foreground/70 hover:bg-panel-foreground/10 hover:text-panel-foreground"
             >
               {example}
             </Badge>

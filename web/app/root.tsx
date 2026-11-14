@@ -100,7 +100,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
     <html lang="en" suppressHydrationWarning>
       <head>
         <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta
+          name="viewport"
+          // `interactive-widget` makes Chromium shrink the layout viewport for
+          // the keyboard instead of overlaying it, so `dvh` and fixed sheets
+          // stay above it. Safari ignores it and still overlays.
+          content="width=device-width, initial-scale=1, interactive-widget=resizes-content"
+        />
         <Meta />
         <script
           // Apply the stored theme before first paint so a dark preference does

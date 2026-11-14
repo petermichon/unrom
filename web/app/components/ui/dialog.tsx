@@ -31,7 +31,10 @@ function DialogOverlay({
     <DialogPrimitive.Backdrop
       data-slot="dialog-overlay"
       className={cn(
-        "fixed inset-0 isolate z-50 bg-black/10 duration-100 supports-backdrop-filter:backdrop-blur-xs data-open:animate-in data-open:fade-in-0 data-closed:animate-out data-closed:fade-out-0",
+        // `touch-none` stops a drag that starts on the backdrop from panning the
+        // page behind: `overflow: hidden` on <html> (the only lock Base UI
+        // applies) is not enough on iOS.
+        "fixed inset-0 isolate z-50 touch-none bg-black/10 duration-100 supports-backdrop-filter:backdrop-blur-xs data-open:animate-in data-open:fade-in-0 data-closed:animate-out data-closed:fade-out-0",
         className
       )}
       {...props}
