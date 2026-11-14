@@ -220,33 +220,6 @@ export default function AppShell({ updatedAt, updatedAtIso, children }: Props) {
               </p>
               <div className="flex flex-wrap items-center gap-x-6 gap-y-2">
                 <nav
-                  aria-label="Site"
-                  data-nosnippet
-                  className="flex flex-wrap items-center gap-4"
-                >
-                  <Link
-                    to="/devices"
-                    prefetch="intent"
-                    className="py-1 hover:text-foreground hover:underline"
-                  >
-                    Devices
-                  </Link>
-                  <Link
-                    to="/roms"
-                    prefetch="intent"
-                    className="py-1 hover:text-foreground hover:underline"
-                  >
-                    ROMs
-                  </Link>
-                  <Link
-                    to="/brands"
-                    prefetch="intent"
-                    className="py-1 hover:text-foreground hover:underline"
-                  >
-                    Brands
-                  </Link>
-                </nav>
-                <nav
                   aria-label="Data access"
                   data-nosnippet
                   className="flex flex-wrap items-center gap-4"
