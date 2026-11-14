@@ -296,6 +296,7 @@ export default function DataRoute() {
               <li>Devices with codenames, model names, and aliases.</li>
               <li>ROMs and their status.</li>
               <li>Device–ROM mappings with a source URL.</li>
+              <li>Vendor bootloader-unlock policies, with a source URL.</li>
             </ul>
           </div>
           <div className="flex flex-col gap-1">
@@ -311,6 +312,13 @@ export default function DataRoute() {
           Not included: ROM downloads, device specifications, or install
           instructions. Catalogue-only ROMs have no device data yet.
         </p>
+        <p className="max-w-[68ch] text-sm text-muted-foreground">
+          A mapping says a project reports a build for a device. It says nothing
+          about the build itself: no security or patch level, no check that the
+          build is reproducible, and no device-level statement about relocking
+          the bootloader. ROM status records whether a project still ships
+          builds.
+        </p>
       </section>
 
       <section aria-labelledby="provenance" className="flex flex-col gap-3">
@@ -321,10 +329,11 @@ export default function DataRoute() {
           Provenance and license
         </h2>
         <p className="max-w-[68ch] text-sm text-muted-foreground">
-          Each mapping keeps the source URL it came from. Device lists are read
-          from ROM projects&apos; own sources, with catalogue coverage from
-          ROMDB.tel, Customrombay, and the awesome list. Raw snapshots live in{" "}
-          <code>data/</code>.
+          unrom is open source: the code is AGPL-3.0-only and the dataset is
+          ODbL-1.0. Each mapping keeps the source URL it came from. Device lists
+          are read from ROM projects&apos; own sources, with catalogue coverage
+          from ROMDB.tel, Customrombay, and the awesome list. Raw snapshots live
+          in <code>data/</code>.
         </p>
         <ul className="flex flex-wrap gap-x-4 gap-y-1 text-sm">
           <li>
@@ -377,9 +386,8 @@ export default function DataRoute() {
           </li>
         </ul>
         <p className="text-xs text-muted-foreground">
-          Data is ODbL-1.0 and code is AGPL-3.0-only. Android is a trademark of
-          Google LLC. Other names belong to their owners and are used for
-          identification only.
+          Android is a trademark of Google LLC. Other names belong to their
+          owners and are used for identification only.
         </p>
       </section>
 

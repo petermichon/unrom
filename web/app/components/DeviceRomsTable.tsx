@@ -14,6 +14,7 @@ import {
   EmptyTitle,
 } from "@/components/ui/empty";
 import { SearchInput } from "@/components/SearchInput";
+import { StatusPill } from "@/components/StatusPill";
 import { Button } from "@/components/ui/button";
 import {
   Tooltip,
@@ -21,7 +22,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { bySortKey, referenceLabel } from "@/lib/sort";
-import type { RomSupport } from "@/lib/types";
+import type { RomStatus, RomSupport } from "@/lib/types";
 
 const MOBILE_HIDDEN = new Set(["referenceUrl"]);
 const columnClassName = (id: string) =>
@@ -29,11 +30,17 @@ const columnClassName = (id: string) =>
 
 interface Props {
   roms: RomSupport[];
+  /** ROM id → catalogue status; only a discontinued project is called out. */
+  statuses?: Record<string, RomStatus>;
   /** The API response for this device, offered when the table is empty. */
   apiEndpoint?: string;
 }
 
-export default function DeviceRomsTable({ roms, apiEndpoint }: Props) {
+export default function DeviceRomsTable({
+  roms,
+  statuses = {},
+  apiEndpoint,
+}: Props) {
   const columns = useMemo<ColumnDef<RomSupport>[]>(
     () => [
       {
@@ -69,6 +76,9 @@ export default function DeviceRomsTable({ roms, apiEndpoint }: Props) {
                 >
                   via {row.original.inheritedFrom}
                 </span>
+              )}
+              {statuses[row.original.id] === "discontinued" && (
+                <StatusPill status="discontinued" />
               )}
             </span>
             {row.original.referenceUrl && (
@@ -123,7 +133,7 @@ export default function DeviceRomsTable({ roms, apiEndpoint }: Props) {
           ),
       },
     ],
-    [],
+    [statuses],
   );
 
   if (roms.length === 0) {

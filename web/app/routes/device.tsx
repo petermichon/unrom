@@ -4,7 +4,11 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import DeviceRomsTable from "@/components/DeviceRomsTable";
 import { PageHeader } from "@/components/PageHeader";
 import { Badge } from "@/components/ui/badge";
-import { fetchBootloaderPolicy, fetchDevice } from "@/lib/data";
+import {
+  fetchBootloaderPolicy,
+  fetchDevice,
+  fetchRomSummaries,
+} from "@/lib/data";
 import { brandedDeviceName } from "@/lib/devices";
 import {
   SITE_URL,
@@ -15,20 +19,26 @@ import {
   summarizeNames,
   updatedAtFromMatches,
 } from "@/lib/seo";
-import type { DeviceDetail } from "@/lib/types";
+import type { DeviceDetail, RomStatus, RomSummary } from "@/lib/types";
 import type { Route } from "./+types/device";
 
 // An alternate codename (alias) resolves to the canonical device; redirect so
 // the URL and every generated link agree on one canonical address.
 async function loadDevice(params: { vendor: string; codename: string }) {
-  const [device, bootloaderPolicy] = await Promise.all([
+  const [device, bootloaderPolicy, roms] = await Promise.all([
     fetchDevice(params.vendor, params.codename),
     fetchBootloaderPolicy(params.vendor),
+    // The device response has no ROM status, and this is the page where a
+    // discontinued ROM is easiest to mistake for a current one. The catalogue
+    // carries it; a failure here must not take the page down.
+    fetchRomSummaries().catch(() => [] as RomSummary[]),
   ]);
   if (device.vendor !== params.vendor || device.codename !== params.codename) {
     throw redirect(`/devices/${device.vendor}/${device.codename}`, 301);
   }
-  return { device, bootloaderPolicy };
+  const statuses: Record<string, RomStatus> = {};
+  for (const rom of roms) statuses[rom.id] = rom.status;
+  return { device, bootloaderPolicy, statuses };
 }
 
 export async function loader({ params }: Route.LoaderArgs) {
@@ -97,7 +107,7 @@ export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
 };
 
 export default function DeviceRoute() {
-  const { device, bootloaderPolicy } = useLoaderData<typeof loader>();
+  const { device, bootloaderPolicy, statuses } = useLoaderData<typeof loader>();
 
   return (
     <div className="flex flex-col gap-8">
@@ -136,6 +146,7 @@ export default function DeviceRoute() {
 
       <DeviceRomsTable
         roms={device.roms}
+        statuses={statuses}
         apiEndpoint={`/api/devices/${device.vendor}/${device.codename}`}
       />
 

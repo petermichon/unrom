@@ -61,6 +61,20 @@ const POLICY_SEEDS: PolicySeed[] = [
     verifiedAt: "2026-11-14",
   },
   {
+    vendor: "nothing",
+    status: "unknown",
+    scope: "unknown",
+    summary:
+      "Nothing publishes no bootloader-unlock policy: no procedure, code or per-device list. Its warranty policy excludes a rooted handset.",
+    conditions: [
+      "No vendor unlock page, code or programme is published.",
+      "The warranty policy excludes a rooted handset.",
+      "Warranty terms were checked for India; other regions publish their own.",
+    ],
+    sourceUrl: "https://in.nothing.tech/pages/warranty-policy",
+    verifiedAt: "2026-11-14",
+  },
+  {
     vendor: "oneplus",
     status: "conditional",
     scope: "most",

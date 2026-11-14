@@ -12,6 +12,13 @@ test("device identity shows curation provenance", async ({ page }) => {
   ).toHaveAttribute("href", "/roms/lineageos");
 });
 
+test("device pages mark a discontinued ROM", async ({ page }) => {
+  await page.goto("/devices/asus/X00TD");
+
+  const row = page.getByRole("row", { name: /ArrowOS/ });
+  await expect(row.getByText("Discontinued", { exact: true })).toBeVisible();
+});
+
 test("registry-only devices are pages with no ROM data", async ({ page }) => {
   await page.goto("/devices/huawei/madrid");
 
@@ -35,6 +42,17 @@ test("device pages show the vendor bootloader policy", async ({ page }) => {
     "href",
     "https://support.fairphone.com/hc/en-us/articles/10492476238865-How-to-unlock-or-lock-your-Fairphone-s-bootloader",
   );
+});
+
+test("bootloader policies cover Nothing", async ({ page }) => {
+  await page.goto("/devices/nothing");
+
+  const policy = page.getByRole("region", { name: "Bootloader unlock" });
+  await expect(policy).toBeVisible();
+  await expect(policy.getByText("Unknown", { exact: true })).toBeVisible();
+  await expect(
+    policy.getByRole("link", { name: "Official source" }),
+  ).toHaveAttribute("href", "https://in.nothing.tech/pages/warranty-policy");
 });
 
 test("brand pages show the vendor bootloader policy", async ({ page }) => {
