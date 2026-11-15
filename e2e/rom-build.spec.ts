@@ -8,8 +8,12 @@ test("ROM pages state the newest build when every device reports one", async ({
   await page.goto("/roms/grapheneos");
 
   await expect(
-    page.getByText(new RegExp(`^Newest build ${DATE.source}$`)),
+    page.getByText(new RegExp(`^Newest build ${DATE.source}`)),
   ).toBeVisible();
+  await expect(page.getByRole("link", { name: "Source" })).toHaveAttribute(
+    "href",
+    "https://grapheneos.org/releases",
+  );
 });
 
 test("ROM pages say how many devices report a build", async ({ page }) => {
@@ -18,8 +22,12 @@ test("ROM pages say how many devices report a build", async ({ page }) => {
   await expect(
     page.getByText(
       new RegExp(
-        `^Newest build ${DATE.source} · build dates for [\\d,]+ of [\\d,]+ devices$`,
+        `^Newest build ${DATE.source} · build dates for [\\d,]+ of [\\d,]+ devices`,
       ),
     ),
   ).toBeVisible();
+  await expect(page.getByRole("link", { name: "Source" })).toHaveAttribute(
+    "href",
+    "https://download.lineageos.org/",
+  );
 });

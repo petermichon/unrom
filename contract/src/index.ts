@@ -183,6 +183,8 @@ export interface RomBuildSummary {
   newest: string;
   /** How many of its devices report a build date, out of `deviceCount`. */
   devicesWithBuild: number;
+  /** Where the claim can be checked; null when the ROM publishes no feed. */
+  sourceUrl: string | null;
 }
 
 export interface DeviceVariant {

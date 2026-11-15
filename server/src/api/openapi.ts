@@ -271,7 +271,7 @@ const romDetailSchema = {
       type: ["object", "null"],
       description:
         "How current this ROM's builds are, across the devices it supports. Null when no device reports build metadata.",
-      required: ["newest", "devicesWithBuild"],
+      required: ["newest", "devicesWithBuild", "sourceUrl"],
       properties: {
         newest: {
           type: "string",
@@ -283,6 +283,12 @@ const romDetailSchema = {
           minimum: 0,
           description:
             "How many of its devices report a build date, out of `deviceCount`.",
+        },
+        sourceUrl: {
+          ...nullableString,
+          format: "uri",
+          description:
+            "Where the newest build can be checked; null when the ROM publishes no build feed.",
         },
       },
     },

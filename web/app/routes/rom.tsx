@@ -148,6 +148,19 @@ export default function RomRoute() {
             {build && (
               <p className="max-w-[62ch] text-sm text-panel-foreground/60">
                 {build}
+                {rom.build?.sourceUrl && (
+                  <>
+                    {" · "}
+                    <a
+                      href={rom.build.sourceUrl}
+                      target="_blank"
+                      rel="noopener"
+                      className="font-medium text-panel-foreground/80 underline underline-offset-4 hover:text-panel-foreground"
+                    >
+                      Source
+                    </a>
+                  </>
+                )}
               </p>
             )}
             <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">

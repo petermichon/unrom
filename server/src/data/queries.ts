@@ -35,6 +35,7 @@ import {
   roms,
 } from "../db/schema.ts";
 import { vendorName } from "./identity.ts";
+import { BUILD_SOURCES } from "./build-sources.ts";
 
 // Order by the first letter/digit so leading punctuation (e.g. "/e/OS") does not
 // push a name to the top. Display names are left untouched.
@@ -638,7 +639,13 @@ export function createApi(dbPath: string) {
       status: rom.status as RomStatus,
       deviceCount: devices.length,
       devices,
-      build: newest ? { newest, devicesWithBuild: covered.size } : null,
+      build: newest
+        ? {
+            newest,
+            devicesWithBuild: covered.size,
+            sourceUrl: BUILD_SOURCES[rom.id] ?? null,
+          }
+        : null,
     };
   }
 

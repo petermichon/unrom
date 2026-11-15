@@ -592,15 +592,15 @@ test("a ROM summarises how current its builds are", () => {
     buildDatabase(
       [
         buildRecord({
-          romId: "test",
-          romName: "Test ROM",
+          romId: "grapheneos",
+          romName: "GrapheneOS",
           codename: "sunfish",
           buildDate: "2026-06-01",
           securityPatch: "2026-05-01",
         }),
         buildRecord({
-          romId: "test",
-          romName: "Test ROM",
+          romId: "grapheneos",
+          romName: "GrapheneOS",
           codename: "redfin",
         }),
       ],
@@ -608,11 +608,12 @@ test("a ROM summarises how current its builds are", () => {
     );
     const api = createApi(dbPath);
 
-    const rom = api.getRom("test");
+    const rom = api.getRom("grapheneos");
     assert.equal(rom?.deviceCount, 2);
     assert.deepEqual(rom?.build, {
       newest: "2026-06-01",
       devicesWithBuild: 1,
+      sourceUrl: "https://grapheneos.org/releases",
     });
 
     api.close();
