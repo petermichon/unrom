@@ -476,7 +476,7 @@ const specialSources: SourceAdapter[] = [
   {
     id: "grapheneos",
     romName: "GrapheneOS",
-    file: "grapheneos.html",
+    file: "grapheneos.json",
     parse: parseGrapheneOS,
   },
   { id: "iode", romName: "iodéOS", file: "iode.json", parse: parseIode },

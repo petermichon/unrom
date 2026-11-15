@@ -584,6 +584,43 @@ test("an edge publishes the newest build a source lists", () => {
   }
 });
 
+test("a ROM summarises how current its builds are", () => {
+  const dir = mkdtempSync(join(tmpdir(), "unrom-test-"));
+  const dbPath = join(dir, "unrom.sqlite");
+
+  try {
+    buildDatabase(
+      [
+        buildRecord({
+          romId: "test",
+          romName: "Test ROM",
+          codename: "sunfish",
+          buildDate: "2026-06-01",
+          securityPatch: "2026-05-01",
+        }),
+        buildRecord({
+          romId: "test",
+          romName: "Test ROM",
+          codename: "redfin",
+        }),
+      ],
+      dbPath,
+    );
+    const api = createApi(dbPath);
+
+    const rom = api.getRom("test");
+    assert.equal(rom?.deviceCount, 2);
+    assert.deepEqual(rom?.build, {
+      newest: "2026-06-01",
+      devicesWithBuild: 1,
+    });
+
+    api.close();
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 test("renamed codenames resolve to the canonical device", async () => {
   const records = await parseAllSources();
   const dir = mkdtempSync(join(tmpdir(), "unrom-test-"));

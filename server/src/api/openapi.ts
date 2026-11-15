@@ -248,7 +248,7 @@ const registryEntrySchema = {
 
 const romDetailSchema = {
   type: "object",
-  required: ["id", "name", "status", "deviceCount", "devices"],
+  required: ["id", "name", "status", "deviceCount", "devices", "build"],
   properties: {
     id: { type: "string" },
     name: { type: "string" },
@@ -266,6 +266,25 @@ const romDetailSchema = {
     devices: {
       type: "array",
       items: { $ref: "#/components/schemas/DeviceSummary" },
+    },
+    build: {
+      type: ["object", "null"],
+      description:
+        "How current this ROM's builds are, across the devices it supports. Null when no device reports build metadata.",
+      required: ["newest", "devicesWithBuild"],
+      properties: {
+        newest: {
+          type: "string",
+          format: "date",
+          description: "Newest build date any of its devices reports.",
+        },
+        devicesWithBuild: {
+          type: "integer",
+          minimum: 0,
+          description:
+            "How many of its devices report a build date, out of `deviceCount`.",
+        },
+      },
     },
   },
 };

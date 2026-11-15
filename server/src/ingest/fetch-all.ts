@@ -122,7 +122,7 @@ const sources: Source[] = [
   { id: "witaqua", file: "witaqua.json", fetch: listWitAqua },
   { id: "eos", file: "eos.html", fetch: listEos },
   { id: "evolutionx", file: "evolutionx.json", fetch: listEvolutionX },
-  { id: "grapheneos", file: "grapheneos.html", fetch: listGrapheneOS },
+  { id: "grapheneos", file: "grapheneos.json", fetch: listGrapheneOS },
   { id: "havocos", file: "havocos.txt", fetch: listHavocOS },
   { id: "iode", file: "iode.json", fetch: listIode },
   { id: "iode", file: "iode.html", fetch: listIodeSupported },

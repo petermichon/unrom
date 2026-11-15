@@ -615,12 +615,30 @@ export function createApi(dbPath: string) {
       ),
     );
 
+    // Only the device a build targets reports the build's own metadata; a
+    // variant inherits the build (and its date) through coverage. Count the
+    // devices, so the number lines up with `deviceCount`.
+    const dated = edges.filter((edge) => edge.buildDate !== null);
+    const newest = dated.reduce<string | null>(
+      (best, edge) => (!best || edge.buildDate! > best ? edge.buildDate : best),
+      null,
+    );
+    const covered = new Set<string>();
+    for (const edge of dated) {
+      const key = deviceKey(edge.vendor, edge.codename);
+      covered.add(key);
+      for (const variant of variantsByMain.get(key) ?? []) {
+        covered.add(deviceKey(edge.vendor, variant));
+      }
+    }
+
     return {
       id: rom.id,
       name: rom.name,
       status: rom.status as RomStatus,
       deviceCount: devices.length,
       devices,
+      build: newest ? { newest, devicesWithBuild: covered.size } : null,
     };
   }
 

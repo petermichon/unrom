@@ -173,6 +173,16 @@ export interface SearchResponse {
 
 export interface RomDetail extends RomSummary {
   devices: DeviceSummary[];
+  /** Null when no device of this ROM reports build metadata. */
+  build: RomBuildSummary | null;
+}
+
+/** How current this ROM's builds are, across the devices it supports. */
+export interface RomBuildSummary {
+  /** Newest build date any of its devices reports, `YYYY-MM-DD`. */
+  newest: string;
+  /** How many of its devices report a build date, out of `deviceCount`. */
+  devicesWithBuild: number;
 }
 
 export interface DeviceVariant {
