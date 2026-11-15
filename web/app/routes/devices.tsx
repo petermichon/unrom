@@ -7,6 +7,7 @@ import {
   CoverageToggle,
   DirectoryPager,
   DirectorySearch,
+  RelockToggle,
 } from "@/components/directory";
 import { fetchBrands, fetchDevicesPage, fetchSummary } from "@/lib/data";
 import {
@@ -25,15 +26,18 @@ const PAGE_SIZE = 200;
 function directoryHref({
   q,
   roms,
+  relock,
   page,
 }: {
   q?: string;
   roms?: boolean;
+  relock?: boolean;
   page?: number;
 }): string {
   const params = new URLSearchParams();
   if (q) params.set("q", q);
   if (roms) params.set("roms", "1");
+  if (relock) params.set("relock", "supported");
   if (page && page > 1) params.set("page", String(page));
   const search = params.toString();
   return search ? `/devices?${search}` : "/devices";
@@ -75,10 +79,16 @@ async function load(request: URL) {
   const q = (request.searchParams.get("q") ?? "").trim();
   const rawVendor = (request.searchParams.get("vendor") ?? "").trim();
   const roms = request.searchParams.get("roms") === "1";
+  const relockRaw = request.searchParams.get("relock");
+  const relock = relockRaw === "supported";
   const page = Math.max(
     1,
     Math.trunc(Number(request.searchParams.get("page")) || 1),
   );
+
+  if (relockRaw !== null && relockRaw !== "supported") {
+    throw new Response("Not found", { status: 404 });
+  }
 
   // Letter pages and the old ?vendor= filter now live on the brand pages.
   if (request.searchParams.has("letter")) {
@@ -95,6 +105,7 @@ async function load(request: URL) {
     const params = new URLSearchParams();
     if (q) params.set("q", q);
     if (roms) params.set("roms", "1");
+    if (relock) params.set("relock", "supported");
     if (page > 1) params.set("page", String(page));
     const search = params.toString();
     throw redirect(
@@ -106,6 +117,7 @@ async function load(request: URL) {
   const { devices, total } = await fetchDevicesPage({
     q: q || undefined,
     hasRoms: roms || undefined,
+    relock: relock ? "supported" : undefined,
     sort: "roms",
     limit: PAGE_SIZE,
     offset: (page - 1) * PAGE_SIZE,
@@ -114,11 +126,12 @@ async function load(request: URL) {
   const pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
   if (page > pages) throw new Response("Not found", { status: 404 });
 
-  const href = directoryHref({ q: q || undefined, roms, page });
+  const href = directoryHref({ q: q || undefined, roms, relock, page });
 
   return {
     q,
     roms,
+    relock,
     page,
     pages,
     total,
@@ -128,7 +141,7 @@ async function load(request: URL) {
     brands: [...brands].sort(
       (a, b) => bySortKey(a.vendorName, b.vendorName) || 0,
     ),
-    isIndexable: page === 1 && !roms && !q,
+    isIndexable: page === 1 && !roms && !relock && !q,
   };
 }
 
@@ -141,8 +154,17 @@ export async function clientLoader({ request }: Route.ClientLoaderArgs) {
 }
 
 export default function DevicesRoute() {
-  const { q, roms, page, pages, total, catalogueTotal, devices, brands } =
-    useLoaderData<typeof loader>();
+  const {
+    q,
+    roms,
+    relock,
+    page,
+    pages,
+    total,
+    catalogueTotal,
+    devices,
+    brands,
+  } = useLoaderData<typeof loader>();
 
   return (
     <div className="flex flex-col gap-6">
@@ -155,6 +177,7 @@ export default function DevicesRoute() {
           const params = new URLSearchParams();
           if (q) params.set("q", q);
           if (roms) params.set("hasRoms", "true");
+          if (relock) params.set("relock", "supported");
           params.set("sort", "roms");
           params.set("limit", String(PAGE_SIZE));
           if (page > 1) params.set("offset", String((page - 1) * PAGE_SIZE));
@@ -166,16 +189,31 @@ export default function DevicesRoute() {
         <DirectorySearch
           action="/devices"
           q={q}
-          hidden={{ roms: roms ? "1" : undefined }}
+          hidden={{
+            roms: roms ? "1" : undefined,
+            relock: relock ? "supported" : undefined,
+          }}
         />
 
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex flex-wrap items-center gap-3">
-            <BrandPicker brands={brands} q={q} roms={roms} />
+            <BrandPicker brands={brands} q={q} roms={roms} relock={relock} />
             <CoverageToggle
-              allHref={directoryHref({ q: q || undefined })}
-              romsHref={directoryHref({ q: q || undefined, roms: true })}
+              allHref={directoryHref({ q: q || undefined, relock })}
+              romsHref={directoryHref({
+                q: q || undefined,
+                roms: true,
+                relock,
+              })}
               roms={roms}
+            />
+            <RelockToggle
+              href={directoryHref({
+                q: q || undefined,
+                roms,
+                relock: !relock,
+              })}
+              relock={relock}
             />
           </div>
 
@@ -221,12 +259,12 @@ export default function DevicesRoute() {
         pages={pages}
         prevHref={
           page > 1
-            ? directoryHref({ q: q || undefined, roms, page: page - 1 })
+            ? directoryHref({ q: q || undefined, roms, relock, page: page - 1 })
             : null
         }
         nextHref={
           page < pages
-            ? directoryHref({ q: q || undefined, roms, page: page + 1 })
+            ? directoryHref({ q: q || undefined, roms, relock, page: page + 1 })
             : null
         }
       />

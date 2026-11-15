@@ -1,4 +1,5 @@
 import { Badge } from "@/components/ui/badge";
+import { Link } from "react-router";
 import type { BootloaderPolicy } from "@/lib/types";
 
 const STATUS_LABELS = {
@@ -15,7 +16,14 @@ const SCOPE_LABELS = {
   unknown: "Scope unknown",
 } as const;
 
-export function BootloaderPolicyCard({ policy }: { policy: BootloaderPolicy }) {
+export function BootloaderPolicyCard({
+  policy,
+  relock = [],
+}: {
+  policy: BootloaderPolicy;
+  /** ROMs that document relocking after installation on this device. */
+  relock?: Array<{ id: string; name: string; sourceUrl: string }>;
+}) {
   return (
     <section
       aria-labelledby="bootloader-policy"
@@ -54,6 +62,32 @@ export function BootloaderPolicyCard({ policy }: { policy: BootloaderPolicy }) {
           Official source
         </a>
       </p>
+
+      {relock.length > 0 && (
+        <p className="mt-3 border-t border-border pt-3 text-sm">
+          Relock after a custom ROM:{" "}
+          {relock.map((rom, index) => (
+            <span key={rom.id}>
+              {index > 0 && ", "}
+              <Link
+                to={`/roms/${rom.id}`}
+                prefetch="intent"
+                className="font-medium hover:underline"
+              >
+                {rom.name}
+              </Link>{" "}
+              <a
+                href={rom.sourceUrl}
+                target="_blank"
+                rel="noopener"
+                className="text-xs text-muted-foreground underline underline-offset-4 hover:text-foreground"
+              >
+                source
+              </a>
+            </span>
+          ))}
+        </p>
+      )}
     </section>
   );
 }

@@ -205,6 +205,15 @@ app.get("/api/devices", (c) => {
   ) {
     return c.json({ error: `invalid sort: ${sortRaw}` }, 400);
   }
+  const relockRaw = c.req.query("relock");
+  if (
+    relockRaw !== undefined &&
+    relockRaw !== "supported" &&
+    relockRaw !== "unsupported" &&
+    relockRaw !== "unknown"
+  ) {
+    return c.json({ error: `invalid relock: ${relockRaw}` }, 400);
+  }
   const limit = parse("limit");
   const offset = parse("offset");
   if (all !== undefined && all !== "true") {
@@ -227,6 +236,7 @@ app.get("/api/devices", (c) => {
     vendor,
     letter,
     hasRoms: hasRomsRaw === undefined ? undefined : hasRomsRaw === "true",
+    relock: relockRaw as "supported" | "unsupported" | "unknown" | undefined,
     sort: sortRaw as "name" | "coverage" | "roms" | undefined,
     limit: all === "true" ? undefined : (limit ?? DEFAULT_DEVICE_LIMIT),
     offset,

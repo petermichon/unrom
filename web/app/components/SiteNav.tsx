@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Lock } from "lucide-react";
 import { Link, NavLink } from "react-router";
 import {
   fetchBrands,
@@ -338,8 +338,15 @@ function DevicesPanel({
 
   return (
     <>
-      <Column title="Top devices">
+      <Column>
         <Shortcuts loading={loading} failed={failed}>
+          <PanelCard
+            to="/devices?relock=supported"
+            title="Relock supported"
+            subtitle="Devices with a documented relock path"
+            icon={<Lock className="size-5" />}
+            onNavigate={onNavigate}
+          />
           <div className="grid grid-cols-2 gap-x-6">
             {topDevices?.slice(0, 12).map((device) => (
               <MenuRow
@@ -465,6 +472,44 @@ function RomsPanel({
 }
 
 /**
+ * A shortcut that deserves more than a row: an icon tile, a sentence of
+ * context and the same hover language as the rest of the panel.
+ */
+function PanelCard({
+  to,
+  title,
+  subtitle,
+  icon,
+  onNavigate,
+}: {
+  to: string;
+  title: string;
+  subtitle: string;
+  icon: ReactNode;
+  onNavigate: () => void;
+}) {
+  return (
+    <Link
+      to={to}
+      onClick={onNavigate}
+      className="group mb-1.5 flex min-w-0 items-center gap-3 rounded-xl border border-border bg-muted/40 p-2.5 outline-none transition-colors hover:border-brand/40 hover:bg-muted focus-visible:ring-3 focus-visible:ring-ring/50"
+    >
+      <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-foreground text-background">
+        {icon}
+      </span>
+      <span className="flex min-w-0 flex-col">
+        <span className="truncate text-sm font-semibold">{title}</span>
+        <span className="text-xs text-muted-foreground">{subtitle}</span>
+      </span>
+      <ArrowRight
+        className="ml-auto size-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5"
+        aria-hidden="true"
+      />
+    </Link>
+  );
+}
+
+/**
  * The one ROM the shortcut pins: its own chip so it reads as a deliberate
  * entry rather than another row sorted by device count.
  */
@@ -478,25 +523,13 @@ function FeaturedRom({
   const logo = ROM_LOGOS[rom.id];
 
   return (
-    <Link
+    <PanelCard
       to={`/roms/${rom.id}`}
-      onClick={onNavigate}
-      className="group mb-1.5 flex min-w-0 items-center gap-3 rounded-xl border border-border bg-muted/40 p-2.5 outline-none transition-colors hover:border-brand/40 hover:bg-muted focus-visible:ring-3 focus-visible:ring-ring/50"
-    >
-      <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-foreground text-background">
-        {logo && <RomGlyph id={rom.id} src={logo} className="size-5" />}
-      </span>
-      <span className="flex min-w-0 flex-col">
-        <span className="truncate text-sm font-semibold">{rom.name}</span>
-        <span className="text-xs text-muted-foreground tabular-nums">
-          {formatNumber(rom.deviceCount)} devices
-        </span>
-      </span>
-      <ArrowRight
-        className="ml-auto size-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5"
-        aria-hidden="true"
-      />
-    </Link>
+      title={rom.name}
+      subtitle={`${formatNumber(rom.deviceCount)} devices`}
+      icon={logo && <RomGlyph id={rom.id} src={logo} className="size-5" />}
+      onNavigate={onNavigate}
+    />
   );
 }
 

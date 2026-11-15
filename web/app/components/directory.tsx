@@ -20,17 +20,20 @@ export function BrandPicker({
   current,
   q,
   roms,
+  relock,
 }: {
   action?: string;
   brands: BrandSummary[];
   current?: string | null;
   q?: string;
   roms?: boolean;
+  relock?: boolean;
 }) {
   return (
     <Form method="get" action={action} className="flex items-center gap-2">
       {q && <input type="hidden" name="q" value={q} />}
       {roms && <input type="hidden" name="roms" value="1" />}
+      {relock && <input type="hidden" name="relock" value="supported" />}
       <label
         htmlFor="brand-picker"
         className="text-sm font-medium text-muted-foreground"
@@ -141,6 +144,30 @@ export function CoverageToggle({
         With ROM data
       </Link>
     </div>
+  );
+}
+
+export function RelockToggle({
+  href,
+  relock,
+}: {
+  href: string;
+  relock: boolean;
+}) {
+  return (
+    <Link
+      to={href}
+      prefetch="intent"
+      aria-current={relock ? "page" : undefined}
+      className={cn(
+        "rounded-full border px-3 py-1 text-sm font-semibold outline-none transition-colors focus-visible:ring-3 focus-visible:ring-ring/50",
+        relock
+          ? "border-primary bg-primary text-primary-foreground"
+          : "border-border bg-card text-muted-foreground hover:text-foreground",
+      )}
+    >
+      Relock supported
+    </Link>
   );
 }
 

@@ -161,7 +161,22 @@ export default function DeviceRoute() {
         />
       </div>
 
-      {bootloaderPolicy && <BootloaderPolicyCard policy={bootloaderPolicy} />}
+      {bootloaderPolicy && (
+        <BootloaderPolicyCard
+          policy={bootloaderPolicy}
+          relock={device.roms.flatMap((rom) =>
+            rom.relock?.status === "supported"
+              ? [
+                  {
+                    id: rom.id,
+                    name: rom.name,
+                    sourceUrl: rom.relock.sourceUrl,
+                  },
+                ]
+              : [],
+          )}
+        />
+      )}
 
       <DeviceRomsTable
         roms={device.roms}

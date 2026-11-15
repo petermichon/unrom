@@ -45,6 +45,31 @@ const buildInfoSchema = {
   },
 };
 
+const relockInfoSchema = {
+  type: "object",
+  required: ["status", "summary", "sourceUrl", "verifiedAt", "scope"],
+  description:
+    "Whether the bootloader can be locked again after this ROM is installed, in the project's own words.",
+  properties: {
+    status: {
+      type: "string",
+      enum: ["supported", "unsupported", "unknown"],
+    },
+    summary: {
+      type: "string",
+      description: "The source's wording, kept alongside the status.",
+    },
+    sourceUrl: { type: "string", format: "uri" },
+    verifiedAt: { type: "string", format: "date" },
+    scope: {
+      type: "string",
+      enum: ["rom", "device"],
+      description:
+        "`device` when the statement is about this device, `rom` when it covers every device the ROM supports.",
+    },
+  },
+};
+
 const romSupportSchema = {
   type: "object",
   required: [
@@ -54,6 +79,7 @@ const romSupportSchema = {
     "referenceKind",
     "inheritedFrom",
     "build",
+    "relock",
   ],
   properties: {
     id: { type: "string" },
@@ -75,6 +101,12 @@ const romSupportSchema = {
       type: ["object", "null"],
       description:
         "Null when the source publishes no build metadata for this device.",
+    },
+    relock: {
+      ...relockInfoSchema,
+      type: ["object", "null"],
+      description:
+        "Null when no project statement covers this ROM on this device.",
     },
   },
 };
@@ -308,6 +340,7 @@ const mappingSchema = {
     "referenceKind",
     "reportedCodename",
     "build",
+    "relock",
   ],
   properties: {
     vendor: { type: "string" },
@@ -324,6 +357,12 @@ const mappingSchema = {
       type: ["object", "null"],
       description:
         "Null when the source publishes no build metadata for this device.",
+    },
+    relock: {
+      ...relockInfoSchema,
+      type: ["object", "null"],
+      description:
+        "Null when no project statement covers this ROM on this device.",
     },
   },
 };
@@ -369,6 +408,19 @@ const deviceListParameters = [
       "Only devices with (`true`) or without (`false`) at least one ROM " +
       "build, counting builds inherited from a covered variant.",
     schema: { type: "boolean" },
+  },
+  {
+    name: "relock",
+    in: "query",
+    required: false,
+    description:
+      "Only devices with at least one mapping whose project documents this " +
+      "bootloader-relock status. `unknown` matches documented unknowns, not " +
+      "pairs nobody has written a statement for.",
+    schema: {
+      type: "string",
+      enum: ["supported", "unsupported", "unknown"],
+    },
   },
   {
     name: "sort",

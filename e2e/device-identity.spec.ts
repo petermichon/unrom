@@ -114,6 +114,20 @@ test("the build column sorts newest first, with unknown dates last", async ({
   await expect(rows.last()).toContainText("Not published");
 });
 
+test("device pages name the ROMs that document relocking", async ({ page }) => {
+  await page.goto("/devices/google/tokay");
+
+  const policy = page.getByRole("region", { name: "Bootloader unlock" });
+  await expect(policy.getByText(/Relock after a custom ROM/)).toBeVisible();
+  await expect(
+    policy.getByRole("link", { name: "GrapheneOS" }),
+  ).toHaveAttribute("href", "/roms/grapheneos");
+  await expect(policy.getByRole("link", { name: "CalyxOS" })).toHaveAttribute(
+    "href",
+    "/roms/calyxos",
+  );
+});
+
 test("brand pages show the vendor bootloader policy", async ({ page }) => {
   await page.goto("/devices/xiaomi");
 

@@ -23,6 +23,7 @@ import {
   vendorName,
 } from "../data/identity.ts";
 import { DEVICE_NAMES, deviceNames } from "../data/registry.ts";
+import { RELOCK_RULES, relockFor } from "../data/relock.ts";
 import { ROMS } from "../data/roms.ts";
 import type { RomCatalogEntry } from "../data/roms.ts";
 import { generateDdl } from "../db/ddl.ts";
@@ -129,6 +130,8 @@ interface Edge {
   // Newest build the source lists for this device, `YYYY-MM-DD`.
   buildDate: string | null;
   securityPatch: string | null;
+  // "supported" | "unsupported" | "unknown" | null, from `data/relock.ts`.
+  relockStatus: string | null;
 }
 
 interface Alias {
@@ -195,7 +198,7 @@ function contentHash(
     ),
   )) {
     hash.update(
-      `e\0${edge.romId}\0${edge.vendor}\0${edge.codename}\0${edge.referenceUrl ?? ""}\0${edge.referenceKind}\0${edge.reportedCodename ?? ""}\0${edge.buildDate ?? ""}\0${edge.securityPatch ?? ""}\n`,
+      `e\0${edge.romId}\0${edge.vendor}\0${edge.codename}\0${edge.referenceUrl ?? ""}\0${edge.referenceKind}\0${edge.reportedCodename ?? ""}\0${edge.buildDate ?? ""}\0${edge.securityPatch ?? ""}\0${edge.relockStatus ?? ""}\n`,
     );
   }
   for (const alias of [...aliasRows].sort((a, b) =>
@@ -224,6 +227,15 @@ function contentHash(
   )) {
     hash.update(
       `b\0${policy.vendor}\0${policy.status}\0${policy.scope}\0${policy.summary}\0${policy.conditions.join("|")}\0${policy.sourceUrl}\0${policy.verifiedAt}\n`,
+    );
+  }
+  // Relock statements are curated code, not rows, but they change the exported
+  // mappings, so they belong in the digest.
+  for (const rule of [...RELOCK_RULES].sort((a, b) =>
+    `${a.romId}\0${a.scope}`.localeCompare(`${b.romId}\0${b.scope}`),
+  )) {
+    hash.update(
+      `l\0${rule.romId}\0${rule.scope}\0${rule.vendor ?? ""}\0${rule.codename ?? ""}\0${rule.status}\0${rule.summary}\0${rule.sourceUrl}\0${rule.verifiedAt}\n`,
     );
   }
 
@@ -671,6 +683,7 @@ export function buildDatabase(
       reportedCodename: null,
       buildDate: null,
       securityPatch: null,
+      relockStatus: relockFor(record.romId, vendor, resolved)?.status ?? null,
     };
     // Two rosters for the same ROM (e.g. the markdown list and the site index)
     // can describe the same device; the newest build is the fact, and its patch

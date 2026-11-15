@@ -29,6 +29,20 @@ export interface BuildInfo {
   securityPatch: string | null;
 }
 
+/**
+ * Whether the bootloader can be locked again after this ROM is installed, in
+ * the project's own words. `scope` says whether the statement is about this
+ * device (`device`) or about every device the ROM supports (`rom`).
+ */
+export interface RelockInfo {
+  status: "supported" | "unsupported" | "unknown";
+  /** The source's wording, so the claim is not collapsed into a boolean. */
+  summary: string;
+  sourceUrl: string;
+  verifiedAt: string;
+  scope: "rom" | "device";
+}
+
 export interface RomSupport {
   id: string;
   name: string;
@@ -38,6 +52,8 @@ export interface RomSupport {
   inheritedFrom: string | null;
   /** Null when the source publishes no build metadata for this device. */
   build: BuildInfo | null;
+  /** Null when no project statement covers this ROM on this device. */
+  relock: RelockInfo | null;
 }
 
 export interface DeviceDetail {
@@ -207,4 +223,6 @@ export interface Mapping {
   reportedCodename: string | null;
   /** Null when the source publishes no build metadata for this device. */
   build: BuildInfo | null;
+  /** Null when no project statement covers this ROM on this device. */
+  relock: RelockInfo | null;
 }

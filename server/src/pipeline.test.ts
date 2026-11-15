@@ -622,6 +622,91 @@ test("a ROM summarises how current its builds are", () => {
   }
 });
 
+test("a relock statement reaches the pair it covers", () => {
+  const dir = mkdtempSync(join(tmpdir(), "unrom-test-"));
+  const dbPath = join(dir, "unrom.sqlite");
+
+  try {
+    buildDatabase(
+      [
+        buildRecord({
+          romId: "grapheneos",
+          romName: "GrapheneOS",
+          codename: "tokay",
+          name: "Pixel 9",
+          brand: "Google",
+        }),
+        buildRecord({
+          romId: "lineageos",
+          romName: "LineageOS",
+          codename: "tokay",
+          name: "Pixel 9",
+          brand: "Google",
+        }),
+      ],
+      dbPath,
+    );
+    const api = createApi(dbPath);
+
+    const device = api.getDevice("google", "tokay");
+    const line = (id: string) => device?.roms.find((rom) => rom.id === id);
+    assert.equal(line("grapheneos")?.relock?.status, "supported");
+    assert.equal(line("grapheneos")?.relock?.scope, "rom");
+    // No statement is not "cannot be relocked".
+    assert.equal(line("lineageos")?.relock, null);
+
+    api.close();
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("the relock filter keeps only devices a project documents", () => {
+  const dir = mkdtempSync(join(tmpdir(), "unrom-test-"));
+  const dbPath = join(dir, "unrom.sqlite");
+
+  try {
+    buildDatabase(
+      [
+        buildRecord({
+          romId: "grapheneos",
+          romName: "GrapheneOS",
+          codename: "tokay",
+          name: "Pixel 9",
+          brand: "Google",
+        }),
+        buildRecord({
+          romId: "lineageos",
+          romName: "LineageOS",
+          codename: "tokay",
+          name: "Pixel 9",
+          brand: "Google",
+        }),
+        buildRecord({
+          romId: "lineageos",
+          romName: "LineageOS",
+          codename: "caiman",
+          name: "Pixel 9 Pro",
+          brand: "Google",
+        }),
+      ],
+      dbPath,
+    );
+    const api = createApi(dbPath);
+    const options = { relock: "supported" as const };
+
+    assert.equal(api.countDevices(options), 1);
+    assert.deepEqual(
+      api.listDevicesPage(options).map((device) => device.codename),
+      ["tokay"],
+    );
+
+    api.close();
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 test("renamed codenames resolve to the canonical device", async () => {
   const records = await parseAllSources();
   const dir = mkdtempSync(join(tmpdir(), "unrom-test-"));

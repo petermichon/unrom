@@ -308,6 +308,10 @@ export default function DataRoute() {
                 The newest build date and the security patch level it reports,
                 for every source that publishes them.
               </li>
+              <li>
+                Whether a project documents locking the bootloader again after
+                installation, in its own words and with a source.
+              </li>
               <li>Name confidence and the sources behind it.</li>
             </ul>
           </div>
@@ -320,10 +324,12 @@ export default function DataRoute() {
           A mapping says a project reports a build for a device. Where the
           source publishes them, the mapping also carries the newest build's
           date and the security patch level that build reports. Most sources
-          publish neither: empty means not published, not unpatched. Still no
-          check that a build is reproducible, no signing-key details, and no
-          device-level statement about relocking the bootloader. ROM status
-          records whether a project still ships builds.
+          publish neither: empty means not published, not unpatched. Relock
+          statements are the projects' own wording, quoted with a source; a
+          missing one means no project statement covers the pair, not that
+          relocking fails. Still no check that a build is reproducible and no
+          signing-key details. ROM status records whether a project still ships
+          builds.
         </p>
       </section>
 

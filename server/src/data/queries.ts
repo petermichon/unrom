@@ -36,6 +36,7 @@ import {
 } from "../db/schema.ts";
 import { vendorName } from "./identity.ts";
 import { BUILD_SOURCES } from "./build-sources.ts";
+import { relockFor } from "./relock.ts";
 
 // Order by the first letter/digit so leading punctuation (e.g. "/e/OS") does not
 // push a name to the top. Display names are left untouched.
@@ -145,6 +146,10 @@ export function createApi(dbPath: string) {
     edge: Edge,
     names: Map<string, string>,
     inheritedFrom: string | null = null,
+    device: { vendor: string; codename: string } = {
+      vendor: edge.vendor,
+      codename: edge.codename,
+    },
   ): RomSupport {
     return {
       id: edge.romId,
@@ -153,6 +158,7 @@ export function createApi(dbPath: string) {
       referenceKind: asReferenceKind(edge.referenceKind),
       inheritedFrom,
       build: buildInfo(edge),
+      relock: relockFor(edge.romId, device.vendor, device.codename),
     };
   }
 
@@ -196,6 +202,8 @@ export function createApi(dbPath: string) {
     letter?: string;
     /** Only devices with (`true`) or without (`false`) any ROM data. */
     hasRoms?: boolean;
+    /** Only devices with a mapping whose project documents this relock status. */
+    relock?: "supported" | "unsupported" | "unknown";
     /** `coverage` puts ROM-covered devices first, then sorts by name. */
     sort?: "name" | "coverage" | "roms";
     limit?: number;
@@ -233,6 +241,13 @@ export function createApi(dbPath: string) {
     }
     if (options.hasRoms !== undefined) {
       filters.push(eq(devices.covered, options.hasRoms ? 1 : 0));
+    }
+    if (options.relock) {
+      // A device qualifies when at least one ROM documents this relock status
+      // for it; the statement may be ROM-wide or device-specific.
+      filters.push(
+        sql`exists (select 1 from rom_devices rd where rd.vendor = ${devices.vendor} and rd.codename = ${devices.codename} and rd.relock_status = ${options.relock})`,
+      );
     }
     const letter = options.letter?.toUpperCase();
     if (letter) {
@@ -556,7 +571,12 @@ export function createApi(dbPath: string) {
 
     const roms = [
       ...direct.map((edge) => toRomSupport(edge, names)),
-      ...inherited.map(({ edge, from }) => toRomSupport(edge, names, from)),
+      ...inherited.map(({ edge, from }) =>
+        toRomSupport(edge, names, from, {
+          vendor: device.vendor,
+          codename: device.codename,
+        }),
+      ),
     ].sort((a, b) => bySortKey(a.name, b.name));
 
     const provenance = registryByDevice().get(key);
@@ -982,6 +1002,7 @@ export function createApi(dbPath: string) {
           referenceKind: asReferenceKind(edge.referenceKind),
           reportedCodename: edge.reportedCodename,
           build: buildInfo(edge),
+          relock: relockFor(edge.romId, edge.vendor, edge.codename),
         };
       });
   }

@@ -155,7 +155,9 @@ test("each trigger opens its own panel", async ({ page }) => {
   };
 
   await show("Devices");
-  await expect(menu.getByText("Top devices")).toBeVisible();
+  await expect(
+    menu.getByRole("link", { name: /Relock supported/ }),
+  ).toHaveAttribute("href", "/devices?relock=supported");
   await expect(
     menu.getByRole("link", { name: "All devices", exact: true }),
   ).toBeVisible();
@@ -410,6 +412,22 @@ test("the ROMs filter opens the catalogue for a match", async ({ page }) => {
   }).toPass({ timeout: 10_000 });
 
   await expect(page.getByRole("link", { name: "AlphaDroid" })).toBeVisible();
+});
+
+test("the relock filter opens the documented devices", async ({ page }) => {
+  await page.goto("/devices?relock=supported");
+  await page.waitForLoadState("networkidle");
+
+  const toggle = page.getByRole("link", { name: "Relock supported" });
+  await expect(toggle).toHaveAttribute("aria-current", "page");
+  await expect(
+    page.getByRole("link", { name: /Pixel 9/ }).first(),
+  ).toBeVisible();
+  // A filtered view is not an indexable page of its own.
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
+    "content",
+    "noindex",
+  );
 });
 
 test("the brands index links to a brand", async ({ page }) => {
