@@ -103,7 +103,12 @@ export function DirectorySearch({
           aria-label="Search devices"
         />
       </InputGroup>
-      <Button type="submit">Search</Button>
+      <Button
+        type="submit"
+        className="bg-accent text-accent-foreground hover:bg-accent/90"
+      >
+        Search
+      </Button>
     </Form>
   );
 }
@@ -121,7 +126,7 @@ export function CoverageToggle({
     cn(
       "rounded-full px-3 py-1 text-sm font-semibold outline-none transition-colors focus-visible:ring-3 focus-visible:ring-ring/50",
       active
-        ? "bg-primary text-primary-foreground"
+        ? "bg-accent text-accent-foreground"
         : "text-muted-foreground hover:text-foreground",
     );
 
@@ -162,7 +167,7 @@ export function RelockToggle({
       className={cn(
         "rounded-full border px-3 py-1 text-sm font-semibold outline-none transition-colors focus-visible:ring-3 focus-visible:ring-ring/50",
         relock
-          ? "border-primary bg-primary text-primary-foreground"
+          ? "border-accent bg-accent text-accent-foreground hover:bg-accent/90"
           : "border-border bg-card text-muted-foreground hover:text-foreground",
       )}
     >

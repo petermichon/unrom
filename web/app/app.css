@@ -161,8 +161,10 @@
   --secondary-foreground: #f0f0f0;
   --muted: #232323;
   --muted-foreground: #a3a3a3;
-  --accent: #262626;
-  --accent-foreground: #f0f0f0;
+  /* The light accent's counterpart: same periwinkle family, inverted for a dark
+     surface, so selected pills and buttons stay the brand tint instead of grey. */
+  --accent: #263052;
+  --accent-foreground: #dfe4ff;
   --destructive: #f0786a;
   --border: #343434;
   --input: #2a2a2a;
