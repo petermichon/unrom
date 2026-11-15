@@ -4,6 +4,8 @@ import type { NormalizedRomDevice } from "../normalized.ts";
 const ROM_ID = "iode";
 const ROM_NAME = "iodéOS";
 const SUPPORTED_URL = "https://iode.tech/iodeos-official-supported-devices";
+// The date the table was read, not a build date.
+const VERIFIED_AT = "2026-11-15";
 
 // The official table uses the marketing casing; the registry keys use the
 // build codename.
@@ -77,11 +79,15 @@ export function parseIodeHtml(raw: string): NormalizedRomDevice[] {
   const records: NormalizedRomDevice[] = [];
   const seen = new Set<string>();
 
-  for (const row of raw.matchAll(
-    /<tr class="row-\d+">\s*<td class="column-1">(.*?)<\/td><td class="column-2">(.*?)<\/td>/gs,
-  )) {
-    const brand = decode(row[1]);
-    const model = decode(row[2]);
+  for (const row of raw.matchAll(/<tr class="row-\d+">([\s\S]*?)<\/tr>/g)) {
+    const cells = [...row[1].matchAll(/<td[^>]*>([\s\S]*?)<\/td>/g)].map(
+      (cell) => decode(cell[1]),
+    );
+    const brand = cells[0] ?? "";
+    const model = cells[1] ?? "";
+    // Column 6 is `Bootloader locked?`; the table's own wording is quoted in
+    // the summary so the status is auditable.
+    const locked = (cells[5] ?? "").toLowerCase();
     if (!brand || !model) continue;
     if (/^GSI\b/i.test(brand) || /^GSI\b/i.test(model)) continue;
 
@@ -103,6 +109,24 @@ export function parseIodeHtml(raw: string): NormalizedRomDevice[] {
         name,
         brand,
         referenceUrl: SUPPORTED_URL,
+        relock:
+          locked === "yes"
+            ? {
+                status: "supported",
+                summary:
+                  'iodéOS lists "Bootloader locked? yes" for this device.',
+                sourceUrl: SUPPORTED_URL,
+                verifiedAt: VERIFIED_AT,
+              }
+            : locked === "no"
+              ? {
+                  status: "unsupported",
+                  summary:
+                    'iodéOS lists "Bootloader locked? no" for this device.',
+                  sourceUrl: SUPPORTED_URL,
+                  verifiedAt: VERIFIED_AT,
+                }
+              : null,
       }),
     );
   }

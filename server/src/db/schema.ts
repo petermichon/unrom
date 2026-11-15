@@ -52,9 +52,14 @@ export const romDevices = sqliteTable(
     // Security patch level that build reports, `YYYY-MM-DD`.
     securityPatch: text("security_patch"),
     // "supported" | "unsupported" | "unknown" when a project statement covers
-    // this ROM on this device; null when none does. Derived at build time from
-    // `data/relock.ts`.
+    // this ROM on this device; null when none does. From the source's own
+    // device page, or from `data/relock.ts` when it speaks for the whole ROM.
     relockStatus: text("relock_status"),
+    relockSummary: text("relock_summary"),
+    relockSourceUrl: text("relock_source_url"),
+    relockVerifiedAt: text("relock_verified_at"),
+    // "rom" | "device"; how specific the statement is.
+    relockScope: text("relock_scope"),
   },
   (table) => [
     primaryKey({ columns: [table.romId, table.vendor, table.codename] }),

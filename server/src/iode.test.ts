@@ -39,3 +39,32 @@ test("iodéOS parses the official supported-devices table", () => {
     ),
   );
 });
+
+test("iodéOS reads the bootloader column as a per-device statement", () => {
+  const row = (brand: string, model: string, locked: string) => `
+<tr class="row-2">
+  <td class="column-1">${brand}</td>
+  <td class="column-2">${model}</td>
+  <td class="column-3"></td>
+  <td class="column-4">7</td>
+  <td class="column-5">yes</td>
+  <td class="column-6">${locked}</td>
+  <td class="column-7">yes</td>
+  <td class="column-8">yes</td>
+  <td class="column-9">yes</td>
+</tr>`;
+
+  const records = parseIodeHtml(
+    row("Google", "Pixel 9 (tokay)", "yes") +
+      row("Xiaomi", "Mi 10 Lite (monet)", "no"),
+  );
+
+  assert.equal(records[0]?.relock?.status, "supported");
+  assert.match(records[0]?.relock?.summary ?? "", /Bootloader locked\? yes/);
+  assert.equal(
+    records[0]?.relock?.sourceUrl,
+    "https://iode.tech/iodeos-official-supported-devices",
+  );
+  assert.equal(records[1]?.relock?.status, "unsupported");
+  assert.match(records[1]?.relock?.summary ?? "", /Bootloader locked\? no/);
+});

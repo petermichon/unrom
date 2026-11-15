@@ -130,8 +130,13 @@ interface Edge {
   // Newest build the source lists for this device, `YYYY-MM-DD`.
   buildDate: string | null;
   securityPatch: string | null;
-  // "supported" | "unsupported" | "unknown" | null, from `data/relock.ts`.
+  // "supported" | "unsupported" | "unknown" | null. From the source's device
+  // page, or from `data/relock.ts` when it covers the whole ROM.
   relockStatus: string | null;
+  relockSummary: string | null;
+  relockSourceUrl: string | null;
+  relockVerifiedAt: string | null;
+  relockScope: "rom" | "device" | null;
 }
 
 interface Alias {
@@ -198,7 +203,7 @@ function contentHash(
     ),
   )) {
     hash.update(
-      `e\0${edge.romId}\0${edge.vendor}\0${edge.codename}\0${edge.referenceUrl ?? ""}\0${edge.referenceKind}\0${edge.reportedCodename ?? ""}\0${edge.buildDate ?? ""}\0${edge.securityPatch ?? ""}\0${edge.relockStatus ?? ""}\n`,
+      `e\0${edge.romId}\0${edge.vendor}\0${edge.codename}\0${edge.referenceUrl ?? ""}\0${edge.referenceKind}\0${edge.reportedCodename ?? ""}\0${edge.buildDate ?? ""}\0${edge.securityPatch ?? ""}\0${edge.relockStatus ?? ""}\0${edge.relockSummary ?? ""}\0${edge.relockSourceUrl ?? ""}\0${edge.relockVerifiedAt ?? ""}\0${edge.relockScope ?? ""}\n`,
     );
   }
   for (const alias of [...aliasRows].sort((a, b) =>
@@ -674,6 +679,11 @@ export function buildDatabase(
     if (!record.hasBuild) continue;
 
     const key = `${record.romId}\0${deviceKey}`;
+    // A source that states relock support for the device itself outranks a
+    // ROM-wide statement in `data/relock.ts`.
+    const relock = record.relock
+      ? { ...record.relock, scope: "device" as const }
+      : relockFor(record.romId, vendor, resolved);
     const edge = edgeMap.get(key) ?? {
       romId: record.romId,
       vendor,
@@ -683,8 +693,22 @@ export function buildDatabase(
       reportedCodename: null,
       buildDate: null,
       securityPatch: null,
-      relockStatus: relockFor(record.romId, vendor, resolved)?.status ?? null,
+      relockStatus: relock?.status ?? null,
+      relockSummary: relock?.summary ?? null,
+      relockSourceUrl: relock?.sourceUrl ?? null,
+      relockVerifiedAt: relock?.verifiedAt ?? null,
+      relockScope: relock?.scope ?? null,
     };
+    // A later roster for the same ROM can carry the device-scoped relock
+    // statement the edge was created without (e.g. iodéOS's tree and its
+    // supported-devices table, or an /e/OS branch file and the device page).
+    if (record.relock && edge.relockScope !== "device") {
+      edge.relockStatus = record.relock.status;
+      edge.relockSummary = record.relock.summary;
+      edge.relockSourceUrl = record.relock.sourceUrl;
+      edge.relockVerifiedAt = record.relock.verifiedAt;
+      edge.relockScope = "device";
+    }
     // Two rosters for the same ROM (e.g. the markdown list and the site index)
     // can describe the same device; the newest build is the fact, and its patch
     // level belongs to that build.

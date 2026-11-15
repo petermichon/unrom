@@ -56,6 +56,13 @@ export interface RecordInput {
   /** `YYYY-MM-DD`, when the source publishes the newest build's metadata. */
   buildDate?: string | null;
   securityPatch?: string | null;
+  /** A device-scoped relock statement published by this source. */
+  relock?: {
+    status: "supported" | "unsupported" | "unknown";
+    summary: string;
+    sourceUrl: string;
+    verifiedAt: string;
+  } | null;
 }
 
 /** Build a validated record, filling the optional fields with defaults. */

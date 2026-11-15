@@ -8,7 +8,7 @@ import { parseAxionOs } from "./axionos.ts";
 import { parseBlackIron } from "./blackiron.ts";
 import { parseCalyxOS } from "./calyxos.ts";
 import { parseArrowOS } from "./arrowos.ts";
-import { createEosParser, parseEosHtml } from "./eos.ts";
+import { createEosParser, parseEos } from "./eos.ts";
 import { parseEvolutionX } from "./evolutionx.ts";
 import { parseGrapheneOS } from "./grapheneos.ts";
 import { parseHavocOS } from "./havocos.ts";
@@ -514,8 +514,8 @@ const specialSources: SourceAdapter[] = [
   {
     id: "eos",
     romName: "/e/OS",
-    file: "eos.html",
-    parse: parseEosHtml,
+    file: "eos.json",
+    parse: parseEos,
   },
   {
     id: "yaap-aosp",

@@ -13,6 +13,7 @@ import type {
   LetterSummary,
   Mapping,
   Meta,
+  RelockInfo,
   RegistryEntry,
   RomChip,
   RomDetail,
@@ -36,7 +37,6 @@ import {
 } from "../db/schema.ts";
 import { vendorName } from "./identity.ts";
 import { BUILD_SOURCES } from "./build-sources.ts";
-import { relockFor } from "./relock.ts";
 
 // Order by the first letter/digit so leading punctuation (e.g. "/e/OS") does not
 // push a name to the top. Display names are left untouched.
@@ -46,6 +46,29 @@ const sortKey = (value: string): string =>
 // The column is plain text; only these two values are ever written.
 const asReferenceKind = (value: string): ReferenceKind =>
   value === "derived" ? "derived" : "observed";
+
+/** The relock statement stored with an edge, in its own words. */
+const relockInfo = (edge: Edge): RelockInfo | null => {
+  const { relockStatus, relockSummary, relockSourceUrl, relockVerifiedAt } =
+    edge;
+  const scope = edge.relockScope;
+  if (
+    relockStatus === null ||
+    relockSummary === null ||
+    relockSourceUrl === null ||
+    relockVerifiedAt === null ||
+    (scope !== "rom" && scope !== "device")
+  ) {
+    return null;
+  }
+  return {
+    status: relockStatus as RelockInfo["status"],
+    summary: relockSummary,
+    sourceUrl: relockSourceUrl,
+    verifiedAt: relockVerifiedAt,
+    scope,
+  };
+};
 
 /** The build facts a source published for an edge, or null when it published none. */
 const buildInfo = (edge: Edge): BuildInfo | null =>
@@ -146,10 +169,6 @@ export function createApi(dbPath: string) {
     edge: Edge,
     names: Map<string, string>,
     inheritedFrom: string | null = null,
-    device: { vendor: string; codename: string } = {
-      vendor: edge.vendor,
-      codename: edge.codename,
-    },
   ): RomSupport {
     return {
       id: edge.romId,
@@ -158,7 +177,7 @@ export function createApi(dbPath: string) {
       referenceKind: asReferenceKind(edge.referenceKind),
       inheritedFrom,
       build: buildInfo(edge),
-      relock: relockFor(edge.romId, device.vendor, device.codename),
+      relock: relockInfo(edge),
     };
   }
 
@@ -571,12 +590,7 @@ export function createApi(dbPath: string) {
 
     const roms = [
       ...direct.map((edge) => toRomSupport(edge, names)),
-      ...inherited.map(({ edge, from }) =>
-        toRomSupport(edge, names, from, {
-          vendor: device.vendor,
-          codename: device.codename,
-        }),
-      ),
+      ...inherited.map(({ edge, from }) => toRomSupport(edge, names, from)),
     ].sort((a, b) => bySortKey(a.name, b.name));
 
     const provenance = registryByDevice().get(key);
@@ -1002,7 +1016,7 @@ export function createApi(dbPath: string) {
           referenceKind: asReferenceKind(edge.referenceKind),
           reportedCodename: edge.reportedCodename,
           build: buildInfo(edge),
-          relock: relockFor(edge.romId, edge.vendor, edge.codename),
+          relock: relockInfo(edge),
         };
       });
   }

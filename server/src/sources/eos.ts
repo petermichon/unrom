@@ -1,4 +1,5 @@
 import { buildRecord } from "./adapter.ts";
+import { normalizedRomDeviceSchema } from "../normalized.ts";
 import type { NormalizedRomDevice } from "../normalized.ts";
 
 const ROM_ID = "eos";
@@ -84,4 +85,65 @@ export function parseEosHtml(raw: string): NormalizedRomDevice[] {
   }
 
   return records;
+}
+
+interface RelockEntry {
+  codename?: unknown;
+  status?: unknown;
+  summary?: unknown;
+  sourceUrl?: unknown;
+  verifiedAt?: unknown;
+}
+
+/**
+ * The fetcher stores the devices index plus the relock statement each device
+ * page makes. An older snapshot is a bare HTML page with no statements.
+ */
+export function parseEos(raw: string): NormalizedRomDevice[] {
+  const data: unknown = JSON.parse(raw);
+  const snapshot = (data ?? {}) as { page?: unknown; relock?: unknown };
+  if (typeof snapshot.page !== "string") return [];
+
+  const relock = new Map<
+    string,
+    {
+      status: "supported" | "unsupported" | "unknown";
+      summary: string;
+      sourceUrl: string;
+      verifiedAt: string;
+    }
+  >();
+  for (const entry of Array.isArray(snapshot.relock) ? snapshot.relock : []) {
+    if (!entry || typeof entry !== "object") continue;
+    const item = entry as RelockEntry;
+    const codename = typeof item.codename === "string" ? item.codename : null;
+    const status =
+      item.status === "supported" ||
+      item.status === "unsupported" ||
+      item.status === "unknown"
+        ? item.status
+        : null;
+    if (
+      !codename ||
+      !status ||
+      typeof item.summary !== "string" ||
+      typeof item.sourceUrl !== "string" ||
+      typeof item.verifiedAt !== "string"
+    ) {
+      continue;
+    }
+    relock.set(codename, {
+      status,
+      summary: item.summary,
+      sourceUrl: item.sourceUrl,
+      verifiedAt: item.verifiedAt,
+    });
+  }
+
+  return parseEosHtml(snapshot.page).map((record) => {
+    const statement = relock.get(record.codename);
+    return statement
+      ? normalizedRomDeviceSchema.parse({ ...record, relock: statement })
+      : record;
+  });
 }

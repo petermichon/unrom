@@ -707,6 +707,42 @@ test("the relock filter keeps only devices a project documents", () => {
   }
 });
 
+test("a device-scoped relock statement beats the ROM-wide one", () => {
+  const dir = mkdtempSync(join(tmpdir(), "unrom-test-"));
+  const dbPath = join(dir, "unrom.sqlite");
+
+  try {
+    buildDatabase(
+      [
+        buildRecord({
+          romId: "grapheneos",
+          romName: "GrapheneOS",
+          codename: "tokay",
+          name: "Pixel 9",
+          brand: "Google",
+          relock: {
+            status: "unsupported",
+            summary: "not lockable on this revision",
+            sourceUrl: "https://example.com/tokay",
+            verifiedAt: "2026-11-15",
+          },
+        }),
+      ],
+      dbPath,
+    );
+    const api = createApi(dbPath);
+
+    const relock = api.getDevice("google", "tokay")?.roms[0]?.relock;
+    assert.equal(relock?.status, "unsupported");
+    assert.equal(relock?.scope, "device");
+    assert.equal(relock?.sourceUrl, "https://example.com/tokay");
+
+    api.close();
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 test("renamed codenames resolve to the canonical device", async () => {
   const records = await parseAllSources();
   const dir = mkdtempSync(join(tmpdir(), "unrom-test-"));

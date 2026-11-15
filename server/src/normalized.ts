@@ -30,6 +30,17 @@ export const normalizedRomDeviceSchema = z.object({
   // source does not publish the fact.
   buildDate: z.string().nullable().default(null),
   securityPatch: z.string().nullable().default(null),
+  // A relock statement the source makes about this device, in its own words.
+  // Device-scoped by construction; ROM-wide statements live in `data/relock.ts`.
+  relock: z
+    .object({
+      status: z.enum(["supported", "unsupported", "unknown"]),
+      summary: z.string().min(1),
+      sourceUrl: z.string().min(1),
+      verifiedAt: z.string().min(1),
+    })
+    .nullable()
+    .default(null),
 });
 
 export type NormalizedRomDevice = z.infer<typeof normalizedRomDeviceSchema>;
