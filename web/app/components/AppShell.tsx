@@ -1,7 +1,7 @@
-import { Lock, Menu, X, LayoutGrid } from "lucide-react";
+import { Clock, Lock, Menu, Shield, X, LayoutGrid } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
 import { Link, useLocation, useNavigation } from "react-router";
-import { MENU_ROMS, NAV_ITEMS } from "@/lib/nav";
+import { MENU_BRANDS, MENU_ROMS } from "@/lib/nav";
 import { PanelCard } from "@/components/PanelCard";
 import { RomGlyph } from "@/components/RomMark";
 import { ROM_BOLD_MARKS, ROM_LOGOS } from "@/components/RomPhone";
@@ -84,28 +84,35 @@ function MobileMenu() {
             listHasMore ? "fade-scroll" : ""
           }`}
         >
-          <PanelCard
-            to="/devices?relock=supported"
-            title="Relock supported"
-            subtitle="Devices with a documented relock path"
-            icon={<Lock className="size-5" />}
-            onNavigate={close}
-          />
-
-          <SheetSection label="Browse">
-            {NAV_ITEMS.map((item) => (
-              <SheetLink
-                key={item.to}
-                to={item.to}
-                description={item.description}
-                onClick={close}
-              >
-                {item.label}
-              </SheetLink>
-            ))}
-          </SheetSection>
-
-          <SheetSection label="Shortcuts">
+          <SheetSection label="Devices">
+            <PanelCard
+              to="/devices?hardened=1"
+              title="Hardened"
+              subtitle="Patches, relock and mitigations"
+              icon={<Shield className="size-5" />}
+              onNavigate={close}
+            />
+            <PanelCard
+              to="/devices?relock=supported"
+              title="Relock supported"
+              subtitle="Devices with a documented relock path"
+              icon={<Lock className="size-5" />}
+              onNavigate={close}
+            />
+            <PanelCard
+              to="/devices?updated=90"
+              title="Recently updated"
+              subtitle="Newest build in the last 90 days"
+              icon={<Clock className="size-5" />}
+              onNavigate={close}
+            />
+            <PanelCard
+              to="/devices"
+              title="All devices"
+              subtitle="Search by name or codename"
+              icon={<LayoutGrid className="size-5" />}
+              onNavigate={close}
+            />
             <SheetLink
               to="/devices?roms=1"
               description="Only devices that have build data"
@@ -113,23 +120,24 @@ function MobileMenu() {
             >
               Devices with ROMs
             </SheetLink>
-            <SheetLink
-              to="/devices?updated=90"
-              description="Newest build in the last 90 days"
-              onClick={close}
-            >
-              Recently updated
-            </SheetLink>
-            <SheetLink
-              to="/devices?hardened=1"
-              description="Patches, relock and mitigations"
-              onClick={close}
-            >
-              Hardened
+          </SheetSection>
+
+          <SheetSection label="Brands">
+            {MENU_BRANDS.map((brand) => (
+              <SheetLink
+                key={brand.id}
+                to={`/devices/${brand.id}`}
+                onClick={close}
+              >
+                {brand.name}
+              </SheetLink>
+            ))}
+            <SheetLink to="/brands" onClick={close}>
+              All brands
             </SheetLink>
           </SheetSection>
 
-          <SheetSection label="ROMs">
+          <SheetSection label="Custom ROMs">
             {MENU_ROMS.map((rom) => {
               const logo = ROM_BOLD_MARKS[rom.id] ?? ROM_LOGOS[rom.id];
               return (
@@ -169,6 +177,10 @@ function MobileMenu() {
               onNavigate={close}
             />
           </SheetSection>
+
+          <SheetLink to="/data" onClick={close}>
+            Data & API
+          </SheetLink>
         </div>
       </DialogContent>
     </Dialog>
