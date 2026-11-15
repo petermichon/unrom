@@ -26,7 +26,7 @@ export default function DeviceSearch({ examples = [] }: Props) {
           event.preventDefault();
           openSearch();
         }}
-        className="flex h-12 w-full items-center gap-2 rounded-xl border border-border bg-popover px-4 text-base text-muted-foreground shadow-sm outline-none transition-colors hover:border-ring/60 hover:text-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 dark:border-white/15 dark:bg-white/[0.06]"
+        className="flex h-12 w-full items-center gap-2 rounded-xl border border-border bg-popover px-4 text-base text-muted-foreground shadow-sm outline-none transition-colors hover:border-panel-foreground/25 hover:text-panel-foreground focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 dark:border-white/15 dark:bg-white/[0.06]"
       >
         <SearchIcon className="size-4 shrink-0 opacity-50" aria-hidden="true" />
         <span className="truncate">{SEARCH_PLACEHOLDER}</span>
