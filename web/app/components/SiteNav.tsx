@@ -531,7 +531,7 @@ function FootLink({
       to={to}
       onClick={onNavigate}
       className={cn(
-        "inline-flex w-fit items-center gap-1 rounded text-sm font-semibold text-brand outline-none hover:underline focus-visible:ring-3 focus-visible:ring-ring/50",
+        "inline-flex w-fit items-center gap-1 rounded text-sm font-semibold text-foreground outline-none hover:underline focus-visible:ring-3 focus-visible:ring-ring/50",
         className,
       )}
     >

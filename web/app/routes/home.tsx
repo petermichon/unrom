@@ -181,7 +181,7 @@ export default function Home() {
             <Link
               to="/roms"
               prefetch="intent"
-              className="text-sm font-semibold text-brand hover:underline"
+              className="text-sm font-semibold text-foreground hover:underline"
             >
               All {formatNumber(counts.roms)} ROMs
             </Link>
@@ -192,9 +192,11 @@ export default function Home() {
                 <Link
                   to={`/roms/${rom.id}`}
                   prefetch="intent"
-                  className="flex items-baseline justify-between gap-4 border-b border-border py-2.5 outline-none hover:text-brand focus-visible:ring-3 focus-visible:ring-ring/50"
+                  className="group flex items-baseline justify-between gap-4 border-b border-border py-2.5 outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
                 >
-                  <span className="truncate font-medium">{rom.name}</span>
+                  <span className="truncate font-medium group-hover:underline">
+                    {rom.name}
+                  </span>
                   <span className="shrink-0 text-xs text-muted-foreground tabular-nums">
                     {formatNumber(rom.deviceCount)}{" "}
                     {rom.deviceCount === 1 ? "device" : "devices"}
@@ -217,7 +219,7 @@ export default function Home() {
           <Link
             to="/devices"
             prefetch="intent"
-            className="text-sm font-semibold text-brand hover:underline"
+            className="text-sm font-semibold text-foreground hover:underline"
           >
             All devices
           </Link>
@@ -283,7 +285,7 @@ export default function Home() {
               <Link
                 to="/data"
                 prefetch="intent"
-                className="font-medium text-brand hover:underline"
+                className="font-medium text-foreground hover:underline"
               >
                 data page
               </Link>
@@ -332,7 +334,7 @@ function ExampleMapping({
             <Link
               to={`/devices/${device.vendor}/${device.codename}`}
               prefetch="intent"
-              className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-brand outline-none hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
+              className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-foreground outline-none hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
             >
               See all {formatNumber(total)} {total === 1 ? "ROM" : "ROMs"}
               <ArrowRight className="size-3.5" aria-hidden="true" />
@@ -345,7 +347,7 @@ function ExampleMapping({
                 <Link
                   to={`/roms/${rom.id}`}
                   prefetch="intent"
-                  className="w-fit max-w-full truncate font-medium outline-none hover:text-brand hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
+                  className="w-fit max-w-full truncate font-medium outline-none hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
                 >
                   {rom.name}
                 </Link>

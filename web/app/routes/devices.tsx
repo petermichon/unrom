@@ -315,7 +315,7 @@ export default function DevicesRoute() {
               : "No device matches these filters."}{" "}
             <Link
               to="/devices"
-              className="font-medium text-brand hover:underline"
+              className="font-medium text-foreground hover:underline"
             >
               Clear the filters
             </Link>

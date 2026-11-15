@@ -68,7 +68,7 @@ export function BrandPicker({
       <Link
         to="/brands"
         prefetch="intent"
-        className="text-sm font-medium text-brand hover:underline"
+        className="text-sm font-medium text-foreground hover:underline"
       >
         All brands
       </Link>
@@ -198,7 +198,7 @@ export function DirectoryPager({
   if (pages <= 1) return null;
 
   const className =
-    "rounded-full border border-border bg-card px-3.5 py-1.5 text-sm font-semibold outline-none transition-colors hover:border-brand/40 hover:text-brand focus-visible:ring-3 focus-visible:ring-ring/50";
+    "rounded-full border border-border bg-card px-3.5 py-1.5 text-sm font-semibold outline-none transition-colors hover:border-foreground/30 hover:bg-muted focus-visible:ring-3 focus-visible:ring-ring/50";
 
   return (
     <nav

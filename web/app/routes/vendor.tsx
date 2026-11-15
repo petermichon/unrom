@@ -237,7 +237,7 @@ export default function VendorRoute() {
               : "No device matches these filters."}{" "}
             <Link
               to={vendorHref(vendor, {})}
-              className="font-medium text-brand hover:underline"
+              className="font-medium text-foreground hover:underline"
             >
               Clear the filters
             </Link>
