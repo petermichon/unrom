@@ -707,6 +707,56 @@ test("the relock filter keeps only devices a project documents", () => {
   }
 });
 
+test("the updated filter keeps devices with a recent build", () => {
+  const dir = mkdtempSync(join(tmpdir(), "unrom-test-"));
+  const dbPath = join(dir, "unrom.sqlite");
+  const daysAgo = (days: number) => {
+    const date = new Date();
+    date.setUTCDate(date.getUTCDate() - days);
+    return date.toISOString().slice(0, 10);
+  };
+
+  try {
+    buildDatabase(
+      [
+        buildRecord({
+          romId: "test",
+          romName: "Test ROM",
+          codename: "tokay",
+          buildDate: daysAgo(10),
+        }),
+        buildRecord({
+          romId: "test",
+          romName: "Test ROM",
+          codename: "caiman",
+          buildDate: daysAgo(200),
+        }),
+        buildRecord({
+          romId: "test",
+          romName: "Test ROM",
+          codename: "husky",
+        }),
+      ],
+      dbPath,
+    );
+    const api = createApi(dbPath);
+
+    assert.equal(api.countDevices({ updatedWithinDays: 90 }), 1);
+    assert.deepEqual(
+      api
+        .listDevicesPage({ updatedWithinDays: 90 })
+        .map((device) => device.codename),
+      ["tokay"],
+    );
+    // A wider window reaches the older build but not the undated device.
+    assert.equal(api.countDevices({ updatedWithinDays: 365 }), 2);
+
+    api.close();
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 test("a device-scoped relock statement beats the ROM-wide one", () => {
   const dir = mkdtempSync(join(tmpdir(), "unrom-test-"));
   const dbPath = join(dir, "unrom.sqlite");

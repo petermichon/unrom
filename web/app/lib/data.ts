@@ -156,6 +156,7 @@ export async function fetchDevicesPage(options: {
   vendor?: string;
   hasRoms?: boolean;
   relock?: "supported" | "unsupported" | "unknown";
+  updatedWithinDays?: number;
   sort?: "name" | "coverage" | "roms";
   limit: number;
   offset: number;
@@ -171,6 +172,9 @@ export async function fetchDevicesPage(options: {
     params.set("hasRoms", String(options.hasRoms));
   }
   if (options.relock) params.set("relock", options.relock);
+  if (options.updatedWithinDays !== undefined) {
+    params.set("updated", String(options.updatedWithinDays));
+  }
   if (options.sort) params.set("sort", options.sort);
   return cached(`/api/devices?${params}`, async () => {
     const response = await fetch(`${apiBase()}/api/devices?${params}`);

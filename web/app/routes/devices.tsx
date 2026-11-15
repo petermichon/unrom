@@ -7,7 +7,7 @@ import {
   CoverageToggle,
   DirectoryPager,
   DirectorySearch,
-  RelockToggle,
+  FilterToggle,
 } from "@/components/directory";
 import { fetchBrands, fetchDevicesPage, fetchSummary } from "@/lib/data";
 import {
@@ -23,21 +23,26 @@ import type { Route } from "./+types/devices";
 
 const PAGE_SIZE = 200;
 
+const UPDATED_DAYS = 90;
+
 function directoryHref({
   q,
   roms,
   relock,
+  updated,
   page,
 }: {
   q?: string;
   roms?: boolean;
   relock?: boolean;
+  updated?: boolean;
   page?: number;
 }): string {
   const params = new URLSearchParams();
   if (q) params.set("q", q);
   if (roms) params.set("roms", "1");
   if (relock) params.set("relock", "supported");
+  if (updated) params.set("updated", String(UPDATED_DAYS));
   if (page && page > 1) params.set("page", String(page));
   const search = params.toString();
   return search ? `/devices?${search}` : "/devices";
@@ -81,12 +86,16 @@ async function load(request: URL) {
   const roms = request.searchParams.get("roms") === "1";
   const relockRaw = request.searchParams.get("relock");
   const relock = relockRaw === "supported";
+  const updated = Number(request.searchParams.get("updated")) === UPDATED_DAYS;
   const page = Math.max(
     1,
     Math.trunc(Number(request.searchParams.get("page")) || 1),
   );
 
   if (relockRaw !== null && relockRaw !== "supported") {
+    throw new Response("Not found", { status: 404 });
+  }
+  if (request.searchParams.has("updated") && !updated) {
     throw new Response("Not found", { status: 404 });
   }
 
@@ -106,6 +115,7 @@ async function load(request: URL) {
     if (q) params.set("q", q);
     if (roms) params.set("roms", "1");
     if (relock) params.set("relock", "supported");
+    if (updated) params.set("updated", String(UPDATED_DAYS));
     if (page > 1) params.set("page", String(page));
     const search = params.toString();
     throw redirect(
@@ -118,6 +128,7 @@ async function load(request: URL) {
     q: q || undefined,
     hasRoms: roms || undefined,
     relock: relock ? "supported" : undefined,
+    updatedWithinDays: updated ? UPDATED_DAYS : undefined,
     sort: "roms",
     limit: PAGE_SIZE,
     offset: (page - 1) * PAGE_SIZE,
@@ -126,12 +137,19 @@ async function load(request: URL) {
   const pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
   if (page > pages) throw new Response("Not found", { status: 404 });
 
-  const href = directoryHref({ q: q || undefined, roms, relock, page });
+  const href = directoryHref({
+    q: q || undefined,
+    roms,
+    relock,
+    updated,
+    page,
+  });
 
   return {
     q,
     roms,
     relock,
+    updated,
     page,
     pages,
     total,
@@ -141,7 +159,7 @@ async function load(request: URL) {
     brands: [...brands].sort(
       (a, b) => bySortKey(a.vendorName, b.vendorName) || 0,
     ),
-    isIndexable: page === 1 && !roms && !relock && !q,
+    isIndexable: page === 1 && !roms && !relock && !updated && !q,
   };
 }
 
@@ -158,6 +176,7 @@ export default function DevicesRoute() {
     q,
     roms,
     relock,
+    updated,
     page,
     pages,
     total,
@@ -178,6 +197,7 @@ export default function DevicesRoute() {
           if (q) params.set("q", q);
           if (roms) params.set("hasRoms", "true");
           if (relock) params.set("relock", "supported");
+          if (updated) params.set("updated", String(UPDATED_DAYS));
           params.set("sort", "roms");
           params.set("limit", String(PAGE_SIZE));
           if (page > 1) params.set("offset", String((page - 1) * PAGE_SIZE));
@@ -192,28 +212,48 @@ export default function DevicesRoute() {
           hidden={{
             roms: roms ? "1" : undefined,
             relock: relock ? "supported" : undefined,
+            updated: updated ? String(UPDATED_DAYS) : undefined,
           }}
         />
 
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div className="flex flex-wrap items-center gap-3">
-            <BrandPicker brands={brands} q={q} roms={roms} relock={relock} />
+            <BrandPicker
+              brands={brands}
+              q={q}
+              roms={roms}
+              relock={relock}
+              updated={updated}
+            />
             <CoverageToggle
-              allHref={directoryHref({ q: q || undefined, relock })}
+              allHref={directoryHref({ q: q || undefined, relock, updated })}
               romsHref={directoryHref({
                 q: q || undefined,
                 roms: true,
                 relock,
+                updated,
               })}
               roms={roms}
             />
-            <RelockToggle
+            <FilterToggle
+              href={directoryHref({
+                q: q || undefined,
+                roms,
+                relock,
+                updated: !updated,
+              })}
+              active={updated}
+              label="Recently updated"
+            />
+            <FilterToggle
               href={directoryHref({
                 q: q || undefined,
                 roms,
                 relock: !relock,
+                updated,
               })}
-              relock={relock}
+              active={relock}
+              label="Relock supported"
             />
           </div>
 
@@ -259,12 +299,24 @@ export default function DevicesRoute() {
         pages={pages}
         prevHref={
           page > 1
-            ? directoryHref({ q: q || undefined, roms, relock, page: page - 1 })
+            ? directoryHref({
+                q: q || undefined,
+                roms,
+                relock,
+                updated,
+                page: page - 1,
+              })
             : null
         }
         nextHref={
           page < pages
-            ? directoryHref({ q: q || undefined, roms, relock, page: page + 1 })
+            ? directoryHref({
+                q: q || undefined,
+                roms,
+                relock,
+                updated,
+                page: page + 1,
+              })
             : null
         }
       />

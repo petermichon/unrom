@@ -409,6 +409,21 @@ test("the relock filter opens the documented devices", async ({ page }) => {
   );
 });
 
+test("the updated filter opens the recently built devices", async ({
+  page,
+}) => {
+  await page.goto("/devices?updated=90");
+  await page.waitForLoadState("networkidle");
+
+  const toggle = page.getByRole("link", { name: "Recently updated" });
+  await expect(toggle).toHaveAttribute("aria-current", "page");
+  await expect(page.getByRole("status")).toHaveText(/\d[\d,]* devices/);
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
+    "content",
+    "noindex",
+  );
+});
+
 test("the brands index links to a brand", async ({ page }) => {
   await page.goto("/brands");
 

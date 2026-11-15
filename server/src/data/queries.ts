@@ -223,6 +223,8 @@ export function createApi(dbPath: string) {
     hasRoms?: boolean;
     /** Only devices with a mapping whose project documents this relock status. */
     relock?: "supported" | "unsupported" | "unknown";
+    /** Only devices with a build newer than this many days, counting any ROM. */
+    updatedWithinDays?: number;
     /** `coverage` puts ROM-covered devices first, then sorts by name. */
     sort?: "name" | "coverage" | "roms";
     limit?: number;
@@ -260,6 +262,14 @@ export function createApi(dbPath: string) {
     }
     if (options.hasRoms !== undefined) {
       filters.push(eq(devices.covered, options.hasRoms ? 1 : 0));
+    }
+    if (options.updatedWithinDays !== undefined) {
+      const days = Math.max(1, Math.trunc(options.updatedWithinDays));
+      // Build dates are snapshot facts; the window is evaluated against today so
+      // the filter keeps meaning between refreshes.
+      filters.push(
+        sql`exists (select 1 from rom_devices rd where rd.vendor = ${devices.vendor} and rd.codename = ${devices.codename} and rd.build_date >= date('now', ${`-${days} days`}))`,
+      );
     }
     if (options.relock) {
       // A device qualifies when at least one ROM documents this relock status

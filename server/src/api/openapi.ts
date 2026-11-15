@@ -423,6 +423,14 @@ const deviceListParameters = [
     },
   },
   {
+    name: "updated",
+    in: "query",
+    required: false,
+    description:
+      "Only devices with a build newer than this many days, counting any ROM.",
+    schema: { type: "integer", minimum: 1, maximum: 3650 },
+  },
+  {
     name: "sort",
     in: "query",
     required: false,
