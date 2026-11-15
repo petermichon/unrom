@@ -13,7 +13,7 @@
       is coverage, not discovery. Open questions: one field or a
       tri-state (unlockable / locked / unknown); an authoritative per-vendor
       source for each; whether it belongs in `contract/` (a versioning
-      decision); and how to validate 9,104 devices rather than assume them.
+      decision); and how to validate 9,103 devices rather than assume them.
       Interim: state on the devices page what the directory does and does not
       claim. Vendor-level policies cover seven vendors; add one only when it
       publishes a policy (Samsung and ASUS next, then regional variants).
@@ -32,10 +32,16 @@
       Coverage headlines currently mix both.
 - [ ] Record build freshness per ROM: last build date and last commit, with a
       stale flag (6/12/24 months). `status` only says whether a project ships
-      anything at all; AOSPA is "active" on an Android 14 build.
-- [ ] Record Android version and build date per device–ROM pair. Both are in the
-      build metadata of most sources. Patch level is a separate, faster-rotting
-      field and is deliberately not part of this.
+      anything at all; AOSPA is "active" on an Android 14 build. The build date
+      and the patch level that build reports are now on the mapping for the four
+      sources that publish them (784 of 3702 mappings have a date, 484 a patch
+      level). Still open: the last commit per project, the stale flag, and the
+      sources whose snapshots already carry timestamps but are not wired up
+      (Evolution X, DerpFest, PixelOS, SuperiorOS, WitAqua, PixelExtended,
+      Project PixelAge, CandyRoms).
+- [ ] Record the Android version per device–ROM pair. `os_sdk_level` and the
+      release string sit in the same OTA metadata as the build date, which is
+      now recorded; the version is not.
 - [ ] Write a methodology page for the confidence model: verified, inferred,
       manual and unverified names, observed versus derived references, what
       "verified" covers, and what is refreshed when.
