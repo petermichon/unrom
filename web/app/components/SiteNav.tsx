@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { ArrowRight, Clock, LayoutGrid, Lock, Shield } from "lucide-react";
 import { Link, NavLink } from "react-router";
-import { fetchBrands, fetchRomSummaries, fetchSummary } from "@/lib/data";
+import { fetchRomSummaries, fetchSummary } from "@/lib/data";
 import {
   MENU_BRANDS,
   MENU_ROMS,
@@ -13,11 +13,10 @@ import { PanelCard } from "@/components/PanelCard";
 import { RomGlyph } from "@/components/RomMark";
 import { ROM_BOLD_MARKS, ROM_LOGOS } from "@/components/RomPhone";
 import { cn, formatNumber } from "@/lib/utils";
-import type { BrandSummary, RomSummary, Summary } from "@/lib/types";
+import type { RomSummary, Summary } from "@/lib/types";
 
 interface MenuData {
   summary: Summary;
-  brands: BrandSummary[];
   roms: RomSummary[];
 }
 
@@ -80,9 +79,9 @@ export default function SiteNav() {
   useEffect(() => {
     if (!active || menu || failed) return;
     let cancelled = false;
-    Promise.all([fetchSummary(), fetchBrands(), fetchRomSummaries()])
-      .then(([summary, brands, roms]) => {
-        if (!cancelled) setMenu({ summary, brands, roms });
+    Promise.all([fetchSummary(), fetchRomSummaries()])
+      .then(([summary, roms]) => {
+        if (!cancelled) setMenu({ summary, roms });
       })
       .catch(() => {
         if (!cancelled) setFailed(true);
@@ -217,7 +216,7 @@ interface PanelData {
   loading: boolean;
   failed: boolean;
   deviceCount: number | null;
-  cardBrands: { id: string; name: string; withRoms: number | null }[];
+  cardBrands: readonly { id: string; name: string }[];
   cardRoms: RomSummary[];
 }
 
@@ -238,7 +237,6 @@ function MegaPanel({
   onNavigate: () => void;
 }) {
   const summary = data?.summary ?? null;
-  const brands = data?.brands ?? null;
   const roms = data?.roms ?? null;
 
   const sortedRoms = roms
@@ -254,12 +252,7 @@ function MegaPanel({
     loading: !data && !failed,
     failed,
     deviceCount: summary?.deviceCount ?? null,
-    cardBrands: MENU_BRANDS.map((entry) => ({
-      id: entry.id,
-      name: entry.name,
-      withRoms:
-        brands?.find((brand) => brand.vendor === entry.id)?.withRoms ?? null,
-    })),
+    cardBrands: MENU_BRANDS,
     cardRoms: MENU_ROM_IDS.map((id) =>
       sortedRoms?.find((rom) => rom.id === id),
     ).filter((rom): rom is RomSummary => rom !== undefined),
@@ -345,28 +338,23 @@ function BrandsPanel({
   data: PanelData;
   onNavigate: () => void;
 }) {
-  const { cardBrands, loading, failed } = data;
+  const { cardBrands } = data;
 
   return (
     <div className="flex flex-col gap-3">
-      <Shortcuts loading={loading} failed={failed}>
-        <div className="grid grid-cols-4 gap-x-4">
-          {cardBrands.map((brand) => (
-            <MenuRow
-              key={brand.id}
-              to={`/devices/${brand.id}`}
-              onNavigate={onNavigate}
-            >
-              <span className="truncate font-medium">{brand.name}</span>
-              {brand.withRoms !== null && (
-                <span className="shrink-0 text-xs text-muted-foreground tabular-nums">
-                  {formatNumber(brand.withRoms)} with ROMs
-                </span>
-              )}
-            </MenuRow>
-          ))}
-        </div>
-      </Shortcuts>
+      {/* The list is curated, not read from the data, so it is right before
+          the request returns and stays right if it fails. */}
+      <div className="grid grid-cols-4 gap-x-4">
+        {cardBrands.map((brand) => (
+          <MenuRow
+            key={brand.id}
+            to={`/devices/${brand.id}`}
+            onNavigate={onNavigate}
+          >
+            <span className="truncate font-medium">{brand.name}</span>
+          </MenuRow>
+        ))}
+      </div>
 
       <PanelFooter>
         <FootLink to="/brands" onNavigate={onNavigate}>
