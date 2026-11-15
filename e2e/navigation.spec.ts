@@ -154,14 +154,17 @@ test("each trigger opens its own panel", async ({ page }) => {
   ).toBeVisible();
 
   // Data is a page, not a section, so it lives in the footer rather than as a
-  // header trigger. The panel keeps a data rail in every section.
+  // header trigger. Every panel links to it from its own footer line.
   await expect(
-    nav.getByRole("link", { name: "Data", exact: true }),
+    nav.getByRole("link", { name: "Data & API", exact: true }),
   ).toHaveCount(0);
   await expect(
     page
       .getByRole("navigation", { name: "Project" })
-      .getByRole("link", { name: "Data", exact: true }),
+      .getByRole("link", { name: "Data & API", exact: true }),
+  ).toBeVisible();
+  await expect(
+    menu.getByRole("link", { name: "Data & API", exact: true }),
   ).toBeVisible();
 });
 
@@ -236,7 +239,7 @@ test("client navigation survives a failing /api index", async ({ page }) => {
   await page.goto("/");
   await page
     .getByRole("navigation", { name: "Project" })
-    .getByRole("link", { name: "Data" })
+    .getByRole("link", { name: "Data & API" })
     .click();
   await page.waitForURL("**/data");
 
@@ -252,7 +255,7 @@ test("the standalone server proxies /api for client navigation", async ({
   await page.goto("/");
   await page
     .getByRole("navigation", { name: "Project" })
-    .getByRole("link", { name: "Data" })
+    .getByRole("link", { name: "Data & API" })
     .click();
   await page.waitForURL("**/data");
 

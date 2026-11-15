@@ -319,7 +319,7 @@ export default function AppShell({ updatedAt, updatedAtIso, children }: Props) {
                 Brands
               </a>
               <a href="/data" className="text-foreground/70">
-                Data
+                Data & API
               </a>
             </nav>
             <NavigationProgress />
@@ -355,7 +355,7 @@ export default function AppShell({ updatedAt, updatedAtIso, children }: Props) {
                     prefetch="intent"
                     className="inline-flex min-h-11 items-center hover:text-foreground hover:underline sm:min-h-0 sm:py-1"
                   >
-                    Data
+                    Data & API
                   </Link>
                   <Link
                     to="/legal"

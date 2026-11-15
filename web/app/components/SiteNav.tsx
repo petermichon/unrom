@@ -228,7 +228,7 @@ interface PanelData {
 // not a leaderboard.
 const MENU_ROM_IDS: string[] = MENU_ROMS.map((rom) => rom.id);
 
-/** Each trigger gets its own section, with the other directories one rail away. */
+/** Each trigger gets its own section, and the data one footer line away. */
 function MegaPanel({
   active,
   data,
@@ -273,17 +273,13 @@ function MegaPanel({
 
   return (
     <div className="max-h-[calc(100dvh-5rem)] overflow-y-auto rounded-2xl border border-border bg-card p-5 shadow-xl sm:p-6">
-      <div className="grid grid-cols-[minmax(0,1fr)_18rem] gap-10">
-        {active === "devices" && (
-          <DevicesPanel data={panel} onNavigate={onNavigate} />
-        )}
-        {active === "brands" && (
-          <BrandsPanel data={panel} onNavigate={onNavigate} />
-        )}
-        {active === "roms" && (
-          <RomsPanel data={panel} onNavigate={onNavigate} />
-        )}
-      </div>
+      {active === "devices" && (
+        <DevicesPanel data={panel} onNavigate={onNavigate} />
+      )}
+      {active === "brands" && (
+        <BrandsPanel data={panel} onNavigate={onNavigate} />
+      )}
+      {active === "roms" && <RomsPanel data={panel} onNavigate={onNavigate} />}
     </div>
   );
 }
@@ -298,79 +294,78 @@ function DevicesPanel({
   const { deviceCount, loading, failed } = data;
 
   return (
-    <>
-      <Column>
-        <Shortcuts loading={loading} failed={failed}>
-          <div className="grid grid-cols-2 gap-1.5">
-            <PanelCard
-              to="/devices?hardened=1"
-              title="Hardened"
-              subtitle="Patches, relock and mitigations"
-              icon={<ShieldCheck className="size-5" />}
-              onNavigate={onNavigate}
-            />
-            <PanelCard
-              to="/devices?relock=supported"
-              title="Relock supported"
-              subtitle="Devices with a documented relock path"
-              icon={<Lock className="size-5" />}
-              onNavigate={onNavigate}
-            />
-            <PanelCard
-              to="/devices?updated=90"
-              title="Recently updated"
-              subtitle="Newest build in the last 90 days"
-              icon={<Clock className="size-5" />}
-              onNavigate={onNavigate}
-            />
-            <PanelCard
-              to="/devices"
-              title="All devices"
-              subtitle={
-                deviceCount === null
-                  ? "Search by name or codename"
-                  : `${formatNumber(deviceCount)} devices, searchable`
-              }
-              icon={<LayoutGrid className="size-5" />}
-              onNavigate={onNavigate}
-            />
-          </div>
-        </Shortcuts>
-
-        {/* What the data cannot answer yet. Plain text, not controls: there is
-            nothing to click until the facts exist. */}
-        <div className="mt-3 flex flex-col">
-          <p className="px-2 pb-1 text-xs font-semibold text-muted-foreground">
-            Coming next
-          </p>
-          <div className="grid grid-cols-2 gap-1.5">
-            <PlannedCard
-              title="Official builds"
-              subtitle="Official or unofficial per build"
-              icon={<BadgeCheck className="size-5" />}
-            />
-            <PlannedCard
-              title="Long support"
-              subtitle="Vendor support end dates"
-              icon={<CalendarClock className="size-5" />}
-            />
-            <PlannedCard
-              title="Legacy"
-              subtitle="Follows support end dates"
-              icon={<Archive className="size-5" />}
-            />
-          </div>
+    <div className="flex flex-col gap-3">
+      <Shortcuts loading={loading} failed={failed}>
+        <div className="grid grid-cols-2 gap-1.5 lg:grid-cols-4">
+          <PanelCard
+            to="/devices?hardened=1"
+            title="Hardened"
+            subtitle="Patches, relock and mitigations"
+            icon={<ShieldCheck className="size-5" />}
+            onNavigate={onNavigate}
+          />
+          <PanelCard
+            to="/devices?relock=supported"
+            title="Relock supported"
+            subtitle="Devices with a documented relock path"
+            icon={<Lock className="size-5" />}
+            onNavigate={onNavigate}
+          />
+          <PanelCard
+            to="/devices?updated=90"
+            title="Recently updated"
+            subtitle="Newest build in the last 90 days"
+            icon={<Clock className="size-5" />}
+            onNavigate={onNavigate}
+          />
+          <PanelCard
+            to="/devices"
+            title="All devices"
+            subtitle={
+              deviceCount === null
+                ? "Search by name or codename"
+                : `${formatNumber(deviceCount)} devices, searchable`
+            }
+            icon={<LayoutGrid className="size-5" />}
+            onNavigate={onNavigate}
+          />
         </div>
-      </Column>
-      <Rail>
-        <RailLink to="/devices?roms=1" onNavigate={onNavigate}>
+      </Shortcuts>
+
+      {/* What the data cannot answer yet. Plain text, not controls: there is
+          nothing to click until the facts exist. */}
+      <div className="flex flex-col">
+        <p className="px-2 pb-1 text-xs font-semibold text-muted-foreground">
+          Coming next
+        </p>
+        <div className="grid grid-cols-3 gap-1.5">
+          <PlannedCard
+            title="Official builds"
+            subtitle="Official or unofficial per build"
+            icon={<BadgeCheck className="size-5" />}
+          />
+          <PlannedCard
+            title="Long support"
+            subtitle="Vendor support end dates"
+            icon={<CalendarClock className="size-5" />}
+          />
+          <PlannedCard
+            title="Legacy"
+            subtitle="Follows support end dates"
+            icon={<Archive className="size-5" />}
+          />
+        </div>
+      </div>
+
+      <PanelFooter>
+        <FootLink to="/devices?roms=1" onNavigate={onNavigate}>
           Devices with ROMs
-        </RailLink>
-        <RailLink to="/data" onNavigate={onNavigate}>
+        </FootLink>
+        <FootLink to="/data" onNavigate={onNavigate} className="ml-auto">
           Data & API
-        </RailLink>
-      </Rail>
-    </>
+        </FootLink>
+      </PanelFooter>
+    </div>
   );
 }
 
@@ -384,37 +379,33 @@ function BrandsPanel({
   const { topBrands, loading, failed } = data;
 
   return (
-    <>
-      <Column>
-        <Shortcuts loading={loading} failed={failed}>
-          <div className="grid grid-cols-2 gap-x-6">
-            {topBrands?.map((brand) => (
-              <MenuRow
-                key={brand.vendor}
-                to={`/devices/${brand.vendor}`}
-                onNavigate={onNavigate}
-              >
-                <span className="truncate font-medium">{brand.vendorName}</span>
-                <span className="shrink-0 text-xs text-muted-foreground tabular-nums">
-                  {formatNumber(brand.withRoms)} with ROMs
-                </span>
-              </MenuRow>
-            ))}
-          </div>
-        </Shortcuts>
+    <div className="flex flex-col gap-3">
+      <Shortcuts loading={loading} failed={failed}>
+        <div className="grid grid-cols-3 gap-x-6">
+          {topBrands?.map((brand) => (
+            <MenuRow
+              key={brand.vendor}
+              to={`/devices/${brand.vendor}`}
+              onNavigate={onNavigate}
+            >
+              <span className="truncate font-medium">{brand.vendorName}</span>
+              <span className="shrink-0 text-xs text-muted-foreground tabular-nums">
+                {formatNumber(brand.withRoms)} with ROMs
+              </span>
+            </MenuRow>
+          ))}
+        </div>
+      </Shortcuts>
+
+      <PanelFooter>
         <FootLink to="/brands" onNavigate={onNavigate}>
           All brands
         </FootLink>
-      </Column>
-      <Rail>
-        <RailLink to="/devices?roms=1" onNavigate={onNavigate}>
-          Devices with ROMs
-        </RailLink>
-        <RailLink to="/data" onNavigate={onNavigate}>
+        <FootLink to="/data" onNavigate={onNavigate} className="ml-auto">
           Data & API
-        </RailLink>
-      </Rail>
-    </>
+        </FootLink>
+      </PanelFooter>
+    </div>
   );
 }
 
@@ -428,32 +419,28 @@ function RomsPanel({
   const { cardRoms, loading, failed } = data;
 
   return (
-    <>
-      <Column>
-        <Shortcuts loading={loading} failed={failed}>
-          <div className="grid grid-cols-2 gap-1.5">
-            {cardRoms.map((rom) => (
-              <RomCard key={rom.id} rom={rom} onNavigate={onNavigate} />
-            ))}
-            <PanelCard
-              to="/roms"
-              title="All ROMs"
-              subtitle="Full catalogue"
-              icon={<LayoutGrid className="size-5" />}
-              onNavigate={onNavigate}
-            />
-          </div>
-        </Shortcuts>
-      </Column>
-      <Rail>
-        <RailLink to="/devices?roms=1" onNavigate={onNavigate}>
-          Devices with ROMs
-        </RailLink>
-        <RailLink to="/data" onNavigate={onNavigate}>
+    <div className="flex flex-col gap-3">
+      <Shortcuts loading={loading} failed={failed}>
+        <div className="grid grid-cols-3 gap-1.5">
+          {cardRoms.map((rom) => (
+            <RomCard key={rom.id} rom={rom} onNavigate={onNavigate} />
+          ))}
+          <PanelCard
+            to="/roms"
+            title="All ROMs"
+            subtitle="Full catalogue"
+            icon={<LayoutGrid className="size-5" />}
+            onNavigate={onNavigate}
+          />
+        </div>
+      </Shortcuts>
+
+      <PanelFooter>
+        <FootLink to="/data" onNavigate={onNavigate} className="ml-auto">
           Data & API
-        </RailLink>
-      </Rail>
-    </>
+        </FootLink>
+      </PanelFooter>
+    </div>
   );
 }
 
@@ -524,46 +511,12 @@ function PlannedCard({
   );
 }
 
-function Column({ title, children }: { title?: string; children: ReactNode }) {
+/** The line under a panel: its section-wide link, and the way into the data. */
+function PanelFooter({ children }: { children: ReactNode }) {
   return (
-    <div className="flex min-w-0 flex-col gap-1">
-      {title && (
-        <p className="px-2 pb-1 text-xs font-semibold text-muted-foreground">
-          {title}
-        </p>
-      )}
+    <div className="mt-1 flex flex-wrap items-center justify-between gap-x-6 gap-y-1 border-t border-border pt-3">
       {children}
     </div>
-  );
-}
-
-function Rail({ children }: { children: ReactNode }) {
-  return (
-    <div className="flex flex-col gap-2 self-start rounded-xl bg-muted/50 p-4">
-      <p className="text-xs font-semibold text-muted-foreground">More</p>
-      {children}
-    </div>
-  );
-}
-
-function RailLink({
-  to,
-  onNavigate,
-  children,
-}: {
-  to: string;
-  onNavigate: () => void;
-  children: ReactNode;
-}) {
-  return (
-    <Link
-      to={to}
-      onClick={onNavigate}
-      className="inline-flex w-fit items-center gap-1 rounded text-sm font-semibold text-brand outline-none hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
-    >
-      {children}
-      <ArrowRight className="size-3.5" aria-hidden="true" />
-    </Link>
   );
 }
 
@@ -612,17 +565,22 @@ function MenuRow({
 function FootLink({
   to,
   onNavigate,
+  className,
   children,
 }: {
   to: string;
   onNavigate: () => void;
+  className?: string;
   children: ReactNode;
 }) {
   return (
     <Link
       to={to}
       onClick={onNavigate}
-      className="mt-1 inline-flex w-fit items-center gap-1 rounded-lg px-2 py-1.5 text-sm font-semibold text-brand outline-none hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
+      className={cn(
+        "inline-flex w-fit items-center gap-1 rounded text-sm font-semibold text-brand outline-none hover:underline focus-visible:ring-3 focus-visible:ring-ring/50",
+        className,
+      )}
     >
       {children}
       <ArrowRight className="size-3.5" aria-hidden="true" />

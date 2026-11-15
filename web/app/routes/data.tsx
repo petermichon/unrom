@@ -167,12 +167,13 @@ export default function DataRoute() {
 
   return (
     <div className="flex flex-col gap-8">
-      <Breadcrumbs items={[{ label: "Home", to: "/" }, { label: "Data" }]} />
+      <Breadcrumbs
+        items={[{ label: "Home", to: "/" }, { label: "Data & API" }]}
+      />
 
       <PageHeader
-        title="Data"
+        title="Data & API"
         description="The open dataset behind unrom: device–ROM compatibility, available as JSON, SQLite, and a REST API."
-        endpoint="/api"
       />
 
       <div className="grid gap-6 sm:grid-cols-2">
