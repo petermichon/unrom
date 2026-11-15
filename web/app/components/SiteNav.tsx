@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { ArrowRight, Clock, LayoutGrid, Lock, ShieldCheck } from "lucide-react";
+import { ArrowRight, Clock, LayoutGrid, Lock, Shield } from "lucide-react";
 import { Link, NavLink } from "react-router";
 import { fetchBrands, fetchRomSummaries, fetchSummary } from "@/lib/data";
 import {
@@ -295,7 +295,7 @@ function DevicesPanel({
             to="/devices?hardened=1"
             title="Hardened"
             subtitle="Patches, relock and mitigations"
-            icon={<ShieldCheck className="size-5" />}
+            icon={<Shield className="size-5" />}
             onNavigate={onNavigate}
           />
           <PanelCard
