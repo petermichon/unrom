@@ -27,11 +27,11 @@ export function PanelCard({
       to={to}
       onClick={onNavigate}
       className={cn(
-        "group flex min-w-0 items-center gap-3 rounded-xl bg-muted/40 p-2.5 outline-none transition-colors hover:bg-muted focus-visible:ring-3 focus-visible:ring-ring/50",
+        "group flex min-w-0 items-center gap-3 rounded-xl p-2.5 outline-none transition-colors hover:bg-muted focus-visible:ring-3 focus-visible:ring-ring/50",
         className,
       )}
     >
-      <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-foreground text-background">
+      <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-accent text-accent-foreground">
         {icon}
       </span>
       <span className="flex min-w-0 flex-col">

@@ -142,7 +142,7 @@ test("each trigger opens its own panel", async ({ page }) => {
   await expect(menu.locator('a[href="/devices"]')).toBeVisible();
 
   await show("Brands");
-  await expect(menu.getByText("Top brands by ROM coverage")).toBeVisible();
+  await expect(menu.locator('a[href="/brands"]')).toBeVisible();
   await expect(
     menu.getByRole("link", { name: "All brands", exact: true }),
   ).toBeVisible();
