@@ -145,7 +145,7 @@ export default function AppShell({ updatedAt, updatedAtIso, children }: Props) {
               >
                 <span className="flex items-center gap-2">
                   <span className="font-brand">unrom</span>
-                  <Badge className="border-0 bg-accent px-2 py-0 text-[11px] font-semibold text-accent-foreground">
+                  <Badge className="border-0 bg-accent px-2 py-0 text-xs font-semibold text-accent-foreground">
                     beta
                   </Badge>
                 </span>

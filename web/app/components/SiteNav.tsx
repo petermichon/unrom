@@ -321,7 +321,7 @@ function DevicesPanel({
                 <span className="truncate font-medium">
                   {deviceName(device)}
                 </span>
-                <span className="shrink-0 text-[11px] text-muted-foreground tabular-nums">
+                <span className="shrink-0 text-xs text-muted-foreground tabular-nums">
                   {formatNumber(device.roms.length)} ROMs
                 </span>
               </MenuRow>
@@ -365,7 +365,7 @@ function BrandsPanel({
                 onNavigate={onNavigate}
               >
                 <span className="truncate font-medium">{brand.vendorName}</span>
-                <span className="shrink-0 text-[11px] text-muted-foreground tabular-nums">
+                <span className="shrink-0 text-xs text-muted-foreground tabular-nums">
                   {formatNumber(brand.withRoms)} with ROMs
                 </span>
               </MenuRow>
@@ -409,7 +409,7 @@ function RomsPanel({
                 onNavigate={onNavigate}
               >
                 <span className="truncate font-medium">{rom.name}</span>
-                <span className="shrink-0 text-[11px] text-muted-foreground tabular-nums">
+                <span className="shrink-0 text-xs text-muted-foreground tabular-nums">
                   {formatNumber(rom.deviceCount)} devices
                 </span>
               </MenuRow>
