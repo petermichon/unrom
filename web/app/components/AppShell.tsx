@@ -1,8 +1,7 @@
-import { ArrowRight, Lock, Menu, X } from "lucide-react";
+import { Lock, Menu, X, LayoutGrid } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
 import { Link, useLocation, useNavigation } from "react-router";
 import { MENU_ROMS, NAV_ITEMS } from "@/lib/nav";
-import { fetchRomSummaries } from "@/lib/data";
 import { PanelCard } from "@/components/PanelCard";
 import { RomGlyph } from "@/components/RomMark";
 import { ROM_LOGOS } from "@/components/RomPhone";
@@ -20,7 +19,6 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import type { RomSummary } from "@/lib/types";
 import { useScrollFade } from "@/lib/use-scroll-fade";
 
 interface Props {
@@ -34,28 +32,8 @@ const ODBL_URL = "https://opendatacommons.org/licenses/odbl/1-0/";
 
 function MobileMenu() {
   const [open, setOpen] = useState(false);
-  const [roms, setRoms] = useState<RomSummary[] | null>(null);
   const close = () => setOpen(false);
   const { ref: listRef, more: listHasMore } = useScrollFade<HTMLDivElement>();
-
-  // Counts for the curated ROMs, fetched once per session like the mega panel.
-  useEffect(() => {
-    if (!open || roms) return;
-    let cancelled = false;
-    fetchRomSummaries()
-      .then((list) => {
-        if (!cancelled) setRoms(list);
-      })
-      .catch(() => {});
-    return () => {
-      cancelled = true;
-    };
-  }, [open, roms]);
-
-  const romById = new Map((roms ?? []).map((rom) => [rom.id, rom]));
-  const cardRoms = MENU_ROMS.slice(0, 2)
-    .map((rom) => romById.get(rom.id))
-    .filter((rom): rom is RomSummary => rom !== undefined);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -152,14 +130,14 @@ function MobileMenu() {
           </SheetSection>
 
           <SheetSection label="ROMs">
-            {cardRoms.map((rom) => {
+            {MENU_ROMS.map((rom) => {
               const logo = ROM_LOGOS[rom.id];
               return (
                 <PanelCard
                   key={rom.id}
                   to={`/roms/${rom.id}`}
                   title={rom.name}
-                  subtitle={`${rom.deviceCount} devices`}
+                  subtitle={rom.description}
                   icon={
                     logo ? (
                       <RomGlyph id={rom.id} src={logo} className="size-5" />
@@ -173,28 +151,13 @@ function MobileMenu() {
                 />
               );
             })}
-            {MENU_ROMS.slice(2).map((rom) => (
-              <SheetLink
-                key={rom.id}
-                to={`/roms/${rom.id}`}
-                onClick={close}
-                trailing={
-                  romById.get(rom.id)
-                    ? `${romById.get(rom.id)!.deviceCount} devices`
-                    : undefined
-                }
-              >
-                {rom.name}
-              </SheetLink>
-            ))}
-            <Link
+            <PanelCard
               to="/roms"
-              onClick={close}
-              className="mt-1 inline-flex w-fit items-center gap-1 rounded-lg px-2 py-1.5 text-sm font-semibold text-brand outline-none hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
-            >
-              All ROMs
-              <ArrowRight className="size-3.5" aria-hidden="true" />
-            </Link>
+              title="All ROMs"
+              subtitle="The full catalogue"
+              icon={<LayoutGrid className="size-5" />}
+              onNavigate={close}
+            />
           </SheetSection>
         </div>
       </DialogContent>

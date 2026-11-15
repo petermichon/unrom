@@ -46,11 +46,15 @@ export const MENU_ROMS = [
   {
     id: "grapheneos",
     name: "GrapheneOS",
-    description: "Pixel devices, official builds",
+    description: "Hardened Android",
   },
-  { id: "calyxos", name: "CalyxOS", description: "Pixels and Fairphones" },
+  {
+    id: "calyxos",
+    name: "CalyxOS",
+    description: "Privacy-focused, microG optional",
+  },
   { id: "iode", name: "iodéOS", description: "Privacy-focused Android" },
-  { id: "eos", name: "/e/OS", description: "Installer-supported devices" },
+  { id: "eos", name: "/e/OS", description: "De-Googled Android" },
   { id: "lineageos", name: "LineageOS", description: "Broad device coverage" },
 ] as const;
 

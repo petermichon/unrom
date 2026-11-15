@@ -221,15 +221,12 @@ interface PanelData {
   failed: boolean;
   deviceCount: number | null;
   topBrands: BrandSummary[] | null;
-  topRoms: RomSummary[] | null;
   cardRoms: RomSummary[];
 }
 
-// The first two ROMs get a card each; the rest follow as rows in the same
-// curated order, so the menu is a way in, not a leaderboard.
+// Every curated ROM is a card, in the curated order, so the menu is a way in,
+// not a leaderboard.
 const MENU_ROM_IDS: string[] = MENU_ROMS.map((rom) => rom.id);
-const CARD_ROMS = MENU_ROM_IDS.slice(0, 2);
-const ROW_ROMS = MENU_ROM_IDS.slice(2);
 
 /** Each trigger gets its own section, with the other directories one rail away. */
 function MegaPanel({
@@ -269,12 +266,7 @@ function MegaPanel({
     failed,
     deviceCount: summary?.deviceCount ?? null,
     topBrands: sortedBrands?.slice(0, 12) ?? null,
-    topRoms:
-      sortedRoms
-        ?.filter((rom) => ROW_ROMS.includes(rom.id))
-        .sort((a, b) => ROW_ROMS.indexOf(a.id) - ROW_ROMS.indexOf(b.id)) ??
-      null,
-    cardRoms: CARD_ROMS.map((id) =>
+    cardRoms: MENU_ROM_IDS.map((id) =>
       sortedRoms?.find((rom) => rom.id === id),
     ).filter((rom): rom is RomSummary => rom !== undefined),
   };
@@ -433,37 +425,25 @@ function RomsPanel({
   data: PanelData;
   onNavigate: () => void;
 }) {
-  const { topRoms, cardRoms, loading, failed } = data;
+  const { cardRoms, loading, failed } = data;
 
   return (
     <>
       <Column>
         <Shortcuts loading={loading} failed={failed}>
-          {cardRoms.length > 0 && (
-            <div className="mb-1.5 grid grid-cols-2 gap-1.5">
-              {cardRoms.map((rom) => (
-                <RomCard key={rom.id} rom={rom} onNavigate={onNavigate} />
-              ))}
-            </div>
-          )}
-          <div className="grid grid-cols-2 gap-x-6">
-            {topRoms?.map((rom) => (
-              <MenuRow
-                key={rom.id}
-                to={`/roms/${rom.id}`}
-                onNavigate={onNavigate}
-              >
-                <span className="truncate font-medium">{rom.name}</span>
-                <span className="shrink-0 text-xs text-muted-foreground tabular-nums">
-                  {formatNumber(rom.deviceCount)} devices
-                </span>
-              </MenuRow>
+          <div className="grid grid-cols-2 gap-1.5">
+            {cardRoms.map((rom) => (
+              <RomCard key={rom.id} rom={rom} onNavigate={onNavigate} />
             ))}
+            <PanelCard
+              to="/roms"
+              title="All ROMs"
+              subtitle="The full catalogue"
+              icon={<LayoutGrid className="size-5" />}
+              onNavigate={onNavigate}
+            />
           </div>
         </Shortcuts>
-        <FootLink to="/roms" onNavigate={onNavigate}>
-          All ROMs
-        </FootLink>
       </Column>
       <Rail>
         <RailLink to="/devices?roms=1" onNavigate={onNavigate}>
@@ -477,11 +457,6 @@ function RomsPanel({
   );
 }
 
-/**
- * A pinned ROM: its own chip so it reads as a deliberate entry rather than
- * another row sorted by device count. Projects without a mark get a monogram
- * in the same tile.
- */
 function RomCard({
   rom,
   onNavigate,
@@ -495,7 +470,9 @@ function RomCard({
     <PanelCard
       to={`/roms/${rom.id}`}
       title={rom.name}
-      subtitle={`${formatNumber(rom.deviceCount)} devices`}
+      subtitle={
+        MENU_ROMS.find((entry) => entry.id === rom.id)?.description ?? ""
+      }
       icon={
         logo ? (
           <RomGlyph id={rom.id} src={logo} className="size-5" />
