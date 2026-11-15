@@ -424,6 +424,21 @@ test("the updated filter opens the recently built devices", async ({
   );
 });
 
+test("the hardened filter opens the documented devices", async ({ page }) => {
+  await page.goto("/devices?hardened=1");
+  await page.waitForLoadState("networkidle");
+
+  const toggle = page.getByRole("link", { name: "Hardened" });
+  await expect(toggle).toHaveAttribute("aria-current", "page");
+  await expect(
+    page.getByRole("link", { name: /Pixel 9/ }).first(),
+  ).toBeVisible();
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
+    "content",
+    "noindex",
+  );
+});
+
 test("the brands index links to a brand", async ({ page }) => {
   await page.goto("/brands");
 

@@ -37,6 +37,7 @@ import {
 } from "../db/schema.ts";
 import { vendorName } from "./identity.ts";
 import { BUILD_SOURCES } from "./build-sources.ts";
+import { HARDENED_ROMS } from "./hardening.ts";
 
 // Order by the first letter/digit so leading punctuation (e.g. "/e/OS") does not
 // push a name to the top. Display names are left untouched.
@@ -225,6 +226,8 @@ export function createApi(dbPath: string) {
     relock?: "supported" | "unsupported" | "unknown";
     /** Only devices with a build newer than this many days, counting any ROM. */
     updatedWithinDays?: number;
+    /** Only devices whose ROM documents relocking, current patches and mitigations. */
+    hardened?: boolean;
     /** `coverage` puts ROM-covered devices first, then sorts by name. */
     sort?: "name" | "coverage" | "roms";
     limit?: number;
@@ -269,6 +272,15 @@ export function createApi(dbPath: string) {
       // the filter keeps meaning between refreshes.
       filters.push(
         sql`exists (select 1 from rom_devices rd where rd.vendor = ${devices.vendor} and rd.codename = ${devices.codename} and rd.build_date >= date('now', ${`-${days} days`}))`,
+      );
+    }
+    if (options.hardened) {
+      const romIds = Object.keys(HARDENED_ROMS);
+      filters.push(
+        sql`exists (select 1 from rom_devices rd where rd.vendor = ${devices.vendor} and rd.codename = ${devices.codename} and rd.relock_status = 'supported' and rd.rom_id in (${sql.join(
+          romIds.map((id) => sql`${id}`),
+          sql`, `,
+        )}))`,
       );
     }
     if (options.relock) {

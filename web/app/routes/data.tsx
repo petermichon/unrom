@@ -312,6 +312,11 @@ export default function DataRoute() {
                 Whether a project documents locking the bootloader again after
                 installation, in its own words and with a source.
               </li>
+              <li>
+                For the projects that document it: that their builds include the
+                Android security bulletins, and which platform mitigations they
+                ship.
+              </li>
               <li>Name confidence and the sources behind it.</li>
             </ul>
           </div>

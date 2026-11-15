@@ -423,6 +423,15 @@ const deviceListParameters = [
     },
   },
   {
+    name: "hardened",
+    in: "query",
+    required: false,
+    description:
+      "Only devices whose ROM documents relocking, current security patches " +
+      "and platform mitigations. Project statements, not verification.",
+    schema: { type: "boolean" },
+  },
+  {
     name: "updated",
     in: "query",
     required: false,

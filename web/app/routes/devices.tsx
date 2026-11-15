@@ -30,12 +30,14 @@ function directoryHref({
   roms,
   relock,
   updated,
+  hardened,
   page,
 }: {
   q?: string;
   roms?: boolean;
   relock?: boolean;
   updated?: boolean;
+  hardened?: boolean;
   page?: number;
 }): string {
   const params = new URLSearchParams();
@@ -43,6 +45,7 @@ function directoryHref({
   if (roms) params.set("roms", "1");
   if (relock) params.set("relock", "supported");
   if (updated) params.set("updated", String(UPDATED_DAYS));
+  if (hardened) params.set("hardened", "1");
   if (page && page > 1) params.set("page", String(page));
   const search = params.toString();
   return search ? `/devices?${search}` : "/devices";
@@ -87,6 +90,7 @@ async function load(request: URL) {
   const relockRaw = request.searchParams.get("relock");
   const relock = relockRaw === "supported";
   const updated = Number(request.searchParams.get("updated")) === UPDATED_DAYS;
+  const hardened = request.searchParams.get("hardened") === "1";
   const page = Math.max(
     1,
     Math.trunc(Number(request.searchParams.get("page")) || 1),
@@ -116,6 +120,7 @@ async function load(request: URL) {
     if (roms) params.set("roms", "1");
     if (relock) params.set("relock", "supported");
     if (updated) params.set("updated", String(UPDATED_DAYS));
+    if (hardened) params.set("hardened", "1");
     if (page > 1) params.set("page", String(page));
     const search = params.toString();
     throw redirect(
@@ -129,6 +134,7 @@ async function load(request: URL) {
     hasRoms: roms || undefined,
     relock: relock ? "supported" : undefined,
     updatedWithinDays: updated ? UPDATED_DAYS : undefined,
+    hardened: hardened || undefined,
     sort: "roms",
     limit: PAGE_SIZE,
     offset: (page - 1) * PAGE_SIZE,
@@ -142,6 +148,7 @@ async function load(request: URL) {
     roms,
     relock,
     updated,
+    hardened,
     page,
   });
 
@@ -150,6 +157,7 @@ async function load(request: URL) {
     roms,
     relock,
     updated,
+    hardened,
     page,
     pages,
     total,
@@ -159,7 +167,7 @@ async function load(request: URL) {
     brands: [...brands].sort(
       (a, b) => bySortKey(a.vendorName, b.vendorName) || 0,
     ),
-    isIndexable: page === 1 && !roms && !relock && !updated && !q,
+    isIndexable: page === 1 && !roms && !relock && !updated && !hardened && !q,
   };
 }
 
@@ -177,6 +185,7 @@ export default function DevicesRoute() {
     roms,
     relock,
     updated,
+    hardened,
     page,
     pages,
     total,
@@ -198,6 +207,7 @@ export default function DevicesRoute() {
           if (roms) params.set("hasRoms", "true");
           if (relock) params.set("relock", "supported");
           if (updated) params.set("updated", String(UPDATED_DAYS));
+          if (hardened) params.set("hardened", "1");
           params.set("sort", "roms");
           params.set("limit", String(PAGE_SIZE));
           if (page > 1) params.set("offset", String((page - 1) * PAGE_SIZE));
@@ -213,6 +223,7 @@ export default function DevicesRoute() {
             roms: roms ? "1" : undefined,
             relock: relock ? "supported" : undefined,
             updated: updated ? String(UPDATED_DAYS) : undefined,
+            hardened: hardened ? "1" : undefined,
           }}
         />
 
@@ -224,14 +235,21 @@ export default function DevicesRoute() {
               roms={roms}
               relock={relock}
               updated={updated}
+              hardened={hardened}
             />
             <CoverageToggle
-              allHref={directoryHref({ q: q || undefined, relock, updated })}
+              allHref={directoryHref({
+                q: q || undefined,
+                relock,
+                updated,
+                hardened,
+              })}
               romsHref={directoryHref({
                 q: q || undefined,
                 roms: true,
                 relock,
                 updated,
+                hardened,
               })}
               roms={roms}
             />
@@ -240,7 +258,19 @@ export default function DevicesRoute() {
                 q: q || undefined,
                 roms,
                 relock,
+                updated,
+                hardened: !hardened,
+              })}
+              active={hardened}
+              label="Hardened"
+            />
+            <FilterToggle
+              href={directoryHref({
+                q: q || undefined,
+                roms,
+                relock,
                 updated: !updated,
+                hardened,
               })}
               active={updated}
               label="Recently updated"
@@ -251,6 +281,7 @@ export default function DevicesRoute() {
                 roms,
                 relock: !relock,
                 updated,
+                hardened,
               })}
               active={relock}
               label="Relock supported"
@@ -304,6 +335,7 @@ export default function DevicesRoute() {
                 roms,
                 relock,
                 updated,
+                hardened,
                 page: page - 1,
               })
             : null
@@ -315,6 +347,7 @@ export default function DevicesRoute() {
                 roms,
                 relock,
                 updated,
+                hardened,
                 page: page + 1,
               })
             : null

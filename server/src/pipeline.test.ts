@@ -793,6 +793,49 @@ test("a device-scoped relock statement beats the ROM-wide one", () => {
   }
 });
 
+test("the hardened filter keeps documented ROMs on relockable devices", () => {
+  const dir = mkdtempSync(join(tmpdir(), "unrom-test-"));
+  const dbPath = join(dir, "unrom.sqlite");
+
+  try {
+    buildDatabase(
+      [
+        buildRecord({
+          romId: "grapheneos",
+          romName: "GrapheneOS",
+          codename: "tokay",
+          name: "Pixel 9",
+          brand: "Google",
+        }),
+        // Documents patches and mitigations? No entry, so it cannot qualify
+        // even though it documents relocking.
+        buildRecord({
+          romId: "calyxos",
+          romName: "CalyxOS",
+          codename: "tokay",
+          name: "Pixel 9",
+          brand: "Google",
+        }),
+      ],
+      dbPath,
+    );
+    const api = createApi(dbPath);
+    const options = { hardened: true };
+
+    assert.equal(api.countDevices(options), 1);
+    assert.deepEqual(
+      api.listDevicesPage(options).map((device) => device.codename),
+      ["tokay"],
+    );
+    // Another device with no grapheneos build is not included.
+    assert.equal(api.countDevices({ hardened: true, query: "caiman" }), 0);
+
+    api.close();
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 test("renamed codenames resolve to the canonical device", async () => {
   const records = await parseAllSources();
   const dir = mkdtempSync(join(tmpdir(), "unrom-test-"));

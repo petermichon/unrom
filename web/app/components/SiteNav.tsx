@@ -7,6 +7,7 @@ import {
   Clock,
   LayoutGrid,
   Lock,
+  ShieldCheck,
 } from "lucide-react";
 import { Link, NavLink } from "react-router";
 import { fetchBrands, fetchRomSummaries, fetchSummary } from "@/lib/data";
@@ -309,6 +310,13 @@ function DevicesPanel({
       <Column>
         <Shortcuts loading={loading} failed={failed}>
           <div className="grid grid-cols-2 gap-1.5">
+            <PanelCard
+              to="/devices?hardened=1"
+              title="Hardened"
+              subtitle="Patches, relock and mitigations"
+              icon={<ShieldCheck className="size-5" />}
+              onNavigate={onNavigate}
+            />
             <PanelCard
               to="/devices?relock=supported"
               title="Relock supported"

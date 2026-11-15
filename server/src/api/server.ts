@@ -213,6 +213,14 @@ app.get("/api/devices", (c) => {
   ) {
     return c.json({ error: `invalid updated: ${updatedRaw}` }, 400);
   }
+  const hardenedRaw = c.req.query("hardened");
+  if (
+    hardenedRaw !== undefined &&
+    hardenedRaw !== "true" &&
+    hardenedRaw !== "false"
+  ) {
+    return c.json({ error: `invalid hardened: ${hardenedRaw}` }, 400);
+  }
   const relockRaw = c.req.query("relock");
   if (
     relockRaw !== undefined &&
@@ -246,6 +254,7 @@ app.get("/api/devices", (c) => {
     hasRoms: hasRomsRaw === undefined ? undefined : hasRomsRaw === "true",
     relock: relockRaw as "supported" | "unsupported" | "unknown" | undefined,
     updatedWithinDays: updated,
+    hardened: hardenedRaw === undefined ? undefined : hardenedRaw === "true",
     sort: sortRaw as "name" | "coverage" | "roms" | undefined,
     limit: all === "true" ? undefined : (limit ?? DEFAULT_DEVICE_LIMIT),
     offset,

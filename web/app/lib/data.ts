@@ -157,6 +157,7 @@ export async function fetchDevicesPage(options: {
   hasRoms?: boolean;
   relock?: "supported" | "unsupported" | "unknown";
   updatedWithinDays?: number;
+  hardened?: boolean;
   sort?: "name" | "coverage" | "roms";
   limit: number;
   offset: number;
@@ -174,6 +175,9 @@ export async function fetchDevicesPage(options: {
   if (options.relock) params.set("relock", options.relock);
   if (options.updatedWithinDays !== undefined) {
     params.set("updated", String(options.updatedWithinDays));
+  }
+  if (options.hardened !== undefined) {
+    params.set("hardened", String(options.hardened));
   }
   if (options.sort) params.set("sort", options.sort);
   return cached(`/api/devices?${params}`, async () => {

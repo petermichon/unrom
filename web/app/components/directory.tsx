@@ -22,6 +22,7 @@ export function BrandPicker({
   roms,
   relock,
   updated,
+  hardened,
 }: {
   action?: string;
   brands: BrandSummary[];
@@ -30,6 +31,7 @@ export function BrandPicker({
   roms?: boolean;
   relock?: boolean;
   updated?: boolean;
+  hardened?: boolean;
 }) {
   return (
     <Form method="get" action={action} className="flex items-center gap-2">
@@ -37,6 +39,7 @@ export function BrandPicker({
       {roms && <input type="hidden" name="roms" value="1" />}
       {relock && <input type="hidden" name="relock" value="supported" />}
       {updated && <input type="hidden" name="updated" value="90" />}
+      {hardened && <input type="hidden" name="hardened" value="1" />}
       <label
         htmlFor="brand-picker"
         className="text-sm font-medium text-muted-foreground"

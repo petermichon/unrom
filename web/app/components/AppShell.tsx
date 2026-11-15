@@ -142,6 +142,13 @@ function MobileMenu() {
             >
               Recently updated
             </SheetLink>
+            <SheetLink
+              to="/devices?hardened=1"
+              description="Patches, relock and mitigations"
+              onClick={close}
+            >
+              Hardened
+            </SheetLink>
           </SheetSection>
 
           <SheetSection label="ROMs">
