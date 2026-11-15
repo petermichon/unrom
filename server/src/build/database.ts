@@ -654,6 +654,10 @@ export function buildDatabase(
       });
     }
 
+    // A roster entry without a build proves the source names the device (the
+    // provenance above), not that it supports it. No edge until a build exists.
+    if (!record.hasBuild) continue;
+
     const key = `${record.romId}\0${deviceKey}`;
     const edge = edgeMap.get(key) ?? {
       romId: record.romId,

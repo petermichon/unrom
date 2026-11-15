@@ -48,6 +48,8 @@ export interface RecordInput {
   referenceUrl?: string | null;
   referenceKind?: "observed" | "derived";
   reportedCodename?: string | null;
+  /** Defaults to true; false means the source lists the device without a build. */
+  hasBuild?: boolean;
 }
 
 /** Build a validated record, filling the optional fields with defaults. */

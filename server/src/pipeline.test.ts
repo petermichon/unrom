@@ -427,6 +427,53 @@ test("malformed codenames are rejected", () => {
   assert.equal(isValidCodename("davinci"), true);
 });
 
+test("a roster entry with no build names the device without claiming support", async () => {
+  const dir = mkdtempSync(join(tmpdir(), "unrom-test-"));
+  const dbPath = join(dir, "unrom.sqlite");
+
+  try {
+    buildDatabase(
+      [
+        buildRecord({
+          romId: "crdroid",
+          romName: "crDroid",
+          codename: "infiniti",
+          name: "OnePlus 15",
+          brand: "OnePlus",
+        }),
+        // PixelOS lists the OnePlus 15 without a build.
+        buildRecord({
+          romId: "pixelos",
+          romName: "PixelOS",
+          codename: "infiniti",
+          name: "OnePlus 15",
+          brand: "OnePlus",
+          hasBuild: false,
+        }),
+      ],
+      dbPath,
+    );
+    const api = createApi(dbPath);
+
+    const device = api.getDevice("oneplus", "infiniti");
+    assert.ok(device);
+    assert.deepEqual(
+      device.roms.map((rom) => rom.id),
+      ["crdroid"],
+      "a buildless roster entry is not support",
+    );
+    assert.deepEqual(
+      device.sources,
+      ["crdroid", "pixelos"],
+      "its name still backs the curated entry",
+    );
+
+    api.close();
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 test("renamed codenames resolve to the canonical device", async () => {
   const records = await parseAllSources();
   const dir = mkdtempSync(join(tmpdir(), "unrom-test-"));
@@ -742,17 +789,13 @@ test("devices outside the registry stay unnamed", () => {
   try {
     const built = buildDatabase(
       [
-        {
+        buildRecord({
           romId: "test",
           romName: "Test ROM",
           codename: "uncurateddevice",
           name: "Source Model Name",
           names: ["Source Model Name"],
-          brand: null,
-          referenceUrl: null,
-          referenceKind: "observed",
-          reportedCodename: null,
-        },
+        }),
       ],
       dbPath,
     );

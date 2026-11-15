@@ -9,6 +9,7 @@ interface RawPixelOSDevice {
   codename_alt?: unknown;
   vendor?: unknown;
   model?: unknown;
+  download_link?: unknown;
 }
 
 export function parsePixelOS(raw: string): NormalizedRomDevice[] {
@@ -21,6 +22,14 @@ export function parsePixelOS(raw: string): NormalizedRomDevice[] {
   for (const device of rawDevices) {
     const codename = str(device.codename);
     if (!codename) continue;
+
+    // PixelOS publishes a device file as soon as the device is accepted, before
+    // its first build exists: the entry is `active: true` but carries an empty
+    // `download_link`, and pixelos.net then renders "No build available yet".
+    // A build cannot exist without a link, so the entry is kept for its name
+    // evidence but contributes no build edge (see `hasBuild`).
+    const hasBuild = str(device.download_link) !== null;
+
     if (seen.has(codename)) continue;
     seen.add(codename);
 
@@ -33,6 +42,7 @@ export function parsePixelOS(raw: string): NormalizedRomDevice[] {
         brand: str(device.vendor),
         referenceUrl: `https://pixelos.net/download/${codename}`,
         referenceKind: "derived",
+        hasBuild,
       }),
     );
   }

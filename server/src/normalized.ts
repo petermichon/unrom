@@ -21,6 +21,11 @@ export const normalizedRomDeviceSchema = z.object({
   // `codename` (e.g. a combined `sweet/sweetin` entry). Proves which variant
   // covers which.
   reportedCodename: z.string().nullable().default(null),
+  // A source can list a device before it ships a build for it (PixelOS keeps
+  // the entry `active` with an empty `download_link`). The entry still proves
+  // the source names the device, so it stays in the snapshot, but it is not
+  // support: no build edge is published for it.
+  hasBuild: z.boolean().default(true),
 });
 
 export type NormalizedRomDevice = z.infer<typeof normalizedRomDeviceSchema>;
