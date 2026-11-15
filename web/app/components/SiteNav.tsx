@@ -438,7 +438,7 @@ function RomsPanel({
             <PanelCard
               to="/roms"
               title="All ROMs"
-              subtitle="The full catalogue"
+              subtitle="Full catalogue"
               icon={<LayoutGrid className="size-5" />}
               onNavigate={onNavigate}
             />

@@ -51,11 +51,11 @@ export const MENU_ROMS = [
   {
     id: "calyxos",
     name: "CalyxOS",
-    description: "Privacy-focused, microG optional",
+    description: "Privacy-focused Android",
   },
   { id: "iode", name: "iodéOS", description: "Privacy-focused Android" },
   { id: "eos", name: "/e/OS", description: "De-Googled Android" },
-  { id: "lineageos", name: "LineageOS", description: "Broad device coverage" },
+  { id: "lineageos", name: "LineageOS", description: "Community Android" },
 ] as const;
 
 // Warm the destination's data on intent. The router's own page-data prefetch
