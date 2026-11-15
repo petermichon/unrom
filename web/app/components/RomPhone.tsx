@@ -6,6 +6,7 @@ export interface RomPhoneSlide {
 /** Marks for the ROMs that have one, from their own projects. */
 export const ROM_LOGOS: Record<string, string> = {
   alphadroid: "/brand/alphadroid.svg",
+  calyxos: "/brand/calyxos.png",
   crdroid: "/brand/crdroid.svg",
   derpfest: "/brand/derpfest.png",
   eos: "/brand/eos.png",

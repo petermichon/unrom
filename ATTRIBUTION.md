@@ -83,7 +83,7 @@ relicensed here. Brand and model names remain the trademarks of their owners.
 
 ## Brand assets
 
-The home page illustration and the ROM pages show the marks of ten ROM
+The home page illustration and the ROM pages show the marks of eleven ROM
 projects. They are used only to identify the project and unrom is not affiliated
 with any of them: most are rendered in one colour, while the /e/ and DerpFest
 marks keep their colours.
@@ -94,6 +94,7 @@ marks keep their colours.
 | `web/public/brand/lineageos.svg`        | https://commons.wikimedia.org/wiki/File:Lineage_OS_logo.svg                                                                          | Public domain text logo; the mark is a LineageOS trademark.                                                                                                                                                |
 | `web/public/brand/grapheneos.svg`       | https://grapheneos.org/favicon.svg                                                                                                   | MIT (https://grapheneos.org/LICENSE.txt); the mark is a GrapheneOS trademark.                                                                                                                              |
 | `web/public/brand/eos.png`              | https://doc.e.foundation/images/e_logo.svg                                                                                           | No licence published (the /e/ press kit is not public); the mark is an /e/ trademark. Rendered from the vector with the background removed.                                                                |
+| `web/public/brand/calyxos.png`          | https://calyxos.org/assets/images/favicon/favicon.ico                                                                                | No licence published; the mark is a CalyxOS trademark. Converted from the favicon.                                                                                                                         |
 | `web/public/brand/crdroid.svg`          | https://github.com/crdroidandroid/android_packages_apps_crDroidSettings/blob/HEAD/res/drawable/ic_crdroid_logo.xml                   | Apache License 2.0 (© crDroid Android Project); the mark is a crDroid trademark. Converted from the Android vector drawable.                                                                               |
 | `web/public/brand/alphadroid.svg`       | https://github.com/AlphaDroid-Project/alphadroid-project.github.io/blob/main/index.html                                              | No licence published; the mark is an AlphaDroid trademark. Taken from the inline SVG in the site header.                                                                                                   |
 | `web/public/brand/derpfest.png`         | https://derpfest.org/img/apple-touch-icon.png                                                                                        | No licence published; the mark is a DerpFest trademark.                                                                                                                                                    |
