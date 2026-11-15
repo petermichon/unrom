@@ -133,6 +133,7 @@ const browseDeviceSchema = {
     "aliases",
     "group",
     "roms",
+    "match",
     "confidence",
   ],
   properties: {
@@ -140,6 +141,41 @@ const browseDeviceSchema = {
     vendorName: { type: "string" },
     codename: { type: "string" },
     name: { ...nullableString, description: "Primary marketing name." },
+    match: {
+      type: "array",
+      description:
+        "Why this row matched the active property filter, one entry per qualifying ROM; empty on a plain list.",
+      items: {
+        type: "object",
+        required: ["filter", "romId", "romName", "facts", "sources"],
+        properties: {
+          filter: {
+            type: "string",
+            enum: ["relock", "updated", "hardened"],
+          },
+          romId: { type: "string" },
+          romName: { type: "string" },
+          facts: {
+            type: "array",
+            items: { type: "string" },
+            description: "The facts that qualified the pair.",
+          },
+          sources: {
+            type: "array",
+            description:
+              "Where each fact can be checked; empty when it has no single page.",
+            items: {
+              type: "object",
+              required: ["label", "url"],
+              properties: {
+                label: { type: "string" },
+                url: { type: "string", format: "uri" },
+              },
+            },
+          },
+        },
+      },
+    },
     names: {
       type: "array",
       items: { type: "string" },

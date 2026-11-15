@@ -1,6 +1,7 @@
-import type { BrowseDevice } from "@/lib/types";
-
-export function deviceName(device: BrowseDevice): string {
+export function deviceName(device: {
+  name: string | null;
+  codename: string;
+}): string {
   return device.name ?? device.codename;
 }
 

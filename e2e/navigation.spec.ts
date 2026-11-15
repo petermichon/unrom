@@ -433,6 +433,11 @@ test("the hardened filter opens the documented devices", async ({ page }) => {
   await expect(
     page.getByRole("link", { name: /Pixel 9/ }).first(),
   ).toBeVisible();
+  // The row says why it matched, with the pages that state each fact.
+  await expect(page.getByText("GrapheneOS").first()).toBeVisible();
+  await expect(
+    page.getByRole("link", { name: "patches", exact: true }).first(),
+  ).toBeVisible();
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
     "content",
     "noindex",

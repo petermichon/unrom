@@ -742,12 +742,9 @@ test("the updated filter keeps devices with a recent build", () => {
     const api = createApi(dbPath);
 
     assert.equal(api.countDevices({ updatedWithinDays: 90 }), 1);
-    assert.deepEqual(
-      api
-        .listDevicesPage({ updatedWithinDays: 90 })
-        .map((device) => device.codename),
-      ["tokay"],
-    );
+    const [recent] = api.listDevicesPage({ updatedWithinDays: 90 });
+    assert.equal(recent.codename, "tokay");
+    assert.match(recent.match[0]?.facts[0] ?? "", /^build \d{4}-\d{2}-\d{2}$/);
     // A wider window reaches the older build but not the undated device.
     assert.equal(api.countDevices({ updatedWithinDays: 365 }), 2);
 
@@ -823,9 +820,17 @@ test("the hardened filter keeps documented ROMs on relockable devices", () => {
     const options = { hardened: true };
 
     assert.equal(api.countDevices(options), 1);
+    const [tokay] = api.listDevicesPage(options);
+    assert.equal(tokay.codename, "tokay");
+    // The row explains itself: which ROM and which pages state the facts.
     assert.deepEqual(
-      api.listDevicesPage(options).map((device) => device.codename),
-      ["tokay"],
+      tokay.match.map((match) => match.filter),
+      ["hardened"],
+    );
+    assert.equal(tokay.match[0]?.romId, "grapheneos");
+    assert.deepEqual(
+      tokay.match[0]?.sources.map((source) => source.label),
+      ["relock", "patches", "mitigations"],
     );
     // Another device with no grapheneos build is not included.
     assert.equal(api.countDevices({ hardened: true, query: "caiman" }), 0);

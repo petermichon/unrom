@@ -3,6 +3,25 @@ export interface Meta {
   contentHash: string;
 }
 
+/** Which property filter a browse row satisfied, and the facts behind it. */
+export type DeviceFilterKind = "relock" | "updated" | "hardened";
+
+export interface DeviceMatchSource {
+  /** The fact the link checks, e.g. `relock`, `patches`, `builds`. */
+  label: string;
+  url: string;
+}
+
+export interface DeviceMatch {
+  filter: DeviceFilterKind;
+  romId: string;
+  romName: string;
+  /** The facts that qualified the pair, in the source's terms. */
+  facts: string[];
+  /** Empty when the fact has no single page to check. */
+  sources: DeviceMatchSource[];
+}
+
 export interface DeviceSummary {
   vendor: string;
   codename: string;
@@ -134,6 +153,8 @@ export interface BrowseDevice {
   /** Every codename one build is valid for, including this one. */
   group: string[];
   roms: RomChip[];
+  /** Why this row matched the active property filter; empty otherwise. */
+  match: DeviceMatch[];
   /** How well source data backs the curated names; null when uncurated. */
   confidence: RegistryConfidence | null;
 }

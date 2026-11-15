@@ -11,6 +11,7 @@ import type {
   DeviceDetail,
   DeviceVariant,
   LetterSummary,
+  DeviceMatch,
   Mapping,
   Meta,
   RelockInfo,
@@ -428,8 +429,12 @@ export function createApi(dbPath: string) {
     const names = romNames();
 
     const chipsByDevice = new Map<string, RomChip[]>();
+    const edgesByDevice = new Map<string, Edge[]>();
     for (const edge of db.select().from(romDevices).all()) {
       const key = deviceKey(edge.vendor, edge.codename);
+      const deviceEdges = edgesByDevice.get(key) ?? [];
+      deviceEdges.push(edge);
+      edgesByDevice.set(key, deviceEdges);
       let chips = chipsByDevice.get(key);
       if (!chips) {
         chips = [];
@@ -483,6 +488,71 @@ export function createApi(dbPath: string) {
       .offset(directoryOrder ? 0 : offset)
       .all();
 
+    // Only the active property filters explain themselves; a plain list says
+    // nothing about why a device is in it.
+    const matchesFor = (key: string): DeviceMatch[] => {
+      const edges = edgesByDevice.get(key) ?? [];
+      const matches: DeviceMatch[] = [];
+      const nameOf = (romId: string) => names.get(romId) ?? romId;
+
+      if (options.relock === "supported") {
+        for (const edge of edges) {
+          if (edge.relockStatus !== "supported") continue;
+          matches.push({
+            filter: "relock",
+            romId: edge.romId,
+            romName: nameOf(edge.romId),
+            facts: [],
+            sources: edge.relockSourceUrl
+              ? [{ label: "relock", url: edge.relockSourceUrl }]
+              : [],
+          });
+        }
+      }
+
+      if (options.updatedWithinDays !== undefined) {
+        const latest = edges
+          .filter((edge) => edge.buildDate !== null)
+          .reduce<Edge | null>(
+            (best, edge) =>
+              !best || edge.buildDate! > best.buildDate! ? edge : best,
+            null,
+          );
+        if (latest) {
+          const source = BUILD_SOURCES[latest.romId];
+          matches.push({
+            filter: "updated",
+            romId: latest.romId,
+            romName: nameOf(latest.romId),
+            facts: [`build ${latest.buildDate}`],
+            sources: source ? [{ label: "builds", url: source }] : [],
+          });
+        }
+      }
+
+      if (options.hardened) {
+        for (const edge of edges) {
+          const statement = HARDENED_ROMS[edge.romId];
+          if (!statement || edge.relockStatus !== "supported") continue;
+          matches.push({
+            filter: "hardened",
+            romId: edge.romId,
+            romName: nameOf(edge.romId),
+            facts: [],
+            sources: [
+              ...(edge.relockSourceUrl
+                ? [{ label: "relock", url: edge.relockSourceUrl }]
+                : []),
+              { label: "patches", url: statement.patches.sourceUrl },
+              { label: "mitigations", url: statement.mitigations.sourceUrl },
+            ],
+          });
+        }
+      }
+
+      return matches;
+    };
+
     const aliasMap = aliasesByDevice();
     const coverage = deviceCoverage();
     const provenance = registryByDevice();
@@ -514,6 +584,7 @@ export function createApi(dbPath: string) {
           ...(coverage.variantsByMain.get(key) ?? []),
         ].sort(),
         roms: chipsFor(key),
+        match: matchesFor(key),
         confidence: provenance.get(key)?.confidence ?? null,
       };
     });
