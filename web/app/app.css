@@ -277,6 +277,12 @@
   --rom-chroma: 0.024;
   --rom-accent: #45c4b8;
 }
+.rom-page[data-rom="calyxos"],
+:root[data-rom="calyxos"] {
+  --rom-hue: 152;
+  --rom-chroma: 0.03;
+  --rom-accent: #0ead69;
+}
 .rom-page[data-rom="grapheneos"],
 :root[data-rom="grapheneos"] {
   --rom-hue: 256;
@@ -306,6 +312,12 @@
   --rom-hue: 262;
   --rom-chroma: 0.021;
   --rom-accent: #0060ff;
+}
+.rom-page[data-rom="iode"],
+:root[data-rom="iode"] {
+  --rom-hue: 205;
+  --rom-chroma: 0.045;
+  --rom-accent: #52c5db;
 }
 .rom-page[data-rom="kali-nethunter"],
 :root[data-rom="kali-nethunter"] {
@@ -339,7 +351,7 @@
 .rom-mark {
   background-color: color-mix(
     in oklab,
-    var(--panel) 88%,
+    var(--panel) 78%,
     var(--panel-foreground)
   );
   -webkit-mask-image: var(--rom-mark);

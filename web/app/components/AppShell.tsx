@@ -4,7 +4,7 @@ import { Link, useLocation, useNavigation } from "react-router";
 import { MENU_ROMS, NAV_ITEMS } from "@/lib/nav";
 import { PanelCard } from "@/components/PanelCard";
 import { RomGlyph } from "@/components/RomMark";
-import { ROM_LOGOS } from "@/components/RomPhone";
+import { ROM_BOLD_MARKS, ROM_LOGOS } from "@/components/RomPhone";
 import CommandPalette, { SearchProvider } from "@/components/CommandPalette";
 import SiteNav from "@/components/SiteNav";
 import { GitHubIcon } from "@/components/GitHubIcon";
@@ -131,7 +131,7 @@ function MobileMenu() {
 
           <SheetSection label="ROMs">
             {MENU_ROMS.map((rom) => {
-              const logo = ROM_LOGOS[rom.id];
+              const logo = ROM_BOLD_MARKS[rom.id] ?? ROM_LOGOS[rom.id];
               return (
                 <PanelCard
                   key={rom.id}
@@ -140,7 +140,17 @@ function MobileMenu() {
                   subtitle={rom.description}
                   icon={
                     logo ? (
-                      <RomGlyph id={rom.id} src={logo} className="size-5" />
+                      <RomGlyph
+                        id={rom.id}
+                        src={logo}
+                        className={
+                          rom.id === "lineageos"
+                            ? "h-3 w-7"
+                            : rom.id === "grapheneos"
+                              ? "size-6"
+                              : "size-5"
+                        }
+                      />
                     ) : (
                       <span className="text-sm font-bold">
                         {rom.name.charAt(0)}

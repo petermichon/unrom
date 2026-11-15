@@ -12,11 +12,23 @@ export const ROM_LOGOS: Record<string, string> = {
   eos: "/brand/eos.png",
   evolutionx: "/brand/evolutionx.svg",
   grapheneos: "/brand/grapheneos.svg",
+  iode: "/brand/iode.svg",
   "kali-nethunter": "/brand/kali-nethunter.png",
   lineageos: "/brand/lineageos.png",
   "lineageos-microg": "/brand/lineageos.png",
   pixelos: "/brand/pixelos.svg",
   projectinfinityx: "/brand/projectinfinityx.svg",
+};
+
+/**
+ * Heavier variants for the all-ROMs banner, where a row of marks sits at the
+ * same optical weight as the solid ones (CalyxOS, /e/OS). The exact artwork is
+ * kept for the small menu tiles, where thinner strokes read better.
+ */
+export const ROM_BOLD_MARKS: Record<string, string> = {
+  grapheneos: "/brand/grapheneos-bold.png",
+  iode: "/brand/iode-bold.svg",
+  lineageos: "/brand/lineageos-bold.png",
 };
 
 /** Vector marks for large decorative uses such as the ROM page watermark. */
