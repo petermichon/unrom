@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { Link, useLoaderData } from "react-router";
+import { ApiLink } from "@/components/ApiLink";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ROM_BOLD_MARKS, ROM_LOGOS } from "@/components/RomPhone";
 import { RomMark } from "@/components/RomMark";
@@ -182,15 +183,6 @@ export default function RomsRoute() {
               Every Android project unrom tracks, and the devices each one
               supports.
             </p>
-            <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
-              <a
-                href="/api/roms"
-                title="API response: /api/roms"
-                className="font-semibold text-panel-foreground/70 underline underline-offset-4 outline-none hover:text-panel-foreground focus-visible:ring-3 focus-visible:ring-ring/50"
-              >
-                API
-              </a>
-            </div>
           </div>
         </div>
 
@@ -212,10 +204,13 @@ export default function RomsRoute() {
         </div>
       </div>
 
-      <p className="-mt-4 text-sm text-muted-foreground">
-        {formatNumber(roms.length)} ROMs in the catalogue,{" "}
-        {formatNumber(covered.length)} with device data.
-      </p>
+      <div className="-mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted-foreground">
+        <p>
+          {formatNumber(roms.length)} ROMs in the catalogue,{" "}
+          {formatNumber(covered.length)} with device data.
+        </p>
+        <ApiLink href="/api/roms" className="ml-auto" />
+      </div>
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
         <SearchInput

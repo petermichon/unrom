@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { ApiLink } from "@/components/ApiLink";
 
 interface Props {
   title: string;
@@ -28,16 +29,7 @@ export function PageHeader({
         </div>
         {(endpoint || actions) && (
           <div className="flex items-center gap-3">
-            {endpoint && (
-              <a
-                href={endpoint}
-                title={`API response: ${endpoint}`}
-                aria-label={`API response: ${endpoint}`}
-                className="text-xs font-semibold text-muted-foreground outline-none hover:text-foreground hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
-              >
-                API
-              </a>
-            )}
+            {endpoint && <ApiLink href={endpoint} />}
             {actions && (
               <div className="flex items-center gap-2">{actions}</div>
             )}

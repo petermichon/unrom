@@ -2,6 +2,7 @@ import { useLoaderData } from "react-router";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ROM_LOGOS, ROM_MARKS } from "@/components/RomPhone";
 import { RomMark } from "@/components/RomMark";
+import { ApiLink } from "@/components/ApiLink";
 import { StatusPill } from "@/components/StatusPill";
 import { useRomPalette } from "@/lib/use-rom-palette";
 import RomDevicesTable from "@/components/RomDevicesTable";
@@ -148,17 +149,6 @@ export default function RomRoute() {
                 {rom.tagline}
               </p>
             )}
-
-            <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
-              <StatusPill status={rom.status} tone="panel" />
-              <a
-                href={`/api/roms/${rom.id}`}
-                title={`API response: /api/roms/${rom.id}`}
-                className="font-semibold text-panel-foreground/70 underline underline-offset-4 outline-none hover:text-panel-foreground focus-visible:ring-3 focus-visible:ring-ring/50"
-              >
-                API
-              </a>
-            </div>
           </div>
         </div>
 
@@ -171,24 +161,30 @@ export default function RomRoute() {
         )}
       </div>
 
-      <p className="-mt-4 text-sm text-muted-foreground">
-        {description}
-        {build && <span aria-hidden="true"> · </span>}
-        {build}
-        {rom.build?.sourceUrl && (
-          <>
-            {" · "}
-            <a
-              href={rom.build.sourceUrl}
-              target="_blank"
-              rel="noopener"
-              className="font-medium text-brand hover:underline"
-            >
-              Source
-            </a>
-          </>
-        )}
-      </p>
+      <div className="-mt-4 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted-foreground">
+        <p>
+          {description}
+          {build && <span aria-hidden="true"> · </span>}
+          {build}
+          {rom.build?.sourceUrl && (
+            <>
+              {" · "}
+              <a
+                href={rom.build.sourceUrl}
+                target="_blank"
+                rel="noopener"
+                className="font-medium text-brand hover:underline"
+              >
+                Source
+              </a>
+            </>
+          )}
+        </p>
+        <div className="ml-auto flex items-center gap-3">
+          <StatusPill status={rom.status} />
+          <ApiLink href={`/api/roms/${rom.id}`} />
+        </div>
+      </div>
 
       <RomDevicesTable devices={rom.devices} />
     </div>
