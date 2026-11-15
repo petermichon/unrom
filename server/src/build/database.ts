@@ -188,7 +188,7 @@ function contentHash(
   const key = (vendor: string, codename: string) => `${vendor}\0${codename}`;
 
   for (const [id, rom] of [...romMap].sort(([a], [b]) => a.localeCompare(b))) {
-    hash.update(`r\0${id}\0${rom.name}\0${rom.status}\n`);
+    hash.update(`r\0${id}\0${rom.name}\0${rom.status}\0${rom.tagline ?? ""}\n`);
   }
   for (const device of [...deviceMap.values()].sort((a, b) =>
     key(a.vendor, a.codename).localeCompare(key(b.vendor, b.codename)),
@@ -884,7 +884,14 @@ export function buildDatabase(
   // One transaction: all-or-nothing, and far faster than per-row commits.
   db.transaction((tx) => {
     for (const [id, rom] of romMap) {
-      tx.insert(roms).values({ id, name: rom.name, status: rom.status }).run();
+      tx.insert(roms)
+        .values({
+          id,
+          name: rom.name,
+          status: rom.status,
+          tagline: rom.tagline ?? null,
+        })
+        .run();
     }
     for (const device of deviceMap.values()) {
       tx.insert(devices)

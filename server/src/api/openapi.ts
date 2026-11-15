@@ -316,7 +316,15 @@ const registryEntrySchema = {
 
 const romDetailSchema = {
   type: "object",
-  required: ["id", "name", "status", "deviceCount", "devices", "build"],
+  required: [
+    "id",
+    "name",
+    "status",
+    "tagline",
+    "deviceCount",
+    "devices",
+    "build",
+  ],
   properties: {
     id: { type: "string" },
     name: { type: "string" },
@@ -324,6 +332,11 @@ const romDetailSchema = {
       type: "string",
       enum: ["active", "discontinued", "unknown"],
       description: "Whether the project still ships builds upstream.",
+    },
+    tagline: {
+      ...nullableString,
+      description:
+        "A few words describing what the project is for. Static copy, null when none is curated.",
     },
     deviceCount: {
       type: "integer",

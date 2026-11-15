@@ -3,6 +3,8 @@ import type { RomStatus } from "@unrom/contract";
 export interface RomCatalogEntry {
   name: string;
   status: RomStatus;
+  /** What the project is for, in a few words. Static copy, not a data fact. */
+  tagline?: string;
 }
 
 // The ROM universe. Every ROM unrom can name lives here, whether or not it still
@@ -68,7 +70,11 @@ export const ROMS: Record<string, RomCatalogEntry> = {
   bsdkos: { name: "BsdkOS", status: "discontinued" },
   caesiumos: { name: "CaesiumOS", status: "unknown" },
   "caf-extended": { name: "CAF Extended", status: "discontinued" },
-  calyxos: { name: "CalyxOS", status: "active" },
+  calyxos: {
+    name: "CalyxOS",
+    status: "active",
+    tagline: "Privacy-focused Android build.",
+  },
   candyroms: { name: "CandyRoms", status: "discontinued" },
   "carbon-rom": { name: "Carbon ROM", status: "active" },
   catalystos: { name: "CatalystOS", status: "discontinued" },
@@ -101,7 +107,11 @@ export const ROMS: Record<string, RomCatalogEntry> = {
   "edith-aosp": { name: "Edith-AOSP", status: "unknown" },
   eliteroms: { name: "EliteRoms", status: "active" },
   elytraos: { name: "ElytraOS", status: "unknown" },
-  eos: { name: "/e/OS", status: "active" },
+  eos: {
+    name: "/e/OS",
+    status: "active",
+    tagline: "De-Googled Android build.",
+  },
   "eternity-os": { name: "Eternity OS", status: "unknown" },
   etherealos: { name: "EtherealOS", status: "active" },
   euclidos: { name: "euclidOS", status: "active" },
@@ -126,7 +136,11 @@ export const ROMS: Record<string, RomCatalogEntry> = {
   genesisos: { name: "GenesisOS", status: "active" },
   ghostos: { name: "GhostOS", status: "discontinued" },
   "good4nothing-aosp": { name: "Good4Nothing-AOSP", status: "unknown" },
-  grapheneos: { name: "GrapheneOS", status: "active" },
+  grapheneos: {
+    name: "GrapheneOS",
+    status: "active",
+    tagline: "Android build with security hardening.",
+  },
   "halcyon-calla-lily": { name: "Halcyon - Calla Lily", status: "unknown" },
   "halcyon-project": { name: "Halcyon", status: "active" },
   "halogen-os": { name: "Halogen OS", status: "active" },
@@ -142,7 +156,11 @@ export const ROMS: Record<string, RomCatalogEntry> = {
   hypervn: { name: "HyperVN", status: "discontinued" },
   hypervoltron: { name: "HyperVoltron", status: "unknown" },
   ichthysos: { name: "IchthysOS", status: "unknown" },
-  iode: { name: "iodéOS", status: "active" },
+  iode: {
+    name: "iodéOS",
+    status: "active",
+    tagline: "Privacy-focused Android build.",
+  },
   "ion-os": { name: "Ion OS", status: "discontinued" },
   "ironos-project": { name: "IronOS Project", status: "discontinued" },
   jaguar: { name: "Jaguar ROM", status: "unknown" },
@@ -162,7 +180,11 @@ export const ROMS: Record<string, RomCatalogEntry> = {
   lessaosp: { name: "LessAOSP", status: "unknown" },
   lightningfastrom: { name: "LightningFastRom", status: "discontinued" },
   "lightningos-aosp": { name: "LightningOS AOSP", status: "unknown" },
-  lineageos: { name: "LineageOS", status: "active" },
+  lineageos: {
+    name: "LineageOS",
+    status: "active",
+    tagline: "Community-built Android build.",
+  },
   "lineageos-ext": { name: "LineageOS-Ext", status: "unknown" },
   "lineageos-microg": { name: "LineageOS for microG", status: "active" },
   "lineageos-x-clo": { name: "LineageOS x CLO", status: "unknown" },

@@ -11,6 +11,8 @@ export const roms = sqliteTable("roms", {
   name: text("name").notNull(),
   // "active" | "discontinued" | "unknown"; see `data/roms.ts`.
   status: text("status").notNull(),
+  // Static project copy, not a data fact; null when none is curated.
+  tagline: text("tagline"),
 });
 
 export const devices = sqliteTable(

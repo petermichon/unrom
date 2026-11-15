@@ -56,7 +56,8 @@ function romMetaDescription(rom: RomDetail): string {
   }
 
   const vendorCount = new Set(rom.devices.map((device) => device.vendor)).size;
-  return `${rom.name} supports ${formatNumber(rom.deviceCount)} ${
+  const lead = rom.tagline ? `${rom.tagline}. ` : "";
+  return `${lead}${rom.name} supports ${formatNumber(rom.deviceCount)} ${
     rom.deviceCount === 1 ? "device" : "devices"
   } across ${formatNumber(vendorCount)} vendor${
     vendorCount === 1 ? "" : "s"
@@ -142,27 +143,12 @@ export default function RomRoute() {
             <h1 className="font-heading text-3xl font-extrabold tracking-[-0.03em] sm:text-4xl">
               {rom.name}
             </h1>
-            <p className="max-w-[62ch] text-sm leading-relaxed text-panel-foreground/75">
-              {description}
-            </p>
-            {build && (
-              <p className="max-w-[62ch] text-sm text-panel-foreground/60">
-                {build}
-                {rom.build?.sourceUrl && (
-                  <>
-                    {" · "}
-                    <a
-                      href={rom.build.sourceUrl}
-                      target="_blank"
-                      rel="noopener"
-                      className="font-medium text-panel-foreground/80 underline underline-offset-4 hover:text-panel-foreground"
-                    >
-                      Source
-                    </a>
-                  </>
-                )}
+            {rom.tagline && (
+              <p className="max-w-[62ch] text-sm leading-relaxed text-panel-foreground/75">
+                {rom.tagline}
               </p>
             )}
+
             <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
               <StatusPill status={rom.status} tone="panel" />
               <a
@@ -184,6 +170,25 @@ export default function RomRoute() {
           />
         )}
       </div>
+
+      <p className="-mt-4 text-sm text-muted-foreground">
+        {description}
+        {build && <span aria-hidden="true"> · </span>}
+        {build}
+        {rom.build?.sourceUrl && (
+          <>
+            {" · "}
+            <a
+              href={rom.build.sourceUrl}
+              target="_blank"
+              rel="noopener"
+              className="font-medium text-brand hover:underline"
+            >
+              Source
+            </a>
+          </>
+        )}
+      </p>
 
       <RomDevicesTable devices={rom.devices} />
     </div>
