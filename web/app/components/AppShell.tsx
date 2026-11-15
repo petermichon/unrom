@@ -53,8 +53,9 @@ function MobileMenu() {
   }, [open, roms]);
 
   const romById = new Map((roms ?? []).map((rom) => [rom.id, rom]));
-  const featured = romById.get(MENU_ROMS[0].id) ?? null;
-  const featuredLogo = featured ? ROM_LOGOS[featured.id] : undefined;
+  const cardRoms = MENU_ROMS.slice(0, 2)
+    .map((rom) => romById.get(rom.id))
+    .filter((rom): rom is RomSummary => rom !== undefined);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -134,27 +135,38 @@ function MobileMenu() {
             >
               Devices with ROMs
             </SheetLink>
+            <SheetLink
+              to="/devices?updated=90"
+              description="Newest build in the last 90 days"
+              onClick={close}
+            >
+              Recently updated
+            </SheetLink>
           </SheetSection>
 
           <SheetSection label="ROMs">
-            {featured && (
-              <PanelCard
-                to={`/roms/${featured.id}`}
-                title={featured.name}
-                subtitle={`${featured.deviceCount} devices`}
-                icon={
-                  featuredLogo && (
-                    <RomGlyph
-                      id={featured.id}
-                      src={featuredLogo}
-                      className="size-5"
-                    />
-                  )
-                }
-                onNavigate={close}
-              />
-            )}
-            {MENU_ROMS.slice(1).map((rom) => (
+            {cardRoms.map((rom) => {
+              const logo = ROM_LOGOS[rom.id];
+              return (
+                <PanelCard
+                  key={rom.id}
+                  to={`/roms/${rom.id}`}
+                  title={rom.name}
+                  subtitle={`${rom.deviceCount} devices`}
+                  icon={
+                    logo ? (
+                      <RomGlyph id={rom.id} src={logo} className="size-5" />
+                    ) : (
+                      <span className="text-sm font-bold">
+                        {rom.name.charAt(0)}
+                      </span>
+                    )
+                  }
+                  onNavigate={close}
+                />
+              );
+            })}
+            {MENU_ROMS.slice(2).map((rom) => (
               <SheetLink
                 key={rom.id}
                 to={`/roms/${rom.id}`}

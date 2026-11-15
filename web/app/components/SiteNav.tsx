@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { ArrowRight, LayoutGrid, Lock } from "lucide-react";
+import { ArrowRight, Clock, LayoutGrid, Lock } from "lucide-react";
 import { Link, NavLink } from "react-router";
 import { fetchBrands, fetchRomSummaries, fetchSummary } from "@/lib/data";
 import { MENU_ROMS, NAV_ITEMS, NAV_PRELOADS, type NavKind } from "@/lib/nav";
@@ -213,13 +213,14 @@ interface PanelData {
   deviceCount: number | null;
   topBrands: BrandSummary[] | null;
   topRoms: RomSummary[] | null;
-  featuredRom: RomSummary | null;
+  cardRoms: RomSummary[];
 }
 
-// Pinned to the top of the ROM shortcut in its own chip; the rest follow in the
+// The first two ROMs get a card each; the rest follow as rows in the same
 // curated order, so the menu is a way in, not a leaderboard.
 const MENU_ROM_IDS: string[] = MENU_ROMS.map((rom) => rom.id);
-const [FEATURED_ROM, ...SHORTCUT_ROMS] = MENU_ROM_IDS;
+const CARD_ROMS = MENU_ROM_IDS.slice(0, 2);
+const ROW_ROMS = MENU_ROM_IDS.slice(2);
 
 /** Each trigger gets its own section, with the other directories one rail away. */
 function MegaPanel({
@@ -261,11 +262,12 @@ function MegaPanel({
     topBrands: sortedBrands?.slice(0, 12) ?? null,
     topRoms:
       sortedRoms
-        ?.filter((rom) => SHORTCUT_ROMS.includes(rom.id))
-        .sort(
-          (a, b) => SHORTCUT_ROMS.indexOf(a.id) - SHORTCUT_ROMS.indexOf(b.id),
-        ) ?? null,
-    featuredRom: sortedRoms?.find((rom) => rom.id === FEATURED_ROM) ?? null,
+        ?.filter((rom) => ROW_ROMS.includes(rom.id))
+        .sort((a, b) => ROW_ROMS.indexOf(a.id) - ROW_ROMS.indexOf(b.id)) ??
+      null,
+    cardRoms: CARD_ROMS.map((id) =>
+      sortedRoms?.find((rom) => rom.id === id),
+    ).filter((rom): rom is RomSummary => rom !== undefined),
   };
 
   return (
@@ -298,24 +300,33 @@ function DevicesPanel({
     <>
       <Column>
         <Shortcuts loading={loading} failed={failed}>
-          <PanelCard
-            to="/devices?relock=supported"
-            title="Relock supported"
-            subtitle="Devices with a documented relock path"
-            icon={<Lock className="size-5" />}
-            onNavigate={onNavigate}
-          />
-          <PanelCard
-            to="/devices"
-            title="All devices"
-            subtitle={
-              deviceCount === null
-                ? "Search by name or codename"
-                : `${formatNumber(deviceCount)} devices, searchable`
-            }
-            icon={<LayoutGrid className="size-5" />}
-            onNavigate={onNavigate}
-          />
+          <div className="grid grid-cols-2 gap-1.5">
+            <PanelCard
+              to="/devices?relock=supported"
+              title="Relock supported"
+              subtitle="Devices with a documented relock path"
+              icon={<Lock className="size-5" />}
+              onNavigate={onNavigate}
+            />
+            <PanelCard
+              to="/devices?updated=90"
+              title="Recently updated"
+              subtitle="Newest build in the last 90 days"
+              icon={<Clock className="size-5" />}
+              onNavigate={onNavigate}
+            />
+            <PanelCard
+              to="/devices"
+              title="All devices"
+              subtitle={
+                deviceCount === null
+                  ? "Search by name or codename"
+                  : `${formatNumber(deviceCount)} devices, searchable`
+              }
+              icon={<LayoutGrid className="size-5" />}
+              onNavigate={onNavigate}
+            />
+          </div>
         </Shortcuts>
       </Column>
       <Rail>
@@ -381,14 +392,18 @@ function RomsPanel({
   data: PanelData;
   onNavigate: () => void;
 }) {
-  const { topRoms, featuredRom, loading, failed } = data;
+  const { topRoms, cardRoms, loading, failed } = data;
 
   return (
     <>
       <Column>
         <Shortcuts loading={loading} failed={failed}>
-          {featuredRom && (
-            <FeaturedRom rom={featuredRom} onNavigate={onNavigate} />
+          {cardRoms.length > 0 && (
+            <div className="mb-1.5 grid grid-cols-2 gap-1.5">
+              {cardRoms.map((rom) => (
+                <RomCard key={rom.id} rom={rom} onNavigate={onNavigate} />
+              ))}
+            </div>
           )}
           <div className="grid grid-cols-2 gap-x-6">
             {topRoms?.map((rom) => (
@@ -422,10 +437,11 @@ function RomsPanel({
 }
 
 /**
- * The one ROM the shortcut pins: its own chip so it reads as a deliberate
- * entry rather than another row sorted by device count.
+ * A pinned ROM: its own chip so it reads as a deliberate entry rather than
+ * another row sorted by device count. Projects without a mark get a monogram
+ * in the same tile.
  */
-function FeaturedRom({
+function RomCard({
   rom,
   onNavigate,
 }: {
@@ -439,7 +455,13 @@ function FeaturedRom({
       to={`/roms/${rom.id}`}
       title={rom.name}
       subtitle={`${formatNumber(rom.deviceCount)} devices`}
-      icon={logo && <RomGlyph id={rom.id} src={logo} className="size-5" />}
+      icon={
+        logo ? (
+          <RomGlyph id={rom.id} src={logo} className="size-5" />
+        ) : (
+          <span className="text-sm font-bold">{rom.name.charAt(0)}</span>
+        )
+      }
       onNavigate={onNavigate}
     />
   );
