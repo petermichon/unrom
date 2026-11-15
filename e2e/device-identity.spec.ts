@@ -71,6 +71,29 @@ test("bootloader policies cover Nothing", async ({ page }) => {
   ).toHaveAttribute("href", "https://in.nothing.tech/pages/warranty-policy");
 });
 
+test("device pages show the newest build's date and patch level", async ({
+  page,
+}) => {
+  await page.goto("/devices/xiaomi/peridot");
+
+  const row = page.getByRole("row").filter({
+    has: page.getByRole("cell", { name: "LineageOS", exact: true }),
+  });
+  await expect(row).toContainText(/\d{4}-\d{2}-\d{2}/);
+  await expect(row).toContainText(/patch \d{4}-\d{2}-\d{2}/);
+});
+
+test("device pages say when a source publishes no build metadata", async ({
+  page,
+}) => {
+  await page.goto("/devices/xiaomi/peridot");
+
+  const row = page.getByRole("row").filter({
+    has: page.getByRole("cell", { name: "Clover", exact: true }),
+  });
+  await expect(row.getByText("Not published", { exact: true })).toBeVisible();
+});
+
 test("brand pages show the vendor bootloader policy", async ({ page }) => {
   await page.goto("/devices/xiaomi");
 

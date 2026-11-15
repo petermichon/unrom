@@ -94,6 +94,15 @@ export default function DeviceRomsTable({
         ),
       },
       {
+        accessorKey: "build",
+        meta: { title: "Build" },
+        header: ({ column }) => (
+          <DataTableColumnHeader column={column} title="Build" />
+        ),
+        enableSorting: false,
+        cell: ({ row }) => <BuildCell build={row.original.build} />,
+      },
+      {
         accessorKey: "referenceUrl",
         meta: { title: "Reference" },
         header: ({ column }) => (
@@ -156,7 +165,11 @@ export default function DeviceRomsTable({
       columns={columns}
       data={roms}
       columnClassName={columnClassName}
-      columnWidths={{ name: "md:w-[42%]", referenceUrl: "md:w-[58%]" }}
+      columnWidths={{
+        name: "md:w-[34%]",
+        build: "md:w-[26%]",
+        referenceUrl: "md:w-[40%]",
+      }}
       paginate={false}
       countLabel={(count) => `${count} ${count === 1 ? "ROM" : "ROMs"}`}
       tableClassName="md:min-w-[36rem]"
@@ -186,5 +199,27 @@ export default function DeviceRomsTable({
         </DataTableToolbar>
       )}
     />
+  );
+}
+
+/**
+ * The newest build the source lists. Dates stay unlocalized (`YYYY-MM-DD`) so
+ * they read as the build metadata they are, and "Not published" is a fact about
+ * the source, never a verdict on the build.
+ */
+function BuildCell({ build }: { build: RomSupport["build"] }) {
+  if (!build?.date && !build?.securityPatch) {
+    return <span className="text-xs text-muted-foreground">Not published</span>;
+  }
+
+  return (
+    <span className="flex flex-col gap-0.5 text-xs tabular-nums">
+      {build.date && <time dateTime={build.date}>{build.date}</time>}
+      <span className="text-muted-foreground">
+        {build.securityPatch
+          ? `patch ${build.securityPatch}`
+          : "patch not published"}
+      </span>
+    </span>
   );
 }

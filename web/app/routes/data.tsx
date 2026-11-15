@@ -304,6 +304,10 @@ export default function DataRoute() {
             <ul className="list-disc space-y-1 pl-5 text-sm text-muted-foreground">
               <li>Names, codenames, aliases, and build groups.</li>
               <li>ROM status and per-device build references.</li>
+              <li>
+                The newest build date and the security patch level it reports,
+                for every source that publishes them.
+              </li>
               <li>Name confidence and the sources behind it.</li>
             </ul>
           </div>
@@ -313,11 +317,13 @@ export default function DataRoute() {
           instructions. Catalogue-only ROMs have no device data yet.
         </p>
         <p className="max-w-[68ch] text-sm text-muted-foreground">
-          A mapping says a project reports a build for a device. It says nothing
-          about the build itself: no security or patch level, no check that the
-          build is reproducible, and no device-level statement about relocking
-          the bootloader. ROM status records whether a project still ships
-          builds.
+          A mapping says a project reports a build for a device. Where the
+          source publishes them, the mapping also carries the newest build's
+          date and the security patch level that build reports. Most sources
+          publish neither: empty means not published, not unpatched. Still no
+          check that a build is reproducible, no signing-key details, and no
+          device-level statement about relocking the bootloader. ROM status
+          records whether a project still ships builds.
         </p>
       </section>
 
