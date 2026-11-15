@@ -54,8 +54,6 @@ interface Props<TData, TValue> {
    * short enough to read in one pass and paging only hides rows.
    */
   paginate?: boolean;
-  /** Row-count wording when pagination is off, e.g. "22 ROMs". */
-  countLabel?: (count: number) => string;
   initialState?: {
     columnVisibility?: VisibilityState;
     columnFilters?: ColumnFiltersState;
@@ -113,7 +111,6 @@ export function DataTable<TData, TValue>({
   tableClassName,
   renderAllRows = false,
   paginate = true,
-  countLabel,
   initialState,
   columnFilters: controlledFilters,
   onColumnFiltersChange,
@@ -290,20 +287,7 @@ export function DataTable<TData, TValue>({
         )}
       </div>
 
-      {paginate ? (
-        <DataTablePagination table={table} />
-      ) : (
-        countLabel &&
-        visibleRows.length > 0 && (
-          <p
-            role="status"
-            aria-live="polite"
-            className="px-1 text-xs text-muted-foreground tabular-nums"
-          >
-            {countLabel(visibleRows.length)}
-          </p>
-        )
-      )}
+      {paginate && <DataTablePagination table={table} />}
     </div>
   );
 }

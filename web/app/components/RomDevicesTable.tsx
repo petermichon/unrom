@@ -107,7 +107,6 @@ export default function RomDevicesTable({ devices }: Props) {
       columnClassName={columnClassName}
       columnWidths={{ name: "md:w-[62%]", codename: "md:w-[38%]" }}
       paginate={false}
-      countLabel={(count) => `${count} ${count === 1 ? "device" : "devices"}`}
       tableClassName="md:min-w-[36rem]"
       initialState={{
         columnVisibility: { search: false },
@@ -132,6 +131,17 @@ export default function RomDevicesTable({ devices }: Props) {
             </Button>
           )}
           <DataTableViewOptions table={table} />
+          {table.getFilteredRowModel().rows.length <
+            table.getCoreRowModel().rows.length && (
+            <span
+              role="status"
+              aria-live="polite"
+              className="ml-auto shrink-0 text-xs text-muted-foreground tabular-nums"
+            >
+              {table.getFilteredRowModel().rows.length} of{" "}
+              {table.getCoreRowModel().rows.length} devices
+            </span>
+          )}
         </DataTableToolbar>
       )}
     />

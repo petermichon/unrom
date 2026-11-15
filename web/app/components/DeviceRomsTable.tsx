@@ -176,7 +176,6 @@ export default function DeviceRomsTable({
         referenceUrl: "md:w-[40%]",
       }}
       paginate={false}
-      countLabel={(count) => `${count} ${count === 1 ? "ROM" : "ROMs"}`}
       tableClassName="md:min-w-[36rem]"
       initialState={{
         columnVisibility: { search: false },
@@ -201,9 +200,43 @@ export default function DeviceRomsTable({
             </Button>
           )}
           <DataTableViewOptions table={table} />
+          {table.getFilteredRowModel().rows.length <
+            table.getCoreRowModel().rows.length && (
+            <CountStatus
+              count={table.getFilteredRowModel().rows.length}
+              total={table.getCoreRowModel().rows.length}
+              noun="ROM"
+            />
+          )}
         </DataTableToolbar>
       )}
     />
+  );
+}
+
+/**
+ * Filtered row count for the toolbar. Only shown while a filter is active, so
+ * it never repeats the page's own total and always says something new.
+ */
+function CountStatus({
+  count,
+  total,
+  noun,
+}: {
+  count: number;
+  total: number;
+  noun: string;
+}) {
+  const label = (value: number) =>
+    `${value} ${value === 1 ? noun : `${noun}s`}`;
+  return (
+    <span
+      role="status"
+      aria-live="polite"
+      className="ml-auto shrink-0 text-xs text-muted-foreground tabular-nums"
+    >
+      {count} of {label(total)}
+    </span>
   );
 }
 
