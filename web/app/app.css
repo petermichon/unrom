@@ -344,16 +344,14 @@
   --rom-accent: #2f5fe0;
 }
 
-/* The ROM mark is a flat silhouette: the artwork only supplies the shape, the
-   panel supplies the colour. The caller fixes the box; the mask fits inside
-   it. On narrow screens the mark sits below the copy, so it anchors right;
-   once it is in the hero it centres. */
+/* The ROM mark is a flat silhouette: the artwork only supplies the shape and
+   the banner's own text colour supplies the paint, so the mark is exactly as
+   dark as the title beside it — near-black on a light panel, near-white on a
+   dark one — rather than a tinted wash of the panel. The caller fixes the box;
+   the mask fits inside it. On narrow screens the mark sits below the copy, so
+   it anchors right; once it is in the hero it centres. */
 .rom-mark {
-  background-color: color-mix(
-    in oklab,
-    var(--panel) 78%,
-    var(--panel-foreground)
-  );
+  background-color: var(--panel-foreground);
   -webkit-mask-image: var(--rom-mark);
   mask-image: var(--rom-mark);
   -webkit-mask-size: contain;
