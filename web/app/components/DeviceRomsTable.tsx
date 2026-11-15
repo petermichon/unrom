@@ -16,11 +16,6 @@ import {
 import { SearchInput } from "@/components/SearchInput";
 import { StatusPill } from "@/components/StatusPill";
 import { Button } from "@/components/ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { bySortKey, referenceLabel } from "@/lib/sort";
 import type { RomStatus, RomSupport } from "@/lib/types";
 
@@ -107,27 +102,19 @@ export default function DeviceRomsTable({
         enableSorting: false,
         cell: ({ row }) =>
           row.original.referenceUrl ? (
-            <Tooltip>
-              <TooltipTrigger
-                render={
-                  <a
-                    href={row.original.referenceUrl}
-                    target="_blank"
-                    rel="noopener"
-                    aria-label={`Open reference: ${row.original.referenceUrl}`}
-                    className="inline-flex max-w-full items-center gap-1 text-xs text-muted-foreground underline underline-offset-4 hover:text-foreground"
-                  />
-                }
-              >
-                <span className="truncate">
-                  {referenceLabel(row.original.referenceUrl)}
-                </span>
-                <ExternalLink className="size-3 shrink-0" />
-              </TooltipTrigger>
-              <TooltipContent className="max-w-md break-all">
-                {row.original.referenceUrl}
-              </TooltipContent>
-            </Tooltip>
+            <a
+              href={row.original.referenceUrl}
+              target="_blank"
+              rel="noopener"
+              title={row.original.referenceUrl}
+              aria-label={`Open reference: ${row.original.referenceUrl}`}
+              className="inline-flex max-w-full items-center gap-1 text-xs text-muted-foreground underline underline-offset-4 hover:text-foreground"
+            >
+              <span className="truncate">
+                {referenceLabel(row.original.referenceUrl)}
+              </span>
+              <ExternalLink className="size-3 shrink-0" aria-hidden="true" />
+            </a>
           ) : (
             <span className="text-muted-foreground">None</span>
           ),
