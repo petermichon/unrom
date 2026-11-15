@@ -15,6 +15,7 @@ import {
   updatedAtFromMatches,
 } from "@/lib/seo";
 import { formatNumber } from "@/lib/utils";
+import { formatDate } from "@/lib/dates";
 import type { RomDetail } from "@/lib/types";
 import type { Route } from "./+types/rom";
 
@@ -29,6 +30,21 @@ function romDescription(rom: RomDetail): string {
   return `Supports ${formatNumber(rom.deviceCount)} ${
     rom.deviceCount === 1 ? "device" : "devices"
   } across ${formatNumber(vendorCount)} vendor${vendorCount === 1 ? "" : "s"}.`;
+}
+
+/**
+ * How current this ROM's builds are. Stated only where devices report build
+ * metadata: most sources publish none, and silence is not a verdict.
+ */
+function buildSummary(rom: RomDetail): string | null {
+  if (!rom.build) return null;
+
+  const newest = `Newest build ${formatDate(rom.build.newest)}`;
+  if (rom.build.devicesWithBuild >= rom.deviceCount) return newest;
+
+  return `${newest} · build dates for ${formatNumber(
+    rom.build.devicesWithBuild,
+  )} of ${formatNumber(rom.deviceCount)} devices`;
 }
 
 /** The page stays quiet about it, but a search result should say so. */
@@ -106,6 +122,7 @@ export default function RomRoute() {
   const { rom } = useLoaderData<typeof loader>();
 
   const description = romDescription(rom);
+  const build = buildSummary(rom);
   const mark = ROM_MARKS[rom.id] ?? ROM_LOGOS[rom.id];
   useRomPalette(rom.id);
 
@@ -128,6 +145,11 @@ export default function RomRoute() {
             <p className="max-w-[62ch] text-sm leading-relaxed text-panel-foreground/75">
               {description}
             </p>
+            {build && (
+              <p className="max-w-[62ch] text-sm text-panel-foreground/60">
+                {build}
+              </p>
+            )}
             <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
               <StatusPill status={rom.status} tone="panel" />
               <a
