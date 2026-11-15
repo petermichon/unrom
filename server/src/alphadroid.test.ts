@@ -85,3 +85,34 @@ test("AlphaDroid parses the website build index", () => {
     "https://alphadroid.org/#devices?codename=astonc",
   );
 });
+
+test("AlphaDroid takes the newest build the site lists", () => {
+  const records = parseAlphaDroidJson(
+    JSON.stringify({
+      devices: [
+        {
+          name: "peridot.json",
+          data: {
+            response: [
+              {
+                oem: "Xiaomi",
+                device: "peridot",
+                timestamp: 1700000000,
+                os_patch_level: "2023-11-01",
+              },
+              {
+                oem: "Xiaomi",
+                device: "peridot",
+                timestamp: 1749340800,
+                os_patch_level: "2025-06-01",
+              },
+            ],
+          },
+        },
+      ],
+    }),
+  );
+
+  assert.equal(records[0]?.buildDate, "2025-06-08");
+  assert.equal(records[0]?.securityPatch, "2025-06-01");
+});

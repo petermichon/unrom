@@ -17,6 +17,18 @@ export interface DeviceSummary {
  */
 export type ReferenceKind = "observed" | "derived";
 
+/**
+ * What the newest published build for a device reports. Both dates are
+ * `YYYY-MM-DD`; `null` means the source does not publish that fact, never that
+ * it is missing upstream.
+ */
+export interface BuildInfo {
+  /** Date of the newest build the source lists for this device. */
+  date: string | null;
+  /** Security patch level that build reports. */
+  securityPatch: string | null;
+}
+
 export interface RomSupport {
   id: string;
   name: string;
@@ -24,6 +36,8 @@ export interface RomSupport {
   referenceKind: ReferenceKind;
   /** Set when the ROM supports this device via a covering build target. */
   inheritedFrom: string | null;
+  /** Null when the source publishes no build metadata for this device. */
+  build: BuildInfo | null;
 }
 
 export interface DeviceDetail {
@@ -179,4 +193,6 @@ export interface Mapping {
   referenceUrl: string | null;
   referenceKind: ReferenceKind;
   reportedCodename: string | null;
+  /** Null when the source publishes no build metadata for this device. */
+  build: BuildInfo | null;
 }

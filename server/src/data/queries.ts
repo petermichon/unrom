@@ -7,6 +7,7 @@ import type {
   BootloaderPolicyStatus,
   BrandSummary,
   BrowseDevice,
+  BuildInfo,
   DeviceDetail,
   DeviceVariant,
   LetterSummary,
@@ -43,6 +44,12 @@ const sortKey = (value: string): string =>
 // The column is plain text; only these two values are ever written.
 const asReferenceKind = (value: string): ReferenceKind =>
   value === "derived" ? "derived" : "observed";
+
+/** The build facts a source published for an edge, or null when it published none. */
+const buildInfo = (edge: Edge): BuildInfo | null =>
+  edge.buildDate === null && edge.securityPatch === null
+    ? null
+    : { date: edge.buildDate, securityPatch: edge.securityPatch };
 
 const bySortKey = (a: string, b: string) =>
   sortKey(a).localeCompare(sortKey(b));
@@ -144,6 +151,7 @@ export function createApi(dbPath: string) {
       referenceUrl: edge.referenceUrl,
       referenceKind: asReferenceKind(edge.referenceKind),
       inheritedFrom,
+      build: buildInfo(edge),
     };
   }
 
@@ -948,6 +956,7 @@ export function createApi(dbPath: string) {
           referenceUrl: edge.referenceUrl,
           referenceKind: asReferenceKind(edge.referenceKind),
           reportedCodename: edge.reportedCodename,
+          build: buildInfo(edge),
         };
       });
   }

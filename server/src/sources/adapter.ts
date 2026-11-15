@@ -36,6 +36,9 @@ export interface DeviceSource {
   nameCorrections?: Record<string, string>;
   codenameCorrections?: Record<string, string>;
   brandCorrections?: Record<string, string>;
+  /** Dotted paths to the newest build's date and its security patch level. */
+  buildDate?: string[];
+  securityPatch?: string[];
 }
 
 export interface RecordInput {
@@ -50,6 +53,9 @@ export interface RecordInput {
   reportedCodename?: string | null;
   /** Defaults to true; false means the source lists the device without a build. */
   hasBuild?: boolean;
+  /** `YYYY-MM-DD`, when the source publishes the newest build's metadata. */
+  buildDate?: string | null;
+  securityPatch?: string | null;
 }
 
 /** Build a validated record, filling the optional fields with defaults. */
@@ -156,6 +162,24 @@ function pluck(root: unknown, path: string): unknown {
   return current.length === 1 ? current[0] : current;
 }
 
+/**
+ * Normalize a date a source publishes. Accepts `YYYY-MM-DD`, an ISO timestamp,
+ * or a Unix timestamp in seconds or milliseconds; anything else is null so a
+ * malformed value never reaches the dataset.
+ */
+export function normalizeDate(value: unknown): string | null {
+  const raw = str(value);
+  if (!raw) return null;
+  if (/^\d{4}-\d{2}-\d{2}$/.test(raw)) return raw;
+  if (/^\d{4}-\d{2}-\d{2}T/.test(raw)) return raw.slice(0, 10);
+
+  const number = Number(raw);
+  if (!Number.isFinite(number) || number < 1_000_000_000) return null;
+  const date = new Date(number > 1e12 ? number : number * 1000);
+  if (Number.isNaN(date.getTime())) return null;
+  return date.toISOString().slice(0, 10);
+}
+
 function pick(device: RawDevice, keys: string[] | undefined): string | null {
   if (!keys) return null;
   for (const key of keys) {
@@ -178,10 +202,12 @@ export function createParser(
       brand: string | null;
       references: string[];
       reportedCodename: string;
+      buildDate: string | null;
+      securityPatch: string | null;
     }
 
     const drafts: Draft[] = [];
-    const seen = new Set<string>();
+    const byCodename = new Map<string, Draft>();
 
     for (const entry of entries) {
       const rawCodename =
@@ -195,11 +221,32 @@ export function createParser(
       );
       const primary = parts[0];
 
-      for (const codename of parts) {
-        if (seen.has(codename)) continue;
-        seen.add(codename);
+      const buildDate = normalizeDate(pick(entry.device, source.buildDate));
+      const securityPatch = normalizeDate(
+        pick(entry.device, source.securityPatch),
+      );
 
-        drafts.push({
+      for (const codename of parts) {
+        const existing = byCodename.get(codename);
+        // A roster can list several builds for one device (version branches).
+        // The newest build describes the device; the identity does not change.
+        if (existing) {
+          if (
+            buildDate &&
+            (!existing.buildDate || buildDate > existing.buildDate)
+          ) {
+            existing.buildDate = buildDate;
+            existing.securityPatch = securityPatch;
+          } else if (
+            existing.buildDate === buildDate &&
+            !existing.securityPatch
+          ) {
+            existing.securityPatch = securityPatch;
+          }
+          continue;
+        }
+
+        const draft: Draft = {
           codename,
           name:
             source.nameCorrections?.[codename] ??
@@ -217,7 +264,11 @@ export function createParser(
             ),
           ],
           reportedCodename: primary,
-        });
+          buildDate,
+          securityPatch,
+        };
+        byCodename.set(codename, draft);
+        drafts.push(draft);
       }
     }
 
@@ -252,6 +303,8 @@ export function createParser(
           source.referenceKind ??
           (citation || !derivedPage ? "observed" : "derived"),
         reportedCodename: draft.reportedCodename,
+        buildDate: draft.buildDate,
+        securityPatch: draft.securityPatch,
       });
     });
   };

@@ -26,6 +26,10 @@ export const normalizedRomDeviceSchema = z.object({
   // the source names the device, so it stays in the snapshot, but it is not
   // support: no build edge is published for it.
   hasBuild: z.boolean().default(true),
+  // What the newest build the source lists reports. `YYYY-MM-DD`; null when the
+  // source does not publish the fact.
+  buildDate: z.string().nullable().default(null),
+  securityPatch: z.string().nullable().default(null),
 });
 
 export type NormalizedRomDevice = z.infer<typeof normalizedRomDeviceSchema>;

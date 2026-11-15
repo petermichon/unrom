@@ -26,9 +26,35 @@ const romChipSchema = {
   },
 };
 
+const buildInfoSchema = {
+  type: "object",
+  required: ["date", "securityPatch"],
+  description:
+    "What the newest build the source lists for this device reports. `null` means the source does not publish the fact, not that it is missing upstream.",
+  properties: {
+    date: {
+      ...nullableString,
+      format: "date",
+      description: "Date of the newest build.",
+    },
+    securityPatch: {
+      ...nullableString,
+      format: "date",
+      description: "Security patch level that build reports.",
+    },
+  },
+};
+
 const romSupportSchema = {
   type: "object",
-  required: ["id", "name", "referenceUrl", "referenceKind", "inheritedFrom"],
+  required: [
+    "id",
+    "name",
+    "referenceUrl",
+    "referenceKind",
+    "inheritedFrom",
+    "build",
+  ],
   properties: {
     id: { type: "string" },
     name: { type: "string" },
@@ -43,6 +69,12 @@ const romSupportSchema = {
       ...nullableString,
       description:
         "Set when the ROM supports this device via a covering build target.",
+    },
+    build: {
+      ...buildInfoSchema,
+      type: ["object", "null"],
+      description:
+        "Null when the source publishes no build metadata for this device.",
     },
   },
 };
@@ -250,6 +282,7 @@ const mappingSchema = {
     "referenceUrl",
     "referenceKind",
     "reportedCodename",
+    "build",
   ],
   properties: {
     vendor: { type: "string" },
@@ -261,6 +294,12 @@ const mappingSchema = {
     referenceUrl: { ...nullableString, format: "uri" },
     referenceKind: { type: "string", enum: ["observed", "derived"] },
     reportedCodename: nullableString,
+    build: {
+      ...buildInfoSchema,
+      type: ["object", "null"],
+      description:
+        "Null when the source publishes no build metadata for this device.",
+    },
   },
 };
 

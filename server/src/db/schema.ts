@@ -46,6 +46,11 @@ export const romDevices = sqliteTable(
     // "observed" | "derived"; see `sources/adapter.ts`.
     referenceKind: text("reference_kind").notNull().default("observed"),
     reportedCodename: text("reported_codename"),
+    // Newest build the source lists for this device: `YYYY-MM-DD`, or null when
+    // the source publishes no build metadata.
+    buildDate: text("build_date"),
+    // Security patch level that build reports, `YYYY-MM-DD`.
+    securityPatch: text("security_patch"),
   },
   (table) => [
     primaryKey({ columns: [table.romId, table.vendor, table.codename] }),

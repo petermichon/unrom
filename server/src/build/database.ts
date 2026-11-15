@@ -126,6 +126,9 @@ interface Edge {
   // The main codename whose build covers this device, when the source grouped
   // it with a variant (e.g. a `sweetin` edge reported under `sweet`).
   reportedCodename: string | null;
+  // Newest build the source lists for this device, `YYYY-MM-DD`.
+  buildDate: string | null;
+  securityPatch: string | null;
 }
 
 interface Alias {
@@ -192,7 +195,7 @@ function contentHash(
     ),
   )) {
     hash.update(
-      `e\0${edge.romId}\0${edge.vendor}\0${edge.codename}\0${edge.referenceUrl ?? ""}\0${edge.referenceKind}\0${edge.reportedCodename ?? ""}\n`,
+      `e\0${edge.romId}\0${edge.vendor}\0${edge.codename}\0${edge.referenceUrl ?? ""}\0${edge.referenceKind}\0${edge.reportedCodename ?? ""}\0${edge.buildDate ?? ""}\0${edge.securityPatch ?? ""}\n`,
     );
   }
   for (const alias of [...aliasRows].sort((a, b) =>
@@ -666,7 +669,24 @@ export function buildDatabase(
       referenceUrl: null,
       referenceKind: record.referenceKind,
       reportedCodename: null,
+      buildDate: null,
+      securityPatch: null,
     };
+    // Two rosters for the same ROM (e.g. the markdown list and the site index)
+    // can describe the same device; the newest build is the fact, and its patch
+    // level belongs to that build.
+    if (
+      record.buildDate &&
+      (!edge.buildDate || record.buildDate > edge.buildDate)
+    ) {
+      edge.buildDate = record.buildDate;
+      edge.securityPatch = record.securityPatch;
+    } else if (
+      !edge.securityPatch &&
+      (!record.buildDate || record.buildDate === edge.buildDate)
+    ) {
+      edge.securityPatch = record.securityPatch;
+    }
     // A derived URL is a guess until the reference check confirms the page.
     // A dead one is dropped rather than published: an unverifiable citation is
     // worse than none.

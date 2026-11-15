@@ -34,3 +34,30 @@ test("LineageOS keeps separate codenames separate", () => {
   );
   assert.deepEqual(records[1]?.names, ["Pixel 9"]);
 });
+
+test("LineageOS attaches the newest build's date and patch level", () => {
+  const records = parseLineageOS(
+    JSON.stringify({
+      documents: [
+        "codename: otter\nname: 'SHIFTphone 8.0'\nvendor: SHIFT\n",
+        "codename: tokay\nname: Pixel 9\nvendor: Google\n",
+      ],
+      builds: [
+        {
+          codename: "otter",
+          date: "2026-11-15",
+          securityPatch: "2026-11-01",
+        },
+      ],
+    }),
+  );
+
+  const line = (codename: string) =>
+    records.find((record) => record.codename === codename);
+  assert.equal(line("otter")?.buildDate, "2026-11-15");
+  assert.equal(line("otter")?.securityPatch, "2026-11-01");
+  // The OTA host lists no build for a device without one; that is null, not an
+  // error.
+  assert.equal(line("tokay")?.buildDate, null);
+  assert.equal(line("tokay")?.securityPatch, null);
+});

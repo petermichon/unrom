@@ -1,4 +1,4 @@
-import { buildRecord, str } from "./adapter.ts";
+import { buildRecord, normalizeDate, str } from "./adapter.ts";
 import type { NormalizedRomDevice } from "../normalized.ts";
 
 const ROM_ID = "alphadroid";
@@ -87,6 +87,8 @@ interface SiteDevice {
 interface SiteBuild {
   oem?: unknown;
   device?: unknown;
+  timestamp?: unknown;
+  os_patch_level?: unknown;
 }
 
 /**
@@ -111,10 +113,23 @@ export function parseAlphaDroidJson(raw: string): NormalizedRomDevice[] {
     if (!codename || seen.has(codename)) continue;
 
     const response = device.data?.response;
-    const build =
-      Array.isArray(response) && response[0] && typeof response[0] === "object"
-        ? (response[0] as SiteBuild)
-        : null;
+    // The file keeps every build; the newest one describes the device. Fall
+    // back to the first entry when none carries a timestamp.
+    const builds = (Array.isArray(response) ? response : []).filter(
+      (item): item is SiteBuild => !!item && typeof item === "object",
+    );
+    const dated = builds
+      .map((item) => ({ item, date: normalizeDate(item.timestamp) }))
+      .filter(
+        (entry): entry is { item: SiteBuild; date: string } =>
+          entry.date !== null,
+      );
+    const newest = dated.reduce<(typeof dated)[number] | null>(
+      (best, candidate) =>
+        !best || candidate.date > best.date ? candidate : best,
+      null,
+    );
+    const build = newest?.item ?? builds[0] ?? null;
     const reportedName = str(build?.device);
     const name =
       reportedName && reportedName.toLowerCase() !== codename.toLowerCase()
@@ -131,6 +146,8 @@ export function parseAlphaDroidJson(raw: string): NormalizedRomDevice[] {
         brand: str(build?.oem),
         referenceUrl: `https://alphadroid.org/#devices?codename=${codename}`,
         referenceKind: "derived",
+        buildDate: newest?.date ?? null,
+        securityPatch: normalizeDate(build?.os_patch_level),
       }),
     );
   }

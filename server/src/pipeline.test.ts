@@ -22,6 +22,7 @@ import {
   buildRecord,
   createParser,
   isCitation,
+  normalizeDate,
   selectors,
 } from "./sources/adapter.ts";
 import { parseKaliNetHunter } from "./sources/kali-nethunter.ts";
@@ -394,6 +395,56 @@ test("dead derived citations are dropped, observed ones kept", () => {
   }
 });
 
+test("build metadata follows the newest entry for a device", () => {
+  const parse = createParser({
+    id: "test",
+    romName: "Test",
+    file: "test.json",
+    select: selectors.array,
+    buildDate: ["timestamp"],
+    securityPatch: ["os_patch_level"],
+  });
+
+  const records = parse(
+    JSON.stringify([
+      // Two builds for one device: the newer one describes it.
+      {
+        codename: "sunfish",
+        timestamp: "2025-01-02T00:00:00Z",
+        os_patch_level: "2024-12-01",
+      },
+      {
+        codename: "sunfish",
+        timestamp: "2026-04-05T00:00:00Z",
+        os_patch_level: "2026-03-01",
+      },
+      // Unix seconds, as crDroid and Lunaris publish them.
+      {
+        codename: "redfin",
+        timestamp: 1794674758,
+        os_patch_level: "2026-11-01",
+      },
+    ]),
+  );
+
+  const line = (codename: string) =>
+    records.find((record) => record.codename === codename);
+  assert.equal(records.length, 2);
+  assert.equal(line("sunfish")?.buildDate, "2026-04-05");
+  assert.equal(line("sunfish")?.securityPatch, "2026-03-01");
+  assert.equal(line("redfin")?.buildDate, "2026-11-14");
+  assert.equal(line("redfin")?.securityPatch, "2026-11-01");
+});
+
+test("dates are normalized or dropped, never passed through", () => {
+  assert.equal(normalizeDate(1794674758), "2026-11-14");
+  assert.equal(normalizeDate("2026-11-14"), "2026-11-14");
+  assert.equal(normalizeDate("2026-11-14T10:00:00Z"), "2026-11-14");
+  assert.equal(normalizeDate("not a date"), null);
+  assert.equal(normalizeDate(123), null);
+  assert.equal(normalizeDate(null), null);
+});
+
 test("source corrections fix upstream mislabels", () => {
   const parse = createParser({
     id: "test",
@@ -469,6 +520,65 @@ test("a roster entry with no build names the device without claiming support", a
     );
 
     api.close();
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("an edge publishes the newest build a source lists", () => {
+  const dir = mkdtempSync(join(tmpdir(), "unrom-test-"));
+  const dbPath = join(dir, "unrom.sqlite");
+
+  try {
+    buildDatabase(
+      [
+        buildRecord({
+          romId: "test",
+          romName: "Test ROM",
+          codename: "sunfish",
+          buildDate: "2026-01-01",
+          securityPatch: "2025-12-01",
+        }),
+        // A second roster for the same ROM (markdown and site index) can be
+        // older; the newest build wins and its patch level travels with it.
+        buildRecord({
+          romId: "test",
+          romName: "Test ROM",
+          codename: "sunfish",
+          buildDate: "2026-06-01",
+          securityPatch: "2026-05-01",
+        }),
+        // An older build's patch level must not be attached to a newer date.
+        buildRecord({
+          romId: "test",
+          romName: "Test ROM",
+          codename: "redfin",
+          buildDate: "2026-06-01",
+        }),
+        buildRecord({
+          romId: "test",
+          romName: "Test ROM",
+          codename: "redfin",
+          buildDate: "2025-01-01",
+          securityPatch: "2024-12-01",
+        }),
+      ],
+      dbPath,
+    );
+
+    const db = new Database(dbPath, { readonly: true });
+    const row = (codename: string) =>
+      db
+        .prepare(
+          "select build_date date, security_patch patch from rom_devices where rom_id = 'test' and codename = ?",
+        )
+        .get(codename) as { date: string | null; patch: string | null };
+    assert.deepEqual(row("sunfish"), {
+      date: "2026-06-01",
+      patch: "2026-05-01",
+    });
+    assert.deepEqual(row("redfin"), { date: "2026-06-01", patch: null });
+    db.close();
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }

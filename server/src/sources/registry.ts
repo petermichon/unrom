@@ -138,6 +138,8 @@ const configs: DeviceSource[] = [
     name: ["device"],
     brand: ["oem"],
     referenceUrl: ["devicePage", "forum", "sourceUrl"],
+    buildDate: ["timestamp"],
+    securityPatch: ["os_patch_level"],
   },
   {
     id: "derpfest",
@@ -178,6 +180,8 @@ const configs: DeviceSource[] = [
     select: selectors.array,
     brand: ["oem"],
     referenceUrl: ["forum", "sourceUrl"],
+    buildDate: ["timestamp"],
+    securityPatch: ["os_patch_level"],
   },
   {
     id: "matrixx",
