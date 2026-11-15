@@ -342,7 +342,7 @@ export default function AppShell({ updatedAt, updatedAtIso, children }: Props) {
             <div className="mx-auto w-full max-w-6xl">{children}</div>
           </main>
 
-          <footer className="border-t border-border px-4 py-6 text-xs text-muted-foreground sm:px-6">
+          <footer className="border-t border-border px-4 py-6 text-sm text-muted-foreground sm:px-6">
             <div className="mx-auto flex w-full max-w-6xl flex-wrap items-center justify-between gap-3">
               <p>
                 Last updated{" "}
@@ -361,14 +361,14 @@ export default function AppShell({ updatedAt, updatedAtIso, children }: Props) {
                   <Link
                     to="/data"
                     prefetch="intent"
-                    className="py-1 hover:text-foreground hover:underline"
+                    className="inline-flex min-h-11 items-center hover:text-foreground hover:underline sm:min-h-0 sm:py-1"
                   >
                     Data
                   </Link>
                   <Link
                     to="/legal"
                     prefetch="intent"
-                    className="py-1 hover:text-foreground hover:underline"
+                    className="inline-flex min-h-11 items-center hover:text-foreground hover:underline sm:min-h-0 sm:py-1"
                   >
                     Legal
                   </Link>
@@ -376,7 +376,7 @@ export default function AppShell({ updatedAt, updatedAtIso, children }: Props) {
                     href={ODBL_URL}
                     target="_blank"
                     rel="noopener"
-                    className="py-1 hover:text-foreground hover:underline"
+                    className="inline-flex min-h-11 items-center hover:text-foreground hover:underline sm:min-h-0 sm:py-1"
                   >
                     ODbL license
                   </a>
@@ -384,7 +384,7 @@ export default function AppShell({ updatedAt, updatedAtIso, children }: Props) {
                     href={GITHUB_URL}
                     target="_blank"
                     rel="noopener"
-                    className="py-1 hover:text-foreground hover:underline"
+                    className="inline-flex min-h-11 items-center hover:text-foreground hover:underline sm:min-h-0 sm:py-1"
                   >
                     GitHub
                   </a>
