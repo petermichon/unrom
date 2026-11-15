@@ -12,7 +12,7 @@ const HERO_SEARCH = { name: "Search devices, brands, and ROMs", exact: true };
 async function openSearch(page: Page) {
   await page.goto("/");
   await page.getByRole("link", HERO_SEARCH).click();
-  const field = page.getByPlaceholder("Search devices or ROMs…");
+  const field = page.getByPlaceholder("Devices, brands, ROMs");
   await expect(field).toBeVisible();
   return field;
 }
@@ -129,7 +129,7 @@ test("an example opens the search dialog already searching", async ({
 
   const field = page
     .getByRole("dialog")
-    .getByPlaceholder("Search devices or ROMs…");
+    .getByPlaceholder("Devices, brands, ROMs");
   await expect(field).toHaveValue("sweet");
   await expect(
     page.getByRole("option", { name: /Redmi Note 10 Pro/ }).first(),
@@ -154,7 +154,7 @@ test("command palette shows matches while typing", async ({ page }) => {
 
   const input = page
     .getByRole("dialog")
-    .getByPlaceholder("Search devices or ROMs…");
+    .getByPlaceholder("Devices, brands, ROMs");
   await expect(async () => {
     await page.keyboard.press("Control+k");
     await expect(input).toBeVisible({ timeout: 1_000 });
@@ -186,7 +186,7 @@ test.describe("one search on a phone", () => {
       await dialog.evaluate((el) => getComputedStyle(el).borderRadius),
     ).not.toBe("0px");
 
-    const input = dialog.getByPlaceholder("Search devices or ROMs…");
+    const input = dialog.getByPlaceholder("Devices, brands, ROMs");
     await expect(input).toBeFocused();
 
     await page.keyboard.type("pixel");
@@ -226,7 +226,7 @@ test.describe("one search on a phone", () => {
 
     const input = page
       .getByRole("dialog")
-      .getByPlaceholder("Search devices or ROMs…");
+      .getByPlaceholder("Devices, brands, ROMs");
     await expect(input).toHaveValue("sweet");
     await expect(page.getByRole("option").first()).toBeVisible();
   });

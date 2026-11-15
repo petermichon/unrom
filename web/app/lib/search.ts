@@ -1,8 +1,10 @@
 import type { BrowseDevice } from "@/lib/types";
 
-// Short enough for the narrowest phone (198px of field at 320px); the full
-// list of what is searchable lives in the field's accessible label.
-export const SEARCH_PLACEHOLDER = "Search devices or ROMs…";
+// A noun list, not a sentence: it names every result type without the "or"
+// that would suggest you pick one, and it fits the 182px the hero field has
+// at 320px (166px measured). The verb is the magnifier's job; the full list
+// also lives in the field's accessible label.
+export const SEARCH_PLACEHOLDER = "Devices, brands, ROMs";
 
 // Bounded so a pathological query cannot turn into unbounded work or SQL.
 const MAX_TERMS = 8;
