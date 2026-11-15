@@ -115,6 +115,9 @@ const configs: DeviceSource[] = [
     name: ["name"],
     brand: ["brand"],
     referencePage: "https://thecloverproject.com/download/{codename}",
+    // The roster spells this device `Asteroids`, but the site's route is
+    // lowercase: the capitalized URL 404s and the reference check dropped it.
+    codenameCorrections: { Asteroids: "asteroids" },
   },
   {
     id: "corvusos",

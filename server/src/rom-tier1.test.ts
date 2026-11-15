@@ -96,3 +96,22 @@ test("EtherealOS reads the A14 device array", () => {
     "https://github.com/Ethereal-OS/Ethereal-Devices/blob/A14/devices.json",
   );
 });
+
+test("Clover builds the site's lowercase route for Asteroids", () => {
+  const parse = parserFor("clover.json");
+  const records = parse(
+    JSON.stringify([
+      { codename: "Asteroids", name: "Nothing Phone 3a/Pro", brand: "Nothing" },
+      { codename: "pong", name: "Nothing Phone 2", brand: "Nothing" },
+    ]),
+  );
+
+  assert.deepEqual(records.map((record) => record.codename).sort(), [
+    "asteroids",
+    "pong",
+  ]);
+  assert.equal(
+    records[0]?.referenceUrl,
+    "https://thecloverproject.com/download/asteroids",
+  );
+});
