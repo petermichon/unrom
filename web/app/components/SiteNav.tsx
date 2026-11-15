@@ -1,5 +1,12 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { ArrowRight, Clock, LayoutGrid, Lock, Shield } from "lucide-react";
+import {
+  ArrowRight,
+  Clock,
+  Database,
+  LayoutGrid,
+  Lock,
+  Shield,
+} from "lucide-react";
 import { Link, NavLink } from "react-router";
 import { fetchRomSummaries, fetchSummary } from "@/lib/data";
 import {
@@ -323,7 +330,12 @@ function DevicesPanel({
         <FootLink to="/devices?roms=1" onNavigate={onNavigate}>
           Devices with ROMs
         </FootLink>
-        <FootLink to="/data" onNavigate={onNavigate} className="ml-auto">
+        <FootLink
+          to="/data"
+          onNavigate={onNavigate}
+          className="ml-auto"
+          icon={<Database className="size-3.5" aria-hidden="true" />}
+        >
           Data & API
         </FootLink>
       </PanelFooter>
@@ -344,7 +356,7 @@ function BrandsPanel({
     <div className="flex flex-col gap-3">
       {/* The list is curated, not read from the data, so it is right before
           the request returns and stays right if it fails. */}
-      <div className="grid grid-cols-4 gap-x-4">
+      <div className="grid grid-cols-3 gap-x-4">
         {cardBrands.map((brand) => (
           <MenuRow
             key={brand.id}
@@ -354,13 +366,18 @@ function BrandsPanel({
             <span className="truncate font-medium">{brand.name}</span>
           </MenuRow>
         ))}
+        <FootLink to="/brands" onNavigate={onNavigate} className="self-center">
+          All brands
+        </FootLink>
       </div>
 
       <PanelFooter>
-        <FootLink to="/brands" onNavigate={onNavigate}>
-          All brands
-        </FootLink>
-        <FootLink to="/data" onNavigate={onNavigate} className="ml-auto">
+        <FootLink
+          to="/data"
+          onNavigate={onNavigate}
+          className="ml-auto"
+          icon={<Database className="size-3.5" aria-hidden="true" />}
+        >
           Data & API
         </FootLink>
       </PanelFooter>
@@ -395,7 +412,12 @@ function RomsPanel({
       </Shortcuts>
 
       <PanelFooter>
-        <FootLink to="/data" onNavigate={onNavigate} className="ml-auto">
+        <FootLink
+          to="/data"
+          onNavigate={onNavigate}
+          className="ml-auto"
+          icon={<Database className="size-3.5" aria-hidden="true" />}
+        >
           Data & API
         </FootLink>
       </PanelFooter>
@@ -484,7 +506,7 @@ function MenuRow({
     <Link
       to={to}
       onClick={onNavigate}
-      className="flex min-w-0 items-center justify-between gap-3 rounded-lg px-2 py-1.5 text-sm outline-none hover:bg-muted focus-visible:ring-3 focus-visible:ring-ring/50"
+      className="inline-flex w-fit max-w-full items-center gap-3 rounded-lg px-2 py-1.5 text-sm outline-none hover:bg-muted focus-visible:ring-3 focus-visible:ring-ring/50"
     >
       {children}
     </Link>
@@ -495,11 +517,13 @@ function FootLink({
   to,
   onNavigate,
   className,
+  icon,
   children,
 }: {
   to: string;
   onNavigate: () => void;
   className?: string;
+  icon?: ReactNode;
   children: ReactNode;
 }) {
   return (
@@ -511,6 +535,7 @@ function FootLink({
         className,
       )}
     >
+      {icon}
       {children}
       <ArrowRight className="size-3.5" aria-hidden="true" />
     </Link>
