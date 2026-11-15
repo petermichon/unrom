@@ -313,7 +313,7 @@ export default function AppShell({ updatedAt, updatedAtIso, children }: Props) {
                 Devices
               </a>
               <a href="/roms" className="text-foreground/70">
-                ROMs
+                Custom ROMs
               </a>
               <a href="/brands" className="text-foreground/70">
                 Brands

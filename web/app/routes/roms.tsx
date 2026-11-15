@@ -168,13 +168,15 @@ export default function RomsRoute() {
 
   return (
     <div className="flex flex-col gap-8">
-      <Breadcrumbs items={[{ label: "Home", to: "/" }, { label: "ROMs" }]} />
+      <Breadcrumbs
+        items={[{ label: "Home", to: "/" }, { label: "Custom ROMs" }]}
+      />
 
       <div className="hero-panel relative flex flex-col gap-6 overflow-hidden rounded-4xl bg-panel px-6 py-8 text-panel-foreground ring-1 ring-black/[0.03] sm:px-8 sm:py-10 dark:ring-white/[0.08]">
         <div className="relative z-10 flex min-w-0 flex-col gap-6">
           <div className="flex min-w-0 flex-col gap-3">
             <h1 className="font-heading text-3xl font-extrabold tracking-[-0.03em] sm:text-4xl">
-              ROMs
+              Custom ROMs
             </h1>
             <p className="max-w-[62ch] text-sm leading-relaxed text-panel-foreground/75">
               Every Android project unrom tracks, and the devices each one

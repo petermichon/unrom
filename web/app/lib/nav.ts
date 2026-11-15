@@ -31,7 +31,7 @@ export const NAV_ITEMS: NavItem[] = [
   },
   {
     to: "/roms",
-    label: "ROMs",
+    label: "Custom ROMs",
     kind: "roms",
     description: "Projects and the devices they support",
   },

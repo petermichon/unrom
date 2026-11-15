@@ -132,7 +132,7 @@ export default function RomRoute() {
       <Breadcrumbs
         items={[
           { label: "Home", to: "/" },
-          { label: "ROMs", to: "/roms" },
+          { label: "Custom ROMs", to: "/roms" },
           { label: rom.name },
         ]}
       />

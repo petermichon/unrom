@@ -45,11 +45,11 @@ test("client navigation renders the destination table", async ({ page }) => {
   await page.goto("/");
   await page
     .getByRole("navigation", { name: "Main" })
-    .getByRole("link", { name: "ROMs", exact: true })
+    .getByRole("link", { name: "Custom ROMs", exact: true })
     .click();
   await page.waitForURL("**/roms");
   await expect(
-    page.getByRole("heading", { name: "ROMs", level: 1, exact: true }),
+    page.getByRole("heading", { name: "Custom ROMs", level: 1, exact: true }),
   ).toBeVisible();
   await expect(
     page.locator('main a[href="/roms/lineageos"]').first(),
@@ -102,7 +102,7 @@ test("the ROMs menu pins GrapheneOS in its own chip", async ({ page }) => {
   await expect(async () => {
     await page
       .getByRole("navigation", { name: "Main" })
-      .getByRole("link", { name: "ROMs", exact: true })
+      .getByRole("link", { name: "Custom ROMs", exact: true })
       .hover();
     await expect(menu).toBeVisible({ timeout: 1_000 });
   }).toPass({ timeout: 10_000 });
@@ -147,7 +147,7 @@ test("each trigger opens its own panel", async ({ page }) => {
     menu.getByRole("link", { name: "All brands", exact: true }),
   ).toBeVisible();
 
-  await show("ROMs");
+  await show("Custom ROMs");
   await expect(menu.getByRole("link", { name: /GrapheneOS/ })).toBeVisible();
   await expect(
     menu.getByRole("link", { name: "All ROMs", exact: true }),
@@ -209,7 +209,7 @@ test("navigation closes the mega menu", async ({ page }) => {
   await page.goto("/");
   await page
     .getByRole("navigation", { name: "Main" })
-    .getByRole("link", { name: "ROMs", exact: true })
+    .getByRole("link", { name: "Custom ROMs", exact: true })
     .click();
   await page.waitForURL("**/roms");
 
