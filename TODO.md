@@ -17,6 +17,25 @@
       Interim: state on the devices page what the directory does and does not
       claim. Vendor-level policies cover seven vendors; add one only when it
       publishes a policy (Samsung and ASUS next, then regional variants).
+- [ ] Record the per-device facts a "which build for this device" filter needs,
+      each with a source: relock / verified-boot support (a different question
+      from whether the vendor allows unlocking), vendor support end date (which
+      also gives EOL / legacy), and official versus unofficial build (see the
+      item below). Only one facet is buildable from today's data: a mapping's
+      newest build date, from four sources. Collect the rest before `/devices`
+      offers these as filters; then the devices menu can link to a few presets
+      instead of listing seven groups. "Hardened" is not a facet until it is
+      defined as checkable predicates — patch level, relock, support end — not a
+      label.
+- [ ] Give the devices page its property groups, and the menu a way into them.
+      Each group is a property of the device–ROM pair, so a pair may appear in
+      several: hardened (patch level + relock + support end, once defined),
+      verified boot (relock supported), long support (vendor support end five
+      years out), official builds, recently updated (newest build date within
+      30 days), legacy (vendor support ended), all devices. The page owns the
+      filters and their URL state; the menu shows a few presets rather than all
+      seven, which do not fit a hover panel. Blocked by the data item above for
+      every group but "recently updated".
 - [ ] Record a source URL per ROM, and later whether its builds are
       reproducible. The dataset says which devices a ROM supports but not where
       its code lives or whether anyone can verify the binaries, so "can I check
