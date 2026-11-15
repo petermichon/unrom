@@ -8,6 +8,9 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
+import { X } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { DialogClose } from "@/components/ui/dialog";
 import { SEARCH_PLACEHOLDER, tokenize } from "@/lib/search";
 import { useSearch } from "@/lib/use-search";
 import { useScrollFade } from "@/lib/use-scroll-fade";
@@ -112,6 +115,19 @@ export default function CommandPaletteDialog({
           value={query}
           onValueChange={setQuery}
           status={loading ? "Searching…" : null}
+          trailing={
+            <DialogClose
+              render={
+                <Button
+                  variant="ghost"
+                  size="icon-sm"
+                  aria-label="Close search"
+                />
+              }
+            >
+              <X className="size-4" />
+            </DialogClose>
+          }
         />
         <div role="status" aria-live="polite" className="sr-only">
           {loading

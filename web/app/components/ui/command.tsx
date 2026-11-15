@@ -15,7 +15,7 @@ import {
   InputGroup,
   InputGroupAddon,
 } from "@/components/ui/input-group"
-import { SearchIcon, CheckIcon } from "lucide-react"
+import { SearchIcon, CheckIcon, XIcon } from "lucide-react"
 
 function Command({
   className,
@@ -70,6 +70,7 @@ function CommandInput({
   className,
   seamless = false,
   status,
+  trailing,
   ...props
 }: React.ComponentProps<typeof CommandPrimitive.Input> & {
   /** Blend into the surrounding surface instead of drawing its own field. */
@@ -79,9 +80,18 @@ function CommandInput({
    * adds or removes a row of its own.
    */
   status?: React.ReactNode;
+  /** Rendered after the field, e.g. a close control for the dialog. */
+  trailing?: React.ReactNode;
 }) {
+  const inputRef = React.useRef<HTMLInputElement>(null);
+  const value = typeof props.value === "string" ? props.value : "";
+  const onValueChange = props.onValueChange;
+
   return (
-    <div data-slot="command-input-wrapper" className="p-1">
+    <div
+      data-slot="command-input-wrapper"
+      className="flex items-center gap-1 p-1"
+    >
       <InputGroup
         className={cn(
           "h-8! rounded-lg! border-input/30 bg-input/30 shadow-none! *:data-[slot=input-group-addon]:pl-2!",
@@ -90,6 +100,7 @@ function CommandInput({
         )}
       >
         <CommandPrimitive.Input
+          ref={inputRef}
           data-slot="command-input"
           className={cn(
             "w-full text-sm outline-hidden disabled:cursor-not-allowed disabled:opacity-50",
@@ -109,7 +120,23 @@ function CommandInput({
             {status}
           </InputGroupAddon>
         ) : null}
+        {value && onValueChange ? (
+          <InputGroupAddon align="inline-end">
+            <button
+              type="button"
+              aria-label="Clear search"
+              onClick={() => {
+                onValueChange("");
+                inputRef.current?.focus();
+              }}
+              className="rounded-sm p-0.5 text-muted-foreground outline-none hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50"
+            >
+              <XIcon className="size-3.5" />
+            </button>
+          </InputGroupAddon>
+        ) : null}
       </InputGroup>
+      {trailing}
     </div>
   )
 }
