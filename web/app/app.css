@@ -357,6 +357,21 @@
   }
 }
 
+/* A small mark that takes the surrounding text colour instead of the panel's,
+   for chip-sized uses such as the ROM shortcut in the mega menu. */
+.rom-glyph {
+  display: block;
+  background-color: currentColor;
+  -webkit-mask-image: var(--rom-mark);
+  mask-image: var(--rom-mark);
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+}
+
 ::view-transition-group(root),
 ::view-transition-old(root),
 ::view-transition-new(root) {

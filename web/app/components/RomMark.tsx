@@ -23,3 +23,27 @@ export function RomMark({
     />
   );
 }
+
+/**
+ * The same silhouette in the current text colour, for small UI. Assets are
+ * project-supplied and often a single fixed fill, so the mask keeps the glyph
+ * legible in both themes.
+ */
+export function RomGlyph({
+  id,
+  src,
+  className,
+}: {
+  id: string;
+  src: string;
+  className?: string;
+}) {
+  return (
+    <span
+      aria-hidden="true"
+      data-rom-glyph={id}
+      className={cn("rom-glyph pointer-events-none", className)}
+      style={{ "--rom-mark": `url("${src}")` } as CSSProperties}
+    />
+  );
+}

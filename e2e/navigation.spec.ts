@@ -73,6 +73,76 @@ test("hovering a section opens the mega menu", async ({ page }) => {
   await expect(devices).toHaveAttribute("aria-expanded", "true");
 });
 
+test("moving off the panel's sides closes the mega menu", async ({ page }) => {
+  await page.goto("/");
+  await page.waitForLoadState("networkidle");
+
+  const menu = page.locator("#mega-menu");
+  await expect(async () => {
+    await page
+      .getByRole("navigation", { name: "Main" })
+      .getByRole("link", { name: "Devices", exact: true })
+      .hover();
+    await expect(menu).toBeVisible({ timeout: 1_000 });
+  }).toPass({ timeout: 10_000 });
+
+  const box = await menu.boundingBox();
+  expect(box).not.toBeNull();
+  // Far left of the panel at the panel's own height: this used to be inside a
+  // full-width hover wrapper, so the menu never closed sideways.
+  await page.mouse.move(5, (box as { y: number }).y + 40);
+  await expect(menu).toHaveCount(0);
+});
+
+test("the ROMs menu pins GrapheneOS in its own chip", async ({ page }) => {
+  await page.goto("/");
+  await page.waitForLoadState("networkidle");
+
+  const menu = page.locator("#mega-menu");
+  await expect(async () => {
+    await page
+      .getByRole("navigation", { name: "Main" })
+      .getByRole("link", { name: "ROMs", exact: true })
+      .hover();
+    await expect(menu).toBeVisible({ timeout: 1_000 });
+  }).toPass({ timeout: 10_000 });
+
+  const featured = menu.getByRole("link", { name: /GrapheneOS/ });
+  await expect(featured).toHaveAttribute("href", "/roms/grapheneos");
+  await expect(menu.locator('[data-rom-glyph="grapheneos"]')).toBeVisible();
+
+  // The shortcut list is curated, not sorted by device count.
+  const hrefs = await menu
+    .locator('a[href^="/roms/"]')
+    .evaluateAll((links) => links.map((link) => link.getAttribute("href")));
+  expect(hrefs).toEqual([
+    "/roms/grapheneos",
+    "/roms/calyxos",
+    "/roms/iode",
+    "/roms/eos",
+    "/roms/lineageos",
+  ]);
+});
+
+test("switching triggers keeps the panel the same height", async ({ page }) => {
+  await page.goto("/");
+  await page.waitForLoadState("networkidle");
+
+  const nav = page.getByRole("navigation", { name: "Main" });
+  const panel = page.locator("#mega-menu > div > div");
+  const heightOf = async (name: string) => {
+    await nav.getByRole("link", { name, exact: true }).hover();
+    await expect(panel).toBeVisible();
+    const box = await panel.boundingBox();
+    return box?.height ?? 0;
+  };
+
+  const devices = await heightOf("Devices");
+  const roms = await heightOf("ROMs");
+  // A shrinking card can slide out from under the pointer and close the menu.
+  expect(roms).toBe(devices);
+});
+
 test("each trigger opens its own panel", async ({ page }) => {
   await page.goto("/");
   await page.waitForLoadState("networkidle");
@@ -97,7 +167,7 @@ test("each trigger opens its own panel", async ({ page }) => {
   ).toBeVisible();
 
   await show("ROMs");
-  await expect(menu.getByText("Active ROMs by support")).toBeVisible();
+  await expect(menu.getByRole("link", { name: /GrapheneOS/ })).toBeVisible();
   await expect(
     menu.getByRole("link", { name: "All ROMs", exact: true }),
   ).toBeVisible();

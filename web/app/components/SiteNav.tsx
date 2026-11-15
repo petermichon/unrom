@@ -9,6 +9,8 @@ import {
 } from "@/lib/data";
 import { deviceName } from "@/lib/devices";
 import { NAV_ITEMS, NAV_PRELOADS, type NavKind } from "@/lib/nav";
+import { RomGlyph } from "@/components/RomMark";
+import { ROM_LOGOS } from "@/components/RomPhone";
 import { cn, formatNumber } from "@/lib/utils";
 import type {
   BrandSummary,
@@ -213,17 +215,27 @@ export default function SiteNav() {
           ref={panelRef}
           id="mega-menu"
           tabIndex={-1}
-          className="fixed inset-x-0 top-16 z-20 pt-2 outline-none"
-          onMouseEnter={clearClose}
-          onMouseLeave={scheduleClose}
+          className="pointer-events-none fixed inset-x-0 top-16 z-20 outline-none"
         >
-          <div className="mx-auto w-full max-w-6xl px-4 sm:px-6">
-            <MegaPanel
-              active={active}
-              data={menu}
-              failed={failed}
-              onNavigate={() => setActive(null)}
-            />
+          {/* The wrapper spans the viewport for layout but must not be a hit
+              target: as a descendant of the nav it would otherwise keep the
+              pointer "inside" the nav, so the menu could not close when the
+              pointer moved to either side of the panel. Only the panel's own
+              width is interactive, and its top padding stays inside the
+              trigger-to-panel bridge. */}
+          <div className="pointer-events-none mx-auto w-full max-w-6xl px-4 sm:px-6">
+            <div
+              className="pointer-events-auto pt-2"
+              onMouseEnter={clearClose}
+              onMouseLeave={scheduleClose}
+            >
+              <MegaPanel
+                active={active}
+                data={menu}
+                failed={failed}
+                onNavigate={() => setActive(null)}
+              />
+            </div>
           </div>
         </div>
       )}
@@ -237,7 +249,16 @@ interface PanelData {
   topDevices: BrowseDevice[] | null;
   topBrands: BrandSummary[] | null;
   topRoms: RomSummary[] | null;
+  featuredRom: RomSummary | null;
 }
+
+// Pinned to the top of the ROM shortcut in its own chip. Deliberately chosen,
+// not a ranking by device count; the list under it is curated the same way.
+const FEATURED_ROM = "grapheneos";
+
+// The shortcut list under the chip, in this order. Chosen rather than sorted by
+// device count, so the menu is a curated way in, not a leaderboard.
+const SHORTCUT_ROMS = ["calyxos", "iode", "eos", "lineageos"];
 
 /** Each trigger gets its own section, with the other directories one rail away. */
 function MegaPanel({
@@ -278,12 +299,20 @@ function MegaPanel({
     failed,
     topDevices: devices?.length ? devices : (summary?.topDevices ?? null),
     topBrands: sortedBrands?.slice(0, 12) ?? null,
-    topRoms: sortedRoms?.slice(0, 10) ?? null,
+    topRoms:
+      sortedRoms
+        ?.filter((rom) => SHORTCUT_ROMS.includes(rom.id))
+        .sort(
+          (a, b) => SHORTCUT_ROMS.indexOf(a.id) - SHORTCUT_ROMS.indexOf(b.id),
+        ) ?? null,
+    featuredRom: sortedRoms?.find((rom) => rom.id === FEATURED_ROM) ?? null,
   };
 
   return (
     <div className="max-h-[calc(100dvh-5rem)] overflow-y-auto rounded-2xl border border-border bg-card p-5 shadow-xl sm:p-6">
-      <div className="grid min-h-52 grid-cols-[minmax(0,1fr)_18rem] gap-10">
+      {/* One height for every panel: a shorter column must not resize the card
+          under the pointer while switching triggers. */}
+      <div className="grid min-h-72 grid-cols-[minmax(0,1fr)_18rem] gap-10">
         {active === "devices" && (
           <DevicesPanel data={panel} onNavigate={onNavigate} />
         )}
@@ -395,12 +424,15 @@ function RomsPanel({
   data: PanelData;
   onNavigate: () => void;
 }) {
-  const { topRoms, loading, failed } = data;
+  const { topRoms, featuredRom, loading, failed } = data;
 
   return (
     <>
-      <Column title="Active ROMs by support">
+      <Column>
         <Shortcuts loading={loading} failed={failed}>
+          {featuredRom && (
+            <FeaturedRom rom={featuredRom} onNavigate={onNavigate} />
+          )}
           <div className="grid grid-cols-2 gap-x-6">
             {topRoms?.map((rom) => (
               <MenuRow
@@ -432,12 +464,50 @@ function RomsPanel({
   );
 }
 
-function Column({ title, children }: { title: string; children: ReactNode }) {
+/**
+ * The one ROM the shortcut pins: its own chip so it reads as a deliberate
+ * entry rather than another row sorted by device count.
+ */
+function FeaturedRom({
+  rom,
+  onNavigate,
+}: {
+  rom: RomSummary;
+  onNavigate: () => void;
+}) {
+  const logo = ROM_LOGOS[rom.id];
+
+  return (
+    <Link
+      to={`/roms/${rom.id}`}
+      onClick={onNavigate}
+      className="group mb-1.5 flex min-w-0 items-center gap-3 rounded-xl border border-border bg-muted/40 p-2.5 outline-none transition-colors hover:border-brand/40 hover:bg-muted focus-visible:ring-3 focus-visible:ring-ring/50"
+    >
+      <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-foreground text-background">
+        {logo && <RomGlyph id={rom.id} src={logo} className="size-5" />}
+      </span>
+      <span className="flex min-w-0 flex-col">
+        <span className="truncate text-sm font-semibold">{rom.name}</span>
+        <span className="text-xs text-muted-foreground tabular-nums">
+          {formatNumber(rom.deviceCount)} devices
+        </span>
+      </span>
+      <ArrowRight
+        className="ml-auto size-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5"
+        aria-hidden="true"
+      />
+    </Link>
+  );
+}
+
+function Column({ title, children }: { title?: string; children: ReactNode }) {
   return (
     <div className="flex min-w-0 flex-col gap-1">
-      <p className="px-2 pb-1 text-xs font-semibold text-muted-foreground">
-        {title}
-      </p>
+      {title && (
+        <p className="px-2 pb-1 text-xs font-semibold text-muted-foreground">
+          {title}
+        </p>
+      )}
       {children}
     </div>
   );
