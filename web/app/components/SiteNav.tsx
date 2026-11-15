@@ -296,7 +296,7 @@ function DevicesPanel({
   return (
     <div className="flex flex-col gap-3">
       <Shortcuts loading={loading} failed={failed}>
-        <div className="grid grid-cols-2 gap-1.5 lg:grid-cols-4">
+        <div className="grid grid-cols-2 gap-1.5 xl:grid-cols-4">
           <PanelCard
             to="/devices?hardened=1"
             title="Hardened"
