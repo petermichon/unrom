@@ -2,7 +2,13 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import { ArrowRight, Clock, LayoutGrid, Lock, ShieldCheck } from "lucide-react";
 import { Link, NavLink } from "react-router";
 import { fetchBrands, fetchRomSummaries, fetchSummary } from "@/lib/data";
-import { MENU_ROMS, NAV_ITEMS, NAV_PRELOADS, type NavKind } from "@/lib/nav";
+import {
+  MENU_BRANDS,
+  MENU_ROMS,
+  NAV_ITEMS,
+  NAV_PRELOADS,
+  type NavKind,
+} from "@/lib/nav";
 import { PanelCard } from "@/components/PanelCard";
 import { RomGlyph } from "@/components/RomMark";
 import { ROM_BOLD_MARKS, ROM_LOGOS } from "@/components/RomPhone";
@@ -211,7 +217,7 @@ interface PanelData {
   loading: boolean;
   failed: boolean;
   deviceCount: number | null;
-  topBrands: BrandSummary[] | null;
+  cardBrands: { id: string; name: string; withRoms: number | null }[];
   cardRoms: RomSummary[];
 }
 
@@ -235,14 +241,6 @@ function MegaPanel({
   const brands = data?.brands ?? null;
   const roms = data?.roms ?? null;
 
-  const sortedBrands = brands
-    ? [...brands].sort(
-        (a, b) =>
-          b.withRoms - a.withRoms ||
-          b.deviceCount - a.deviceCount ||
-          a.vendorName.localeCompare(b.vendorName),
-      )
-    : null;
   const sortedRoms = roms
     ? roms
         .filter((rom) => rom.status !== "discontinued")
@@ -256,7 +254,12 @@ function MegaPanel({
     loading: !data && !failed,
     failed,
     deviceCount: summary?.deviceCount ?? null,
-    topBrands: sortedBrands?.slice(0, 12) ?? null,
+    cardBrands: MENU_BRANDS.map((entry) => ({
+      id: entry.id,
+      name: entry.name,
+      withRoms:
+        brands?.find((brand) => brand.vendor === entry.id)?.withRoms ?? null,
+    })),
     cardRoms: MENU_ROM_IDS.map((id) =>
       sortedRoms?.find((rom) => rom.id === id),
     ).filter((rom): rom is RomSummary => rom !== undefined),
@@ -342,22 +345,24 @@ function BrandsPanel({
   data: PanelData;
   onNavigate: () => void;
 }) {
-  const { topBrands, loading, failed } = data;
+  const { cardBrands, loading, failed } = data;
 
   return (
     <div className="flex flex-col gap-3">
       <Shortcuts loading={loading} failed={failed}>
-        <div className="grid grid-cols-3 gap-x-6">
-          {topBrands?.map((brand) => (
+        <div className="grid grid-cols-4 gap-x-4">
+          {cardBrands.map((brand) => (
             <MenuRow
-              key={brand.vendor}
-              to={`/devices/${brand.vendor}`}
+              key={brand.id}
+              to={`/devices/${brand.id}`}
               onNavigate={onNavigate}
             >
-              <span className="truncate font-medium">{brand.vendorName}</span>
-              <span className="shrink-0 text-xs text-muted-foreground tabular-nums">
-                {formatNumber(brand.withRoms)} with ROMs
-              </span>
+              <span className="truncate font-medium">{brand.name}</span>
+              {brand.withRoms !== null && (
+                <span className="shrink-0 text-xs text-muted-foreground tabular-nums">
+                  {formatNumber(brand.withRoms)} with ROMs
+                </span>
+              )}
             </MenuRow>
           ))}
         </div>

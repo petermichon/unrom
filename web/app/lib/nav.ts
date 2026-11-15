@@ -58,6 +58,21 @@ export const MENU_ROMS = [
   { id: "lineageos", name: "LineageOS", description: "Community Android" },
 ] as const;
 
+/**
+ * The vendors pinned in the menu, in order. Chosen, not sorted by coverage;
+ * labels are the vendor names as the catalogue spells them.
+ */
+export const MENU_BRANDS = [
+  { id: "google", name: "Google" },
+  { id: "xiaomi", name: "Xiaomi" },
+  { id: "samsung", name: "Samsung" },
+  { id: "oneplus", name: "OnePlus" },
+  { id: "sony", name: "Sony" },
+  { id: "motorola", name: "Motorola" },
+  { id: "nothing", name: "Nothing" },
+  { id: "fairphone", name: "Fairphone" },
+] as const;
+
 // Warm the destination's data on intent. The router's own page-data prefetch
 // does not run client loaders, so this is what makes the click instant.
 export const NAV_PRELOADS: Record<string, () => Promise<unknown>> = {
