@@ -16,6 +16,7 @@ import {
 import { SearchInput } from "@/components/SearchInput";
 import { StatusPill } from "@/components/StatusPill";
 import { Button } from "@/components/ui/button";
+import { formatDate, formatMonth } from "@/lib/dates";
 import { bySortKey, referenceLabel } from "@/lib/sort";
 import type { RomStatus, RomSupport } from "@/lib/types";
 
@@ -203,9 +204,10 @@ export default function DeviceRomsTable({
 }
 
 /**
- * The newest build the source lists. Dates stay unlocalized (`YYYY-MM-DD`) so
- * they read as the build metadata they are, and "Not published" is a fact about
- * the source, never a verdict on the build.
+ * The newest build the source lists, with the patch level its build reports.
+ * The exact `YYYY-MM-DD` stays in `dateTime`/`title`; the visible label is
+ * formatted for reading. "Not published" is a fact about the source, never a
+ * verdict on the build.
  */
 function BuildCell({ build }: { build: RomSupport["build"] }) {
   if (!build?.date && !build?.securityPatch) {
@@ -214,10 +216,17 @@ function BuildCell({ build }: { build: RomSupport["build"] }) {
 
   return (
     <span className="flex flex-col gap-0.5 text-xs tabular-nums">
-      {build.date && <time dateTime={build.date}>{build.date}</time>}
-      <span className="text-muted-foreground">
+      {build.date && (
+        <time dateTime={build.date} title={build.date}>
+          {formatDate(build.date)}
+        </time>
+      )}
+      <span
+        className="text-muted-foreground"
+        title={build.securityPatch ?? undefined}
+      >
         {build.securityPatch
-          ? `patch ${build.securityPatch}`
+          ? `patch ${formatMonth(build.securityPatch)}`
           : "patch not published"}
       </span>
     </span>

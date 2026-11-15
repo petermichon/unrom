@@ -79,8 +79,8 @@ test("device pages show the newest build's date and patch level", async ({
   const row = page.getByRole("row").filter({
     has: page.getByRole("cell", { name: "LineageOS", exact: true }),
   });
-  await expect(row).toContainText(/\d{4}-\d{2}-\d{2}/);
-  await expect(row).toContainText(/patch \d{4}-\d{2}-\d{2}/);
+  await expect(row).toContainText(/\d{1,2} [A-Z][a-z]{2} \d{4}/);
+  await expect(row).toContainText(/patch [A-Z][a-z]{2} \d{4}/);
 });
 
 test("device pages say when a source publishes no build metadata", async ({
