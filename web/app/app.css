@@ -359,6 +359,21 @@
   }
 }
 
+/* A scrollable list gets a bottom fade instead of a visible scrollbar: the
+   last row reads as continued rather than clipped at the rounded corner. */
+.fade-scroll {
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    #000 calc(100% - 1.75rem),
+    transparent
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    #000 calc(100% - 1.75rem),
+    transparent
+  );
+}
+
 /* A small mark that takes the surrounding text colour instead of the panel's,
    for chip-sized uses such as the ROM shortcut in the mega menu. */
 .rom-glyph {

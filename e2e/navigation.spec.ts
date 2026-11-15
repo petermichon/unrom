@@ -124,25 +124,6 @@ test("the ROMs menu pins GrapheneOS in its own chip", async ({ page }) => {
   ]);
 });
 
-test("switching triggers keeps the panel the same height", async ({ page }) => {
-  await page.goto("/");
-  await page.waitForLoadState("networkidle");
-
-  const nav = page.getByRole("navigation", { name: "Main" });
-  const panel = page.locator("#mega-menu > div > div");
-  const heightOf = async (name: string) => {
-    await nav.getByRole("link", { name, exact: true }).hover();
-    await expect(panel).toBeVisible();
-    const box = await panel.boundingBox();
-    return box?.height ?? 0;
-  };
-
-  const devices = await heightOf("Devices");
-  const roms = await heightOf("ROMs");
-  // A shrinking card can slide out from under the pointer and close the menu.
-  expect(roms).toBe(devices);
-});
-
 test("each trigger opens its own panel", async ({ page }) => {
   await page.goto("/");
   await page.waitForLoadState("networkidle");
@@ -158,9 +139,7 @@ test("each trigger opens its own panel", async ({ page }) => {
   await expect(
     menu.getByRole("link", { name: /Relock supported/ }),
   ).toHaveAttribute("href", "/devices?relock=supported");
-  await expect(
-    menu.getByRole("link", { name: "All devices", exact: true }),
-  ).toBeVisible();
+  await expect(menu.locator('a[href="/devices"]')).toBeVisible();
 
   await show("Brands");
   await expect(menu.getByText("Top brands by ROM coverage")).toBeVisible();
@@ -459,27 +438,36 @@ test("the brands filter narrows the list", async ({ page }) => {
   await expect(page.getByRole("link", { name: /Xiaomi/ })).toHaveCount(0);
 });
 
-test("mobile shows sections in the utility menu", async ({ page }) => {
+test("the mobile menu is a sheet with the directory shortcuts", async ({
+  page,
+}) => {
   await proxyApi(page);
 
   await page.setViewportSize({ width: 390, height: 800 });
   await page.goto("/");
 
   // The header is a single row on mobile, so the section links live in the
-  // menu rather than a second navigation row.
+  // sheet rather than a second navigation row.
   await expect(page.getByRole("navigation", { name: "Main" })).toBeHidden();
 
-  const menu = page.getByRole("button", { name: "Open menu" });
-  await menu.click();
+  const trigger = page.getByRole("button", { name: "Open menu" });
+  await trigger.click();
+  const sheet = page.getByRole("dialog", { name: "Menu" });
+  await expect(sheet).toBeVisible();
+  await expect(sheet.locator('a[href="/devices"]')).toBeVisible();
   await expect(
-    page.getByRole("menuitem", { name: "Dataset overview" }),
+    sheet.locator('a[href="/devices?relock=supported"]'),
   ).toBeVisible();
+  await expect(sheet.locator('a[href="/roms/grapheneos"]')).toBeVisible();
 
-  const devices = page.getByRole("menuitem", { name: "Devices" });
-  await expect(devices).toBeVisible();
-  await devices.click();
-  await expect(page).toHaveURL(/\/devices$/);
-  await expect(
-    page.getByRole("heading", { name: "Devices", level: 1, exact: true }),
-  ).toBeVisible();
+  // Escape closes it and hands focus back to the trigger.
+  await page.keyboard.press("Escape");
+  await expect(sheet).toHaveCount(0);
+  await expect(trigger).toBeFocused();
+
+  // A navigation from the sheet closes it too.
+  await trigger.click();
+  await sheet.locator('a[href="/brands"]').click();
+  await expect(page).toHaveURL(/\/brands$/);
+  await expect(sheet).toHaveCount(0);
 });

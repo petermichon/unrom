@@ -10,6 +10,7 @@ import {
 } from "@/components/ui/command";
 import { SEARCH_PLACEHOLDER, tokenize } from "@/lib/search";
 import { useSearch } from "@/lib/use-search";
+import { useScrollFade } from "@/lib/use-scroll-fade";
 import type { Suggestions } from "@/components/CommandPalette";
 
 interface Props {
@@ -48,6 +49,7 @@ export default function CommandPaletteDialog({
 }: Props) {
   const [query, setQuery] = useState(initialQuery);
   const { data, loading, error } = useSearch(query);
+  const { ref: listRef, more: listHasMore } = useScrollFade<HTMLDivElement>();
   const terms = tokenize(query);
   const navigate = useNavigate();
 
@@ -125,7 +127,12 @@ export default function CommandPaletteDialog({
               : null}
         </div>
         <div className="relative min-h-0 flex-1">
-          <CommandList className="h-full max-h-none overscroll-contain">
+          <CommandList
+          ref={listRef}
+          className={`h-full max-h-none overscroll-contain ${
+            listHasMore ? "fade-scroll" : ""
+          }`}
+        >
             {!error && terms.length === 0 && suggestions?.devices.length ? (
               <CommandGroup heading="Top devices">
                 {suggestions.devices.map((device) => (

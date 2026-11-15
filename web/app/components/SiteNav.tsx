@@ -1,29 +1,18 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { ArrowRight, Lock } from "lucide-react";
+import { ArrowRight, LayoutGrid, Lock } from "lucide-react";
 import { Link, NavLink } from "react-router";
-import {
-  fetchBrands,
-  fetchDevicesPage,
-  fetchRomSummaries,
-  fetchSummary,
-} from "@/lib/data";
-import { deviceName } from "@/lib/devices";
-import { NAV_ITEMS, NAV_PRELOADS, type NavKind } from "@/lib/nav";
+import { fetchBrands, fetchRomSummaries, fetchSummary } from "@/lib/data";
+import { MENU_ROMS, NAV_ITEMS, NAV_PRELOADS, type NavKind } from "@/lib/nav";
+import { PanelCard } from "@/components/PanelCard";
 import { RomGlyph } from "@/components/RomMark";
 import { ROM_LOGOS } from "@/components/RomPhone";
 import { cn, formatNumber } from "@/lib/utils";
-import type {
-  BrandSummary,
-  BrowseDevice,
-  RomSummary,
-  Summary,
-} from "@/lib/types";
+import type { BrandSummary, RomSummary, Summary } from "@/lib/types";
 
 interface MenuData {
   summary: Summary;
   brands: BrandSummary[];
   roms: RomSummary[];
-  devices: BrowseDevice[];
 }
 
 /**
@@ -85,34 +74,9 @@ export default function SiteNav() {
   useEffect(() => {
     if (!active || menu || failed) return;
     let cancelled = false;
-    Promise.all([
-      fetchSummary(),
-      fetchBrands(),
-      fetchRomSummaries(),
-      fetchDevicesPage({ sort: "roms", limit: 50, offset: 0 })
-        .then((page) => {
-          const seenGroups = new Set<string>();
-          const seenNames = new Set<string>();
-          return page.devices
-            .filter((device) => {
-              const group = (
-                device.group.length ? device.group : [device.codename]
-              )
-                .slice()
-                .sort()
-                .join("/");
-              const name = deviceName(device).toLowerCase();
-              if (seenGroups.has(group) || seenNames.has(name)) return false;
-              seenGroups.add(group);
-              seenNames.add(name);
-              return true;
-            })
-            .slice(0, 12);
-        })
-        .catch(() => [] as BrowseDevice[]),
-    ])
-      .then(([summary, brands, roms, devices]) => {
-        if (!cancelled) setMenu({ summary, brands, roms, devices });
+    Promise.all([fetchSummary(), fetchBrands(), fetchRomSummaries()])
+      .then(([summary, brands, roms]) => {
+        if (!cancelled) setMenu({ summary, brands, roms });
       })
       .catch(() => {
         if (!cancelled) setFailed(true);
@@ -246,19 +210,16 @@ export default function SiteNav() {
 interface PanelData {
   loading: boolean;
   failed: boolean;
-  topDevices: BrowseDevice[] | null;
+  deviceCount: number | null;
   topBrands: BrandSummary[] | null;
   topRoms: RomSummary[] | null;
   featuredRom: RomSummary | null;
 }
 
-// Pinned to the top of the ROM shortcut in its own chip. Deliberately chosen,
-// not a ranking by device count; the list under it is curated the same way.
-const FEATURED_ROM = "grapheneos";
-
-// The shortcut list under the chip, in this order. Chosen rather than sorted by
-// device count, so the menu is a curated way in, not a leaderboard.
-const SHORTCUT_ROMS = ["calyxos", "iode", "eos", "lineageos"];
+// Pinned to the top of the ROM shortcut in its own chip; the rest follow in the
+// curated order, so the menu is a way in, not a leaderboard.
+const MENU_ROM_IDS: string[] = MENU_ROMS.map((rom) => rom.id);
+const [FEATURED_ROM, ...SHORTCUT_ROMS] = MENU_ROM_IDS;
 
 /** Each trigger gets its own section, with the other directories one rail away. */
 function MegaPanel({
@@ -275,7 +236,6 @@ function MegaPanel({
   const summary = data?.summary ?? null;
   const brands = data?.brands ?? null;
   const roms = data?.roms ?? null;
-  const devices = data?.devices ?? null;
 
   const sortedBrands = brands
     ? [...brands].sort(
@@ -297,7 +257,7 @@ function MegaPanel({
   const panel: PanelData = {
     loading: !data && !failed,
     failed,
-    topDevices: devices?.length ? devices : (summary?.topDevices ?? null),
+    deviceCount: summary?.deviceCount ?? null,
     topBrands: sortedBrands?.slice(0, 12) ?? null,
     topRoms:
       sortedRoms
@@ -310,9 +270,7 @@ function MegaPanel({
 
   return (
     <div className="max-h-[calc(100dvh-5rem)] overflow-y-auto rounded-2xl border border-border bg-card p-5 shadow-xl sm:p-6">
-      {/* One height for every panel: a shorter column must not resize the card
-          under the pointer while switching triggers. */}
-      <div className="grid min-h-72 grid-cols-[minmax(0,1fr)_18rem] gap-10">
+      <div className="grid grid-cols-[minmax(0,1fr)_18rem] gap-10">
         {active === "devices" && (
           <DevicesPanel data={panel} onNavigate={onNavigate} />
         )}
@@ -334,7 +292,7 @@ function DevicesPanel({
   data: PanelData;
   onNavigate: () => void;
 }) {
-  const { topDevices, loading, failed } = data;
+  const { deviceCount, loading, failed } = data;
 
   return (
     <>
@@ -347,26 +305,18 @@ function DevicesPanel({
             icon={<Lock className="size-5" />}
             onNavigate={onNavigate}
           />
-          <div className="grid grid-cols-2 gap-x-6">
-            {topDevices?.slice(0, 12).map((device) => (
-              <MenuRow
-                key={`${device.vendor}/${device.codename}`}
-                to={`/devices/${device.vendor}/${device.codename}`}
-                onNavigate={onNavigate}
-              >
-                <span className="truncate font-medium">
-                  {deviceName(device)}
-                </span>
-                <span className="shrink-0 text-xs text-muted-foreground tabular-nums">
-                  {formatNumber(device.roms.length)} ROMs
-                </span>
-              </MenuRow>
-            ))}
-          </div>
+          <PanelCard
+            to="/devices"
+            title="All devices"
+            subtitle={
+              deviceCount === null
+                ? "Search by name or codename"
+                : `${formatNumber(deviceCount)} devices, searchable`
+            }
+            icon={<LayoutGrid className="size-5" />}
+            onNavigate={onNavigate}
+          />
         </Shortcuts>
-        <FootLink to="/devices" onNavigate={onNavigate}>
-          All devices
-        </FootLink>
       </Column>
       <Rail>
         <RailLink to="/devices?roms=1" onNavigate={onNavigate}>
@@ -468,44 +418,6 @@ function RomsPanel({
         </RailLink>
       </Rail>
     </>
-  );
-}
-
-/**
- * A shortcut that deserves more than a row: an icon tile, a sentence of
- * context and the same hover language as the rest of the panel.
- */
-function PanelCard({
-  to,
-  title,
-  subtitle,
-  icon,
-  onNavigate,
-}: {
-  to: string;
-  title: string;
-  subtitle: string;
-  icon: ReactNode;
-  onNavigate: () => void;
-}) {
-  return (
-    <Link
-      to={to}
-      onClick={onNavigate}
-      className="group mb-1.5 flex min-w-0 items-center gap-3 rounded-xl border border-border bg-muted/40 p-2.5 outline-none transition-colors hover:border-brand/40 hover:bg-muted focus-visible:ring-3 focus-visible:ring-ring/50"
-    >
-      <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-foreground text-background">
-        {icon}
-      </span>
-      <span className="flex min-w-0 flex-col">
-        <span className="truncate text-sm font-semibold">{title}</span>
-        <span className="text-xs text-muted-foreground">{subtitle}</span>
-      </span>
-      <ArrowRight
-        className="ml-auto size-4 shrink-0 text-muted-foreground transition-transform group-hover:translate-x-0.5"
-        aria-hidden="true"
-      />
-    </Link>
   );
 }
 

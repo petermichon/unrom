@@ -56,6 +56,18 @@ test("404 page has no accessibility violations", async ({ page }) => {
   expect(violations).toEqual([]);
 });
 
+test("the mobile menu sheet has no accessibility violations", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 800 });
+  await page.goto("/");
+  await page.getByRole("button", { name: "Open menu" }).click();
+  await expect(page.getByRole("dialog", { name: "Menu" })).toBeVisible();
+
+  const { violations } = await analyze(page);
+  expect(violations).toEqual([]);
+});
+
 test("the search dialog has no accessibility violations", async ({ page }) => {
   await page.goto("/");
   await page.waitForLoadState("networkidle");
