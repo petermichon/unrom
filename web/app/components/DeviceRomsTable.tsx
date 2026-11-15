@@ -95,12 +95,16 @@ export default function DeviceRomsTable({
         ),
       },
       {
-        accessorKey: "build",
+        id: "build",
+        accessorFn: (row) => row.build?.date ?? undefined,
         meta: { title: "Build" },
         header: ({ column }) => (
           <DataTableColumnHeader column={column} title="Build" />
         ),
-        enableSorting: false,
+        // A date is a fact; "not published" is unknown, not the oldest. Keep
+        // the unknown rows last whichever direction the column is sorted.
+        sortUndefined: "last",
+        sortDescFirst: true,
         cell: ({ row }) => <BuildCell build={row.original.build} />,
       },
       {

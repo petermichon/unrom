@@ -94,6 +94,26 @@ test("device pages say when a source publishes no build metadata", async ({
   await expect(row.getByText("Not published", { exact: true })).toBeVisible();
 });
 
+test("the build column sorts newest first, with unknown dates last", async ({
+  page,
+}) => {
+  await page.goto("/devices/xiaomi/peridot");
+
+  const rows = page.locator("tbody tr");
+  const sort = async (direction: "Sort ascending" | "Sort descending") => {
+    await page.getByRole("button", { name: /^Build/ }).click();
+    await page.getByRole("menuitem", { name: direction }).click();
+  };
+
+  await sort("Sort descending");
+  await expect(rows.first()).toContainText(/\d{1,2} [A-Z][a-z]{2} \d{4}/);
+  await expect(rows.last()).toContainText("Not published");
+
+  // Unknown is not "old": it stays last when the order is flipped.
+  await sort("Sort ascending");
+  await expect(rows.last()).toContainText("Not published");
+});
+
 test("brand pages show the vendor bootloader policy", async ({ page }) => {
   await page.goto("/devices/xiaomi");
 
