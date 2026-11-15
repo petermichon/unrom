@@ -128,11 +128,11 @@ export default function CommandPaletteDialog({
         </div>
         <div className="relative min-h-0 flex-1">
           <CommandList
-          ref={listRef}
-          className={`h-full max-h-none overscroll-contain ${
-            listHasMore ? "fade-scroll" : ""
-          }`}
-        >
+            ref={listRef}
+            className={`h-full max-h-none overscroll-contain ${
+              listHasMore ? "fade-scroll" : ""
+            }`}
+          >
             {!error && terms.length === 0 && suggestions?.devices.length ? (
               <CommandGroup heading="Top devices">
                 {suggestions.devices.map((device) => (
