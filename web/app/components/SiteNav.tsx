@@ -1,14 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import {
-  Archive,
-  ArrowRight,
-  BadgeCheck,
-  CalendarClock,
-  Clock,
-  LayoutGrid,
-  Lock,
-  ShieldCheck,
-} from "lucide-react";
+import { ArrowRight, Clock, LayoutGrid, Lock, ShieldCheck } from "lucide-react";
 import { Link, NavLink } from "react-router";
 import { fetchBrands, fetchRomSummaries, fetchSummary } from "@/lib/data";
 import { MENU_ROMS, NAV_ITEMS, NAV_PRELOADS, type NavKind } from "@/lib/nav";
@@ -332,31 +323,6 @@ function DevicesPanel({
         </div>
       </Shortcuts>
 
-      {/* What the data cannot answer yet. Plain text, not controls: there is
-          nothing to click until the facts exist. */}
-      <div className="flex flex-col">
-        <p className="px-2 pb-1 text-xs font-semibold text-muted-foreground">
-          Coming next
-        </p>
-        <div className="grid grid-cols-3 gap-1.5">
-          <PlannedCard
-            title="Official builds"
-            subtitle="Official or unofficial per build"
-            icon={<BadgeCheck className="size-5" />}
-          />
-          <PlannedCard
-            title="Long support"
-            subtitle="Vendor support end dates"
-            icon={<CalendarClock className="size-5" />}
-          />
-          <PlannedCard
-            title="Legacy"
-            subtitle="Follows support end dates"
-            icon={<Archive className="size-5" />}
-          />
-        </div>
-      </div>
-
       <PanelFooter>
         <FootLink to="/devices?roms=1" onNavigate={onNavigate}>
           Devices with ROMs
@@ -482,36 +448,6 @@ function RomCard({
   );
 }
 
-/**
- * A filter that is not buildable yet, drawn as the card it will become but
- * without any interaction: no link, no hover, reduced emphasis.
- */
-function PlannedCard({
-  title,
-  subtitle,
-  icon,
-}: {
-  title: string;
-  subtitle: string;
-  icon: ReactNode;
-}) {
-  return (
-    <div className="flex min-w-0 items-center gap-3 rounded-xl p-2.5 opacity-60">
-      <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-muted text-muted-foreground">
-        {icon}
-      </span>
-      <span className="flex min-w-0 flex-col">
-        <span className="truncate text-sm font-semibold">
-          <span className="sr-only">Planned: </span>
-          {title}
-        </span>
-        <span className="text-xs text-muted-foreground">{subtitle}</span>
-      </span>
-    </div>
-  );
-}
-
-/** The line under a panel: its section-wide link, and the way into the data. */
 function PanelFooter({ children }: { children: ReactNode }) {
   return (
     <div className="mt-1 flex flex-wrap items-center justify-between gap-x-6 gap-y-1 border-t border-border pt-3">

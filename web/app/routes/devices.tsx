@@ -297,6 +297,13 @@ export default function DevicesRoute() {
             {page > 1 && ` · page ${page} of ${pages}`}
           </p>
         </div>
+
+        {/* Filters whose facts the sources do not publish yet, so there is
+            nothing to click: stated as intent, not as a control. */}
+        <p className="text-xs text-muted-foreground">
+          Planned filters: Official builds (official or unofficial per build) ·
+          Long support (vendor end dates) · Legacy (follows those dates)
+        </p>
       </div>
 
       {devices.length === 0 ? (
