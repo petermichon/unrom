@@ -1,31 +1,13 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import {
-  ArrowRight,
-  Clock,
-  Database,
-  LayoutGrid,
-  Lock,
-  Shield,
-} from "lucide-react";
+import { ArrowRight, Database } from "lucide-react";
 import { Link, NavLink } from "react-router";
-import { fetchRomSummaries, fetchSummary } from "@/lib/data";
+import { NAV_ITEMS, NAV_PRELOADS, type NavKind } from "@/lib/nav";
 import {
-  MENU_BRANDS,
-  MENU_ROMS,
-  NAV_ITEMS,
-  NAV_PRELOADS,
-  type NavKind,
-} from "@/lib/nav";
-import { PanelCard } from "@/components/PanelCard";
-import { RomGlyph } from "@/components/RomMark";
-import { ROM_BOLD_MARKS, ROM_LOGOS } from "@/components/RomPhone";
-import { cn, formatNumber } from "@/lib/utils";
-import type { RomSummary, Summary } from "@/lib/types";
-
-interface MenuData {
-  summary: Summary;
-  roms: RomSummary[];
-}
+  BrandMenuCards,
+  DeviceMenuCards,
+  RomMenuCards,
+} from "@/components/MenuCards";
+import { cn } from "@/lib/utils";
 
 /**
  * One header-width panel shared by every section. The trigger opens the whole
@@ -35,8 +17,6 @@ interface MenuData {
  */
 export default function SiteNav() {
   const [active, setActive] = useState<NavKind | null>(null);
-  const [menu, setMenu] = useState<MenuData | null>(null);
-  const [failed, setFailed] = useState(false);
   const navRef = useRef<HTMLElement>(null);
   const linkRefs = useRef<Partial<Record<NavKind, HTMLAnchorElement | null>>>(
     {},
@@ -80,23 +60,6 @@ export default function SiteNav() {
       panelRef.current?.focus();
     }
   }, [active]);
-
-  // Load the shortcuts on the first open. The panel stays mounted while open,
-  // so moving between triggers does not refetch.
-  useEffect(() => {
-    if (!active || menu || failed) return;
-    let cancelled = false;
-    Promise.all([fetchSummary(), fetchRomSummaries()])
-      .then(([summary, roms]) => {
-        if (!cancelled) setMenu({ summary, roms });
-      })
-      .catch(() => {
-        if (!cancelled) setFailed(true);
-      });
-    return () => {
-      cancelled = true;
-    };
-  }, [active, menu, failed]);
 
   const clearClose = () => {
     if (closeTimer.current) window.clearTimeout(closeTimer.current);
@@ -205,12 +168,7 @@ export default function SiteNav() {
               onMouseEnter={clearClose}
               onMouseLeave={scheduleClose}
             >
-              <MegaPanel
-                active={active}
-                data={menu}
-                failed={failed}
-                onNavigate={() => setActive(null)}
-              />
+              <MegaPanel active={active} onNavigate={() => setActive(null)} />
             </div>
           </div>
         </div>
@@ -219,112 +177,27 @@ export default function SiteNav() {
   );
 }
 
-interface PanelData {
-  loading: boolean;
-  failed: boolean;
-  deviceCount: number | null;
-  cardBrands: readonly { id: string; name: string }[];
-  cardRoms: RomSummary[];
-}
-
-// Every curated ROM is a card, in the curated order, so the menu is a way in,
-// not a leaderboard.
-const MENU_ROM_IDS: string[] = MENU_ROMS.map((rom) => rom.id);
-
 /** Each trigger gets its own section, and the data one footer line away. */
 function MegaPanel({
   active,
-  data,
-  failed,
   onNavigate,
 }: {
   active: NavKind;
-  data: MenuData | null;
-  failed: boolean;
   onNavigate: () => void;
 }) {
-  const summary = data?.summary ?? null;
-  const roms = data?.roms ?? null;
-
-  const sortedRoms = roms
-    ? roms
-        .filter((rom) => rom.status !== "discontinued")
-        .sort(
-          (a, b) =>
-            b.deviceCount - a.deviceCount || a.name.localeCompare(b.name),
-        )
-    : null;
-
-  const panel: PanelData = {
-    loading: !data && !failed,
-    failed,
-    deviceCount: summary?.deviceCount ?? null,
-    cardBrands: MENU_BRANDS,
-    cardRoms: MENU_ROM_IDS.map((id) =>
-      sortedRoms?.find((rom) => rom.id === id),
-    ).filter((rom): rom is RomSummary => rom !== undefined),
-  };
-
   return (
     <div className="max-h-[calc(100dvh-5rem)] overflow-y-auto rounded-2xl border border-border bg-card p-5 shadow-xl sm:p-6">
-      {active === "devices" && (
-        <DevicesPanel data={panel} onNavigate={onNavigate} />
-      )}
-      {active === "brands" && (
-        <BrandsPanel data={panel} onNavigate={onNavigate} />
-      )}
-      {active === "roms" && <RomsPanel data={panel} onNavigate={onNavigate} />}
+      {active === "devices" && <DevicesPanel onNavigate={onNavigate} />}
+      {active === "brands" && <BrandsPanel onNavigate={onNavigate} />}
+      {active === "roms" && <RomsPanel onNavigate={onNavigate} />}
     </div>
   );
 }
 
-function DevicesPanel({
-  data,
-  onNavigate,
-}: {
-  data: PanelData;
-  onNavigate: () => void;
-}) {
-  const { deviceCount, loading, failed } = data;
-
+function DevicesPanel({ onNavigate }: { onNavigate: () => void }) {
   return (
     <div className="flex flex-col gap-3">
-      <Shortcuts loading={loading} failed={failed}>
-        <div className="grid grid-cols-4 gap-1.5">
-          <PanelCard
-            to="/devices?hardened=1"
-            title="Hardened"
-            subtitle="Patches, relock and mitigations"
-            icon={<Shield className="size-5" />}
-            onNavigate={onNavigate}
-          />
-          <PanelCard
-            to="/devices?relock=supported"
-            title="Relock supported"
-            subtitle="A documented relock path"
-            icon={<Lock className="size-5" />}
-            onNavigate={onNavigate}
-          />
-          <PanelCard
-            to="/devices?updated=90"
-            title="Recently updated"
-            subtitle="Newest build in the last 90 days"
-            icon={<Clock className="size-5" />}
-            onNavigate={onNavigate}
-          />
-          <PanelCard
-            to="/devices"
-            title="All devices"
-            subtitle={
-              deviceCount === null
-                ? "Search by name or codename"
-                : `${formatNumber(deviceCount)} devices, searchable`
-            }
-            icon={<LayoutGrid className="size-5" />}
-            onNavigate={onNavigate}
-          />
-        </div>
-      </Shortcuts>
+      <DeviceMenuCards onNavigate={onNavigate} className="grid-cols-4" />
 
       <PanelFooter>
         <FootLink to="/devices?roms=1" onNavigate={onNavigate}>
@@ -343,29 +216,10 @@ function DevicesPanel({
   );
 }
 
-function BrandsPanel({
-  data,
-  onNavigate,
-}: {
-  data: PanelData;
-  onNavigate: () => void;
-}) {
-  const { cardBrands } = data;
-
+function BrandsPanel({ onNavigate }: { onNavigate: () => void }) {
   return (
     <div className="flex flex-col gap-3">
-      {/* The list is curated, not read from the data, so it is right before
-          the request returns and stays right if it fails. */}
-      <div className="grid grid-cols-4 gap-1.5">
-        {cardBrands.map((brand) => (
-          <PanelCard
-            key={brand.id}
-            to={`/devices/${brand.id}`}
-            title={brand.name}
-            onNavigate={onNavigate}
-          />
-        ))}
-      </div>
+      <BrandMenuCards onNavigate={onNavigate} className="grid-cols-4" />
 
       <PanelFooter>
         <FootLink to="/brands" onNavigate={onNavigate}>
@@ -384,31 +238,10 @@ function BrandsPanel({
   );
 }
 
-function RomsPanel({
-  data,
-  onNavigate,
-}: {
-  data: PanelData;
-  onNavigate: () => void;
-}) {
-  const { cardRoms, loading, failed } = data;
-
+function RomsPanel({ onNavigate }: { onNavigate: () => void }) {
   return (
     <div className="flex flex-col gap-3">
-      <Shortcuts loading={loading} failed={failed}>
-        <div className="grid grid-cols-3 gap-1.5">
-          {cardRoms.map((rom) => (
-            <RomCard key={rom.id} rom={rom} onNavigate={onNavigate} />
-          ))}
-          <PanelCard
-            to="/roms"
-            title="All ROMs"
-            subtitle="Full catalogue"
-            icon={<LayoutGrid className="size-5" />}
-            onNavigate={onNavigate}
-          />
-        </div>
-      </Shortcuts>
+      <RomMenuCards onNavigate={onNavigate} className="grid-cols-3" />
 
       <PanelFooter>
         <FootLink
@@ -424,72 +257,12 @@ function RomsPanel({
   );
 }
 
-function RomCard({
-  rom,
-  onNavigate,
-}: {
-  rom: RomSummary;
-  onNavigate: () => void;
-}) {
-  const logo = ROM_BOLD_MARKS[rom.id] ?? ROM_LOGOS[rom.id];
-
-  return (
-    <PanelCard
-      to={`/roms/${rom.id}`}
-      title={rom.name}
-      subtitle={
-        MENU_ROMS.find((entry) => entry.id === rom.id)?.description ?? ""
-      }
-      icon={
-        logo ? (
-          <RomGlyph
-            id={rom.id}
-            src={logo}
-            className={
-              rom.id === "lineageos"
-                ? "h-3 w-7"
-                : rom.id === "grapheneos"
-                  ? "size-6"
-                  : "size-5"
-            }
-          />
-        ) : (
-          <span className="text-sm font-bold">{rom.name.charAt(0)}</span>
-        )
-      }
-      onNavigate={onNavigate}
-    />
-  );
-}
-
 function PanelFooter({ children }: { children: ReactNode }) {
   return (
     <div className="mt-1 flex flex-wrap items-center justify-between gap-x-6 gap-y-1 border-t border-border pt-3">
       {children}
     </div>
   );
-}
-
-function Shortcuts({
-  loading,
-  failed,
-  children,
-}: {
-  loading: boolean;
-  failed: boolean;
-  children: ReactNode;
-}) {
-  if (failed) {
-    return (
-      <p className="px-2 py-1 text-xs text-muted-foreground">
-        Shortcuts unavailable.
-      </p>
-    );
-  }
-  if (loading) {
-    return <p className="px-2 py-1 text-xs text-muted-foreground">Loading…</p>;
-  }
-  return <div className="flex flex-col">{children}</div>;
 }
 
 function FootLink({

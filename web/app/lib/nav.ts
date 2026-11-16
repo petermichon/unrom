@@ -12,35 +12,19 @@ export interface NavItem {
   to: string;
   label: string;
   kind: NavKind;
-  /** One line of context, used by the mobile sheet. */
-  description?: string;
 }
 
 export const NAV_ITEMS: NavItem[] = [
-  {
-    to: "/devices",
-    label: "Devices",
-    kind: "devices",
-    description: "Every tracked device and the ROMs it can run",
-  },
-  {
-    to: "/brands",
-    label: "Brands",
-    kind: "brands",
-    description: "Vendors ordered by ROM coverage",
-  },
-  {
-    to: "/roms",
-    label: "Custom ROMs",
-    kind: "roms",
-    description: "Projects and the devices they support",
-  },
+  { to: "/devices", label: "Devices", kind: "devices" },
+  { to: "/brands", label: "Brands", kind: "brands" },
+  { to: "/roms", label: "Custom ROMs", kind: "roms" },
 ];
 
 /**
  * The ROMs pinned in the menu, in order: the featured chip first, then the
  * shortcut list. Chosen, not sorted by device count; labels are the catalogue
- * names for these ids.
+ * names for these ids. The menu is static, so a project that is renamed or
+ * discontinued is corrected here, not hidden by a fetch.
  */
 export const MENU_ROMS = [
   {
@@ -60,7 +44,8 @@ export const MENU_ROMS = [
 
 /**
  * The vendors pinned in the menu, in order. Chosen, not sorted by coverage;
- * labels are the vendor names as the catalogue spells them.
+ * labels are the vendor names as the catalogue spells them. Static like the
+ * ROM pins, so the menu stays usable without the API.
  */
 export const MENU_BRANDS = [
   { id: "google", name: "Google" },

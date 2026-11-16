@@ -1,10 +1,11 @@
-import { Clock, Lock, Menu, Shield, X, LayoutGrid } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useEffect, useState, type ReactNode } from "react";
 import { Link, useLocation, useNavigation } from "react-router";
-import { MENU_BRANDS, MENU_ROMS } from "@/lib/nav";
-import { PanelCard } from "@/components/PanelCard";
-import { RomGlyph } from "@/components/RomMark";
-import { ROM_BOLD_MARKS, ROM_LOGOS } from "@/components/RomPhone";
+import {
+  BrandMenuCards,
+  DeviceMenuCards,
+  RomMenuCards,
+} from "@/components/MenuCards";
 import CommandPalette, { SearchProvider } from "@/components/CommandPalette";
 import SiteNav from "@/components/SiteNav";
 import { GitHubIcon } from "@/components/GitHubIcon";
@@ -90,34 +91,7 @@ function MobileMenu() {
           }`}
         >
           <SheetSection label="Devices">
-            <PanelCard
-              to="/devices?hardened=1"
-              title="Hardened"
-              subtitle="Patches, relock and mitigations"
-              icon={<Shield className="size-5" />}
-              onNavigate={close}
-            />
-            <PanelCard
-              to="/devices?relock=supported"
-              title="Relock supported"
-              subtitle="A documented relock path"
-              icon={<Lock className="size-5" />}
-              onNavigate={close}
-            />
-            <PanelCard
-              to="/devices?updated=90"
-              title="Recently updated"
-              subtitle="Newest build in the last 90 days"
-              icon={<Clock className="size-5" />}
-              onNavigate={close}
-            />
-            <PanelCard
-              to="/devices"
-              title="All devices"
-              subtitle="Search by name or codename"
-              icon={<LayoutGrid className="size-5" />}
-              onNavigate={close}
-            />
+            <DeviceMenuCards onNavigate={close} />
             <SheetLink
               to="/devices?roms=1"
               description="Only devices that have build data"
@@ -128,60 +102,14 @@ function MobileMenu() {
           </SheetSection>
 
           <SheetSection label="Brands">
-            <div className="grid grid-cols-2 gap-1.5">
-              {MENU_BRANDS.map((brand) => (
-                <PanelCard
-                  key={brand.id}
-                  to={`/devices/${brand.id}`}
-                  title={brand.name}
-                  onNavigate={close}
-                />
-              ))}
-            </div>
+            <BrandMenuCards onNavigate={close} className="grid-cols-2" />
             <SheetLink to="/brands" onClick={close}>
               All brands
             </SheetLink>
           </SheetSection>
 
           <SheetSection label="Custom ROMs">
-            {MENU_ROMS.map((rom) => {
-              const logo = ROM_BOLD_MARKS[rom.id] ?? ROM_LOGOS[rom.id];
-              return (
-                <PanelCard
-                  key={rom.id}
-                  to={`/roms/${rom.id}`}
-                  title={rom.name}
-                  subtitle={rom.description}
-                  icon={
-                    logo ? (
-                      <RomGlyph
-                        id={rom.id}
-                        src={logo}
-                        className={
-                          rom.id === "lineageos"
-                            ? "h-3 w-7"
-                            : rom.id === "grapheneos"
-                              ? "size-6"
-                              : "size-5"
-                        }
-                      />
-                    ) : (
-                      <span className="text-sm font-bold">
-                        {rom.name.charAt(0)}
-                      </span>
-                    )
-                  }
-                  onNavigate={close}
-                />
-              );
-            })}
-            <PanelCard
-              to="/roms"
-              title="All ROMs"
-              subtitle="Full catalogue"
-              icon={<LayoutGrid className="size-5" />}
-              onNavigate={close}
-            />
+            <RomMenuCards onNavigate={close} />
           </SheetSection>
 
           <SheetLink to="/data" onClick={close}>

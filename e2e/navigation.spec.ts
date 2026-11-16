@@ -149,15 +149,13 @@ test("each trigger opens its own panel", async ({ page }) => {
 
   await show("Custom ROMs");
   await expect(menu.getByRole("link", { name: /GrapheneOS/ })).toBeVisible();
-  await expect(
-    menu.getByRole("link", { name: "All ROMs", exact: true }),
-  ).toBeVisible();
+  await expect(menu.getByRole("link", { name: /All ROMs/ })).toBeVisible();
 
-  // Data is a page, not a section, so it lives in the footer rather than as a
-  // header trigger. Every panel links to it from its own footer line.
-  await expect(
-    nav.getByRole("link", { name: "Data & API", exact: true }),
-  ).toHaveCount(0);
+  // Data is a page, not a section, so it lives in the panel footer rather than
+  // in the trigger row. The panel is inside the same nav landmark, so scope the
+  // query to the triggers.
+  const triggers = nav.locator(":scope > div:not(#mega-menu)");
+  await expect(triggers.locator('a[href="/data"]')).toHaveCount(0);
   await expect(
     page
       .getByRole("navigation", { name: "Project" })
@@ -166,6 +164,36 @@ test("each trigger opens its own panel", async ({ page }) => {
   await expect(
     menu.getByRole("link", { name: "Data & API", exact: true }),
   ).toBeVisible();
+});
+
+test("the mega menu opens when the API is unreachable", async ({ page }) => {
+  // The menu is curated navigation, not a data view. Every client-side API
+  // call fails here, so shortcuts that waited on a fetch would disappear.
+  await page.route("**/api/**", (route) => route.abort());
+
+  await page.goto("/");
+  await page.waitForLoadState("networkidle");
+
+  const nav = page.getByRole("navigation", { name: "Main" });
+  const menu = page.locator("#mega-menu");
+  const show = async (name: string) => {
+    await expect(async () => {
+      await nav.getByRole("link", { name, exact: true }).hover();
+      await expect(menu).toBeVisible({ timeout: 1_000 });
+    }).toPass({ timeout: 10_000 });
+  };
+
+  await show("Devices");
+  await expect(menu.getByRole("link", { name: /Hardened/ })).toBeVisible();
+
+  await show("Brands");
+  await expect(
+    menu.getByRole("link", { name: "Google", exact: true }),
+  ).toBeVisible();
+
+  await show("Custom ROMs");
+  await expect(menu.getByRole("link", { name: /GrapheneOS/ })).toBeVisible();
+  await expect(menu.getByRole("link", { name: /All ROMs/ })).toBeVisible();
 });
 
 test("mega menu opens from the keyboard and closes with Escape", async ({
@@ -199,12 +227,19 @@ test("the mega menu paints above page content", async ({ page }) => {
     await expect(page.locator("#mega-menu")).toBeVisible({ timeout: 1_000 });
   }).toPass({ timeout: 10_000 });
 
-  const top = await page.evaluate(() => {
-    const element = document.elementFromPoint(500, 250);
-    return element?.closest("#mega-menu")
-      ? "menu"
-      : (element?.tagName ?? "none");
-  });
+  const box = await page.locator("#mega-menu").boundingBox();
+  expect(box).not.toBeNull();
+  // A point inside the panel that also sits over the page behind it: the
+  // header is 64px tall, so the panel's top edge overlaps the first content.
+  const top = await page.evaluate(
+    (y) => {
+      const element = document.elementFromPoint(500, y);
+      return element?.closest("#mega-menu")
+        ? "menu"
+        : (element?.tagName ?? "none");
+    },
+    (box as { y: number }).y + 10,
+  );
   expect(top).toBe("menu");
 });
 
@@ -431,7 +466,7 @@ test("the hardened filter opens the documented devices", async ({ page }) => {
   await page.goto("/devices?hardened=1");
   await page.waitForLoadState("networkidle");
 
-  const toggle = page.getByRole("link", { name: "Hardened" });
+  const toggle = page.getByRole("link", { name: "Hardened", exact: true });
   await expect(toggle).toHaveAttribute("aria-current", "page");
   await expect(
     page.getByRole("link", { name: /Pixel 9/ }).first(),
