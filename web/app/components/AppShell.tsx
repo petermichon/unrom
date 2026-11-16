@@ -123,15 +123,16 @@ function MobileMenu() {
           </SheetSection>
 
           <SheetSection label="Brands">
-            {MENU_BRANDS.map((brand) => (
-              <SheetLink
-                key={brand.id}
-                to={`/devices/${brand.id}`}
-                onClick={close}
-              >
-                {brand.name}
-              </SheetLink>
-            ))}
+            <div className="grid grid-cols-2 gap-1.5">
+              {MENU_BRANDS.map((brand) => (
+                <PanelCard
+                  key={brand.id}
+                  to={`/devices/${brand.id}`}
+                  title={brand.name}
+                  onNavigate={close}
+                />
+              ))}
+            </div>
             <SheetLink to="/brands" onClick={close}>
               All brands
             </SheetLink>

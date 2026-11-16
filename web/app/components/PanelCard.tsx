@@ -5,7 +5,8 @@ import { cn } from "@/lib/utils";
 /**
  * A shortcut that deserves more than a row: an icon tile, a sentence of
  * context and the same hover language as the panels. Shared by the desktop
- * mega menu and the mobile sheet so the two cannot drift.
+ * mega menu and the mobile sheet so the two cannot drift. The icon and the
+ * subtitle are optional, for lists whose items carry only a name.
  */
 export function PanelCard({
   to,
@@ -17,8 +18,8 @@ export function PanelCard({
 }: {
   to: string;
   title: string;
-  subtitle: string;
-  icon: ReactNode;
+  subtitle?: string;
+  icon?: ReactNode;
   onNavigate: () => void;
   className?: string;
 }) {
@@ -31,12 +32,16 @@ export function PanelCard({
         className,
       )}
     >
-      <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-accent text-accent-foreground">
-        {icon}
-      </span>
+      {icon && (
+        <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-accent text-accent-foreground">
+          {icon}
+        </span>
+      )}
       <span className="flex min-w-0 flex-col">
         <span className="truncate text-sm font-semibold">{title}</span>
-        <span className="text-xs text-muted-foreground">{subtitle}</span>
+        {subtitle && (
+          <span className="text-xs text-muted-foreground">{subtitle}</span>
+        )}
       </span>
     </Link>
   );

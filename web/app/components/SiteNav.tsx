@@ -290,7 +290,7 @@ function DevicesPanel({
   return (
     <div className="flex flex-col gap-3">
       <Shortcuts loading={loading} failed={failed}>
-        <div className="grid grid-cols-2 gap-1.5 xl:grid-cols-4">
+        <div className="grid grid-cols-4 gap-1.5">
           <PanelCard
             to="/devices?hardened=1"
             title="Hardened"
@@ -356,22 +356,21 @@ function BrandsPanel({
     <div className="flex flex-col gap-3">
       {/* The list is curated, not read from the data, so it is right before
           the request returns and stays right if it fails. */}
-      <div className="grid grid-cols-3 gap-x-4">
+      <div className="grid grid-cols-4 gap-1.5">
         {cardBrands.map((brand) => (
-          <MenuRow
+          <PanelCard
             key={brand.id}
             to={`/devices/${brand.id}`}
+            title={brand.name}
             onNavigate={onNavigate}
-          >
-            <span className="truncate font-medium">{brand.name}</span>
-          </MenuRow>
+          />
         ))}
-        <FootLink to="/brands" onNavigate={onNavigate} className="self-center">
-          All brands
-        </FootLink>
       </div>
 
       <PanelFooter>
+        <FootLink to="/brands" onNavigate={onNavigate}>
+          All brands
+        </FootLink>
         <FootLink
           to="/data"
           onNavigate={onNavigate}
@@ -491,26 +490,6 @@ function Shortcuts({
     return <p className="px-2 py-1 text-xs text-muted-foreground">Loading…</p>;
   }
   return <div className="flex flex-col">{children}</div>;
-}
-
-function MenuRow({
-  to,
-  onNavigate,
-  children,
-}: {
-  to: string;
-  onNavigate: () => void;
-  children: ReactNode;
-}) {
-  return (
-    <Link
-      to={to}
-      onClick={onNavigate}
-      className="inline-flex w-fit max-w-full items-center gap-3 rounded-lg px-2 py-1.5 text-sm outline-none hover:bg-muted focus-visible:ring-3 focus-visible:ring-ring/50"
-    >
-      {children}
-    </Link>
-  );
 }
 
 function FootLink({
