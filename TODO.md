@@ -30,9 +30,9 @@
       instead of listing seven groups. "Hardened" is not a facet until it is
       defined as checkable predicates — patch level, relock, support end — not a
       label.
-- [ ] Finish the devices page's property groups. Hardened, relock supported
-      and recently updated are already filters with URL state, and the menu
-      links to a few presets. Long support (vendor support end five years out),
+- [ ] Add the remaining device groups. Hardened, relock supported, recently
+      updated and with ROMs have dedicated pages under `/device-groups`, and
+      the menu links to them. Long support (vendor support end five years out),
       legacy (support ended) and official builds stay blocked by the data item
       above. Each group is a property of the device–ROM pair, so a pair may
       appear in several.
