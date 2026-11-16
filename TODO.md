@@ -4,8 +4,10 @@
       currently have none. Tiers 1, 2 and the recent half of Tier 3 are
       implemented (56 of 277 ROMs now have data; Project 404 was skipped as
       stale). Next are the 2021-and-older rosters in `ROM_TRIAGE.md`.
-- [ ] Put table state (sort, filter, hidden columns, page) in the URL so a view
-      can be shared and survives back/forward navigation.
+- [ ] Put the rest of table state in the URL. Filters and page already are
+      (`q`, `roms`, `relock`, `updated`, `hardened`, `page`); sort is hardcoded
+      to `roms` and column visibility is not persisted, so a sorted or trimmed
+      view cannot be shared and does not survive back/forward navigation.
 - [ ] Record bootloader-unlock status per device. The demand is logged in
       `USER_EVIDENCE.md` (2026-11-12 and 2026-11-14): two independent
       recommendations name the site and then point readers to bootloader-unlock
@@ -21,21 +23,19 @@
       each with a source: relock / verified-boot support (a different question
       from whether the vendor allows unlocking), vendor support end date (which
       also gives EOL / legacy), and official versus unofficial build (see the
-      item below). Only one facet is buildable from today's data: a mapping's
-      newest build date, from four sources. Collect the rest before `/devices`
+      item below). Relock is recorded per pair from project statements, and the
+      newest build date and patch level from five sources. Collect the support
+      end date and the build kind before `/devices`
       offers these as filters; then the devices menu can link to a few presets
       instead of listing seven groups. "Hardened" is not a facet until it is
       defined as checkable predicates — patch level, relock, support end — not a
       label.
-- [ ] Give the devices page its property groups, and the menu a way into them.
-      Each group is a property of the device–ROM pair, so a pair may appear in
-      several: hardened (patch level + relock + support end, once defined),
-      verified boot (relock supported), long support (vendor support end five
-      years out), official builds, recently updated (newest build date within
-      30 days), legacy (vendor support ended), all devices. The page owns the
-      filters and their URL state; the menu shows a few presets rather than all
-      seven, which do not fit a hover panel. Blocked by the data item above for
-      every group but "recently updated".
+- [ ] Finish the devices page's property groups. Hardened, relock supported
+      and recently updated are already filters with URL state, and the menu
+      links to a few presets. Long support (vendor support end five years out),
+      legacy (support ended) and official builds stay blocked by the data item
+      above. Each group is a property of the device–ROM pair, so a pair may
+      appear in several.
 - [ ] Record a source URL per ROM, and later whether its builds are
       reproducible. The dataset says which devices a ROM supports but not where
       its code lives or whether anyone can verify the binaries, so "can I check
@@ -52,7 +52,7 @@
 - [ ] Record build freshness per ROM: last build date and last commit, with a
       stale flag (6/12/24 months). `status` only says whether a project ships
       anything at all; AOSPA is "active" on an Android 14 build. The build date
-      and the patch level that build reports are now on the mapping for the four
+      and the patch level that build reports are now on the mapping for the five
       sources that publish them (784 of 3702 mappings have a date, 484 a patch
       level). Still open: the last commit per project, the stale flag, and the
       sources whose snapshots already carry timestamps but are not wired up
