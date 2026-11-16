@@ -10,7 +10,7 @@ import SiteNav from "@/components/SiteNav";
 import { GitHubIcon } from "@/components/GitHubIcon";
 import { ModeToggle } from "@/components/mode-toggle";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import {
   Dialog,
   DialogClose,
@@ -18,7 +18,12 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { TooltipProvider } from "@/components/ui/tooltip";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { useScrollFade } from "@/lib/use-scroll-fade";
 
 interface Props {
@@ -297,22 +302,25 @@ export default function AppShell({ updatedAt, updatedAtIso, children }: Props) {
               <div className="ml-auto flex items-center gap-2">
                 <CommandPalette />
                 <div className="hidden items-center gap-2 md:flex">
-                  <Button
-                    variant="outline"
-                    size="icon"
-                    nativeButton={false}
-                    aria-label="GitHub repository"
-                    render={
-                      <a
-                        href={GITHUB_URL}
-                        target="_blank"
-                        rel="noopener"
-                        aria-label="GitHub repository"
-                      />
-                    }
-                  >
-                    <GitHubIcon className="size-4" />
-                  </Button>
+                  <Tooltip>
+                    <TooltipTrigger
+                      render={
+                        <a
+                          href={GITHUB_URL}
+                          target="_blank"
+                          rel="noopener"
+                          aria-label="GitHub repository"
+                          className={buttonVariants({
+                            variant: "outline",
+                            size: "icon",
+                          })}
+                        >
+                          <GitHubIcon className="size-4" />
+                        </a>
+                      }
+                    />
+                    <TooltipContent>GitHub</TooltipContent>
+                  </Tooltip>
                 </div>
                 <ModeToggle />
                 <MobileMenu />
