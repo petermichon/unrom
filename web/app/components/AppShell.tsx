@@ -103,9 +103,6 @@ function MobileMenu() {
 
           <SheetSection label="Brands">
             <BrandMenuCards onNavigate={close} className="grid-cols-2" />
-            <SheetLink to="/brands" onClick={close}>
-              All brands
-            </SheetLink>
           </SheetSection>
 
           <SheetSection label="Custom ROMs">

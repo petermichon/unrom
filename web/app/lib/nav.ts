@@ -44,18 +44,19 @@ export const MENU_ROMS = [
 
 /**
  * The vendors pinned in the menu, in order. Chosen, not sorted by coverage;
- * labels are the vendor names as the catalogue spells them. Static like the
- * ROM pins, so the menu stays usable without the API.
+ * labels are the vendor names as the catalogue spells them, and each
+ * description names the lineup rather than making a claim. Static like the ROM
+ * pins, so the menu stays usable without the API.
  */
 export const MENU_BRANDS = [
-  { id: "google", name: "Google" },
-  { id: "xiaomi", name: "Xiaomi" },
-  { id: "samsung", name: "Samsung" },
-  { id: "oneplus", name: "OnePlus" },
-  { id: "sony", name: "Sony" },
-  { id: "motorola", name: "Motorola" },
-  { id: "nothing", name: "Nothing" },
-  { id: "fairphone", name: "Fairphone" },
+  { id: "google", name: "Google", description: "Pixel phones and tablets" },
+  { id: "xiaomi", name: "Xiaomi", description: "Xiaomi, Redmi and POCO" },
+  { id: "samsung", name: "Samsung", description: "Galaxy phones and tablets" },
+  { id: "oneplus", name: "OnePlus", description: "OnePlus phones and tablets" },
+  { id: "sony", name: "Sony", description: "Xperia phones" },
+  { id: "motorola", name: "Motorola", description: "Moto G, Edge and Razr" },
+  { id: "nothing", name: "Nothing", description: "Nothing and CMF phones" },
+  { id: "fairphone", name: "Fairphone", description: "User-repairable phones" },
 ] as const;
 
 // Warm the destination's data on intent. The router's own page-data prefetch

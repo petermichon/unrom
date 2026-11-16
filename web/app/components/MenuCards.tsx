@@ -1,4 +1,4 @@
-import { Clock, LayoutGrid, Lock, Shield } from "lucide-react";
+import { Clock, LayoutGridCircles, Lock, Shield } from "lucide-react";
 
 import { MENU_BRANDS, MENU_ROMS } from "@/lib/nav";
 import { PanelCard } from "@/components/PanelCard";
@@ -8,11 +8,20 @@ import { cn } from "@/lib/utils";
 
 interface MenuCardsProps {
   onNavigate: () => void;
-  /** Grid columns for the shell; the cards themselves are identical. */
+  /** Grid columns for the shell; the items themselves are identical. */
   className?: string;
 }
 
 const GRID = "grid gap-1.5";
+
+/** The fallback mark for a vendor or project with no published glyph. */
+function Monogram({ name }: { name: string }) {
+  return (
+    <span aria-hidden="true" className="text-sm font-bold">
+      {name.charAt(0)}
+    </span>
+  );
+}
 
 /**
  * The menu is curated navigation, not a data view: it renders before any
@@ -48,7 +57,7 @@ export function DeviceMenuCards({ onNavigate, className }: MenuCardsProps) {
         to="/devices"
         title="All devices"
         subtitle="Search by name or codename"
-        icon={<LayoutGrid className="size-5" />}
+        icon={<LayoutGridCircles className="size-5" />}
         onNavigate={onNavigate}
       />
     </div>
@@ -63,9 +72,19 @@ export function BrandMenuCards({ onNavigate, className }: MenuCardsProps) {
           key={brand.id}
           to={`/devices/${brand.id}`}
           title={brand.name}
+          subtitle={brand.description}
+          icon={<Monogram name={brand.name} />}
           onNavigate={onNavigate}
         />
       ))}
+      <PanelCard
+        to="/brands"
+        title="All brands"
+        subtitle="Full catalogue"
+        icon={<LayoutGridCircles className="size-5" />}
+        onNavigate={onNavigate}
+        className="col-span-2 lg:col-span-1"
+      />
     </div>
   );
 }
@@ -95,7 +114,7 @@ export function RomMenuCards({ onNavigate, className }: MenuCardsProps) {
                   }
                 />
               ) : (
-                <span className="text-sm font-bold">{rom.name.charAt(0)}</span>
+                <Monogram name={rom.name} />
               )
             }
             onNavigate={onNavigate}
@@ -106,7 +125,7 @@ export function RomMenuCards({ onNavigate, className }: MenuCardsProps) {
         to="/roms"
         title="All ROMs"
         subtitle="Full catalogue"
-        icon={<LayoutGrid className="size-5" />}
+        icon={<LayoutGridCircles className="size-5" />}
         onNavigate={onNavigate}
       />
     </div>

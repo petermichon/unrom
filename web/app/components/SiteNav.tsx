@@ -219,12 +219,9 @@ function DevicesPanel({ onNavigate }: { onNavigate: () => void }) {
 function BrandsPanel({ onNavigate }: { onNavigate: () => void }) {
   return (
     <div className="flex flex-col gap-3">
-      <BrandMenuCards onNavigate={onNavigate} className="grid-cols-4" />
+      <BrandMenuCards onNavigate={onNavigate} className="grid-cols-3" />
 
       <PanelFooter>
-        <FootLink to="/brands" onNavigate={onNavigate}>
-          All brands
-        </FootLink>
         <FootLink
           to="/data"
           onNavigate={onNavigate}

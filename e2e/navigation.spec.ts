@@ -142,10 +142,7 @@ test("each trigger opens its own panel", async ({ page }) => {
   await expect(menu.locator('a[href="/devices"]')).toBeVisible();
 
   await show("Brands");
-  await expect(menu.locator('a[href="/brands"]')).toBeVisible();
-  await expect(
-    menu.getByRole("link", { name: "All brands", exact: true }),
-  ).toBeVisible();
+  await expect(menu.getByRole("link", { name: /All brands/ })).toBeVisible();
 
   await show("Custom ROMs");
   await expect(menu.getByRole("link", { name: /GrapheneOS/ })).toBeVisible();
@@ -187,9 +184,7 @@ test("the mega menu opens when the API is unreachable", async ({ page }) => {
   await expect(menu.getByRole("link", { name: /Hardened/ })).toBeVisible();
 
   await show("Brands");
-  await expect(
-    menu.getByRole("link", { name: "Google", exact: true }),
-  ).toBeVisible();
+  await expect(menu.getByRole("link", { name: /Google/ })).toBeVisible();
 
   await show("Custom ROMs");
   await expect(menu.getByRole("link", { name: /GrapheneOS/ })).toBeVisible();
