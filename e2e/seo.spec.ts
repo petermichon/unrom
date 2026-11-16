@@ -5,6 +5,8 @@ const PAGES = [
   "/data",
   "/legal",
   "/brands",
+  "/device-groups",
+  "/device-groups/hardened",
   "/devices",
   "/devices/xiaomi",
   "/roms",
@@ -45,6 +47,18 @@ test("indexable pages expose complete metadata", async ({ page }) => {
       ).not.toThrow();
     }
   }
+});
+
+test("device group searches canonicalise to the group", async ({ page }) => {
+  await page.goto("/device-groups/hardened?q=pixel");
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
+    "content",
+    "noindex",
+  );
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+    "href",
+    "https://unrom.com/device-groups/hardened",
+  );
 });
 
 test("data page exposes downloads and API", async ({ page }) => {
@@ -159,6 +173,10 @@ test("section sitemaps list only canonical, indexable pages", async ({
   expect(pageXml).toContain("<loc>https://unrom.com/data</loc>");
   expect(pageXml).toContain("<loc>https://unrom.com/legal</loc>");
   expect(pageXml).toContain("<loc>https://unrom.com/brands</loc>");
+  expect(pageXml).toContain("<loc>https://unrom.com/device-groups</loc>");
+  expect(pageXml).toContain(
+    "<loc>https://unrom.com/device-groups/hardened</loc>",
+  );
   expect(pageXml).toContain("<loc>https://unrom.com/devices</loc>");
   expect(pageXml).not.toContain("<loc>https://unrom.com/devices?letter=");
   expect(pageXml).not.toContain("<loc>https://unrom.com/registry</loc>");
@@ -186,6 +204,12 @@ test("index titles name the search intent", async ({ page }) => {
 
   await page.goto("/brands");
   await expect(page).toHaveTitle("Android brands and ROM coverage | unrom");
+
+  await page.goto("/device-groups");
+  await expect(page).toHaveTitle("Android device groups | unrom");
+
+  await page.goto("/device-groups/hardened");
+  await expect(page).toHaveTitle("Hardened Android devices | unrom");
 
   await page.goto("/roms");
   await expect(page).toHaveTitle(

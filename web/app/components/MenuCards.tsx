@@ -46,28 +46,28 @@ export function DeviceMenuCards({ onNavigate, className }: MenuCardsProps) {
   return (
     <div className={cn(GRID, className)}>
       <PanelCard
-        to="/devices?hardened=1"
+        to="/device-groups/hardened"
         title="Hardened"
         subtitle="Patches, relock and mitigations"
         icon={<Shield className="size-5" strokeWidth={DEVICE_ICON_STROKE} />}
         onNavigate={onNavigate}
       />
       <PanelCard
-        to="/devices?relock=supported"
+        to="/device-groups/relock-supported"
         title="Relock supported"
         subtitle="A documented relock path"
         icon={<Lock className="size-5" strokeWidth={DEVICE_ICON_STROKE} />}
         onNavigate={onNavigate}
       />
       <PanelCard
-        to="/devices?updated=90"
+        to="/device-groups/recently-updated"
         title="Recently updated"
         subtitle="Newest build in the last 90 days"
         icon={<Clock className="size-5" strokeWidth={DEVICE_ICON_STROKE} />}
         onNavigate={onNavigate}
       />
       <PanelCard
-        to="/devices?roms=1"
+        to="/device-groups/with-roms"
         title="Devices with ROMs"
         subtitle="Only devices with ROM data"
         icon={

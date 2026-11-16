@@ -286,6 +286,13 @@ export default function DevicesRoute() {
               active={relock}
               label="Relock supported"
             />
+            <Link
+              to="/device-groups"
+              prefetch="intent"
+              className="text-sm font-semibold text-foreground hover:underline"
+            >
+              Device groups
+            </Link>
           </div>
 
           <p

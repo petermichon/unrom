@@ -5,6 +5,8 @@ export default [
   route("data", "routes/data.tsx"),
   route("legal", "routes/legal.tsx"),
   route("brands", "routes/brands.tsx"),
+  route("device-groups", "routes/device-groups.tsx"),
+  route("device-groups/:group", "routes/device-group.tsx"),
   route("devices", "routes/devices.tsx"),
   route("devices/letter/:letter", "routes/device-letter.tsx"),
   route("devices/:vendor", "routes/vendor.tsx"),

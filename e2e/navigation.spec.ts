@@ -138,10 +138,10 @@ test("each trigger opens its own panel", async ({ page }) => {
   await show("Devices");
   await expect(
     menu.getByRole("link", { name: /Relock supported/ }),
-  ).toHaveAttribute("href", "/devices?relock=supported");
+  ).toHaveAttribute("href", "/device-groups/relock-supported");
   await expect(
     menu.getByRole("link", { name: /Devices with ROMs/ }),
-  ).toHaveAttribute("href", "/devices?roms=1");
+  ).toHaveAttribute("href", "/device-groups/with-roms");
   // The trigger is the full index; the panel holds the property filters.
   await expect(menu.locator('a[href="/devices"]')).toBeHidden();
 
@@ -294,6 +294,20 @@ test("the standalone server proxies /api for client navigation", async ({
   await expect(
     page.locator("code", { hasText: "/api/devices/letters" }),
   ).toBeVisible();
+});
+
+test("device group pages list their property", async ({ page }) => {
+  await page.goto("/device-groups");
+  await expect(
+    page.getByRole("heading", { name: "Device groups", level: 1 }),
+  ).toBeVisible();
+  await expect(page.locator('a[href="/device-groups/hardened"]')).toBeVisible();
+
+  await page.goto("/device-groups/hardened");
+  await expect(
+    page.getByRole("heading", { name: "Hardened devices", level: 1 }),
+  ).toBeVisible();
+  await expect(page.locator("a.device-row").first()).toBeVisible();
 });
 
 test("a brand page lists its devices", async ({ page }) => {
@@ -525,7 +539,7 @@ test("the mobile menu is a sheet with the directory shortcuts", async ({
   await expect(sheet).toBeVisible();
   await expect(sheet.locator('a[href="/devices"]')).toBeVisible();
   await expect(
-    sheet.locator('a[href="/devices?relock=supported"]'),
+    sheet.locator('a[href="/device-groups/relock-supported"]'),
   ).toBeVisible();
   await expect(sheet.locator('a[href="/roms/grapheneos"]')).toBeVisible();
 

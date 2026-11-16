@@ -16,6 +16,8 @@ function analyze(page: Page) {
 const PATHS = [
   "/",
   "/brands",
+  "/device-groups",
+  "/device-groups/hardened",
   "/devices",
   "/devices/xiaomi",
   "/roms",
