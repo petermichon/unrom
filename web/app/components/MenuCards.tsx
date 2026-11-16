@@ -1,4 +1,10 @@
-import { Clock, LayoutGridCircles, Lock, Shield } from "lucide-react";
+import {
+  Clock,
+  LayoutGridCircles,
+  Lock,
+  Shield,
+  Smartphone,
+} from "lucide-react";
 
 import { MENU_BRANDS, MENU_ROMS } from "@/lib/nav";
 import { PanelCard } from "@/components/PanelCard";
@@ -61,6 +67,17 @@ export function DeviceMenuCards({ onNavigate, className }: MenuCardsProps) {
         onNavigate={onNavigate}
       />
       <PanelCard
+        to="/devices?roms=1"
+        title="Devices with ROMs"
+        subtitle="Only devices with ROM data"
+        icon={
+          <Smartphone className="size-5" strokeWidth={DEVICE_ICON_STROKE} />
+        }
+        onNavigate={onNavigate}
+      />
+      {/* The desktop trigger is the full index, so this card exists only for
+          the phone sheet, which has no trigger. */}
+      <PanelCard
         to="/devices"
         title="All devices"
         subtitle="Search by name or codename"
@@ -71,6 +88,7 @@ export function DeviceMenuCards({ onNavigate, className }: MenuCardsProps) {
           />
         }
         onNavigate={onNavigate}
+        className="lg:hidden"
       />
     </div>
   );

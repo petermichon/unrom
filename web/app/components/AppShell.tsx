@@ -92,13 +92,6 @@ function MobileMenu() {
         >
           <SheetSection label="Devices">
             <DeviceMenuCards onNavigate={close} />
-            <SheetLink
-              to="/devices?roms=1"
-              description="Only devices that have build data"
-              onClick={close}
-            >
-              Devices with ROMs
-            </SheetLink>
           </SheetSection>
 
           <SheetSection label="Brands">

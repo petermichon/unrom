@@ -139,7 +139,11 @@ test("each trigger opens its own panel", async ({ page }) => {
   await expect(
     menu.getByRole("link", { name: /Relock supported/ }),
   ).toHaveAttribute("href", "/devices?relock=supported");
-  await expect(menu.locator('a[href="/devices"]')).toBeVisible();
+  await expect(
+    menu.getByRole("link", { name: /Devices with ROMs/ }),
+  ).toHaveAttribute("href", "/devices?roms=1");
+  // The trigger is the full index; the panel holds the property filters.
+  await expect(menu.locator('a[href="/devices"]')).toBeHidden();
 
   await show("Brands");
   await expect(menu.getByRole("link", { name: /All brands/ })).toBeVisible();
