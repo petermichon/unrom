@@ -39,7 +39,11 @@ const ODBL_URL = "https://opendatacommons.org/licenses/odbl/1-0/";
 function MobileMenu() {
   const [open, setOpen] = useState(false);
   const close = () => setOpen(false);
-  const { ref: listRef, more: listHasMore } = useScrollFade<HTMLDivElement>();
+  const {
+    ref: listRef,
+    more: listHasMore,
+    above: listHasAbove,
+  } = useScrollFade<HTMLDivElement>();
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -88,32 +92,24 @@ function MobileMenu() {
           ref={listRef}
           className={`no-scrollbar flex min-h-0 flex-1 flex-col gap-3 overflow-y-auto overscroll-contain px-3 pb-4 ${
             listHasMore ? "fade-scroll" : ""
-          }`}
+          } ${listHasAbove ? "fade-scroll-top" : ""}`}
         >
           <SheetSection label="Devices">
             <DeviceMenuCards onNavigate={close} />
           </SheetSection>
 
           <SheetSection label="Brands">
-            <BrandMenuCards onNavigate={close} className="grid-cols-2" />
+            <BrandMenuCards onNavigate={close} />
           </SheetSection>
 
           <SheetSection label="Custom ROMs">
             <RomMenuCards onNavigate={close} />
           </SheetSection>
-
-          <SheetLink to="/data" onClick={close}>
-            Data & API
-          </SheetLink>
         </div>
       </DialogContent>
     </Dialog>
   );
 }
-
-// Same row language as the mega panel, with a 44px touch target kept.
-const SHEET_ROW =
-  "flex min-h-11 items-center rounded-lg px-2 py-1.5 text-sm font-medium outline-none transition-colors hover:bg-muted focus-visible:ring-3 focus-visible:ring-ring/50";
 
 function SheetSection({
   label,
@@ -129,38 +125,6 @@ function SheetSection({
       </p>
       {children}
     </div>
-  );
-}
-
-function SheetLink({
-  to,
-  description,
-  trailing,
-  onClick,
-  children,
-}: {
-  to: string;
-  description?: string;
-  trailing?: string;
-  onClick: () => void;
-  children: ReactNode;
-}) {
-  return (
-    <Link to={to} onClick={onClick} className={SHEET_ROW}>
-      <span className="flex min-w-0 flex-1 flex-col">
-        <span>{children}</span>
-        {description && (
-          <span className="text-xs font-normal text-muted-foreground">
-            {description}
-          </span>
-        )}
-      </span>
-      {trailing && (
-        <span className="shrink-0 text-xs text-muted-foreground tabular-nums">
-          {trailing}
-        </span>
-      )}
-    </Link>
   );
 }
 

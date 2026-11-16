@@ -52,7 +52,11 @@ export default function CommandPaletteDialog({
 }: Props) {
   const [query, setQuery] = useState(initialQuery);
   const { data, loading, error } = useSearch(query);
-  const { ref: listRef, more: listHasMore } = useScrollFade<HTMLDivElement>();
+  const {
+    ref: listRef,
+    more: listHasMore,
+    above: listHasAbove,
+  } = useScrollFade<HTMLDivElement>();
   const terms = tokenize(query);
   const navigate = useNavigate();
 
@@ -147,7 +151,7 @@ export default function CommandPaletteDialog({
             ref={listRef}
             className={`h-full max-h-none overscroll-contain ${
               listHasMore ? "fade-scroll" : ""
-            }`}
+            } ${listHasAbove ? "fade-scroll-top" : ""}`}
           >
             {!error && terms.length === 0 && suggestions?.devices.length ? (
               <CommandGroup heading="Top devices">

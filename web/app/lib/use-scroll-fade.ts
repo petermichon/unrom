@@ -1,14 +1,16 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 
 /**
- * Tracks whether a scroll container can still scroll down, so a bottom fade
- * can stand in for a scrollbar: the list looks clipped rather than ended.
+ * Tracks whether a scroll container can still scroll down (`more`) and has
+ * scrolled away from the start (`above`), so fades can stand in for a
+ * scrollbar: the list looks clipped rather than ended.
  *
  * Uses a callback ref because the element (a dialog) mounts after the hook's
  * owner renders; an effect with `[]` would only ever see `null`.
  */
 export function useScrollFade<T extends HTMLElement>() {
   const [more, setMore] = useState(false);
+  const [above, setAbove] = useState(false);
   const cleanup = useRef<(() => void) | null>(null);
 
   const ref = useCallback((element: T | null) => {
@@ -20,6 +22,7 @@ export function useScrollFade<T extends HTMLElement>() {
       const remaining =
         element.scrollHeight - element.clientHeight - element.scrollTop;
       setMore(remaining > 4);
+      setAbove(element.scrollTop > 4);
     };
 
     update();
@@ -36,5 +39,5 @@ export function useScrollFade<T extends HTMLElement>() {
 
   useEffect(() => () => cleanup.current?.(), []);
 
-  return { ref, more };
+  return { ref, more, above };
 }

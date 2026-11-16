@@ -113,7 +113,6 @@ export function BrandMenuCards({ onNavigate, className }: MenuCardsProps) {
         subtitle="Full catalogue"
         icon={<LayoutGridCircles className="size-5" />}
         onNavigate={onNavigate}
-        className="col-span-2 lg:col-span-1"
       />
     </div>
   );

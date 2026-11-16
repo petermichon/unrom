@@ -384,6 +384,30 @@
   );
 }
 
+/* The top counterpart appears only after scrolling, so the first row is not
+   faded under the fixed header when the list opens. */
+.fade-scroll-top {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 1.75rem);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 1.75rem);
+}
+
+.fade-scroll-top.fade-scroll {
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    #000 1.75rem,
+    #000 calc(100% - 1.75rem),
+    transparent
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    #000 1.75rem,
+    #000 calc(100% - 1.75rem),
+    transparent
+  );
+}
+
 /* A small mark that takes the surrounding text colour instead of the panel's,
    for chip-sized uses such as the ROM shortcut in the mega menu. */
 .rom-glyph {
