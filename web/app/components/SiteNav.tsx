@@ -301,7 +301,7 @@ function DevicesPanel({
           <PanelCard
             to="/devices?relock=supported"
             title="Relock supported"
-            subtitle="Devices with a documented relock path"
+            subtitle="A documented relock path"
             icon={<Lock className="size-5" />}
             onNavigate={onNavigate}
           />
