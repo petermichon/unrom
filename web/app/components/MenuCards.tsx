@@ -14,6 +14,13 @@ interface MenuCardsProps {
 
 const GRID = "grid gap-1.5";
 
+/**
+ * Lucide draws on a 24-unit grid, so at 20px its 2-unit stroke lands at about
+ * 1.67px. A small bump matches the solid brand and ROM marks; 2.5 starts to
+ * clog the grid-circles glyph.
+ */
+const DEVICE_ICON_STROKE = 2.25;
+
 /** The fallback mark for a vendor or project with no published glyph. */
 function Monogram({ name }: { name: string }) {
   return (
@@ -36,28 +43,33 @@ export function DeviceMenuCards({ onNavigate, className }: MenuCardsProps) {
         to="/devices?hardened=1"
         title="Hardened"
         subtitle="Patches, relock and mitigations"
-        icon={<Shield className="size-5" />}
+        icon={<Shield className="size-5" strokeWidth={DEVICE_ICON_STROKE} />}
         onNavigate={onNavigate}
       />
       <PanelCard
         to="/devices?relock=supported"
         title="Relock supported"
         subtitle="A documented relock path"
-        icon={<Lock className="size-5" />}
+        icon={<Lock className="size-5" strokeWidth={DEVICE_ICON_STROKE} />}
         onNavigate={onNavigate}
       />
       <PanelCard
         to="/devices?updated=90"
         title="Recently updated"
         subtitle="Newest build in the last 90 days"
-        icon={<Clock className="size-5" />}
+        icon={<Clock className="size-5" strokeWidth={DEVICE_ICON_STROKE} />}
         onNavigate={onNavigate}
       />
       <PanelCard
         to="/devices"
         title="All devices"
         subtitle="Search by name or codename"
-        icon={<LayoutGridCircles className="size-5" />}
+        icon={
+          <LayoutGridCircles
+            className="size-5"
+            strokeWidth={DEVICE_ICON_STROKE}
+          />
+        }
         onNavigate={onNavigate}
       />
     </div>
