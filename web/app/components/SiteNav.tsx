@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { ArrowRight, Database } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { Link, NavLink } from "react-router";
 import { NAV_ITEMS, NAV_PRELOADS, type NavKind } from "@/lib/nav";
 import {
@@ -12,8 +12,7 @@ import { cn } from "@/lib/utils";
 /**
  * One header-width panel shared by every section. The trigger opens the whole
  * directory, so Brands and Data are one hover away instead of living in a
- * submenu; the list in each column is the shortcut, the footer link is the
- * full index.
+ * submenu; the cards are the shortcuts and the All X card is the full index.
  */
 export default function SiteNav() {
   const [active, setActive] = useState<NavKind | null>(null);
@@ -203,55 +202,17 @@ function DevicesPanel({ onNavigate }: { onNavigate: () => void }) {
         <FootLink to="/devices?roms=1" onNavigate={onNavigate}>
           Devices with ROMs
         </FootLink>
-        <FootLink
-          to="/data"
-          onNavigate={onNavigate}
-          className="ml-auto"
-          icon={<Database className="size-3.5" aria-hidden="true" />}
-        >
-          Data & API
-        </FootLink>
       </PanelFooter>
     </div>
   );
 }
 
 function BrandsPanel({ onNavigate }: { onNavigate: () => void }) {
-  return (
-    <div className="flex flex-col gap-3">
-      <BrandMenuCards onNavigate={onNavigate} className="grid-cols-3" />
-
-      <PanelFooter>
-        <FootLink
-          to="/data"
-          onNavigate={onNavigate}
-          className="ml-auto"
-          icon={<Database className="size-3.5" aria-hidden="true" />}
-        >
-          Data & API
-        </FootLink>
-      </PanelFooter>
-    </div>
-  );
+  return <BrandMenuCards onNavigate={onNavigate} className="grid-cols-3" />;
 }
 
 function RomsPanel({ onNavigate }: { onNavigate: () => void }) {
-  return (
-    <div className="flex flex-col gap-3">
-      <RomMenuCards onNavigate={onNavigate} className="grid-cols-3" />
-
-      <PanelFooter>
-        <FootLink
-          to="/data"
-          onNavigate={onNavigate}
-          className="ml-auto"
-          icon={<Database className="size-3.5" aria-hidden="true" />}
-        >
-          Data & API
-        </FootLink>
-      </PanelFooter>
-    </div>
-  );
+  return <RomMenuCards onNavigate={onNavigate} className="grid-cols-3" />;
 }
 
 function PanelFooter({ children }: { children: ReactNode }) {

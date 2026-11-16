@@ -148,18 +148,15 @@ test("each trigger opens its own panel", async ({ page }) => {
   await expect(menu.getByRole("link", { name: /GrapheneOS/ })).toBeVisible();
   await expect(menu.getByRole("link", { name: /All ROMs/ })).toBeVisible();
 
-  // Data is a page, not a section, so it lives in the panel footer rather than
-  // in the trigger row. The panel is inside the same nav landmark, so scope the
-  // query to the triggers.
+  // Data is a page, not a section, so it lives in the site footer: not in the
+  // trigger row and not in the open panel.
   const triggers = nav.locator(":scope > div:not(#mega-menu)");
   await expect(triggers.locator('a[href="/data"]')).toHaveCount(0);
+  await expect(menu.locator('a[href="/data"]')).toHaveCount(0);
   await expect(
     page
       .getByRole("navigation", { name: "Project" })
       .getByRole("link", { name: "Data & API", exact: true }),
-  ).toBeVisible();
-  await expect(
-    menu.getByRole("link", { name: "Data & API", exact: true }),
   ).toBeVisible();
 });
 
