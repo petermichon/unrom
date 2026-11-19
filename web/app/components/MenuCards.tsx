@@ -8,8 +8,7 @@ import {
 
 import { MENU_BRANDS, MENU_ROMS } from "@/lib/nav";
 import { PanelCard } from "@/components/PanelCard";
-import { RomGlyph } from "@/components/RomMark";
-import { ROM_BOLD_MARKS, ROM_LOGOS } from "@/components/RomPhone";
+import { hasRomMenuMark, RomMenuMark } from "@/components/RomMenuMark";
 import { cn } from "@/lib/utils";
 
 interface MenuCardsProps {
@@ -121,35 +120,22 @@ export function BrandMenuCards({ onNavigate, className }: MenuCardsProps) {
 export function RomMenuCards({ onNavigate, className }: MenuCardsProps) {
   return (
     <div className={cn(GRID, className)}>
-      {MENU_ROMS.map((rom) => {
-        const logo = ROM_BOLD_MARKS[rom.id] ?? ROM_LOGOS[rom.id];
-        return (
-          <PanelCard
-            key={rom.id}
-            to={`/roms/${rom.id}`}
-            title={rom.name}
-            subtitle={rom.description}
-            icon={
-              logo ? (
-                <RomGlyph
-                  id={rom.id}
-                  src={logo}
-                  className={
-                    rom.id === "lineageos"
-                      ? "h-3 w-7"
-                      : rom.id === "grapheneos"
-                        ? "size-6"
-                        : "size-5"
-                  }
-                />
-              ) : (
-                <Monogram name={rom.name} />
-              )
-            }
-            onNavigate={onNavigate}
-          />
-        );
-      })}
+      {MENU_ROMS.map((rom) => (
+        <PanelCard
+          key={rom.id}
+          to={`/roms/${rom.id}`}
+          title={rom.name}
+          subtitle={rom.description}
+          icon={
+            hasRomMenuMark(rom.id) ? (
+              <RomMenuMark id={rom.id} />
+            ) : (
+              <Monogram name={rom.name} />
+            )
+          }
+          onNavigate={onNavigate}
+        />
+      ))}
       <PanelCard
         to="/roms"
         title="All ROMs"
