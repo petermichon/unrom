@@ -1,0 +1,587 @@
+{
+  "provider": "parallel",
+  "captured_at": "2026-11-06T14:42:59Z",
+  "top_n": 8,
+  "queries": [
+    {
+      "id": "q1",
+      "query": "custom android rom",
+      "intent": "head",
+      "results": [
+        {
+          "url": "https://www.androidinfotech.com/android-custom-roms/",
+          "title": "150+ Android Custom ROMs A→Z - Android Infotech (September 2026)",
+          "published_date": "2025-07-15",
+          "snippet": "* Skip to primary navigation\n* Skip to primary sidebar\nAndroid Infotech\nAndroid Infotech\nAndroid Tips, News, Guide, Tutorials\nYou are here: Home / Knowledge / 150+ Android Custom ROMs A→Z\n\n150+ Android Custom ROMs A→Z (September 2026)\n\nJune 23, 2026 by Selva Ganesh ✔ Fact Verified 96 Comments\n150+ Android Custom ROMs A→Z – Explore the ultimate, alphabetically curated list of Custom Android ROMs , complete with GitHub repositories and official websites where available. Ideal for enthusiasts, developers, and those seeking AOSP-based alternatives. All Available Custom Android ROMs A→Z\n\nA\n\n* Advanced XPerience OS | GitHub\n* AICP | GitHub – Web\n* AIM ROM | GitHub – Web\n* AlphaDroid | GitHub\n* AlrightOS | GitHub – Web\n* AmogOS Rom | GitHub\n* AmyROM | GitHub – Web\n* Ancient OS | GitHub – Web\n* AOKP | GitHub – Web\n* AOSDP | GitHub\n* AOSiP | GitHub – Web\n* AOSP Extended | GitHub – Web\n* Aquari OS"
+        },
+        {
+          "url": "https://github.com/linex-17/cusrom",
+          "title": "GitHub - linex-17/cusrom: Basic guide to build custom android ROM for smartphones · GitHub",
+          "published_date": null,
+          "snippet": "linex-17/cusrom\n\n* Page: GitHub repository\n* URL: https://github.com/linex-17/cusrom\n* Description: Basic guide to build custom android ROM for smartphones - linex-17/cusrom\n* Default branch: main\n* Created: 2024-08-28T11:59:57.000Z\n* Commits: 9\n\nTop-level files\n\n* README.md\n\nREADME.md\n\nBuilding a Custom ROM\n\nThis is a very beginner friendly tutorial on how to build a Custom ROM for your device. For this tutorial, I will be taking LineageOS ROM for OnePlus 7 as an example.\n\nRequirements\n\n* Your device with USB cable (OnePlus 7 for example)\n* x64-bit powerful Linux PC or server. Recommended: 4 cores - 8 threads or more with 64GB RAM, (32GB RAM + 16GB or more ZRAM should also do the job). Just 32GB RAM for Android 14 onwards will lead to the build being killed. Storage of 350GB or more. I will be considering Ubuntu to build in this tutorial.\n* Unlimited internet connection\n\n...\n\nSeveral pa"
+        },
+        {
+          "url": "https://aioilight.space/android-tips/about-custom-rom",
+          "title": "カスタム ROM とは？ どんなことができるの？ - Android にちょっと詳しくなれるページ",
+          "published_date": "2025-04-01",
+          "snippet": "* AioiLight.space\n* Android にちょっと詳しくなれるページ\n\nカスタム ROM とは？ どんなことができるの？\n\n初版: 2025/4/1\n更新: 2025/4/1\nカスタム ROM ( ろむ ) とはなにか、説明します。\nカスタム ROM は、広義的な意味においては、標準的な Android からカスタムされた OS のことです。「ROM」というのは、OS のイメージファイルのことを意味します。\nしかし、この意味で「カスタム ROM」という言葉を使用している人はほぼ居ません。より一般的な意味では、「 ブートローダーアンロックして、ユーザーがインストールできる OS 」のことを指します。\nまた、はじめからデバイスにインストールされている ROM のことを「 Stock ( すとっく ) ROM」と呼びます。\n広義的な意味での「カスタム ROM」\nより広い定義での「カスタム ROM」では、例えば Samsung Galaxy に搭載されている One UI や、OPPO 製スマホに搭載されている ColorOS なども、カスタム ROM ということになります。\n繰り返しになりますが、この意味でカスタム ROM という言葉を使用されていることはほぼありません。代わりに、カスタム ROM と区別するために「 カスタムスキン 」「 カスタム UI 」という言葉が使われます。\nこれ以降は、ユーザーがインストールできる OS としてのカスタム ROM の説明になります。\n\nなぜカスタム ROM が生まれたのか\n\nもちろん、Android を搭載したデバイスは、ROM (ソフトウェア) を自由に書き換えることができたため、カスタムされた ROM というものが自然に生まれます。しかし、それだけではありません。カスタム ROM が発展してきた背景には、メーカーの Android デバイスに対する姿勢も関係していました。\nメーカーが出荷したデバイスには、ユーザーが使用することのない不要なアプリケーションがあらかじめインストール (プリインストール) されていること"
+        },
+        {
+          "url": "https://www.androidauthority.com/build-custom-android-rom-720453/",
+          "title": "How to build your own custom Android ROM in 2025 - Android Authority",
+          "published_date": "2025-03-19",
+          "snippet": "How to build your own custom Android ROM in 2025\n\nSince all the Android source code is available, you can build your own firmware. Here's how to build your own Android ROM.\nBy Gary Sims\n•\n\n...\n\nexpectations in check. If you have absolutely no coding experience, zero Linux experience, or no idea what a Makefile is, this isn’t for you.\n\nDo you install custom ROMs on Android phones?\n\n19440 votes\nYes, I love playing with custom ROMs\n81% No, I don't install custom ROMs\n19%\nAndroid is a complete operating system. It is complex and contains many different subsystems. Creating an operating system as complex and useful as Android didn’t happen overnight. This means that any customization you wish to perform will have to start small. Creating an alternative Android distribution that is radically\n\n...\n\nHint: Search for “install gapps.”\n\nWhere to start when building your own Android ROM\n\nGary Sims /"
+        },
+        {
+          "url": "https://www.tomsguide.fr/comment-installer-une-rom-personnalisee-sur-un-smartphone-android",
+          "title": "Comment installer une ROM Custom sur un smartphone Android ?",
+          "published_date": "2023-08-31",
+          "snippet": "* Tomsguide.fr\n* Logiciels\n* Android\n* Comment installer une ROM Custom sur un smartphone Android ?\n\nComment installer une ROM Custom sur un smartphone Android ?\n\nEnzo Bonucci\nEnzo Bonucci , le 31 août 2023\n0 Commentaires\nFacebook Twitter Whatsapp Reddit\nVous souhaitez booster les performances de votre smartphone Android, bénéficier des dernières mises à jour sur votre ancien téléphone, ou tout simplement changer pour une interface plus originale ? Voici comment installer une ROM personnalisée.\nSommaire\n* 🤖 Qu’est-ce qu’une ROM ?\n\n...\n\n* 🔍 Comment installer une ROM Custom sur un smartphone Android ?\nAndroid 14 © Pixabay\nLe système d’exploitation Android est actuellement le plus utilisé au monde pour les smartphones, avec plus de 86\n\n...\n\nUne ROM personnalisée, ou ROM Custom, est une version dérivée du système Android, conçue par des développeurs tiers.\n\n...\n\nL’installation d’une ROM pers"
+        },
+        {
+          "url": "https://hackmag.com/mobile/howto-create-android-firmware",
+          "title": "Creating a Custom Android ROM from Stock Without Modifying Source Code – HackMag",
+          "published_date": "2025-07-24",
+          "snippet": "Mobile\n\nCreating a Custom Android ROM from Stock Without Modifying Source Code\n\nDenis Pogrebnoy 24.07.2025 18/06/2026 4609 0\nAs an Android user, you’ve probably wanted to improve the operating system by adding useful features, removing unnecessary ones, and sharing your creation with the community.\n\n...\n\nHowever, nothing stops you from taking a standard smartphone firmware and customizing it to suit your needs. This is quite achievable.\nLet’s start with the fact that you’ll need Linux. On Windows, you can only unpack a firmware, but due to technical reasons, you won’t be able to reassemble it. Now about the firmware. These are typically distributed as ZIP archives that are flashed through custom recoveries. You’ll need one of these for experimenting. I recommend beginning your journey into ROM development with a custom firmware that is as close to AOSP as possible, because it’s often eas"
+        },
+        {
+          "url": "https://www.makeuseof.com/tag/install-custom-rom-android",
+          "title": "How to Install a Custom ROM on Your Android Device",
+          "published_date": "2016-11-24",
+          "snippet": "Productivity\nAndroid\nSmart Home\nNetworking\nEntertainment\nHome\nClose\n\nHow to Install a Custom ROM on Your Android Device\n\nAdd MakeUseOf on Google Add as Preferred Source Follow on Google Discover\n\n...\n\nOf all the ways you can customize an Android phone, installing a custom ROM is by far the biggest. It can bring an old device up to date, allow you to focus on privacy and security, or just give your\n\n...\n\nSo let's take a look at how to install a custom ROM.\n\nWhy Install a Custom ROM?\n\nThe ability to use custom ROMs is one of the great joys of Android. A custom ROM contains a whole new build of the Android operating system. To be able to install—or flash, as it's known—a ROM offers huge benefits.\n* If your phone no longer gets updates from the manufacturer, you can use a ROM to get the latest version of Android.\n* For phones with heavily customized software, you can install a ROM that gives"
+        },
+        {
+          "url": "https://pc-freedom.net/today_pc_story/android-custom-rom-guide-and-recommended-options",
+          "title": "究極のAndroid体験へ：カスタムROMガイドとおすすめの選択肢 – PC-FREEDOM",
+          "published_date": "2023-06-04",
+          "snippet": "PC-FREEDOM\n非エンジニアによる、非エンジニアのための、なんちゃってエンジニアリング。\n* HOME\n* Google\n* Android\n\n究極のAndroid体験へ：カスタムROMガイドとおすすめの選択肢\n\n2023年6月4日\n* Android\n* 今日のPCネタ\n* \n* \n* \n* \n究極のAndroid体験へ：カスタムROMガイドとおすすめの選択肢\nAndroid に関連する話題を調べていると、「カスタムROM」という言葉をきっと見つけたことがあるでしょう。\nカスタムROM とは、簡単に言うと、新品の携帯電話に最初から入っているシステム（純正 ROM やスキン）を別のもの（サードパーティ製）に変えることです。\nSamsung、OnePlus、Xiaomi といった大手メーカーが Android の見た目を改良することに成功していますが、Android の大ファンの間では、カスタム ROM を作ったり、調整したりすることに興味を持つ人が少なくありません。\n特に最新で最も優れたものを追求する人たちは、カスタム ROM の開発に大きな関心を持っています。\n一般的なカスタム ROM は、いくつかの部分から成り立っています。\nこれには、「カーネル」（端末の中心部分）、純正 OS から取り出した基本的なファームウェアの部分、追加のソフトウェア、そして場合によっては Android 以外の独立したリカバリ（復旧）環境も含まれます。\nサードパーティ（つまり製品メーカー以外の人や企業）が作った Android のシステムパッケージ全てがカスタム ROM と呼ばれることもありますが、大体の場合、この言葉は自分で元のソースから作られたAndroid のバージョンを指しています。\nGoogle が新しいバージョンの Android のソースコードを Android Open Source Project（AOSP）に公開すると、ユーザーや開発者たちはこれを元に自分たちのカスタム ROM を作り始めます。\nこれによって、より多くの端末で最新の Android を使うことが可能"
+        }
+      ],
+      "error": null,
+      "http_status": 200,
+      "latency_ms": 1284
+    },
+    {
+      "id": "q2",
+      "query": "custom rom vs stock android",
+      "intent": "position_vs_stock",
+      "results": [
+        {
+          "url": "http://www.differencebetween.net/technology/difference-between-stock-rom-and-custom-rom",
+          "title": "Difference Between Stock ROM and Custom ROM | Difference Between",
+          "published_date": "2021-01-30",
+          "snippet": "• Categorized under Technology | Difference Between Stock ROM and Custom ROM\nA device firmware or the official ROM is usually of two varieties: the Google Android OS commonly referred to as the Stock ROM, and a customized OS referred to as Custom Firmware or Custom ROM. Only a few select devices ship with the original Android OS, such as the Google phones and some Nokia phones, and the Xiaomi Mi\n\n...\n\nded firmware, for example, the OnePlus phones, Samsung phones, and more, which are called custom ROMs.\n\nWhat is Stock ROM?\n\nWhen you purchase a brand new Android phone or Android tablet, the device comes pre-built with a stock ROM. Here, ROM refers to the device ‘firmware’. ROM is nothing but the operating system of the device you’re using. Stock ROM is the default ROM – that is, the operating system – provided by the device manufacturer.\n\n...\n\n, whereas other device manufacturers such as S"
+        },
+        {
+          "url": "https://thecustomrom.com/blog/custom-roms-vs-stock-android-16",
+          "title": "Custom ROMs vs Stock Android 16: Is It Still Worth Switching?",
+          "published_date": "2026-02-21",
+          "snippet": "Custom ROMs vs Stock Android 16: Still Worth It?\n\nCustom ROMs vs Stock Android 16: Still Worth It?\n\nCustom ROMs against stock Android 16 in 2026: camera, convenience, customization, privacy and update lifespan compared, and who should still flash a ROM.\nOpinion Feb 21, 2026 Updated Nov 1, 2026 5 min read\nContents 4 sections\n1. Where Stock Android 16 Wins\n2. Where Custom ROMs Win\n3. The Honest Breakdown\n4. Verdict\nStock Android 16 is genuinely good.\n\n...\n\nSo the question that pops up in every ROM forum: is flashing a custom ROM still worth the hassle in 2026?\nHere is where each side actually wins.\n\nWhere Stock Android 16 Wins\n\nCamera\n\n...\n\nWhen something breaks on a custom ROM, you’re scrolling through Telegram groups at 2 AM looking for someone who had the same issue.\nAdvertisements\n\nWhere Custom ROMs Win\n\nCustomization\n\nStock Android 16 gives you wallpaper-based theming and that’s about"
+        },
+        {
+          "url": "https://www.nepalitelecom.com/stock-rom-vs-custom-rom",
+          "title": "Stock ROM vs Custom ROM, Which One is Better?",
+          "published_date": "2022-03-16",
+          "snippet": "Stock ROM vs Custom ROM\nFollow us on\nLast Updated on July 6, 2023\nAndroid phones come with a specific skin on top of the actual Open Source Project ROM. As Android itself is an open-source program, phone manufacturers customize their ROMs as per their choice and policies to run on their phones. So, Stock ROM here is defined as the one that comes out of the box on a phone. While custom ROM stands for the one developed by third-party developers with more customizations and features than the\n\n...\n\nSimilarly, Realme boots on Realme UI while Oppo phones boot on Color OS. Such ROMs/skins are built on top of Android Open Source Project ROMs.\nStock ROMs\n\n...\n\nStock ROM vs Custom ROM Stock MIUI ROM on K20 Pro\n\nCustom ROM\n\nAndroid phones have loads of places for customizations.\n\n...\n\nl for boosted performance, and much more. An unlocked bootloader is a must and a custom recovery such as TWRP is re"
+        },
+        {
+          "url": "https://www.askdifference.com/stock-rom-vs-custom-rom",
+          "title": "Stock ROM vs. Custom ROM — What’s the Difference?",
+          "published_date": null,
+          "snippet": "It is designed to offer a stable and user-friendly experience, with a focus on reliability and security. Custom ROM, on the other hand, is an aftermarket version of the Android operating system, developed by third parties to extend or enhance the functionality of the device. Custom ROMs can offer additional features, improved performance, and a higher degree of customization than stock ROMs, allowing users to tailor their devices to their specific needs and preferences.\n12\n\n...\n\nsecurity patches and updates. Custom ROMs rely on the developer community for updates and support, which can vary greatly in terms of frequency and reliability. While some custom ROMs are regularly updated with the latest Android features and security patches, others may receive less frequent updates or be abandoned entirely.\n12\nSecurity is another important consideration.\n\n...\n\nChoosing between stock ROM and cus"
+        },
+        {
+          "url": "https://www.privacyportal.co.uk/blogs/free-rooting-tips-and-tricks/custom-rom-vs-stock-android-2026",
+          "title": "Custom ROM vs Stock Android in 2026: Is It Worth Switching?",
+          "published_date": "2026-06-27",
+          "snippet": "15% off phones and tablets. Use code BF15 Shop the sale →\n\nCustom ROM vs Stock Android in 2026: Is It Worth Switching?\n\nJune 27, 2026\nContents\n1. What \"custom ROM vs stock\" actually means\n2. Custom ROM vs stock: the honest comparison\n3. Why install a custom ROM?\n4. Why stock Android still wins for some people\n5. The 2026 catch: Play Integrity and attestation\n6. Root without replacing your ROM: Magisk, KernelSU and APatch\n7. Is a custom ROM wo\n\n...\n\nWill my banking app still work on a custom ROM?\n12. Does installing a custom ROM void my warranty?\n13. Is a custom ROM more secure than stock?\n14. Can I go back to stock later?\n15. Do I need to root to install a custom ROM?\n16. Related reading\nTL;DR: Custom ROM vs stock comes down to control versus convenience.\n\n...\n\nfail Google's strongest Play Integrity check. Switch if your device unlocks easily and you accept those trade-offs.\nCustom ROM v"
+        },
+        {
+          "url": "https://kalyanmudumby.com/post/aosp-and-custom-roms",
+          "title": "AOSP and Custom ROMs · Kalyan Mudumby",
+          "published_date": null,
+          "snippet": "← All posts Jan 20, 2022\n\nAOSP and Custom ROMs\n\nExplore the difference between Stock ROMs and Custom ROMs on Android. Learn how AOSP forks work, and why a Custom ROM can unlock your phone's full potential.\nAOSP Custom ROM Android Open-Source\nAll the phones that run Android as their Operating Systems (OS) are based on or are forks of the Android Open Source Project (AOSP). Initially intended to develop advanced operating systems for digital cameras due to lack of market, Android shifted to make Operating Systems for handheld mobile devices.\n\nAndroid Open Source Project\n\n...\n\nAs previously mentioned, every android phone is a fork / based on the AOSP project. The entire code for Android is available online for developers interested in using Android in their device of choice. If everything is AOSP based, what are Stock ROMs and Custom ROMs?\n\nStock ROM\n\nThe OEM (Original Equipment Manufacture"
+        },
+        {
+          "url": "https://www.kingoapp.com/knowledge-base/android-stock-rom-and-custom-rom.htm",
+          "title": "What is Stock ROM, Custom ROM and Rooting for Android?",
+          "published_date": null,
+          "snippet": "F.A.Q. Tutorials Rooted Apps Troubleshoot Knowledge Base Contact Support Donate to Kingo\n\nWhat is Stock ROM and Custom ROM for Android?\n\nANDROID\n\n...\n\nAn user who owns an Android device can't stop from making tweaks, such as flashing custom recovery, modifying system, getting root access, and installing new custom ROM . However, when it comes to a newbie, he/she could easily confuse about these \"new\" words.\n\n1. What is ROM?\n\nROM to Android is abbreviated for Read Only Memory. A \"ROM\" is the operating system software that runs your Droid. It is stored in the “Read Only Memory” portion of the hardware on the Android smartphone and/or tablet. Android comes in two forms: Stock ROM and Custom ROM.\n\n2. What is Stock ROM?\n\nStock ROMs are the ones which come by default in Android phones or tablets. These are customized versions of Android developed by manufacturers and carriers to let users stic"
+        },
+        {
+          "url": "https://www.gsmarena.com/sunday_debate_stock_android_vs_custom_rom-news-29659.php",
+          "title": "Sunday Debate: Custom ROM vs. Stock Android - GSMArena.com news",
+          "published_date": "2018-02-18",
+          "snippet": "GSMArena.com\nADVERTISEMENT\n* \n* \n* \n\nSunday Debate: Custom ROM vs. Stock Android\n\n* Post your comment\n* Comments (122)\nYordan & Ivan , 18 February 2018\nSunday debate Featured\nIn our sixth Sunday Debate we are arguing stock Android against custom ROM. What do you prefer - neat and clean OS or as many features out of the box as possible?\n\nYordan: Custom ROMs mean you value your time\n\n2012 was a marvelous year - we had the London Olympics, the viral “Kony 2012” video and for a brief time, the world was going to end until it didn’t.\n\n...\n\nNot to mention that these custom skins (or ROMs) are inconsistent each year. Samsung is one of the worst in this respect - each year Samsung's Android skin looks completely different than the last.\n\n...\n\nconfusing experience of having duplicate apps on custom ROMs. Google has Gmail, your Galaxy or Huawei phone has its own Mail app. There's Google Chrome and"
+        }
+      ],
+      "error": null,
+      "http_status": 200,
+      "latency_ms": 1042
+    },
+    {
+      "id": "q3",
+      "query": "alternative android os",
+      "intent": "category_synonym",
+      "results": [
+        {
+          "url": "https://www.freenet.de/digitalrepublic/bestenlisten/beste-android-alternativen",
+          "title": "Die besten Android-Alternativen 2026 | freenet Magazin",
+          "published_date": "2026-01-26",
+          "snippet": "* Android & iOS dominieren, aber es gibt datenschutzfreundliche Alternativen mit weniger Bloatware und mehr Kontrolle.\n* Zwei Haupttypen:\n1. Android-basiert ohne Google: LineageOS, /e/OS, VollaOS, CalyxOS, iodéOS, GrapheneOS\n2. Linux-basiert: Sailfish OS, Ubuntu Touch, TizenOS (v. a. für Wearables/TV)\n* Vorteile: Weniger Datensammlung, keine Google-Dienste, oft geringerer Speicherbedarf, mehr Kontrolle über Apps.\n* Nachteile: Nur für ausgewählte Geräte, Installation teils komplex, möglicher Garantieverlust, kleineres App-Angebot (F-Droid & Co. kein vollständiger Play-Store-Ersatz).\n* Fertig verfügbare Geräte mit alternativem OS: Shiftphones, Volla Phones, Nitrophones, Fairphones, Murena One, Teracube.\n\n...\n\nrtphone, solltest Du daher ein alternatives Betriebssystem auf Basis von Linux installieren.\n\nDie Android-basierten Alternativen zu Android im Überblick:\n\n* LineageOS: Besonders weit "
+        },
+        {
+          "url": "https://blog.iode.tech/androidalternative",
+          "title": "Android Alternative - iodé",
+          "published_date": "2024-04-11",
+          "snippet": "Android Alternative\n\n11/04/2024\nComparisons\nWhen looking for an Android alternative, many people immediately think of iOS and that is not surprising. Android and iOS are the mobile operating systems with the largest market share. However, there are other alternatives that we would like to highlight in this article.\n\n...\n\nUsers of iodéOS already know that our operating system is also an alternative Android, which we have equipped with additional functions to improve data protection and privacy. This article provides a comprehensive overview of current Android alternatives and those that have been discontinued.\n\nWhy should you choose an Android alternative?\n\nThere are various reasons for replacing Android with alternative operating systems:\n* Sustainab\n\n...\n\n* Other: For instance, quitting Android and iOS for an other platform like a Linux-based mobile operating system may be of interest t"
+        },
+        {
+          "url": "https://eylenburg.github.io/android_comparison.htm",
+          "title": "Comparison of Android-based Operating Systems",
+          "published_date": null,
+          "snippet": "← Sitemap\n\nComparison of Android-based Operating Systems\n\nThis is a comparison of popular Android \"ROMs\" (better term: AOSP distributions or Android-based OS). Please note I'm not affiliated with any of these projects and I am not giving any specific recommendation. If you think anything is factually incorrect, please let me know.\n\n...\n\n, which require a Google-certified stock OS, even though hardware-backed attestation works through a standard Android hardware attestation API that is available on every device launched with Android\n\n...\n\nit and not for the kernel or most of the base OS.\n* Android Runtime JIT Just-In-Time compilation/profiling | AOT Ahead-Of-Time compilation w/o profiling | Interpreter/ JIT Just-In-Time with profiling\n\n...\n\nSome devices that fail to ship a timely new Android version make it almost impossible for an alternate OS to provide complete patches. If the vendor d"
+        },
+        {
+          "url": "https://www.wired.com/story/best-android-alternatives",
+          "title": "Best Alternatives to Google’s Android Operating System (2026), Tested and Reviewed | WIRED",
+          "published_date": "2026-02-14",
+          "snippet": "OS?\n* Best Preinstalled Phone: Fairphone 6 With /e/OS\n* Best for Pixel Phones: GrapheneOS\n* Best for Non-Pixel Phones: /e/OS\n* For the DIY Tinkerer: LineageOS\nWhy De-Google Your Phone?\nAccordionItemContainerButton\nFirst off, you don't have to remove Google. There are plenty of people happily running Google Services on LineageOS just because they want to tinker with the system and\n\n...\n\nBest Preinstalled Phone: Fairphone 6 With /e/OS\n\n* Photograph: Scott Gilbertson\n* Photograph: Scott Gilbertson\nSave to wishlist\nFairphone\n\nFairphone (6th Gen, /e/OS)\n\n$749 Murena"
+        },
+        {
+          "url": "https://www.intelivita.com/blog/android-os-alternatives",
+          "title": "Android OS Alternatives: Top 13 Mobile OS Options",
+          "published_date": "2025-09-04",
+          "snippet": "Plan your custom software project with precision Estimate Now!\nAndroid App Development\n\nAndroid OS Alternatives: Top 13 Mobile OS Options\n\nAuthor Tuhin Bhatt\nTuhin Bhatt\nCo-founder of Intelivita\nLast updated on October 8, 2025\n22 min read\nTop Android OS Alternatives: Comprehensive List\nTable of Contents\n* iOS\n* GrapheneOS\n* KaiOS\n* Sailfish OS\n* Plasma Mobile / postmarketOS\n* Ubuntu Touch\n* Mobian\n* Tizen OS\n* CalyxOS\n* LineageOS\n* /e/ OS\n* LuneOS\n* PureOS/Librem\n* How To Develop An Android App?\nThe top Android OS alternatives are iOS, GrapheneOS, KaiOS, Sailfish OS, Plasma Mobile/postmarketOS, Ubuntu Touch, Mobian, Tizen OS, CalyxOS, LineageOS, /e/ OS, LuneOS, and PureOS/Librem.\n\n...\n\nFor instance, GrapheneOS focuses on privacy, while Ubuntu Touch enables desktop-mode functionality.\nThe top Android OS alternatives are:\n* iOS\n* GrapheneOS\n* KaiOS\n* Sailfish OS\n* Plasma Mobile / postma\n\n."
+        },
+        {
+          "url": "https://techyden.com/android-alternatives",
+          "title": "11 Best Android Alternatives 2026 for Privacy & Control",
+          "published_date": "2026-04-13",
+          "snippet": "From degoogled phone options like GrapheneOS, CalyxOS, and /e/OS (Murena OS) to full open source mobile os projects such as postmarketOS, Ubuntu Touch, and Sailfish OS, you now have real choices beyond stock Android and iOS.\nIn this updated April 2026 guide, we explore the best Android alternative os platforms for privacy-focused smartphone users, Linux enthusiasts, and anyone who wants a\n\n...\n\n* Huawei device owner | HarmonyOS NEXT\n* European digital sovereignty | Sailfish OS (Jolla Phone)\n* Ready-made de-Googled phone | Fairphone 6 with /e/OS (Murena)\n\n...\n\nIn 2026, the market offers a wide range of open source mobile OS. It also includes privacy-focused smartphone OS and lightweight mobile operating systems .\n\n...\n\nLineageOS is perfect for users who want privacy, customization, and a bloat-free experience. However, it’s best for those comfortable with DIY device management.\n\n5. Sailfi"
+        },
+        {
+          "url": "https://www.handyhase.de/magazin/android-alternative",
+          "title": "Android-Alternativen: Ein sicheres Betriebssystem und ein App-Store ohne Google – geht das?",
+          "published_date": null,
+          "snippet": "1. **\n2. Magazin\n3. Apps & Dienste\n4. Android\n    Von /e/ OS bis Ubuntu Touch \n\nAndroid-Alternativen: Ein sicheres Betriebssystem und ein App-Store ohne Google – geht das?\n\n*  ** André Reinhardt\n\n...\n\noid\n* Android-Alternativen: Übersicht mit alternativen Betriebssystemen - Eingestellte Alternative Betriebssysteme - Android Alternative LineageOS und CynagenMod - /e/ OS für das Fairphone - Sailfish OS von Jolla - Ubuntu Touch - Plasma Mobile - Google Fuchsia\n* Android Alternative von Huawei: HarmonyOS\n* Indien will Android-Alternative entwickeln\n* Android auf dem iPhone: Project Sandcastle\n\n...\n\nOnePlus 9 (Pro), Xiaomi Mi 10T (Pro)Weitere Infos Kompatibilitätsliste KaiOSbasiert auf Linux / Firefox OS und wird auf Feature Phones vorinstalliert eingesetzt, erfordert nur geringe Ressourcen\n\n...\n\nmittlerweile eingestellt:\nBetriebssystemHinweise   BlackBerry OSvon BlackBerry, eingestellt Firef"
+        },
+        {
+          "url": "https://blog.iode.tech/fr/androidalternative",
+          "title": "Android Alternative - iodé",
+          "published_date": "2024-04-11",
+          "snippet": "Android Alternative\n\n11 avril 2024\nComparaisons\nLorsque l’on cherche une alternative à Android, on pense immédiatement à iOS, ce qui n’est pas surprenant. Android et iOS sont les systèmes d’exploitation mobiles qui détiennent la plus grande part de marché, et de loin. Cependant, il existe d’autres alternatives que nous souhaitons mettre en avant dans cet article. D’une part, il existe des systèmes d’exploitation totalement indépendants, dont certains sont basés\n\n...\n\n* Autre : par exemple, l’abandon de Android et de iOS au profit d’une autre plateforme, comme un système d’exploitation mobile basé sur Linux, peut intéresser les fans de Linux.\n\nQuelles sont les alternatives à Android ?\n\niodéOS : notre propre système d’exploitation basé sur Android. iodéOS est un « fork » de LineageOS basé sur Android 14 et intègre un adblocker et des fonctionnalités de contrôle parental.\n\n...\n\nCalyxOS : di"
+        }
+      ],
+      "error": null,
+      "http_status": 200,
+      "latency_ms": 955
+    },
+    {
+      "id": "q4",
+      "query": "how to install custom rom android",
+      "intent": "install_howto",
+      "results": [
+        {
+          "url": "https://thecustomrom.com/guides/installation",
+          "title": "How to Install a Custom ROM - Complete Step-by-Step Guide (2026)",
+          "published_date": "2026-04-04",
+          "snippet": "TheCustomRom\nPhones ROMs What's New Guides Tools Compare\nSearch phones, ROMs, guides Ctrl K\nSearch phones, ROMs, guides\nPhones ROMs What's New Guides Tools Compare\n1. Home\n2. Guides\n3. How to Install a Custom ROM: Step-by-Step Guide\n\nHow to Install a Custom ROM: Step-by-Step Guide\n\nInstall a custom ROM step by step: the fastboot and adb sideload route most current phones use, the TWRP route for older ones, and fixes for common failures.\nInstallation Apr 4, 2026 Updated Nov 1, 2026 15 min read\nContents 17 sections\n1. The Short Answer\n2. Before We Start\n3. Which Install Path Applies to You?\n4. Step 1: Transfer Files to Phone\n5. Step 2: Boot into Recovery\n6. Step 3: Backup in Recovery (Recommended)\n7. Step 4: Wipe for Clean Install\n8.\n\n...\n\nTroubleshooting\n15. Clean Flash vs Dirty Flash\n16. Post-Installation Tips\n17. If something is still wrong\nInstalling a custom ROM means replacing your p"
+        },
+        {
+          "url": "https://www.makeuseof.com/tag/install-custom-rom-android",
+          "title": "How to Install a Custom ROM on Your Android Device",
+          "published_date": "2016-11-24",
+          "snippet": "Productivity\nAndroid\nSmart Home\nNetworking\nEntertainment\nHome\nClose\n\nHow to Install a Custom ROM on Your Android Device\n\nAdd MakeUseOf on Google Add as Preferred Source Follow on Google Discover\nBy Andy Betts\nUpdated Mar 24, 2022, 10:45 AM EDT\nAndy was a freelance writer and former section editor for Android at MUO.\n\n...\n\nthe original iPhone and Android devices, to the latest gadgets. He has written and edited for UK-based print publications like PDA Essentials and Android Magazine , and online at sites including Android Tips and Hacks , broadband.co.uk , and Envato . He has a passion for all things mobile and has been a keen Mac enthusiast since 2005. Now, he serves as a writer at How-To Geek .\nSign in to your MakeUseOf account\nLike\nLike\nfollow\nFollow\nfollowed\nFollowed\nLog in\nHere is a fact-based summary of the story contents:\nTry something different:\nOf all the ways you can customize a"
+        },
+        {
+          "url": "https://www.getdroidtips.com/install-custom-rom-using-twrp-recovery/",
+          "title": "How To Install A Custom ROM On Android Using TWRP Recovery | GETDroidTips",
+          "published_date": "2017-07-03",
+          "snippet": "1. Home\n3. Android Tips & Tricks\n\nHow To Install A Custom ROM On Android Using TWRP Recovery\n\nIn this tutorial, we will show you how to install a custom ROM on Android devices. One reason why the Google-owned OS is loved by one and all is its...\nSyed Sadique Hassan\nUpdated February 3, 2026 · 8 min read\nShare    \nOn this page 9 sections\n* What is a Custom ROM:\n* Advantages of Custom ROM:\n* Risks With These Custom ROMs:\n* How to Flash Custom ROM on Android:\n* Prerequisites:\n* Downloads:\n* Step 1: Unlock Bootloader on your Device:\n* Step 2: Install TWRP Recovery:\n* Step 3: Install Custom ROM on Android:\nIn this tutorial, we will show you how to install a custom ROM on Android devices. One reason why the Google-owned OS is loved by one and all is its open-source ecosystem. This straight away gi\n\n...\n\nectly. So with that said, you are now aware of the perks and risks associated with flashing "
+        },
+        {
+          "url": "https://www.instructables.com/How-to-Install-a-Custom-ROM-on-Any-Android-Phone-E",
+          "title": "How to Install a Custom ROM on Any Android Phone (Example: Lenovo K6 Power With LineageOS) : 6 Steps (with Pictures) - Instructables",
+          "published_date": "2025-09-13",
+          "snippet": "Projects Contests Teachers\nSign up Log in\nAutodesk Instructables logo\nProjects Contests Teachers\nLog In Sign Up\nProjects Contests Teachers\nSign up Log in\nRobot\n\nHow to Install a Custom ROM on Any Android Phone (Example: Lenovo K6 Power With LineageOS)\n\nby JustcallmeK\nSave PDF\n\nHow to Install a Custom ROM on Any Android Phone (Example: Lenovo K6 Power With LineageOS)\n\nBy JustcallmeK in Circuits Mobile\n20,088\n17\nFeatured\nPublished on September 13th, 2025 license\nSave PDF\nHow to Install a Custom ROM on Any Android Phone (Example: Lenovo K6 Power With LineageOS)\nHow to Install a Custom ROM on Any Android Phone (Example: Lenovo K6 Power With LineageOS)\nBy JustcallmeK Follow\nluv making interesting and open-source projects~\nAndroid phones are powerful, but many times the stock software (called the stock ROM ) feels limiting. Maybe your phone doesn’t get updates anymore, is bloated with apps you"
+        },
+        {
+          "url": "https://github.com/linex-17/cusrom",
+          "title": "GitHub - linex-17/cusrom: Basic guide to build custom android ROM for smartphones · GitHub",
+          "published_date": null,
+          "snippet": "linex-17/cusrom\n\n* Page: GitHub repository\n* URL: https://github.com/linex-17/cusrom\n* Description: Basic guide to build custom android ROM for smartphones - linex-17/cusrom\n* Default branch: main\n* Created: 2024-08-28T11:59:57.000Z\n* Commits: 9\n\nTop-level files\n\n* README.md\n\nREADME.md\n\nBuilding a Custom ROM\n\nThis is a very beginner friendly tutorial on how to build a Custom ROM for your device. For this tutorial, I will be taking LineageOS ROM for OnePlus 7 as an example.\n\nRequirements\n\n* Your device with USB cable (OnePlus 7 for example)\n* x64-bit powerful Linux PC or server. Recommended: 4 cores - 8 threads or more with 64GB RAM, (32GB RAM + 16GB or more ZRAM should also do the job). Just 32GB RAM for Android 14 onwards will lead to the build being killed. Storage of 350GB or more. I will be considering Ubuntu to build in this tutorial.\n* Unlimited internet connection\n\n...\n\n# add Andr"
+        },
+        {
+          "url": "https://thecustomrom.com/guides/getting-started",
+          "title": "Getting Started with Custom ROMs in 2026 | TheCustomRom",
+          "published_date": "2026-04-04",
+          "snippet": "Getting Started with Custom ROMs in 2026\n\nGetting Started with Custom ROMs in 2026\n\nA beginner's guide to custom ROMs in 2026: what they are, which phones can still be unlocked, the order of steps from backup to first boot, and the real risks.\nInstallation Apr 4, 2026 Updated Nov 1, 2026 12 min read\nContents 14 sections\n1. The Short Answer\n2. What is a Custom ROM?\n3. Why Install a Custom ROM?\n\n...\n\nExpect the first attempt to take an evening.\nAdvertisements\n\nWhat is a Custom ROM?\n\nA custom ROM (Read-Only Memory) is a modified version of Android that replaces the operating system your phone\n\n...\n\nsupporting years ago.\n* Stock ROM : The Android version your phone came with (Samsung One UI, Xiaomi HyperOS, etc.)\n* Custom ROM : Community-built Android with different features, design, and optimizations\n\nWhy Install a Custom ROM?\n\nInstalling a custom ROM makes the most sense when your phone’s "
+        },
+        {
+          "url": "https://www.makeuseof.com/how-to-update-a-custom-rom",
+          "title": "How to Update a Custom ROM on Android",
+          "published_date": "2022-10-09",
+          "snippet": "Productivity\nAndroid\nSmart Home\nNetworking\nEntertainment\nHome\nClose\n\nHow to Update a Custom ROM on Android\n\nAdd MakeUseOf on Google Add as Preferred Source Follow on Google Discover\n\n...\n\nIf you flash a wrong file, there are chances that your device might go into a bootloop—where the device refuses to boot—or, in the worst case, get hard bricked and show no signs of life at all.\nIf you've bricked your phone by flashing the wrong zip, our guide on unbricking an Android phone may help you fix it.\nLikewise, check that you have the correct recovery installed on your phone. Sometimes developers recommend a specific recovery in the update notes, so when you see something like that, use the recommended recovery only.\n\nCheck You've Downloaded All the Files You Need\n\n...\n\nYou can also download the Magisk zip file to root your phone or the DFE (Disable Force Encryption) file to stay decrypted afte"
+        },
+        {
+          "url": "https://androidblog.org/install-custom-rom",
+          "title": "How to install Custom ROM on Android Device - Android Blog",
+          "published_date": "2021-06-19",
+          "snippet": "Tutorials Custom ROMs\n\nHow to install Custom ROM on Android Device\n\nNilayan Ghosh Updated on June 26, 2021\n10 Comments\nInstall Custom ROM\nIf you’re reading this post that means you have decided to install a custom ROM on your Android device.\nCongratulations!\nBelieve me, you’re forever going to be thankful you took this step.\n\n...\n\nincredible Android community that is happy to support it.\nIf you’re an Android enthusiast, there are several ways to enhance your experience with the device, such as:\n* Enable Developer Options\n* Root your Android\n* Install custom ROM on Android\nIn this article, we’re going to focus on the third point, i.e., how to install custom ROMs on your Android device.\nBefore that, a quick recap on what custom ROMs are and why they are so cool.\nCustom ROMs are aftermarket versions of the Android operating system that are developed by Android enthusiasts by forking the ope"
+        }
+      ],
+      "error": null,
+      "http_status": 200,
+      "latency_ms": 1116
+    },
+    {
+      "id": "q5",
+      "query": "install lineageos on pixel",
+      "intent": "install_device",
+      "results": [
+        {
+          "url": "https://wiki.lineageos.org/devices/sailfish/build",
+          "title": "Build LineageOS for Google Pixel - sailfish",
+          "published_date": null,
+          "snippet": "Google Pixel\nsailfish\n\nIntroduction\n\nThese instructions will hopefully assist you to start with a stock Google Pixel, unlock the bootloader (if necessary), and then download the required tools as well as the very latest source code for LineageOS (based on Google’s Android operating system) for your device. Using these, you can build both a LineageOS installation zip and a LineageOS Recovery image and install them on your device.\n\n...\n\nYou will have at your fingertips the skills to build a full operating system from code and install it to a running device, whenever you want.\n\n...\n\nreally up to you.\n\nWhat you’ll need\n\n* A Google Pixel.\n* A relatively recent x86_64 computer:\n* Linux, macOS, or Windows - these build instructions are only tested using Ubuntu 20.04 LTS, so we\n\n...\n\nInstall the build packages\n\nSeveral packages are needed to build LineageOS. You can install these using your dist"
+        },
+        {
+          "url": "https://wiki.lineageos.org/devices/raven/build",
+          "title": "Build for raven | LineageOS Wiki",
+          "published_date": null,
+          "snippet": "LineageOS Wiki Toggle navigation\n* Devices\n* Contribute\n* FAQ\n* Glossary\n* lineageos.org open_in_new\nsearch\nUse light theme\nlight_mode\nkeyboard_arrow_left Back to the overview\n\nBuild LineageOS for\n\nGoogle Pixel 6 Pro\nraven\n\nIntroduction\n\nThese instructions will hopefully assist you to start with a stock Google Pixel 6 Pro, unlock the bootloader (if necessary), and then download the required tools as well as the very latest source code for LineageOS (based on Google’s Android operating system) for your device. Using these, you can build both a LineageOS installation zip and a LineageOS Recovery image and install them on your device.\n\n...\n\nYou will have at your fingertips the skills to build a full operating system from code and install it to a running device, whenever you want. Where you go from there– maybe you’ll add a feature, fix a bug, add a translation, or use what you’ve learned to"
+        },
+        {
+          "url": "https://wiki.lineageos.org/devices/blueline/build",
+          "title": "Build LineageOS for Google Pixel 3 - blueline",
+          "published_date": null,
+          "snippet": "Google Pixel 3\nblueline\n\nIntroduction\n\nThese instructions will hopefully assist you to start with a stock Google Pixel 3, unlock the bootloader (if necessary), and then download the required tools as well as the very latest source code for LineageOS (based on Google’s Android operating system) for your device. Using these, you can build both a LineageOS installation zip and a LineageOS Recovery image and install them on your device.\n\n...\n\nYou will have at your fingertips the skills to build a full operating system from code and install it to a running device, whenever you want.\n\n...\n\nreally up to you.\n\nWhat you’ll need\n\n* A Google Pixel 3.\n* A relatively recent x86_64 computer:\n* Linux, macOS, or Windows - these build instructions are only tested using Ubuntu 20.04 LTS, so we\n\n...\n\nInstall the build packages\n\nSeveral packages are needed to build LineageOS. You can install these using you"
+        },
+        {
+          "url": "https://wiki.lineageos.org/devices/sunfish/build",
+          "title": "Build LineageOS for Google Pixel 4a - sunfish",
+          "published_date": null,
+          "snippet": "LineageOS Wiki Toggle navigation\n* Devices\n* Contribute\n* FAQ\n* Glossary\n* lineageos.org open_in_new\nsearch\nUse light theme\nlight_mode\nkeyboard_arrow_left Back to the overview\n\nBuild LineageOS for\n\nGoogle Pixel 4a\nsunfish\n\nIntroduction\n\nThese instructions will hopefully assist you to start with a stock Google Pixel 4a, unlock the bootloader (if necessary), and then download the required tools as well as the very latest source code for LineageOS (based on Google’s Android operating system) for your device. Using these, you can build both a LineageOS installation zip and a LineageOS Recovery image and install them on your device.\n\n...\n\nYou will have at your fingertips the skills to build a full operating system from code and install it to a running device, whenever you want.\n\n...\n\nreally up to you.\n\nWhat you’ll need\n\n* A Google Pixel 4a.\n* A relatively recent x86_64 computer:\n* Linux, macO"
+        },
+        {
+          "url": "https://wiki.lineageos.org/devices/bluejay/build",
+          "title": "Build for bluejay | LineageOS Wiki",
+          "published_date": null,
+          "snippet": "Google Pixel 6a\nbluejay\n\nIntroduction\n\nThese instructions will hopefully assist you to start with a stock Google Pixel 6a, unlock the bootloader (if necessary), and then download the required tools as well as the very latest source code for LineageOS (based on Google’s Android operating system) for your device. Using these, you can build both a LineageOS installation zip and a LineageOS Recovery image and install them on your device.\n\n...\n\nYou will have at your fingertips the skills to build a full operating system from code and install it to a running device, whenever you want.\n\n...\n\nreally up to you.\n\nWhat you’ll need\n\n* A Google Pixel 6a.\n* A relatively recent x86_64 computer:\n* Linux, macOS, or Windows - these build instructions are only tested using Ubuntu 20.04 LTS, so we\n\n...\n\nInstall the build packages\n\nSeveral packages are needed to build LineageOS. You can install these using y"
+        },
+        {
+          "url": "https://wiki.lineageos.org/devices/frankel/build",
+          "title": "Build for frankel | LineageOS Wiki",
+          "published_date": null,
+          "snippet": "LineageOS Wiki Toggle navigation\n* Devices\n* Contribute\n* FAQ\n* Glossary\n* lineageos.org open_in_new\nsearch\nUse light theme\nlight_mode\nkeyboard_arrow_left Back to the overview\n\nBuild LineageOS for\n\nGoogle Pixel 10\nfrankel\n\nIntroduction\n\nThese instructions will hopefully assist you to start with a stock Google Pixel 10, unlock the bootloader (if necessary), and then download the required tools as well as the very latest source code for LineageOS (based on Google’s Android operating system) for your device. Using these, you can build both a LineageOS installation zip and a LineageOS Recovery image and install them on your device.\n\n...\n\nYou will have at your fingertips the skills to build a full operating system from code and install it to a running device, whenever you want.\n\n...\n\nreally up to you.\n\nWhat you’ll need\n\n* A Google Pixel 10.\n* A relatively recent x86_64 computer:\n* Linux, macO"
+        },
+        {
+          "url": "https://wiki.lineageos.org/devices/husky/build",
+          "title": "Build for husky | LineageOS Wiki",
+          "published_date": null,
+          "snippet": "LineageOS Wiki Toggle navigation\n* Devices\n* Contribute\n* FAQ\n* Glossary\n* lineageos.org open_in_new\nsearch\nUse light theme\nlight_mode\nkeyboard_arrow_left Back to the overview\n\nBuild LineageOS for\n\nGoogle Pixel 8 Pro\nhusky\n\nIntroduction\n\nThese instructions will hopefully assist you to start with a stock Google Pixel 8 Pro, unlock the bootloader (if necessary), and then download the required tools as well as the very latest source code for LineageOS (based on Google’s Android operating system) for your device. Using these, you can build both a LineageOS installation zip and a LineageOS Recovery image and install them on your device.\n\n...\n\nYou will have at your fingertips the skills to build a full operating system from code and install it to a running device, whenever you want. Where you go from there– maybe you’ll add a feature, fix a bug, add a translation, or use what you’ve learned to"
+        },
+        {
+          "url": "https://wiki.lineageos.org/devices/bluejay/install/",
+          "title": "Install LineageOS on Google Pixel 6a - bluejay",
+          "published_date": null,
+          "snippet": "LineageOS Wiki Toggle navigation\n* Devices\n* Contribute\n* FAQ\n* Glossary\n* lineageos.org open_in_new\nsearch\nUse light theme\nlight_mode\nkeyboard_arrow_left Back to the overview\n\nInstall LineageOS on\n\nGoogle Pixel 6a\nbluejay\nwarning\nWarning: The provided instructions are for LineageOS 24.0. These will only work if you follow every section and step precisely. Do not continue after something fails!\n\nBasic requirements\n\n1. Read through the instructions at least once before actually following them, so as to avoid any problems due to any missed steps!\n2. Make sure your computer has adb and fastboot . Setup instructions can be found here .\n3. Enable USB debugging on your device.\n4. Boot your device with the stock OS at least once and check every functionality.\nwarning\nWarning: Make sure that you can send and receive SMS and place and receive calls (also via WiFi and LTE, if\n\n...\n\nare version to "
+        }
+      ],
+      "error": null,
+      "http_status": 200,
+      "latency_ms": 1163
+    },
+    {
+      "id": "q6",
+      "query": "best custom rom 2026",
+      "intent": "decision_fresh",
+      "results": [
+        {
+          "url": "https://thecustomrom.com/blog/best-custom-roms-2026",
+          "title": "Best Custom ROMs for 2026, by Phone and Use | TheCustomRom",
+          "published_date": "2026-01-10",
+          "snippet": "TheCustomRom\nPhones ROMs What's New Guides Tools Compare\nSearch phones, ROMs, guides Ctrl K\nSearch phones, ROMs, guides\nPhones ROMs What's New Guides Tools Compare\n1. Home\n2. Blog\n3. Best Custom ROMs for 2026, by Phone and Use\n\nBest Custom ROMs for 2026, by Phone and Use\n\nThe best maintained custom ROMs for 2026, from LineageOS 24 and crDroid 13 to GrapheneOS on Android 17: what each does best and where to check support.\nGuide Jan 10, 2026 Updated Oct 17, 2026 13 min read\nContents 6 sections\n1. Quick Picks\n2. The Best Custom ROMs for 2026\n3. Quick Comparison\n4. How to Choose the Right ROM\n5. Which ROMs to Avoid in 2026\n6. Looking Ahead\nThe best custom ROM in 2026 is the actively maintained one with an official build for your exact device. That rule removes more options than any feature comparison does, because several names that topped these lists a few years ago are discontinued and no "
+        },
+        {
+          "url": "https://thecustomrom.com/blog/best-custom-roms-2025",
+          "title": "The 10 Best Custom ROMs to Try in 2026 | TheCustomRom",
+          "published_date": "2026-03-22",
+          "snippet": "Navigation\nDevices Browse supported devices\nROMs Explore custom ROMs\nGuides Step-by-step tutorials\nNews Latest Android news\nTips Quick tips & tricks\nCompare Compare ROMs side by side\nJoin Telegram Subscribe YouTube\nDark Mode\nHome / Blog / The 10 Best Custom ROMs to Try in 2026\nGuide March 22, 2026 Updated April 27, 2026 2 min read\n\nThe 10 Best Custom ROMs to Try in 2026\n\nLooking for the best custom ROM experience? Here are our top picks for 2026 with focus on stability, features, and battery life on Android 16.\nbest roms 2026 recommendations lineageos evolution x android 16\n\nThe 10 Best Custom ROMs to Try in 2026\n\nCustom ROMs continue to breathe new life into Android devices in 2025. Whether you want a clean Android experience, maximum customization, or enhanced privacy, there’s a ROM for you.\n\n1. LineageOS 22\n\nBest for: Stability and longevity\nLineageOS remains the gold standard for cus"
+        },
+        {
+          "url": "https://macmyths.com/best-android-custom-roms-in-2026-which-one-should-you-install",
+          "title": "Best Android Custom ROMs in 2026: GrapheneOS, LineageOS and More",
+          "published_date": "2026-09-13",
+          "snippet": "See Picks Early Black Friday Amazon US Holiday deal season has started quietly Amazon US: current deals, useful picks and tech finds. Compare Now ×\nMACMYTHS\n* Magazine\n* Charts\n* Apple devices\n* Compare\nANDROID\nSeptember 13, 2026\n\nBest Android Custom ROMs in 2026: Which One Should You Install?\n\nThe best Android custom ROM depends on your phone and priorities. Here is how GrapheneOS, LineageOS, crDroid, Evolution X, /e/OS and CalyxOS compare.\nBy MacMyths Team · 10 min read · Copy link\nSome links on this page are affiliate links: if you buy through them we may earn a commission, at no extra cost to you.\nThere is no single best Android custom ROM in 2026. Choose according to your phone and priority:\n\n...\n\n* CalyxOS | Privacy with broader hardware support | Reduced Google dependence | Support and releases changed during its Android 16 transition\n“Best” means different things here. A privacy-"
+        },
+        {
+          "url": "https://thecustomrom.com/guides/best-roms-2026",
+          "title": "Best Custom ROMs in 2026 - Top Picks for Every User | TheCustomRom",
+          "published_date": "2026-03-23",
+          "snippet": "Join Telegram Subscribe YouTube\nDark Mode\nHome / Guides / Best Custom ROMs in 2026 - Top Picks for...\nComparison March 23, 2026 Updated May 24, 2026 7 min read\n\nBest Custom ROMs in 2026 - Top Picks for Every User\n\nComprehensive comparison of the best Android custom ROMs in 2026. Find the perfect ROM for stability, performance, battery life, or customization.\nbest roms 2026 comparison lineageos pixel experience evolution x\nAfter testing dozens of custom ROMs across multiple devices, here’s my honest take on which ones are worth your time in 2024.\n\n...\n\nel Experience | Pixel Experience / PixelOS\n* Customization | crDroid or Evolution X\n* Gaming Performance | Evolution X\n* Privacy | GrapheneOS (Pixel only)\n* Battery Life | LineageOS or ArrowOS\n* Old Device Revival | LineageOS\n\nThe Top 10 Custom ROMs\n\n1. LineageOS\n\nThe gold standard of custom ROMs.\nI keep coming back to LineageOS. It’s borin"
+        },
+        {
+          "url": "https://techyorker.com/10-best-custom-roms-for-android-you-can-install-2",
+          "title": "10 Best Custom ROMs for Android You Can Install",
+          "published_date": "2026-05-14",
+          "snippet": "Compare Now Post-Prime Cart Check Amazon US Recheck Tech Upgrades Headphones, tablets, laptops, smart displays, storage, routers, and chargers worth rechecking before the next upgrade. Check Deals ×\nTech Yorker\n* News\n* How To\n* Listicles\n* Comparisons\n\n10 Best Custom ROMs for Android You Can Install\n\nBy TechYorker Team May 14, 2026, 11:09 am\nQuick Answer\nInstall a custom ROM by choosing a build you can verify for your exact phone model, then flashing it via fastboot or a recovery.\n\n...\n\n(128GB + 4GB) International Model SM-A165F/DS Factory Unlocked, 6.7\", Dual... | $136.99 | Buy on Amazon\nThis guide filters for custom ROMs that still have active development and meaningful device support in 2025/2026, then maps each option to real-world priorities like stability, performance, privacy, and feature compatibility.\nBefore you flash, you’ll also get clear compatibility and integrity caveats ("
+        },
+        {
+          "url": "https://thecustomrom.com/news/best-devices-custom-roms-2026",
+          "title": "Best Devices for Custom ROMs in 2026 | TheCustomRom",
+          "published_date": "2026-01-06",
+          "snippet": "TheCustomRom\nPhones ROMs What's New Guides Tools Compare\nSearch phones, ROMs, guides Ctrl K\nSearch phones, ROMs, guides\nPhones ROMs What's New Guides Tools Compare\n1. Home\n2. News\n3. Best Devices for Custom ROMs in 2026\n\nBest Devices for Custom ROMs in 2026\n\nPhones worth buying in 2026 if custom ROM support matters: Pixels first, then OnePlus and Xiaomi models, with what to check and which brands to avoid.\nGuide Jan 6, 2026 Updated Nov 1, 2026 3 min read\nContents 4 sections\n1. Flagship Tier\n2. Mid-Range\n3. Avoid For Custom ROMs\n4. What to Look For\nHere are the devices worth buying if custom ROM support is important to you. ROM support changes month to month, so each pick links to its device page, which is built from the ROM projects’ own device lists. An earlier version of this article recommended the Xiaomi 14 for “wide ROM support” (none of the ROMs we track list it), described the POC"
+        },
+        {
+          "url": "https://www.droidrooter.com/blog/best-custom-roms-2026",
+          "title": "Best Custom ROMs for Android in 2026 — Droid Rooter",
+          "published_date": "2026-05-17",
+          "snippet": "2. Blog ›\n3. Comparison ›\n4. Best Custom ROMs for Android in 2026\nComparison Advanced 7 min read\n\nBest Custom ROMs for Android in 2026\n\nBest custom ROMs Android 2026 — LineageOS, Pixel Experience, Paranoid Android, Evolution X, GrapheneOS reviewed; choosing, installing, common issues.\nBy Alex Dutrow | Published May 17, 2026\nBest custom ROMs Android 2026 LineageOS Pixel Experience GrapheneOS\n\nKey Takeaways\n\n* What are custom ROMs?\n* Why choose custom ROMs in 2026?\n* Is GrapheneOS really more secure than stock Android?\nTable of Contents\n1. What are custom ROMs?\n2. Why choose custom ROMs in 2026?\n3. Top custom ROMs for 2026\n4. LineageOS\n5. Pixel Experience\n6. Paranoid Android\n7. Evolution X\n8. GrapheneOS\n9. Custom ROM comparison table\n10. Installation guide\n11. Prerequisites\n12. General installation steps\n13. Choosing the right ROM\n14. Consider your needs\n15. Device compatibility\n16.\n\n...\n\n"
+        },
+        {
+          "url": "https://techlog360.com/best-custom-roms-for-android",
+          "title": "10 Best Custom ROMs for Android to Transform Your Smartphone Experience",
+          "published_date": "2026-01-10",
+          "snippet": "Home Android Tweaks\n\n10 Best Custom ROMs for Android to Transform Your Smartphone Experience\n\nJanuary 10, 2026\nBy Sabarinath\nThe world of Android is vast and vibrant, continually expanding with a plethora of custom ROMs that offer a myriad of features, enhancements, and experiences beyond what’s typically available. For the uninitiated, custom ROMs are modified versions of the Android operating system, providing a new lease of life to smartphones. This exploration delves into the 10 best custom ROMs for Android, promising to revolutionize your device’s customization, performance and usability.\n\n1. Pixel Experience\n\nContents\n* 1. 1. Pixel Experience\n* 2. 2. Lineage OS\n* 3. 3. Resurrection Remix\n* 4. 4. Havoc-OS\n* 5. 5. Paranoid Android\n* 6. 6. BlissRoms\n* 7. 7. ArrowOS\n* 8. 8. crDROID\n* 9. 9. Xtended\n* 10. 10. MoKee\nPixel Experience is a popular custom ROM in the Android community, offeri"
+        }
+      ],
+      "error": null,
+      "http_status": 200,
+      "latency_ms": 1017
+    },
+    {
+      "id": "q7",
+      "query": "grapheneos vs calyxos",
+      "intent": "brand_compare",
+      "results": [
+        {
+          "url": "https://d-central.tech/grapheneos-calyxos-bitcoin-sovereignty",
+          "title": "GrapheneOS and CalyxOS: A Sovereign Mobile Base for Bitcoiners - D-Central",
+          "published_date": "2026-06-27",
+          "snippet": "Bitaxe Shrouds Space heaters Start a repair Firmware\nGrapheneOS and CalyxOS: A Sovereign Mobile Base for Bitcoiners\nSecurity & Privacy\n\nGrapheneOS and CalyxOS: A Sovereign Mobile Base for Bitcoiners\n\nJune 27, 2026 · D-Central · ⏱ 10 min read\n\nIn This Guide\n\nIn This Guide\nQuick answer\nGrapheneOS and CalyxOS are de-Googled Android systems that harden the phone holding your wallets. GrapheneOS runs only on Pixel, centring a hardened security model with optional sandboxed Google Play; CalyxOS uses microG and its Datura firewall and supports Pixel, Fairphone, and some Motorola devices.\nGrapheneOS and CalyxOS are de-Googled Android operating systems that turn a supported phone into a privacy-hardened base for Bitcoin, Lightning , Nos\n\n...\n\nmodels, with more added over time. Like GrapheneOS, it “utilizes Verified Boot (including bootloader re-locking) to keep the Android security model intact,”"
+        },
+        {
+          "url": "https://privacystronghold.com/compare/grapheneos-vs-calyxos",
+          "title": "GrapheneOS vs CalyxOS 2026 | Privacy Stronghold",
+          "published_date": "2026-04-10",
+          "snippet": "Privacy Stronghold\n* Reviews\n* Comparisons\n* Guides\n* Tools\n* Methodology\nLast updated: April 10, 2026\n1. Home\n2. Privacy Phones\n3. GrapheneOS vs CalyxOS 2026\n\nGrapheneOS vs CalyxOS 2026\n\nWe earn affiliate commissions from links on this page — see our methodology .\n\nTL;DR verdict\n\nGrapheneOS wins on security. Hardware memory tagging, verified boot, sandboxed Play Services, and the fastest security patches make it the gold standard. CalyxOS wins on usability. microG pre-configured, built-in VPN and firewall, F-Droid and Signal pre-installed. If security is your top priority, choose GrapheneOS. If you want the easiest degoogled experience, choose CalyxOS.\n\nComparison table\n\n* Feature | GrapheneOS | CalyxOS\n* Security model | Hardened AOSP + MTE | Standard AOSP fork\n* Google Services | Sandboxed Play (optional) | microG (pre-installed)\n\n...\n\ne.\n\nApp compatibility\n\nBoth run Android apps well"
+        },
+        {
+          "url": "https://securfy.io/en/blog/grapheneos-vs-calyxos-vs-divestos",
+          "title": "GrapheneOS vs CalyxOS vs DivestOS: Comparison Guide | Securfy",
+          "published_date": "2026-06-16",
+          "snippet": "Encrypted\nSecurfy\nBlog FAQ Contact Services\nSignal Signal Store Store\nEN\nEN\n1. Home\n3. Blog\nCOMPARATIVA June 16, 2026 14 min read\n\nGrapheneOS vs CalyxOS vs DivestOS: which to choose in 2026\n\nA thorough comparison of the three privacy-focused Android operating systems. We look at security, usability, compatibility and the threat model each one covers.\nFabio Marco\nCybersecurity Engineer · Network management\nGrapheneOS vs CalyxOS vs DivestOS: which to choose in 2026\nIn this article\n* The Android privacy ROM ecosystem\n* GrapheneOS: security without compromise\n* CalyxOS: usable privacy for everyone\n* DivestOS: radical freedom on modest hardware\n* Technical comparison: head to head\n* Which one fits your profile?\n* What the forums won't tell you\n* Conclusion: there's no wrong decision, only informed ones\n\nThe Android privacy ROM ecosystem\n\nOnce you decide to take your phone's privacy seriously,"
+        },
+        {
+          "url": "https://thecustomrom.com/blog/grapheneos-vs-calyxos",
+          "title": "GrapheneOS vs CalyxOS in 2026: Which Privacy ROM Should You ...",
+          "published_date": "2026-06-30",
+          "snippet": "TheCustomRom\nPhones ROMs What's New Guides Tools Compare\nSearch phones, ROMs, guides Ctrl K\nSearch phones, ROMs, guides\nPhones ROMs What's New Guides Tools Compare\n1. Home\n2. Blog\n3. GrapheneOS vs CalyxOS in 2026: Which Privacy ROM?\n\nGrapheneOS vs CalyxOS in 2026: Which Privacy ROM?\n\nGrapheneOS and CalyxOS compared on Android 17: security hardening, sandboxed Google Play versus microG, device support, update record and threat model.\n\n...\n\nGrapheneOS is the stronger choice for security: it hardens Android its\n\n...\n\nGrapheneOS maximizes security hardening while keeping app compatibility through sandboxed Google Play. Calyx\n\n...\n\n* Auditor app , hardware-backed attestation that lets you verify the phone is running an untampered GrapheneOS install\n\nCalyxOS\n\nCalyxOS applies meaningful security measures but is not as deeply hardened:\n* Verified Boot , same as GrapheneOS\n\n...\n\nits own keys. Cal"
+        },
+        {
+          "url": "https://privacygear.nl/en/guides/calyxos-vs-grapheneos-comparison",
+          "title": "CalyxOS vs GrapheneOS — which privacy operating system suits you?",
+          "published_date": null,
+          "snippet": "Home / Guides / CalyxOS vs GrapheneOS — which privacy operating system suits you?\n\nCalyxOS vs GrapheneOS — which privacy operating system suits you?\n\nCalyxOS and GrapheneOS are the two best-known privacy versions of Android. This guide compares their security, app compatibility and supported phones, so you can pick the one that fits.\nLast reviewed October 1, 2026\nCalyxOS vs GrapheneOS — which privacy operating system suits you?\n\nCalyxOS vs GrapheneOS\n\nCalyxOS and GrapheneOS are the two best-known privacy versions of Android. This guide compares their security, app compatibility and supported phones, so you can pick the one that fits.\nWho this guide is for. This guide is for people already considering a privacy-focused Android OS and trying to decide which one actually fits their risk tolerance and tolerance for friction.\nIt fits especially:\n* readers deciding between GrapheneOS and Calyx"
+        },
+        {
+          "url": "https://secure-os.org/articles/grapheneos-vs-calyxos",
+          "title": "GrapheneOS vs CalyxOS: Which De-Googled Android Is Right for You? (2026)",
+          "published_date": "2026-06-28",
+          "snippet": "Linux](https://secure-os.org/c/hardened-linux/) [Disk encryption](https://secure-os.org/c/disk-encryption/) [Threat model](https://secure-os.org/c/threat-model/)\n\n[Home](https://secure-os.org/) / [Guides](https://secure-os.org/articles/) / GrapheneOS vs CalyxOS: Which De-Googled Android Is Right for You? (2026)\n\ngrapheneos\n\n# GrapheneOS vs CalyxOS: Which De-Googled Android Is Right for You? (2026)\n\nsecure-os · Updated June 28, 2026 · 7 min read \\#grapheneos \\#calyxos \\#android \\#mobile-privacy \\#degoogle\n\nA hand holding a smartphone displaying an Android interface\n\nIf you have decided to leave stock Android behind, two names dominate the conversation: **GrapheneOS** and **CalyxOS** .\n\n...\n\n[See the Proton VPN Black Friday offer](https://secure-os.org/go/proton-vpn?src=grapheneos-vs-calyxos&pos=bf2026)\n\n## Key differences at a glance\n\n| |GrapheneOS |CalyxOS |\n| --- | --- | --- |\n|**Primar"
+        },
+        {
+          "url": "https://vucense.com/comparisons-alternatives/best-alternatives/best-privacy-phones-2026-comparison",
+          "title": "Best Privacy Phones 2026: GrapheneOS vs CalyxOS vs iPhone",
+          "published_date": "2026-03-23",
+          "snippet": "4. Best Privacy Phones 2026: GrapheneOS vs CalyxOS vs iPhone\n\n# Best Privacy Phones 2026: GrapheneOS vs CalyxOS vs iPhone\n\nBy [Anju Kushwaha](https://vucense.com/author/anju-kushwaha/) ✓\n\nOct 4, 2026 Updated\n\n10 min\n\nA smartphone showing a home screen filled with social and messaging app icons.\n\nArticle Roadmap\n\n* The Verdict at a Glance\n\n...\n\n* 2\\. CalyxOS: The Gentler De-Google Path\n* What Makes CalyxOS Different\n* CalyxOS vs GrapheneOS: The Real Difference\n* 3\\. iPhone: Privacy as a Managed Service\n* What iPhone Does Well\n\n...\n\nThe recovery looks genuine, but the project’s own commitment is hedged: it plans to resume updates “to the best of our ability.” Weigh that against GrapheneOS, which releases frequently. Full analysis in [GrapheneOS vs CalyxOS 2026](https://vucense.com/comparisons-alternatives/app-versus/grapheneos-vs-calyxos-2026-comparison/) .\n\n### What Makes CalyxOS Differen"
+        },
+        {
+          "url": "https://thecustomrom.com/compare/calyxos-vs-grapheneos",
+          "title": "CalyxOS vs GrapheneOS: Which Custom ROM Is Better? (2026 ...",
+          "published_date": null,
+          "snippet": "3. CalyxOS vs GrapheneOS\n\nCalyxOS vs GrapheneOS\n\nAs of Nov 6, 2026, CalyxOS has current builds for 30 phones and GrapheneOS for 21; 17 phones get current builds of both. Below, the two side by side: which Android versions they ship and when they last built. Every figure comes from the projects' own device lists. Nothing here is a rating.\nOnly CalyxOS 13 phones\nOnly GrapheneOS 4 phones\nBoth 17 phones\nCalyxOS newest Android Android 17\nGrapheneOS newest Android Android 17\nCalyxOS newest build Oct 29, 2026\nGrapheneOS newest build Nov 2, 2026\nOur editorial comparison: GrapheneOS vs CalyxOS in 2026: Which Privacy ROM?\nROM vs ROM Phone vs phone\n\nWhat each ROM covers\n\nCalyxOS has current builds for 30 phones from 4 brands, GrapheneOS for 21 phones from 1 brand. CalyxOS covers more phones and more brands.\n\nCalyxOS\n\nStatus Active\nBrands 4 with current builds\nMost phones Google (20), Motorola (6), "
+        }
+      ],
+      "error": null,
+      "http_status": 200,
+      "latency_ms": 1205
+    },
+    {
+      "id": "q8",
+      "query": "is installing a custom rom safe",
+      "intent": "risk_objection",
+      "results": [
+        {
+          "url": "https://www.androidauthority.com/build-custom-android-rom-720453",
+          "title": "How to build your own custom Android ROM in 2025 - Android Authority",
+          "published_date": "2025-03-19",
+          "snippet": "experimental software on your device and keeping expectations in check. If you have absolutely no coding experience, zero Linux experience, or no idea what a Makefile is, this isn’t for you.\n\nDo you install custom ROMs on Android phones?\n\n19751 votes\nYes, I love playing with custom ROMs\n81% No, I don't install custom ROMs\n19%\nAndroid is a complete operating system. It is complex and contains many different subsystems. Creating an operating system as complex and useful as Android didn’t happen overnight.\n\n...\n\nHint: Search for “install gapps.”\n\nWhere to start when building your own Android ROM\n\nGary Sims / Android Authority\n\n...\n\n* Set up a build environment — including installing the correc\n\n...\n\nSet up a build environment — Ubuntu 18.04 is the recommended build OS. You will need to install various development-related packages like gcc, git, python, etc. The master branch of Android in A"
+        },
+        {
+          "url": "https://kevinboone.me/rom_security.html",
+          "title": "Kevin Boone: Does the use of custom Android ROMs improve or worsen security?",
+          "published_date": "2023-09-09",
+          "snippet": "Part of that process was replacing the vendor's Android on my smartphone and tablets with a 'custom ROM' -- in my case Lineage OS.\n\n...\n\nNote: The term 'custom ROM' is a misnomer, of course -- no actual ROM is involved. I use it, with reluctance, to refer to a non-vendor operating system installation, because everybody else does.\nMy cellphone and tablets contain sensitive data. Some of it this has obvious significance -- confidential documents and such-like -- but I also have stored credentials and passwords, cached by apps.\n\n...\n\nlling a custom ROM improves the security of my devices, or reduces it.\nNote: In this article I'm only considering the security implications of using a custom ROM.\n\n...\n\nproblems of this sort than a reputable custom ROM. Samsung has an ill reputation for bloatware of dubious provenance, but Android versions produced by network operators are probably the worst cu"
+        },
+        {
+          "url": "https://www.extremetech.com/computing/100181-android-custom-roms-what-are-they-and-how-to-install-them",
+          "title": "Android custom ROMs: What are they, and how to install them | Extremetech",
+          "published_date": "2011-10-17",
+          "snippet": "2. Computing\n\nAndroid custom ROMs: What are they, and how to install them\n\nCustom ROMs are the ultimate expression of the openness of the Android ecosystem.\n\n...\n\nyour phone. ROMs are the low level programming (also often called firmware) that contain the operating system and basic applications to make your phone work. For the iPhone and iPad those ROMs come from Apple and can typically only be updated when Apple issues updates. But for Android devices there are literally hundreds of developers working on custom ROMs for most common models of phones and tablets, which they are happy to share with the community. The big question for most users is whether it is worth the hassle of installing a custom ROM, and if so, what is the best way to do it safely.\nThe first thing to know is that messing with your phone's firmware can be risky. You can potentially \"brick\" your phone so that it won't b"
+        },
+        {
+          "url": "https://www.aethovpn.com/en/blog/security-and-privacy/custom-android-roms",
+          "title": "Custom Android ROMs: Risks and Checks Before You Flash",
+          "published_date": "2026-04-24",
+          "snippet": "you install in place of the phone maker's firmware. People use Custom Android ROMs to keep older phones updated, remove bloatware, get a cleaner system, or add features the manufacturer never shipped.\n\n...\n\nIf your device is already acting strangely, start with how to fix a hacked Android phone and how to use Android safe mode . If you want a broader privacy foundation first, the pillar page digital privacy guide is also worth reading.\nKey Takeaways\n* Custom Android ROMs can give some devices a longer lifecycle and less preinstalled software.\n* Flashing usually requires unlocking the bootloader, which weakens device integrity protection and\n\n...\n\nOnce you unlock and install a third-party system, the risks become:\n* Risk | Possible result\n* Untrusted ROM source | System-level backdoor or malicious component\n\n...\n\nWhat Should You Check Before Flashing?\n\n1. Whether your exact device model i"
+        },
+        {
+          "url": "https://android.stackexchange.com/questions/20545/is-it-100-safe-to-install-custom-roms",
+          "title": "is it 100% safe to install Custom Roms - Android Enthusiasts Stack Exchange",
+          "published_date": "2012-03-12",
+          "snippet": "and the best answers rise to the top.\nFind your community\nLoading…\nAndroid Enthusiasts\n1. Stack Internal\nTurn scattered docs and code into trusted AI context. Explore the new Stack Internal platform.\nCreate a workspace\n\nis it 100% safe to install Custom Roms\n\nAsk Question\nAsked 14 years, 7 months ago\nModified 13 years, 2 months ago\nViewed 18k times\n13\nI wonder if is possible for those people who download the Android source code and customize it then release their custom roms to hack the API or any other part of the codebase like GMail client or network stack so to push in the rom some kind of spyware, virus and so on...\nmy main concern is that I like to experiment custom roms made available by any developer online but I really would not like to get my traffic sniffed or my Google Account pwd stolen.\nAny idea? is Android safe by default in this way or could it be altered?\n* custom-roms\nSh"
+        },
+        {
+          "url": "https://www.hexnode.com/blogs/the-big-hows-of-managing-custom-android-os-in-the-workplace",
+          "title": "The big ‘HOWs’ of managing custom Android OS (custom ROM) in the workplace",
+          "published_date": "2021-06-16",
+          "snippet": "A custom Android OS (or, a custom ROM) is basically a personalized Android firmware, that’s designed based on the Android open-source code provided by Google. With this code, developers can design their own custom versions of Android, and flash them to the supported devices, to enable access to new features and functionalities that would otherwise be unavailable on the Android.\n\nIs it safe to flash a custom ROM on your Android?\n\nWell, safe is a matter of perspective. Before I get on to explain, I’ll just state that – officially, any modification to the device firmware is not recommended by Google. The reason being that, not all custom ROMs go through the same officially verified quality checks that the stock firmware goes through.\nHowever, in my personal opinion, flashing a custom ROM on your Android is as safe as trusting your original stock firmware. That is, as long as you’re installi"
+        },
+        {
+          "url": "https://surfshark.com/blog/custom-android-roms",
+          "title": "Are custom Android ROMs dead in 2026? - Surfshark",
+          "published_date": "2025-08-14",
+          "snippet": "Installing a custom Android ROM usually starts with unlocking your phone’s bootloader, the basic software that gets the device up and running\n\n...\n\nincorrectly installing a custom ROM or adding incompatible firmware, you may make your phone non-functional — for good.\n\n...\n\nHome screen launcher apps\n\nAndroid lets users install launcher apps that replace their default home screen and app drawer with a customizable interface.\n\n...\n\n.\nLauncher apps might be a better choice than custom ROMs because they:\n* Are easy to install;\n* Don’t require bootloader unlocking;\n* Are more stable and won’t brick your phone;\n* Let you safely experiment with different features.\nOne of the most popular launcher apps is Nova Launcher. Known for its ease of use and smooth performance, it lets users personalize their Android safely and reliably.\n\nMinimalistic stock set-up\n\nInstead of installing a custom add-on, y"
+        },
+        {
+          "url": "https://thecustomrom.com/guides/getting-started",
+          "title": "Getting Started with Custom ROMs in 2026 | TheCustomRom",
+          "published_date": "2026-04-04",
+          "snippet": "Getting Started with Custom ROMs in 2026\n\nGetting Started with Custom ROMs in 2026\n\nA beginner's guide to custom ROMs in 2026: what they are, which phones can still be unlocked, the order of steps from backup to first boot, and the real risks.\nInstallation Apr 4, 2026 Updated Nov 1, 2026 12 min read\nContents 14 sections\n1. The Short Answer\n2. What is a Custom ROM?\n3. Why Install a Custom ROM?\n4. Is It Safe?\n5. Popular Custom ROMs\n6. What Do You Need?\n7. Key Terms Explained\n8. The Flashing Process Overview\n9. Step-by-Step Roadmap\n10. Common Myths Debunked\n11. Before You Start Checklist\n12. If Something Goes Wrong\n13. Ready to Start?\n14. Join the Community\nA custom ROM is a version of Android, built by an independent project, that replaces the system your phone shipped with.\n\n...\n\nsupporting years ago.\n* Stock ROM : The Android version your phone came with (Samsung One UI, Xiaomi HyperOS, "
+        }
+      ],
+      "error": null,
+      "http_status": 200,
+      "latency_ms": 815
+    },
+    {
+      "id": "q9",
+      "query": "custom rom banking app play integrity",
+      "intent": "dealbreaker_objection",
+      "results": [
+        {
+          "url": "https://thecustomrom.com/guides/fix-play-integrity-2026",
+          "title": "Fix Play Integrity on Any Custom ROM, 2026 Working Method",
+          "published_date": "2026-02-06",
+          "snippet": "Fix Play Integrity on Any Custom ROM, 2026 Working Method\n\nFix Play Integrity on Any Custom ROM, 2026 Working Method\n\nPass Play Integrity on a custom ROM in 2026 on Android 16 or 17: PlayIntegrityFork for Magisk or KernelSU, the versions Android 17 needs, and strong integrity.\n\n...\n\nRealistic target on a custom ROM : basic integrity, plus root hidden from each app’s local checks. That is enough for apps that accept basic integrity and for many games.\n\n...\n\n* If device integrity still fails with a working keybox on a custom ROM, the README says the ROM’s own fingerprint may be on Google’s banned list. Its\n\n...\n\ncurrent and update it before you start troubleshooting anything else. Update Magisk, modules and the ROM one at a time and check the verdicts after each, so that when something breaks you know which change did it. After a ROM update, run the checker before you need your banking app"
+        },
+        {
+          "url": "https://thecustomrom.com/guides/hide-root-banking",
+          "title": "Hide Root from Banking Apps - Complete Guide for 2026",
+          "published_date": "2026-03-28",
+          "snippet": "TheCustomRom\nPhones ROMs What's New Guides Tools Compare\nSearch phones, ROMs, guides Ctrl K\nSearch phones, ROMs, guides\nPhones ROMs What's New Guides Tools Compare\n1. Home\n2. Guides\n3.\n\n...\n\nIf the integrity checker shows basic integrity, the root checker sees nothing, and the app still refuses, the app requires device integrity, and the options left are about working around it rather than fixing it. Many banks offer the same accounts through their website, which does not run Play Integrity, and that is the zero-effort answer for occasional use. A work profile does not help with integrity, because Play Integrity reports on the whole device. A secondary phone or a relockable ROM are the only approaches that keep working regardless of what Google changes next.\n\nWork profile\n\nInstalling the app in a work profile (Shelter or Island) does not hide root or the unlocked bootloader, because Play"
+        },
+        {
+          "url": "https://www.itechguides.com/how-to-pass-play-integrity-on-lineageos-rom-what-works-what-does-not-and-when-to-return-to-stock",
+          "title": "How to Pass Play Integrity on LineageOS ROM: The Honest Answer",
+          "published_date": "2026-08-18",
+          "snippet": "The supported solution for strict banking, wallet, enterprise, streaming, and game apps is usually official stock firmware with the manufacturer-supported bootloader state.\n\n...\n\n* Installing Google Apps, clearing Play Store data, or passing a generic checker does not guarantee that a banking, wallet, DRM, enterprise, or game app will accept LineageOS.\n\n...\n\ndevice control, or unusual activity. | A strict app may reject the environment even when a basic device verdict passes.\nA generic “integrity checker passed” result therefore does not prove that a particular banking app, streaming service, wallet, game, or corporate-management app will work. The app developer—not the user—decides which combination is required.\n\nWhat is the difference between Play Protect certification and Play Integrity?\n\n...\n\nNormal LineageOS can fail strict apps because the app may require evidence that a custom-ROM"
+        },
+        {
+          "url": "https://www.privacyportal.co.uk/blogs/free-rooting-tips-and-tricks/play-integrity-on-aosp",
+          "title": "Play Integrity on AOSP: Troubleshooting Guide",
+          "published_date": "2026-09-24",
+          "snippet": "CUSTOM ROMS DETAILS SHOWN ON EACH LISTING PRIVACY-FOCUSED DEVICES FREE INTERNATIONAL SHIPPING OPTIONS MODEL-SPECIFIC CONFIGURATIONS STORAGE, COLOUR & CONDITION OPTIONS GRAPHENEOS, MAGISK & CUSTOM\n\n...\n\nA pure AOSP installation may therefore return an API error instead of a failed integrity label.\nA custom ROM with Google apps is different.\n\n...\n\n| Some custom ROMs pass, while altered or blocked builds may fail. | Check root changes, ROM status and Play component errors.\n\n...\n\noader safely.\n* MEETS_STRONG_INTEGRITY | The device meets stricter hardware and security requirements. | Not a realistic target for a normal unlocked custom-ROM setup. | Return to a supported stock configuration if an app demands it.\nPassing one checker does not guarantee that banking, wallet, health or streaming apps will work.\n\n...\n\nA practical decision framework\n\nThe best route depends on what you need from the p"
+        },
+        {
+          "url": "https://thecustomrom.com/blog/fix-banking-apps-custom-rom",
+          "title": "How to Fix Banking Apps on Custom ROMs in 2026 | TheCustomRom",
+          "published_date": "2026-03-19",
+          "snippet": "How to Fix Banking Apps on Custom ROMs in 2026\n\nComplete guide to make banking apps, Google Pay, and other sensitive apps work on rooted custom ROMs using Play Integrity fix on Android 16.\nbanking apps play integrity magisk root fix android 16\nOne of the biggest challenges custom ROM users face is making banking apps work. Google’s Play Integrity API (formerly SafetyNet) blocks many apps on rooted devices. Here’s how to fix it.\n\nUnderstanding the Problem\n\nGoogle’s Play Integrity API checks if your device:\n* Has an unlocked bootloader\n* Is running custom firmware\n* Has root access\n* Has been modified in any way\nIf any of these are detected, apps like Google Pay, banking apps, and even Snapchat may refuse to work.\n\nPrerequisites\n\n* Custom ROM installed\n* Magisk 27.0 or newer\n* Zygisk enabled\n* Internet connection\n\nSolution 1: Play Integrity Fix Module\n\nStep 1: Enable Zygisk\n\n1. Open Magisk"
+        },
+        {
+          "url": "https://www.vecosys.com/banking-app-play-integrity-rooted-custom-android",
+          "title": "Banking App Blocked on a Rooted or Custom Android?",
+          "published_date": "2026-08-12",
+          "snippet": "blank screen, and a wrench-and-gear icon beside it, representing a banking app blocked on a modified device\nYou rooted your phone or flashed a custom ROM, and now your banking app crashes the moment it opens. That is not a bug. It is your bank checking whether the device can be trusted, and deciding it cannot.\nThere is a particular sinking feeling when a banking app that worked yesterday closes the instant it opens, flashing a message about an insecure or uncertified device. If you recently rooted your phone, unlocked the bootloader, or installed a custom ROM, the cause is almost certainly that change, not a\n\n...\n\nRooting, an unlocked bootloader, or a custom or de-Googled ROM causes those checks to fail, and the app responds by crashing, greying out, or showing a “device not certified” error.\n\n...\n\nthe very security your bank depends on. The dependable options are the boring ones: return"
+        },
+        {
+          "url": "https://factually.co/fact-checks/technology/custom-rom-impact-mobile-banking-age-verification-cc5618",
+          "title": "Will installing a custom ROM prevent mobile banking an...",
+          "published_date": "2026-06-27",
+          "snippet": "Will installing a custom ROM prevent mobile banking and age‑verification apps from working?\n\nResearched on June 27, 2026\nTechnology\nSafetyNet Attestation\nGoogle\nGrapheneOS\nGoogle Play\n+13 more\n\n...\n\nInstalling a custom Android ROM does not automatically and universally block banking or age‑verification apps, but it often breaks the attestation signals those apps rely on—so whether an app works depends on the ROM, whether the bootloader is locked or device is rooted, and what mitigations (sandboxed Play, attestation fixes, or proprietary workarounds) are put in place [1] [2] . Public reporting and community testing show a wide spectrum: some ROMs and configurations run many banking apps; others fail most of them [3] [4] .\nAccurate Inaccurate\n1. Why banks and payment apps refuse custom ROMs: the integrity problem\nMost banks and mobile‑payment apps check device integrity through Google’s Pl"
+        },
+        {
+          "url": "https://droidwin.com/how-to-pass-meets-device-and-basic-integrity-via-play-integrity-fix/comment-page-1",
+          "title": "Pass Device, Basic, Strong Integrity via Play Integrity Fix",
+          "published_date": "2023-11-13",
+          "snippet": "* ROOT\n* TWRP\n* Custom ROMs\n* Apple\n* Windows\n* ROOT\n* TWRP\n* Custom ROMs\n* Apple\n* Windows\nSearch for:\nSearch\n\nPass Device, Basic, Strong Integrity via Play Integrity Fix\n\nSadique Hassan • Updated Sep 13, 2025\n[UPDATE: You can now pass the Strong Integrity Test as well!] In this guide, we will show you the steps to pass the “Meets Device Integrity” and Meets Basic Integrity” tests on your rooted device via the Play Integrity Fix module. Gaining administrative privileges by rooting your device via Magisk opens the floodgates to a plethora of customizations.\n\n...\n\nng Play Integrity Test\n* Via Play Store\n* Using Third-Party Apps\n* My Device is Failing MEETS_STRONG_INTEGRITY\n* My Device is Passing SafetyNet but I Cannot Use Banking Apps\n* How to Pass Play Integrity Test on Xiaomi EU ROM\n\nWhat is Play Integrity?\n\nplay integrity fix module\nPlay Integrity is an API that is used by numerous app"
+        }
+      ],
+      "error": null,
+      "http_status": 200,
+      "latency_ms": 1107
+    },
+    {
+      "id": "q10",
+      "query": "degoogle android",
+      "intent": "adjacent_privacy",
+      "results": [
+        {
+          "url": "https://ivonblog.com/posts/android-phone-degoogle",
+          "title": "Android手機去Google化 (Degoogle) 的方案，microG + Aurora Store替代Google服務框架 · Ivon的部落格",
+          "published_date": "2026-05-04",
+          "snippet": "↓ 快轉到主要內容\n\nAndroid手機去Google化 (Degoogle) 的方案，microG + Aurora Store替代Google服務框架\n\n2026年5月4日 · 民國115年丙午年 · 切換正體/简体 ·\nAlso available in: English · 日本語\n分類 智慧型手機 Root與刷機\n標籤 Degoogle MicroG LineageOS GrapheneOS\n目錄\n* 1. Degoogle概述\n* 2. 解鎖手機 ＆ 刷機\n* 3. 安裝microG教學\n* 4. 安裝F-Droid商店\n* 5. 安裝Aurora Store\n* 6. 修改系統網路設定，脫離Google\n* 7. Google服務的替代品 & 自由軟體APP 目錄\n* 1. Degoogle概述\n* 2. 解鎖手機 ＆ 刷機\n* 3. 安裝microG教學\n* 4. 安裝F-Droid商店\n* 5. 安裝Aurora Store\n* 6. 修改系統網路設定，脫離Google\n* 7. Google服務的替代品 & 自由軟體APP\nDegoogle your Android phone! 本文是將Android手機「去Google化」的步驟與實踐。\n使用Android手機，有可能不登入Google帳號，也不使用Google APP，僅在必要時於瀏覽器中使用嗎？可以的， 在刷機之後 ，下圖中全新Android系統安裝的常用APP，幾乎都是自由軟體。\n(這篇文章最初寫於2022年6月，原本放在Blogger，但是在Google的地盤喊去Google化好像怪怪的)\n\n1. Degoogle概述 #\n\n你知道嗎？Google透過你手機裡面的GMS服務，正在24小時追蹤著你！你上網的一舉一動，都被Google記錄了下來，好向你推薦更多廣告！\nGoogle服務框架是Android手機的寄生蟲，務必將其清除。這就是Degoogle。\n按照 維基百科 定義，「Degoogle」是近年來在歐美興起的草根運動。翻譯成中文即為「去Google化」。\nReddit有個 r/dego"
+        },
+        {
+          "url": "https://dev.to/clinerds/how-to-degoogle-your-android-phone-in-2026-3-realistic-paths-58dm",
+          "title": "How to DeGoogle Your Android Phone in 2026: 3 Realistic Paths - DEV Community",
+          "published_date": "2026-10-30",
+          "snippet": "Share to X Share to LinkedIn Share to Facebook Share to Mastodon\nReport Abuse\nCover image for How to DeGoogle Your Android Phone in 2026: 3 Realistic Paths\nFlatlinerAtheist | CLI-NERDS\nFlatlinerAtheist | CLI-NERDS\nPosted on Oct 30 • Originally published at clinerds.com\n\nHow to DeGoogle Your Android Phone in 2026: 3 Realistic Paths\n\n# degoogle # android # privacy # grapheneos\nYour phone is the most surveilled device you own. It knows where you sleep, who you call, what you type, and it reports home constantly. DeGoogling Android means taking that device back — and in 2026 it is more realistic than ever, as long as you go in with honest expectations.\nThis guide covers the three realistic paths (from easiest to most extreme), the apps that replace Google's, and the things that will break so you are not surprised.\n\n Before anything: back up and pick a path\n\nThere are three levels, and you ca"
+        },
+        {
+          "url": "https://ivonblog.com/ja-jp/posts/android-phone-degoogle",
+          "title": "AndroidスマホをDegoogleする方法：microG + Aurora StoreでGMSを代替する · Ivon's Blog",
+          "published_date": "2026-05-04",
+          "snippet": "↓ メインコンテンツへスキップ\n\nAndroidスマホをDegoogleする方法：microG + Aurora StoreでGMSを代替する\n\n2026年5月4日 ·\nAlso available in: 正體中文 · English\nカテゴリー スマートフォン RootとCustom ROM\nタグ Degoogle MicroG LineageOS GrapheneOS\n目次\n* 1. Degoogleの概要\n* 2. スマホのアンロック＆ROM焼き\n* 3. microGのインストール手順\n* microG APKを手動インストールする\n* microG内蔵ROMを焼く\n* 4. F-Droidストアをインストールする\n* 5. Aurora Storeをインストールする\n* 6. システムのネットワーク設定を変更し、Googleから離れる\n* 7. Googleサービスの代替品＆自由ソフトウェアアプリ 目次\n* 1. Degoogleの概要\n* 2. スマホのアンロック＆ROM焼き\n* 3. microGのインストール手順\n* microG APKを手動インストールする\n* microG内蔵ROMを焼く\n* 4. F-Droidストアをインストールする\n* 5. Aurora Storeをインストールする\n* 6. システムのネットワーク設定を変更し、Googleから離れる\n* 7. Googleサービスの代替品＆自由ソフトウェアアプリ\nDegoogle your Android phone! この記事は、Androidスマホを「脱Google化」する手順と実践についてまとめたものです。\nAndroidスマホを使うとき、Googleアカウントにログインせず、Googleアプリも使わず、必要なときだけブラウザで利用することは可能でしょうか？可能です。 ROMを焼いたあとなら 。下の画像は、新品状態のAndroidシステムに入れた普段使いのアプリですが、ほとんどが自由ソフトウェアです。\n（この記事はもともと2022年6月に書いたもので、当初はBloggerに置いてい"
+        },
+        {
+          "url": "https://mizik.sk/blog/howto-degoogle-your-android-phone",
+          "title": "Howto degoogle your Android phone - Marián Mižik",
+          "published_date": null,
+          "snippet": "* about\n* blog\n* projects\n2021-01-18 | 8 minutes reading\n\nHowto degoogle your Android phone\n\nThere are many reasons to degoogle your phone and there are 2 main ways how to do it. The hardcore way and the second one, for the sake of this article, can be called the \"gracefull degradation way\". Both of them end with your stock android OS replaced by a custom ROM that will lack all of the the Google apps and background services.\n\nWhy should I bother?\n\nDegoogle is a process made of multiple steps which require some effort, maybe some money, but definitely time and attention. Degoogling your phone is no exception. You will have to get used to new apps, maybe mourn some nice features. You will be more incompatible with the mainstream people that will send you links to Google services and you wouldn't be able to\n\n...\n\nSome custom ROMs has this pat\n\n...\n\nbuild zip during the ROM installation. Con"
+        },
+        {
+          "url": "https://github.com/saikiran6-1-6/Degoogle",
+          "title": "GitHub - saikiran6-1-6/Degoogle: Degoogling my android smartphone nokia 6.1 · GitHub",
+          "published_date": null,
+          "snippet": "saikiran6-1-6/Degoogle\n\n* Page: GitHub repository\n* URL: https://github.com/saikiran6-1-6/Degoogle\n* Description: Degoogling my android smartphone nokia 6.1\n* Stars: 2\n* Forks: 1\n* Default branch: main\n* Created: 2021-01-12T05:16:41.000Z\n* Commits: 5\n\nTop-level files\n\n* README.md\n\nREADME.md\n\nDegoogle\n\nDegoogling my android smartphone nokia 6.1\n\nDate 10 jan 2021 is when i started to degoogle my android smartphone nokia 6.1\n\nResearch done before degoogling\n\nSearched for the alternatives of google apps like google drive, google maps, google keep, Gmail etc.\nAnd with the help of FOSS, opensource projects and many privacy, security respecting projects and companies i have found decent alternatives to the above applications.\n\nAlternatives for google services.\n\nGogole drive - Pcloud\nGmail - Protonmail , Outlook(if u still want to use google mail service)\nGoogle maps - OSM and maps\nGoogle keep -"
+        },
+        {
+          "url": "https://mizik.eu/blog/howto-degoogle-your-android-phone",
+          "title": "Howto degoogle your Android phone - Marián Mižik",
+          "published_date": null,
+          "snippet": "* about\n* blog\n* projects\n2021-01-18 | 8 minutes reading\n\nHowto degoogle your Android phone\n\nThere are many reasons to degoogle your phone and there are 2 main ways how to do it. The hardcore way and the second one, for the sake of this article, can be called the \"gracefull degradation way\". Both of them end with your stock android OS replaced by a custom ROM that will lack all of the the Google apps and background services.\n\nWhy should I bother?\n\nDegoogle is a process made of multiple steps which require some effort, maybe some money, but definitely time and attention. Degoogling your phone is no exception. You will have to get used to new apps, maybe mourn some nice features. You will be more incompatible with the mainstream people that will send you links to Google services and you wouldn't be able to\n\n...\n\nSome custom ROMs has this pat\n\n...\n\nbuild zip during the ROM installation. Con"
+        },
+        {
+          "url": "https://ivonblog.com/en-us/posts/android-phone-degoogle",
+          "title": "How I Degoogle My Android Phone with microG and Aurora Store to replace GMS · Ivon's Blog",
+          "published_date": "2026-05-04",
+          "snippet": "↓ Skip to main content\n\nHow I Degoogle My Android Phone with microG and Aurora Store to replace GMS\n\n2026-05-04 ·\nAlso available in: 正體中文 · 日本語\nCategories Root Rooting and Custom ROM\nTags Degoogle MicroG LineageOS GrapheneOS\nTable of Contents\n* 1. Overview of Degoogle\n* 2. Unlock Bootloader & flash a ROM\n* 3. microG installation tutorial\n* Manually install microG APKs\n\n...\n\n* Flash a ROM with built-in microG\n* 4. Install the F-Droid store\n* 5. Install Aurora Store\n* 6. Modify system network settings to leave Google\n* 7. Alternatives to Google services & free software apps\nDegoogle your Android phone! This article is about the steps and practice of “de-Googling” an Android phone.\nIs it possible to use an Android phone without logging in to a Google account, without using Google apps, and only use them in the browser when necessary? Yes, after flashing a custom ROM to the phone . In the im"
+        },
+        {
+          "url": "https://defaultprivacy.com/stacks/degoogle-android-phone",
+          "title": "De-Google Your Android Phone: Custom ROMs, App Stores, and Privacy Handsets | Privacy Stacks | Default Privacy",
+          "published_date": "2026-07-07",
+          "snippet": "De-Google Your Android Phone: Custom ROMs, App Stores, and Privacy Handsets\n\nHow to get your Android phone off Google without switching to iPhone — the ROM layer, the private apps to load onto it,\n\n...\n\nDe-Google Your Android Phone: Custom ROMs, App Stores, and Privacy Handsets\n\nYour Android phone reports to Google constantly — location, app opens, network history — through Google Play Services running underneath everything you do. You don't have to switch to an iPhone to stop it. You have to change the layer that phones home.\n\nWho this is for / Threat model\n\nYou like Android and want to keep it, minus the telemetry.\n\n...\n\nOne note the forums skip: a de-Googled ROM without the Layer 3 apps still leaks through the apps you install. The OS swap and the app swaps are one job, not two.\n\nFAQ\n\nWhat is the best de-Googled Android phone?\n\nA supported Google Pixel running GrapheneOS or CalyxOS. T"
+        }
+      ],
+      "error": null,
+      "http_status": 200,
+      "latency_ms": 2113
+    }
+  ]
+}

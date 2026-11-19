@@ -7,4 +7,5 @@ playwright-report/
 test-results/
 package-lock.json
 /data/
+/seo-audit/
 web/app/components/ui/

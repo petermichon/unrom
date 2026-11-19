@@ -1,0 +1,587 @@
+{
+  "provider": "tinyfish",
+  "captured_at": "2026-11-06T14:42:59Z",
+  "top_n": 8,
+  "queries": [
+    {
+      "id": "q1",
+      "query": "custom android rom",
+      "intent": "head",
+      "results": [
+        {
+          "url": "https://www.reddit.com/r/androidroot/comments/1l0p6tb/what_are_the_best_custom_roms_available_today/",
+          "title": "What are the best custom roms available today? : r/androidroot",
+          "published_date": null,
+          "snippet": "Custom roms are everywhere. The gold standard lineage os to scammy elixer os. I just want a list of good custom roms that i can try on my device(poco ..."
+        },
+        {
+          "url": "https://lineageos.org/",
+          "title": "LineageOS – LineageOS Android Distribution",
+          "published_date": null,
+          "snippet": "LineageOS Android Distribution. A free and open-source operating system for various devices, based on the Android mobile platform. Get LineageOS Blog."
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/List_of_custom_Android_distributions",
+          "title": "List of custom Android distributions",
+          "published_date": null,
+          "snippet": "This is a list of Android distributions, Android-based operating systems (OS) commonly referred to as Custom ROMs or just ROMs, forked from the Android Open ..."
+        },
+        {
+          "url": "https://evolution-x.org/",
+          "title": "Evolution X",
+          "published_date": null,
+          "snippet": "Evolution X is a custom Android ROM that aims to replicate the Google Pixel experience, with added customization. Based on the LineageOS Project. Get the ..."
+        },
+        {
+          "url": "https://www.youtube.com/watch?v=l8-U-3BHdXU",
+          "title": "Install Custom ROM on Any Android Phone Ft. Gaming ROM | No Root ...",
+          "published_date": null,
+          "snippet": "How to Install a Gaming Custom ROM on Any Android | GSI Installation Guide (No Root, No TWRP) Transform your old Android phone into a gaming ..."
+        },
+        {
+          "url": "https://xdaforums.com/t/best-lightweight-custom-roms-for-reviving-older-android-devices.4714093/",
+          "title": "Best Lightweight Custom ROMs for Reviving Older Android Devices",
+          "published_date": null,
+          "snippet": "Hi everyone. I'm looking to rejuvenate my older Android smartphone and am in search of lightweight custom ROMs tailored for older hardware."
+        },
+        {
+          "url": "https://www.instructables.com/How-to-Install-a-Custom-ROM-on-Any-Android-Phone-E/",
+          "title": "How to Install a Custom ROM on Any Android Phone (Example",
+          "published_date": null,
+          "snippet": "How to Install a Custom ROM on Any Android Phone (Example: Lenovo K6 Power With LineageOS) · Step 1: Backup Everything! · Step 2: Unlock the ..."
+        },
+        {
+          "url": "https://www.androidauthority.com/build-custom-android-rom-720453/",
+          "title": "How to build your own custom Android ROM in 2025",
+          "published_date": null,
+          "snippet": "You will need at least 400GB of disk space and no less than 16GB of RAM, but 32GB or 64GB is recommended. You will need a modern 64-bit CPU with ..."
+        }
+      ],
+      "error": null,
+      "http_status": 200,
+      "latency_ms": 746
+    },
+    {
+      "id": "q2",
+      "query": "custom rom vs stock android",
+      "intent": "position_vs_stock",
+      "results": [
+        {
+          "url": "https://www.reddit.com/r/oneplus/comments/ss9tl0/custom_rom_vs_stock_rom/",
+          "title": "Custom ROM VS stock ROM : r/oneplus",
+          "published_date": null,
+          "snippet": "Faster than OOS if the ROM is good. · Custom ROM could very well have a much better battery backup. · Your phone feels new, you'll have a new UI ..."
+        },
+        {
+          "url": "https://xdaforums.com/t/difference-between-custom-rom-vs-stock-rom.4364661/",
+          "title": "Difference Between Custom ROM vs Stock ROM",
+          "published_date": null,
+          "snippet": "Most of the custom ROMs are ported from other ROM, so if you want to use those features on your phone, you may have to face bugs sometimes."
+        },
+        {
+          "url": "https://www.youtube.com/watch?v=-d_mMO_SUtE",
+          "title": "Custom ROMs vs Stock ROM | What's the Difference",
+          "published_date": null,
+          "snippet": "A custom ROM is a firmware that can be flashed to a smartphone as an upgrade to the Stock Firmware. Nowadays, more and more Custom ROMs are ..."
+        },
+        {
+          "url": "https://inquisitiveuniverse.com/2024/02/13/custom-roms-vs-stock-roms-a-comprehensive-comparison/",
+          "title": "Custom ROMs vs Stock ROMs: A Comprehensive Comparison",
+          "published_date": null,
+          "snippet": "A Custom ROM is a modified version of the Android operating system, It usually offers more features, customization options, and updates than ..."
+        },
+        {
+          "url": "https://www.privacyportal.co.uk/blogs/free-rooting-tips-and-tricks/custom-rom-vs-stock-android-2026?srsltid=AYCX9vLpnmokL38IYVRjvUzr1R7NT2QbzZrNWMAeyXjSf_dztD0sl3td",
+          "title": "Custom ROM vs Stock Android in 2026: Is It Worth Switching?",
+          "published_date": null,
+          "snippet": "Custom ROM vs stock comes down to control versus convenience. In 2026 a custom ROM (LineageOS 23 or GrapheneOS) gives you more privacy, longer ..."
+        },
+        {
+          "url": "https://www.prizminstitute.com/blog/android-stock-rom-vs-custom-rom/",
+          "title": "Android Stock ROM vs Custom ROM: Which Is Best for Flashing?",
+          "published_date": null,
+          "snippet": "Stock ROM focuses on stability, safety, and Optional. Stock ROM offers stability, safety, and peace , performance control, and extended phone life."
+        },
+        {
+          "url": "https://community.e.foundation/t/custom-rom-vs-stock-rom/49854",
+          "title": "Custom rom vs stock rom - Data Privacy - /e/OS community",
+          "published_date": null,
+          "snippet": "Do the advantages of custom OS outweigh the potential risks. If yes, then go for custom ROM. If not, then stay with the stock OS installed on ..."
+        },
+        {
+          "url": "https://www.quora.com/Can-you-explain-the-differences-between-stock-Android-custom-ROMs-for-Android-and-iOS-Is-one-of-them-considered-better-than-the-others",
+          "title": "Can you explain the differences between stock Android, custom ...",
+          "published_date": null,
+          "snippet": "Custom ROM is a version of Android the user installs. Stock android has the benefit of having low bloatware i.e. more storage to the user."
+        }
+      ],
+      "error": null,
+      "http_status": 200,
+      "latency_ms": 1320
+    },
+    {
+      "id": "q3",
+      "query": "alternative android os",
+      "intent": "category_synonym",
+      "results": [
+        {
+          "url": "https://grapheneos.org/",
+          "title": "GrapheneOS: the private and secure mobile OS",
+          "published_date": null,
+          "snippet": "GrapheneOS is a security and privacy focused mobile OS with Android app compatibility. Developed as a non-profit open source project. known as CopperheadOS. ..."
+        },
+        {
+          "url": "https://www.reddit.com/r/degoogle/comments/ycuf93/alternatives_to_android_os/",
+          "title": "Alternatives to Android OS : r/degoogle",
+          "published_date": null,
+          "snippet": "I have used Google's spin on Android, Samsungs spin on Android, Motorola's spin on Android, GrapheneOS , LineageOS , Manjaro with Plasma Mobile ..."
+        },
+        {
+          "url": "https://lineageos.org/",
+          "title": "LineageOS – LineageOS Android Distribution",
+          "published_date": null,
+          "snippet": "LineageOS Android Distribution. A free and open-source operating system for various devices, based on the Android mobile platform. Get LineageOS Blog."
+        },
+        {
+          "url": "https://www.wired.com/story/best-android-alternatives/",
+          "title": "The Best Alternative Operating Systems to Get Google Off Your Phone",
+          "published_date": null,
+          "snippet": "Best Preinstalled Phone: Fairphone 6 With /e/OS · Best for Pixel Phones: GrapheneOS · Best for Non-Pixel Phones: /e/OS · For the DIY Tinkerer: ..."
+        },
+        {
+          "url": "https://itsfoss.com/open-source-alternatives-android/",
+          "title": "13 Open Source Mobile OS Alternatives to Android",
+          "published_date": null,
+          "snippet": "LuneOS (No Longer Maintained) ... LuneOS is an open-source mobile OS based on Linux kernel. It may not be a feature-rich alternative to Android (of course!)."
+        },
+        {
+          "url": "https://www.reddit.com/r/degoogle/comments/1wke235/13_open_source_mobile_os_alternatives_to_android/",
+          "title": "13 Open Source Mobile OS Alternatives to Android",
+          "published_date": null,
+          "snippet": ""
+        },
+        {
+          "url": "https://www.quora.com/What-are-some-alternative-OS-for-my-Android-phone?no_redirect=1",
+          "title": "What are some alternative OS for my Android phone?",
+          "published_date": null,
+          "snippet": ""
+        },
+        {
+          "url": "https://softwarerecs.stackexchange.com/questions/81535/open-source-operating-system-alternatives-replacements-to-android-for-smartphone",
+          "title": "Open-source operating system alternatives/replacements to Android for Smartphones and ...",
+          "published_date": null,
+          "snippet": ""
+        }
+      ],
+      "error": null,
+      "http_status": 200,
+      "latency_ms": 1548
+    },
+    {
+      "id": "q4",
+      "query": "how to install custom rom android",
+      "intent": "install_howto",
+      "results": [
+        {
+          "url": "https://www.youtube.com/watch?v=l8-U-3BHdXU",
+          "title": "Install Custom ROM on Any Android Phone Ft. Gaming ROM | No Root ...",
+          "published_date": null,
+          "snippet": "How to Install a Gaming Custom ROM on Any Android | GSI Installation Guide. Installation Steps 07:25 - First Boot & Evolution X UI Overview. ..."
+        },
+        {
+          "url": "https://www.wikihow.com/Install-a-Custom-ROM-on-Android",
+          "title": "How to Install a Custom ROM on Android: The Ultimate Guide",
+          "published_date": null,
+          "snippet": "Installing the ROM · Step 1 Connect your Android to your computer. · Step 2 Open your Android's storage on your computer. · Step 3 Copy the ROM ..."
+        },
+        {
+          "url": "https://www.reddit.com/r/linux/comments/118a6g3/installing_a_new_custom_android_rom_was_never/",
+          "title": "Installing a new custom Android ROM was never that easy, thanks to ...",
+          "published_date": null,
+          "snippet": "Like if I unlock the phone myself then can I use Open Android Installer for the adb tools to install the custom ROM?"
+        },
+        {
+          "url": "https://www.youtube.com/watch?v=y3nzJdFNXJk&vl=en",
+          "title": "Install Android 16 Custom ROM on ANY Android Phone",
+          "published_date": null,
+          "snippet": "In this comprehensive tutorial, I'll walk you through the complete process of installing custom ROMs on Samsung, Xiaomi, OnePlus, Google Pixel, ..."
+        },
+        {
+          "url": "https://www.instructables.com/How-to-Install-a-Custom-ROM-on-Any-Android-Phone-E/",
+          "title": "How to Install a Custom ROM on Any Android Phone (Example",
+          "published_date": null,
+          "snippet": "Step 1: Backup Everything! Step 2: Unlock the Bootloader to unlock it. Go to Settings > About Phone > Tap Build Number 7 times to enable ..."
+        },
+        {
+          "url": "https://xdaforums.com/t/guide-complete-newbie-guide-to-root-install-a-custom-rom-updated-26-08.645253/",
+          "title": "[Guide] Complete Newbie Guide to Root & Install a Custom Rom ...",
+          "published_date": null,
+          "snippet": "1. Download a Custom ROM from. Plug in your phone and pull down the Notification bar 3. Click on the notification and select Mount. 1. Download ..."
+        },
+        {
+          "url": "https://www.youtube.com/watch?v=Ox07cg6wC5A",
+          "title": "Install LineageOS on Any Android Phone | Custom Rom Installation",
+          "published_date": null,
+          "snippet": "Install Android even beginner. First Boot into LineageOS Android. How To Install Custom ROMS (Start To Finish Tutorial)"
+        },
+        {
+          "url": "https://forum.level1techs.com/t/how-to-install-a-custom-roms-on-most-android-phones/70136",
+          "title": "How to install a Custom ROMs on most Android Phones",
+          "published_date": null,
+          "snippet": "To install a custom rom you need to do a few things: Unlock your bootloader. Install a custom recovery. Backup the stock rom. Install a custom ..."
+        }
+      ],
+      "error": null,
+      "http_status": 200,
+      "latency_ms": 1463
+    },
+    {
+      "id": "q5",
+      "query": "install lineageos on pixel",
+      "intent": "install_device",
+      "results": [
+        {
+          "url": "https://wiki.lineageos.org/devices/sailfish/install/",
+          "title": "Install LineageOS on Google Pixel - sailfish",
+          "published_date": null,
+          "snippet": "Make sure your computer has adb and fastboot . Setup instructions can be found here. Enable USB debugging on your device. Boot your device with the stock OS ..."
+        },
+        {
+          "url": "https://wiki.lineageos.org/devices/redfin/install/",
+          "title": "Install LineageOS on Google Pixel 5 - redfin",
+          "published_date": null,
+          "snippet": "Make sure your computer has adb and fastboot . Setup instructions can be found here. Enable USB debugging on your device. Boot your device with the stock OS ..."
+        },
+        {
+          "url": "https://www.reddit.com/r/LineageOS/comments/1jfi9kt/whats_a_good_tutorial_for_a_noob_to_install/",
+          "title": "What's a good tutorial for a noob to install Lineage on a Pixel 3?",
+          "published_date": null,
+          "snippet": ""
+        },
+        {
+          "url": "https://xdaforums.com/t/official-lineageos-22-for-the-google-pixel-2.4649873/",
+          "title": "[OFFICIAL] LineageOS 22 for the Google Pixel 2",
+          "published_date": null,
+          "snippet": ""
+        },
+        {
+          "url": "https://xdaforums.com/t/official-lineageos-22-for-the-google-pixel-xl-repartition-only.4656481/",
+          "title": "[OFFICIAL] LineageOS 22 for the Google Pixel XL - Repartition Only",
+          "published_date": null,
+          "snippet": ""
+        },
+        {
+          "url": "https://www.youtube.com/watch?v=6T_MVNaBTQ0",
+          "title": "Install Lineage OS Android 14 on Google Pixel 1 - 6",
+          "published_date": null,
+          "snippet": "Ready to install Lineage OS 21 on your Google Pixel 1 through Pixel 6 Pro? This guide covers everything you need for a smooth installation, ..."
+        },
+        {
+          "url": "https://www.reddit.com/r/Pixel4a/comments/1iak22a/lineageos_installation_guide/",
+          "title": "Lineageos installation guide? : r/Pixel4a",
+          "published_date": null,
+          "snippet": "Hello! With the death update over my phone I decided to go the lineageos route. Any good guides out there? My phone is stock never did anything to it 🙃"
+        },
+        {
+          "url": "https://github.com/vk1111111/LineageOS-Pixel-Guide",
+          "title": "An unofficial guide to installing Lineage OS on a Pixel device · ...",
+          "published_date": null,
+          "snippet": "Power off your Pixel and hold Power button + Volume down to go into Fastboot mode. Once done, plug the Pixel into the PC. Go to the ..."
+        }
+      ],
+      "error": null,
+      "http_status": 200,
+      "latency_ms": 1473
+    },
+    {
+      "id": "q6",
+      "query": "best custom rom 2026",
+      "intent": "decision_fresh",
+      "results": [
+        {
+          "url": "https://www.reddit.com/r/AndroidQuestions/comments/1upocbg/if_you_had_to_recommend_one_custom_rom_in_2026/",
+          "title": "If you had to recommend one custom ROM in 2026, which would it be?",
+          "published_date": null,
+          "snippet": "I've been thinking about switching to a custom ROM and would love to hear your experiences.\n\nIf you had to recommend just one custom ROM, which would it ..."
+        },
+        {
+          "url": "https://www.youtube.com/watch?v=bnu8wFb9TqI",
+          "title": "I Tested 10 Custom ROMs So You Don't Have To!",
+          "published_date": null,
+          "snippet": "This video will show you \" 🚀 Rating Custom ROMs in 2026 ✅ | Customizations/Stability/Uniqueness? 👀 \". The BEST CUSTOM ROMS"
+        },
+        {
+          "url": "https://surfshark.com/blog/custom-android-roms?srsltid=AYCX9vJOYKtqQTNcIBmny3QYW746HMo1vD3q3QM3qAy_qhyr8pih6FXW",
+          "title": "Are custom Android ROMs dead in 2026?",
+          "published_date": null,
+          "snippet": "Custom Android ROMs can offer greater customization, but they may also put your security at risk. Learn their pros and cons to see if they're worth it."
+        },
+        {
+          "url": "https://www.youtube.com/watch?v=yrAOgeXVRns",
+          "title": "Ranking Custom ROMs in 2026!",
+          "published_date": null,
+          "snippet": "This video will show you \" Ranking Custom ROMs in 2026! CRDROID VS EVOLUTION X VS ARROW OS VS PROJECT 404 ROM | BEST CUSTOM ROM🔥"
+        },
+        {
+          "url": "https://www.reddit.com/r/CustomROMsGuide/comments/1w4xcqd/best_phones_for_custom_roms_in_2026/",
+          "title": "Best phones for Custom ROMs in 2026?",
+          "published_date": null,
+          "snippet": ""
+        },
+        {
+          "url": "https://xdaforums.com/t/closed-suggest-a-device-thats-born-perfect-for-custom-roms.4768488/",
+          "title": "Question - [CLOSED]Suggest a Device That's Born/Perfect for Custom ROMs",
+          "published_date": null,
+          "snippet": ""
+        },
+        {
+          "url": "https://sourceforge.net/directory/roms/",
+          "title": "Best Open Source ROMs 2026",
+          "published_date": null,
+          "snippet": "Compare the best free open source ROMs at SourceForge. a free Android based ROM, most advanced in terms of customization and stability! Infinity-X is an AOSP ..."
+        },
+        {
+          "url": "https://9to5google.com/2026/01/22/what-happened-to-custom-roms-video/",
+          "title": "What happened to custom ROMs? [Video]",
+          "published_date": null,
+          "snippet": "best custom ROMs today. LineageOS emerged. Quite possibly the biggest custom ROM project. GrapheneOS is a privacy-focused Android ROM that is ..."
+        }
+      ],
+      "error": null,
+      "http_status": 200,
+      "latency_ms": 1683
+    },
+    {
+      "id": "q7",
+      "query": "grapheneos vs calyxos",
+      "intent": "brand_compare",
+      "results": [
+        {
+          "url": "https://www.reddit.com/r/PrivacyGuides/comments/13yft74/why_would_anyone_choose_calyxos_over_grapheneos/",
+          "title": "Why would anyone choose CalyxOS over GrapheneOS on their Pixel ...",
+          "published_date": null,
+          "snippet": "CalyxOS has more emphasis on shipping only open-source components. Graphene as a project has well-known leadership and community issues. Calyx ..."
+        },
+        {
+          "url": "https://privacygear.nl/en/guides/calyxos-vs-grapheneos-comparison/",
+          "title": "CalyxOS vs GrapheneOS — which privacy operating system suits you?",
+          "published_date": null,
+          "snippet": "GrapheneOS and CalyxOS are both Android forks focused on privacy, but they make fundamentally different choices. GrapheneOS prioritises security above all."
+        },
+        {
+          "url": "https://www.cape.co/blog/grapheneos-vs-calyxos",
+          "title": "GrapheneOS vs. CalyxOS: The Best Pick for 2026 - Cape",
+          "published_date": null,
+          "snippet": "GrapheneOS offers high-security privacy features aimed at tech experts, whereas CalyxOS includes user-friendly privacy tools and settings"
+        },
+        {
+          "url": "https://news.ycombinator.com/item?id=28091157",
+          "title": "How does CalyxOS compare to GrapheneOS?",
+          "published_date": null,
+          "snippet": "Calyx has more focus on functionality and privacy rather than security. On Graphene, security is always priority #1. For example: Calyx provides MicroG."
+        },
+        {
+          "url": "https://threecats.au/why-use-grapheneos-rather-than-calyxos-degoogled-custom-alternative-android-os",
+          "title": "Graphene OS vs Calyx OS - THREE CATS | Phones",
+          "published_date": null,
+          "snippet": "Calyx OS includes the privileged extension, which may lower device security. On the other hand, Graphene OS officially recommends Sandboxed Google Play instead."
+        },
+        {
+          "url": "https://discuss.grapheneos.org/d/26817-switching-from-calyxos-to-grapheneos-privacy-concerns",
+          "title": "Switching from CalyxOS to GrapheneOS Privacy Concerns",
+          "published_date": null,
+          "snippet": "GrapheneOS doesn't connect to Google servers by default while CalyxOS and the other operating systems you're referencing always connect to them."
+        },
+        {
+          "url": "https://www.youtube.com/watch?v=ty1aJR16_qM",
+          "title": "GrapheneOS vs CalyxOS - What do people think is better?",
+          "published_date": null,
+          "snippet": "In this video, I took a look around Reddit and twitter to see what people say about GrapheneOS vs CalyxOS. Find out what I found!"
+        },
+        {
+          "url": "https://sovereignphone.au/guides/grapheneos-vs-calyxos",
+          "title": "GrapheneOS vs CalyxOS: Which Should You Choose? | SOVEREIGN",
+          "published_date": null,
+          "snippet": "GrapheneOS prioritises security hardening and ships with nothing Google-related by default. CalyxOS prioritises out-of-the-box app compatibility and ships ..."
+        }
+      ],
+      "error": null,
+      "http_status": 200,
+      "latency_ms": 3093
+    },
+    {
+      "id": "q8",
+      "query": "is installing a custom rom safe",
+      "intent": "risk_objection",
+      "results": [
+        {
+          "url": "https://www.reddit.com/r/PocoPhones/comments/182lyd5/how_dangerous_is_it_to_install_custom_roms/",
+          "title": "How dangerous is it to install custom roms? : r/PocoPhones",
+          "published_date": null,
+          "snippet": "I recently bought a new poco phone and everyone here seems to have a custom rom and says that it greatly improves your experience so i wanted to try to ..."
+        },
+        {
+          "url": "https://xdaforums.com/t/customs-rom-are-safe-is-my-data-is-safe-on-my-phone.4366299/",
+          "title": "Customs ROM are safe? Is my data is safe on my phone?",
+          "published_date": null,
+          "snippet": "The best practice for testing a custom rom is making a full nandroid backup and just flash the ROM. Then you can just revert back to the ROM ..."
+        },
+        {
+          "url": "https://www.youtube.com/watch?v=b5Y3cfkGAuw",
+          "title": "Stop! Custom ROMs Are NOT for Everyone in 2026  Watch Before ...",
+          "published_date": null,
+          "snippet": "Custom ROMs Are NOT for Everyone in 2026 ❌. This video will show you \" Stop Installing Custom ROMs in 2026 \". — No PC, No Root, No Data Loss!"
+        },
+        {
+          "url": "https://community.oneplus.com/thread/581457",
+          "title": "Is safe to install custom ROM? - OnePlus Community",
+          "published_date": null,
+          "snippet": "Not only is it safe, it is mother approved. You can find tutorials all over Google if you search \"how to install custom rom op3t\"."
+        },
+        {
+          "url": "https://www.quora.com/Does-installing-a-custom-ROM-actually-improve-a-users-privacy",
+          "title": "Does installing a custom ROM actually improve a user's privacy?",
+          "published_date": null,
+          "snippet": "The security that you get is dependent on the custom ROM. If a custom ROM is poorly built and has bugs then there isn't a guarantee that the ..."
+        },
+        {
+          "url": "https://android.stackexchange.com/questions/20545/is-it-100-safe-to-install-custom-roms",
+          "title": "is it 100% safe to install Custom Roms",
+          "published_date": null,
+          "snippet": "No piece of software that you install on any hardware of any form is 100% safe unless you are the author. Custom ROMS are not safe at all. Ise ..."
+        },
+        {
+          "url": "https://kevinboone.me/rom_security.html",
+          "title": "Does the use of custom Android ROMs improve or worsen security?",
+          "published_date": null,
+          "snippet": "On the one hand, using a custom ROM probably removes the low-grade risks associated with pre-installed vendor apps. I'm fairly sure that nothing ..."
+        },
+        {
+          "url": "https://forum.earlybird.club/threads/are-custom-roms-safe-do-you-use-your-email-buy-things-on-it.635731/",
+          "title": "Are custom roms safe- do you use your email, buy things on it?",
+          "published_date": null,
+          "snippet": "custom roms are generally safe, if one is bad usually user ratings will deter other users from installing it, in Cyanogenmods"
+        }
+      ],
+      "error": null,
+      "http_status": 200,
+      "latency_ms": 1945
+    },
+    {
+      "id": "q9",
+      "query": "custom rom banking app play integrity",
+      "intent": "dealbreaker_objection",
+      "results": [
+        {
+          "url": "https://www.reddit.com/r/LineageOS/comments/1fb8p3x/play_integrity_banking_apps_with_gapps_no_root/",
+          "title": "Play Integrity / Banking Apps (with Gapps - No Root) : r/LineageOS",
+          "published_date": null,
+          "snippet": "Using banking and payment apps on Android smartphones with custom ROMs is a problem: A European industry consortium now wants to change that. r ..."
+        },
+        {
+          "url": "https://www.youtube.com/watch?v=UMrdoJodMRM",
+          "title": "How to Pass Play Integrity on Custom & Ported ROMs & Use Banking Apps",
+          "published_date": null,
+          "snippet": "In this video, I'll show you how Play Integrity works and go through root and no-root approaches for getting banking apps working on custom/ ..."
+        },
+        {
+          "url": "https://www.androidauthority.com/custom-roms-unifiedattestation-play-integrity-3647852/",
+          "title": "No banking apps on your custom ROM? This new initiative could help.",
+          "published_date": null,
+          "snippet": "Many banking, financial, and government apps use Play Integrity checks as a security measure, but this measure isn't available on custom ROMs."
+        },
+        {
+          "url": "https://github.com/SunshineYou-Enigma/-Detailed-Guide-Play-Integrity-FIX-Use-Banking-Apps-on-Rooted-Android-",
+          "title": "Detailed-Guide-Play-Integrity-FIX-Use-Banking-Apps-on-Rooted- ...",
+          "published_date": null,
+          "snippet": "Play Integrity FIX & Use Banking Apps. A working custom ROM or stock ROM. Improper installation of ROM causes major issues. Uninstall and reinstall any ..."
+        },
+        {
+          "url": "https://xdaforums.com/t/updated-01-29-2026-guide-get-strong-integrity-on-android-16-fix-banking-apps-revolut-google-wallet-apatch-method.4753805/page-7",
+          "title": "Get Strong Integrity on Android 16 - Fix Banking Apps, Revolut & Google ...",
+          "published_date": null,
+          "snippet": "First check if your custom rom has enabled some integrity fixes in the settings (it's usually in evolutionX settings and miscellaneous)."
+        },
+        {
+          "url": "https://www.youtube.com/watch?v=eiVQzitFx7w",
+          "title": "Fix Play Integrity Fix on Any Android | Run Banking Apps on Custom ROM ...",
+          "published_date": null,
+          "snippet": "Fix Play Integrity Fix on Any Android | Run Banking Apps on Custom ROM (2026) How To Fix Play Integrity"
+        },
+        {
+          "url": "https://www.droidrooter.com/blog/banking-apps-rooted-android-2026-western",
+          "title": "Banking Apps on Rooted Android (2026 Western Edition)",
+          "published_date": null,
+          "snippet": "Play Integrity Fix. He focuses on rooting, custom ROM installs, FRP bypass, IMEI repair and recovery work for bricked phones,"
+        },
+        {
+          "url": "https://forum.fairphone.com/t/custom-rom-and-banking-apps/117563",
+          "title": "Custom ROM and banking Apps - The Products",
+          "published_date": null,
+          "snippet": "most banking apps fail on LineageOS without workarounds, because it does not support “Corporate Approved” OS checks (see the device integrity ..."
+        }
+      ],
+      "error": null,
+      "http_status": 200,
+      "latency_ms": 2449
+    },
+    {
+      "id": "q10",
+      "query": "degoogle android",
+      "intent": "adjacent_privacy",
+      "results": [
+        {
+          "url": "https://www.reddit.com/r/degoogle/comments/1vxza7w/its_here_android_is_officially_over/",
+          "title": "Its here. Android is officially over. : r/degoogle",
+          "published_date": null,
+          "snippet": "It's rolled out via Play Services update, not via OS update. Google updates the Play Services all the way back to Android 9.0 still. 2 more ..."
+        },
+        {
+          "url": "https://www.youtube.com/watch?v=qjqgB9UIcXA",
+          "title": "De-Google ANY Android in ONE TAP (No Root Needed)",
+          "published_date": null,
+          "snippet": "Want to de-Google your Android phone without rooting it or installing a custom ROM? In this video, I'll show you how I removed Google Play ..."
+        },
+        {
+          "url": "https://blog.iode.tech/how-to-degoogle-your-android-phone/",
+          "title": "How to degoogle your Android phone - Blog - iodé",
+          "published_date": null,
+          "snippet": "In this tutorial we will explore 2 ways to degoogle your Android phone so you can regain control over your data and enjoy enhanced privacy."
+        },
+        {
+          "url": "https://en.wikipedia.org/wiki/DeGoogle",
+          "title": "DeGoogle",
+          "published_date": null,
+          "snippet": "The DeGoogle movement is a grassroots campaign that has spawned as privacy advocates urge users to stop using Google products entirely due to growing ..."
+        },
+        {
+          "url": "https://www.youtube.com/watch?v=3UOqvQkXr0k",
+          "title": "How To De-Google The HECK Out of Any Android Phone.",
+          "published_date": null,
+          "snippet": "This is a tutorial on De-Googling any android device. This type of content is in a completely different ballpark from what I normally post, ..."
+        },
+        {
+          "url": "https://www.howtogeek.com/i-de-googled-my-android-phone-and-it-finally-feels-like-mine-again/",
+          "title": "I \"de-Googled\" my Android phone, and it finally feels like mine again",
+          "published_date": null,
+          "snippet": "There are three ways to de-Google your phone, depending on how far you want to go. The first is simply to remove your Google account. You can ..."
+        },
+        {
+          "url": "https://discuss.privacyguides.net/t/how-to-de-google-your-phone-2025/26226",
+          "title": "How To DE-GOOGLE Your Phone! (2025) - General",
+          "published_date": null,
+          "snippet": "One of the best ways to reclaim your privacy is to ditch iOS and stock Android and install Graphen... Odysee. How To DE-GOOGLE Your Phone!"
+        },
+        {
+          "url": "https://e.foundation/",
+          "title": "e Foundation - deGoogled unGoogled smartphone operating systems and ...",
+          "published_date": null,
+          "snippet": "As our OS operates on a fully deGoogled Android, you can run most of your favorite apps, conveniently access your bank accounts, chat with friends, and play ..."
+        }
+      ],
+      "error": null,
+      "http_status": 200,
+      "latency_ms": 1381
+    }
+  ]
+}
