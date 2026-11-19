@@ -18,6 +18,10 @@ export interface Crumb {
 export function Breadcrumbs({ items }: { items: Crumb[] }) {
   const { pathname } = useLocation();
 
+  // A top-level page has no hierarchy to show: "Home › Devices" only repeats
+  // the navigation above it.
+  if (items.length <= 2) return null;
+
   return (
     <Breadcrumb>
       <script
