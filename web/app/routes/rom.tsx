@@ -2,7 +2,6 @@ import { useLoaderData } from "react-router";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ROM_LOGOS, ROM_MARKS } from "@/components/RomPhone";
 import { RomMark } from "@/components/RomMark";
-import { ApiLink } from "@/components/ApiLink";
 import { StatusPill } from "@/components/StatusPill";
 import { useRomPalette } from "@/lib/use-rom-palette";
 import RomDevicesTable from "@/components/RomDevicesTable";
@@ -182,7 +181,6 @@ export default function RomRoute() {
         </p>
         <div className="ml-auto flex items-center gap-3">
           <StatusPill status={rom.status} />
-          <ApiLink href={`/api/roms/${rom.id}`} />
         </div>
       </div>
 

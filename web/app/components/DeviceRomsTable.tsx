@@ -28,15 +28,9 @@ interface Props {
   roms: RomSupport[];
   /** ROM id → catalogue status; only a discontinued project is called out. */
   statuses?: Record<string, RomStatus>;
-  /** The API response for this device, offered when the table is empty. */
-  apiEndpoint?: string;
 }
 
-export default function DeviceRomsTable({
-  roms,
-  statuses = {},
-  apiEndpoint,
-}: Props) {
+export default function DeviceRomsTable({ roms, statuses = {} }: Props) {
   const columns = useMemo<ColumnDef<RomSupport>[]>(
     () => [
       {
@@ -151,13 +145,6 @@ export default function DeviceRomsTable({
             <Link to="/devices" prefetch="intent">
               Browse devices that have ROM data
             </Link>
-            {apiEndpoint && (
-              <>
-                {" "}
-                or{" "}
-                <a href={apiEndpoint}>open the API response for this device</a>
-              </>
-            )}
             .
           </EmptyDescription>
         </EmptyHeader>

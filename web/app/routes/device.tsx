@@ -148,7 +148,6 @@ export default function DeviceRoute() {
 
         <PageHeader
           title={device.name ?? device.codename}
-          endpoint={`/api/devices/${device.vendor}/${device.codename}`}
           badge={
             <Badge
               variant="outline"
@@ -178,11 +177,7 @@ export default function DeviceRoute() {
         />
       )}
 
-      <DeviceRomsTable
-        roms={device.roms}
-        statuses={statuses}
-        apiEndpoint={`/api/devices/${device.vendor}/${device.codename}`}
-      />
+      <DeviceRomsTable roms={device.roms} statuses={statuses} />
 
       <DeviceIdentity device={device} />
     </div>

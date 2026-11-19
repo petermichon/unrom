@@ -1,6 +1,5 @@
 import { useMemo, useState } from "react";
 import { Link, useLoaderData } from "react-router";
-import { ApiLink } from "@/components/ApiLink";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ROM_BOLD_MARKS, ROM_LOGOS } from "@/components/RomPhone";
 import { RomMark } from "@/components/RomMark";
@@ -209,7 +208,6 @@ export default function RomsRoute() {
           {formatNumber(roms.length)} ROMs in the catalogue,{" "}
           {formatNumber(covered.length)} with device data.
         </p>
-        <ApiLink href="/api/roms" className="ml-auto" />
       </div>
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">

@@ -1,10 +1,8 @@
 import type { ReactNode } from "react";
-import { ApiLink } from "@/components/ApiLink";
 
 interface Props {
   title: string;
   description?: string;
-  endpoint?: string;
   badge?: ReactNode;
   actions?: ReactNode;
   children?: ReactNode;
@@ -13,7 +11,6 @@ interface Props {
 export function PageHeader({
   title,
   description,
-  endpoint,
   badge,
   actions,
   children,
@@ -27,12 +24,9 @@ export function PageHeader({
           </h1>
           {badge}
         </div>
-        {(endpoint || actions) && (
+        {actions && (
           <div className="flex items-center gap-3">
-            {endpoint && <ApiLink href={endpoint} />}
-            {actions && (
-              <div className="flex items-center gap-2">{actions}</div>
-            )}
+            <div className="flex items-center gap-2">{actions}</div>
           </div>
         )}
       </div>

@@ -93,29 +93,3 @@ export function groupHref(
   const search = params.toString();
   return search ? `${group.path}?${search}` : group.path;
 }
-
-export function groupApiHref(
-  group: DeviceGroup,
-  {
-    q,
-    page = 1,
-  }: {
-    q?: string;
-    page?: number;
-  } = {},
-): string {
-  const params = new URLSearchParams();
-  if (q) params.set("q", q);
-  if (group.filters.hasRoms !== undefined) {
-    params.set("hasRoms", String(group.filters.hasRoms));
-  }
-  if (group.filters.relock) params.set("relock", group.filters.relock);
-  if (group.filters.updatedWithinDays !== undefined) {
-    params.set("updated", String(group.filters.updatedWithinDays));
-  }
-  if (group.filters.hardened) params.set("hardened", "true");
-  params.set("sort", "roms");
-  params.set("limit", String(GROUP_PAGE_SIZE));
-  params.set("offset", String((page - 1) * GROUP_PAGE_SIZE));
-  return `/api/devices?${params}`;
-}

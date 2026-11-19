@@ -280,8 +280,7 @@ export default function Home() {
           <div className="flex flex-col gap-1.5">
             <h3 className="font-semibold">Take the data with you</h3>
             <p className="text-sm leading-relaxed text-muted-foreground">
-              The whole dataset downloads as JSON or SQLite, and every page is
-              the same data behind a REST API. See the{" "}
+              The whole dataset downloads as JSON or SQLite. See the{" "}
               <Link
                 to="/data"
                 prefetch="intent"

@@ -95,7 +95,6 @@ export default function BrandsRoute() {
       <PageHeader
         title="Brands"
         description={`${brands.length} brands and ${formatNumber(devices)} devices, ${formatNumber(withRoms)} with custom ROM data. Ranked by ROM coverage.`}
-        endpoint="/api/brands"
       />
 
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
