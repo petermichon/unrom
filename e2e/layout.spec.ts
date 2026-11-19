@@ -24,10 +24,8 @@ test.describe("phone below the copy", () => {
     await expect(
       hero.getByRole("button", { name: "Show GrapheneOS" }),
     ).toHaveAttribute("aria-current", "true");
-    await expect(page.locator("html")).toHaveAttribute(
-      "data-rom",
-      "grapheneos",
-    );
+    // The page keeps one palette; stepping the phone does not re-theme it.
+    await expect(page.locator("html")).toHaveAttribute("data-rom", "calyxos");
   });
 });
 

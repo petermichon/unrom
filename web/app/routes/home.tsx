@@ -1,9 +1,19 @@
-import { useEffect, useState } from "react";
-import { ArrowRight, ExternalLink, Pause, Play } from "lucide-react";
+import { useState, type ReactNode } from "react";
+import { ArrowRight, ExternalLink } from "lucide-react";
 import { Link, useLoaderData } from "react-router";
+import DeviceDirectoryList from "@/components/DeviceDirectoryList";
 import DeviceSearch from "@/components/DeviceSearch";
-import { RomPhone } from "@/components/RomPhone";
-import { fetchDevice, fetchRomSummaries, fetchSummary } from "@/lib/data";
+import { RomGlyph } from "@/components/RomMark";
+import { hasRomMenuMark, RomMenuMark } from "@/components/RomMenuMark";
+import { RomPhone, ROM_BOLD_MARKS, ROM_LOGOS } from "@/components/RomPhone";
+import { MENU_ROMS } from "@/lib/nav";
+import { StatusPill } from "@/components/StatusPill";
+import {
+  fetchBrands,
+  fetchDevice,
+  fetchRomSummaries,
+  fetchSummary,
+} from "@/lib/data";
 import { deviceName } from "@/lib/devices";
 import {
   errorMeta,
@@ -12,24 +22,23 @@ import {
   updatedAtFromMatches,
 } from "@/lib/seo";
 import { referenceLabel } from "@/lib/sort";
-import { useMediaQuery } from "@/lib/use-media-query";
 import { useRomPalette } from "@/lib/use-rom-palette";
 import { formatNumber } from "@/lib/utils";
-import type { DeviceDetail, RomSummary } from "@/lib/types";
+import type { BrandSummary, DeviceDetail, RomSummary } from "@/lib/types";
 import type { Route } from "./+types/home";
 
 async function load() {
-  const [summary, roms] = await Promise.all([
+  const [summary, roms, brands] = await Promise.all([
     fetchSummary(),
     fetchRomSummaries().catch(() => [] as RomSummary[]),
+    fetchBrands().catch(() => [] as BrandSummary[]),
   ]);
 
   const rankedRoms = [...roms].sort((a, b) => b.deviceCount - a.deviceCount);
   const romCounts = new Map(rankedRoms.map((rom) => [rom.id, rom.deviceCount]));
 
-  // The two ROMs the hero rotates through: the most-supported one, and the
-  // privacy-focused one people look for by name.
-  const slides = ["lineageos", "grapheneos", "eos"]
+  // The ROMs the hero phone steps through, led by the hardened build.
+  const slides = ["grapheneos", "eos", "lineageos"]
     .map((id) => roms.find((rom) => rom.id === id))
     .filter((rom): rom is RomSummary => rom !== undefined);
 
@@ -60,6 +69,28 @@ async function load() {
     if (exampleRoms.length === 3) break;
   }
 
+  // The brands people reach for, not the largest catalogues: the device
+  // pages' traffic leans to these names, and a catalogue-ordered strip would
+  // lead with ZTE and LG.
+  const featuredBrands = [
+    "xiaomi",
+    "samsung",
+    "google",
+    "oneplus",
+    "tecno",
+    "huawei",
+    "infinix",
+    "oppo",
+  ]
+    .map((vendor) => brands.find((brand) => brand.vendor === vendor))
+    .filter((brand): brand is BrandSummary => brand !== undefined);
+
+  // The same five shortcuts as the Custom ROMs mega menu, so the menu and the
+  // home page never disagree about which projects are pinned.
+  const browseRoms = MENU_ROMS.map((rom) =>
+    roms.find((entry) => entry.id === rom.id),
+  ).filter((rom): rom is RomSummary => rom !== undefined);
+
   return {
     counts: {
       devices: summary.deviceCount,
@@ -77,7 +108,8 @@ async function load() {
     example,
     exampleRoms,
     slides,
-    roms: rankedRoms.slice(0, 8),
+    roms: browseRoms,
+    featuredBrands,
   };
 }
 
@@ -106,21 +138,27 @@ export async function clientLoader() {
   return load();
 }
 
-const EXAMPLES = ["Pixel", "sweet", "LineageOS"];
+const EXAMPLES = ["Pixel 7", "Redmi Note 10 Pro", "LineageOS"];
 
 export default function Home() {
-  const { counts, topDevices, example, exampleRoms, slides, roms } =
-    useLoaderData<typeof loader>();
+  const {
+    counts,
+    topDevices,
+    example,
+    exampleRoms,
+    slides,
+    roms,
+    featuredBrands,
+  } = useLoaderData<typeof loader>();
 
   const [slideIndex, setSlideIndex] = useState(0);
-  const slide = slides[slideIndex] ?? slides[0];
 
-  // The section carries the palette server-side for first paint; this extends
-  // it to the document so the header follows too.
-  useRomPalette(slide?.id);
+  // One accent for the whole page, borrowed from CalyxOS. The phone still
+  // steps through ROMs by hand, but the page palette never moves with it.
+  useRomPalette("calyxos");
 
   return (
-    <section data-rom={slide?.id} className="rom-page flex flex-col gap-16">
+    <section data-rom="calyxos" className="rom-page flex flex-col gap-16">
       <div
         data-motion
         className="hero-panel relative overflow-hidden rounded-4xl bg-panel px-6 py-10 text-panel-foreground ring-1 ring-black/[0.03] transition-colors sm:px-10 sm:py-12 lg:px-12 lg:py-14 dark:ring-white/[0.08]"
@@ -140,11 +178,22 @@ export default function Home() {
               <DeviceSearch examples={EXAMPLES} />
             </div>
             <p className="max-lg:order-4 max-w-[52ch] text-sm leading-relaxed text-panel-foreground/70 tabular-nums">
-              {formatNumber(counts.devices)} devices,{" "}
-              {formatNumber(counts.brands)} brands and{" "}
-              {formatNumber(counts.roms)} ROMs.{" "}
-              {formatNumber(counts.coveredRoms)} of those ROMs have device data
-              so far.
+              <span className="font-mono text-panel-foreground">
+                {formatNumber(counts.devices)}
+              </span>{" "}
+              devices ·{" "}
+              <span className="font-mono text-panel-foreground">
+                {formatNumber(counts.brands)}
+              </span>{" "}
+              brands ·{" "}
+              <span className="font-mono text-panel-foreground">
+                {formatNumber(counts.roms)}
+              </span>{" "}
+              ROMs ·{" "}
+              <span className="font-mono text-panel-foreground">
+                {formatNumber(counts.coveredRoms)}
+              </span>{" "}
+              with device data
             </p>
           </div>
 
@@ -167,39 +216,40 @@ export default function Home() {
         )}
       </div>
 
-      {example && <ExampleMapping device={example} roms={exampleRoms} />}
-
-      {roms.length > 0 && (
-        <section aria-labelledby="browse-roms" className="flex flex-col gap-3">
-          <div className="flex flex-wrap items-baseline justify-between gap-2">
-            <h2
-              id="browse-roms"
-              className="font-heading text-xl font-bold tracking-tight"
-            >
-              Browse by ROM
-            </h2>
-            <Link
-              to="/roms"
-              prefetch="intent"
-              className="text-sm font-semibold text-foreground hover:underline"
-            >
-              All {formatNumber(counts.roms)} ROMs
-            </Link>
-          </div>
-          <ul className="grid border-t border-border sm:grid-cols-2 sm:gap-x-8">
-            {roms.map((rom) => (
-              <li key={rom.id}>
+      {featuredBrands.length > 0 && (
+        <section
+          aria-labelledby="browse-brands"
+          className="flex flex-col gap-5"
+        >
+          <SectionHeader
+            id="browse-brands"
+            title="Browse by brand"
+            description="Jump straight to a brand's device list."
+            action={
+              <SectionLink
+                to="/brands"
+                label={`All ${formatNumber(counts.brands)} brands`}
+              />
+            }
+          />
+          <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+            {featuredBrands.map((brand) => (
+              <li key={brand.vendor}>
                 <Link
-                  to={`/roms/${rom.id}`}
+                  to={`/devices/${brand.vendor}`}
                   prefetch="intent"
-                  className="group flex items-baseline justify-between gap-4 border-b border-border py-2.5 outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
+                  className="group flex h-full flex-col gap-4 rounded-2xl border border-border bg-card p-4 outline-none transition-colors hover:border-foreground/20 focus-visible:ring-3 focus-visible:ring-ring/50"
                 >
-                  <span className="truncate font-medium group-hover:underline">
-                    {rom.name}
+                  <span className="flex size-10 items-center justify-center rounded-xl bg-muted font-heading text-lg font-extrabold">
+                    {brand.vendorName.charAt(0)}
                   </span>
-                  <span className="shrink-0 text-xs text-muted-foreground tabular-nums">
-                    {formatNumber(rom.deviceCount)}{" "}
-                    {rom.deviceCount === 1 ? "device" : "devices"}
+                  <span className="min-w-0">
+                    <span className="block truncate font-semibold group-hover:underline">
+                      {brand.vendorName}
+                    </span>
+                    <span className="mt-0.5 block text-xs text-muted-foreground tabular-nums">
+                      {formatNumber(brand.deviceCount)} devices
+                    </span>
                   </span>
                 </Link>
               </li>
@@ -208,78 +258,97 @@ export default function Home() {
         </section>
       )}
 
-      <section aria-labelledby="top-devices" className="flex flex-col gap-3">
-        <div className="flex flex-wrap items-baseline justify-between gap-2">
-          <h2
-            id="top-devices"
-            className="font-heading text-xl font-bold tracking-tight"
-          >
-            Most ROMs per brand
-          </h2>
-          <Link
-            to="/devices"
-            prefetch="intent"
-            className="text-sm font-semibold text-foreground hover:underline"
-          >
-            All devices
-          </Link>
-        </div>
-        <ul className="index-frame">
-          {topDevices.map((device) => (
-            <li key={`${device.vendor}/${device.codename}`}>
+      {roms.length > 0 && (
+        <section aria-labelledby="browse-roms" className="flex flex-col gap-5">
+          <SectionHeader
+            id="browse-roms"
+            title="Browse by ROM"
+            description="Projects with published builds, and how many devices each one covers."
+            action={
+              <SectionLink
+                to="/roms"
+                label={`All ${formatNumber(counts.roms)} ROMs`}
+              />
+            }
+          />
+          <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+            {roms.map((rom) => (
+              <li key={rom.id}>
+                <Link
+                  to={`/roms/${rom.id}`}
+                  prefetch="intent"
+                  className="group flex h-full flex-col gap-4 rounded-2xl border border-border bg-card p-4 outline-none transition-colors hover:border-foreground/20 focus-visible:ring-3 focus-visible:ring-ring/50"
+                >
+                  <span className="flex items-start justify-between gap-2">
+                    <RomIcon rom={rom} />
+                    {rom.status !== "active" && (
+                      <StatusPill status={rom.status} />
+                    )}
+                  </span>
+                  <span className="min-w-0">
+                    <span className="line-clamp-2 font-semibold group-hover:underline">
+                      {rom.name}
+                    </span>
+                    <span className="mt-0.5 block text-xs text-muted-foreground tabular-nums">
+                      {formatNumber(rom.deviceCount)} devices
+                    </span>
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+
+      <section aria-labelledby="top-devices" className="flex flex-col gap-5">
+        <SectionHeader
+          id="top-devices"
+          title="Devices with the most ROMs"
+          description={
+            <>
+              Ranked by the number of projects that report a build.{" "}
               <Link
-                to={`/devices/${device.vendor}/${device.codename}`}
+                to="/devices?roms=1"
                 prefetch="intent"
-                className="index-row"
+                className="font-medium text-foreground hover:underline"
               >
-                <span className="flex min-w-0 flex-1 flex-col">
-                  <span className="truncate font-semibold">
-                    {deviceName(device)}
-                  </span>
-                  <span className="truncate text-xs text-muted-foreground">
-                    {device.vendorName}{" "}
-                    <span className="font-mono">({device.codename})</span>
-                  </span>
-                </span>
-                <span className="shrink-0 text-xs text-muted-foreground tabular-nums">
-                  {device.roms.length}{" "}
-                  {device.roms.length === 1 ? "ROM" : "ROMs"}
-                </span>
+                Show only devices with ROM data
               </Link>
-            </li>
-          ))}
-        </ul>
+              .
+            </>
+          }
+          action={<SectionLink to="/devices" label="All devices" />}
+        />
+        <DeviceDirectoryList devices={topDevices} />
       </section>
 
-      <section
-        aria-labelledby="provenance"
-        className="flex flex-col gap-4 border-t border-border pt-8"
-      >
-        <h2
+      {example && <ExampleMapping device={example} roms={exampleRoms} />}
+
+      <section aria-labelledby="provenance" className="flex flex-col gap-5">
+        <SectionHeader
           id="provenance"
-          className="font-heading text-xl font-bold tracking-tight"
-        >
-          Where this data comes from
-        </h2>
-        <div className="grid gap-6 md:grid-cols-3">
-          <div className="flex flex-col gap-1.5">
+          title="Where this data comes from"
+          description="Every mapping is source-linked, and confidence is labelled."
+        />
+        <div className="grid gap-3 md:grid-cols-3">
+          <div className="rounded-2xl border border-border bg-card p-5">
             <h3 className="font-semibold">Each mapping links its source</h3>
-            <p className="text-sm leading-relaxed text-muted-foreground">
+            <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
               Every device–ROM pair points at the page that reports it. Links
               built from a codename are checked before they are published.
             </p>
           </div>
-          <div className="flex flex-col gap-1.5">
+          <div className="rounded-2xl border border-border bg-card p-5">
             <h3 className="font-semibold">Confidence is labelled</h3>
-            <p className="text-sm leading-relaxed text-muted-foreground">
+            <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
               Curated device names carry a confidence: verified, inferred,
               manual or unverified. Device pages show which one applies and
               which ROMs back it.
             </p>
           </div>
-          <div className="flex flex-col gap-1.5">
+          <div className="rounded-2xl border border-border bg-card p-5">
             <h3 className="font-semibold">Take the data with you</h3>
-            <p className="text-sm leading-relaxed text-muted-foreground">
+            <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
               The whole dataset downloads as JSON or SQLite. See the{" "}
               <Link
                 to="/data"
@@ -293,7 +362,93 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      <section className="rounded-3xl bg-foreground px-6 py-8 text-background sm:px-10 sm:py-10 dark:border dark:border-border dark:bg-card dark:text-foreground">
+        <div className="flex flex-wrap items-center justify-between gap-5">
+          <div className="max-w-[52ch]">
+            <h2 className="font-heading text-2xl font-extrabold tracking-tight sm:text-3xl">
+              The dataset is open
+            </h2>
+            <p className="mt-1.5 text-sm text-background/70 dark:text-muted-foreground">
+              The whole catalogue downloads as JSON or SQLite.
+            </p>
+          </div>
+          <Link
+            to="/data"
+            prefetch="intent"
+            className="inline-flex items-center gap-2 rounded-full bg-background px-5 py-2.5 text-sm font-semibold text-foreground outline-none hover:bg-background/90 focus-visible:ring-3 focus-visible:ring-ring/50 dark:bg-foreground dark:text-background dark:hover:bg-foreground/90"
+          >
+            Get the data
+            <ArrowRight className="size-4" aria-hidden="true" />
+          </Link>
+        </div>
+      </section>
     </section>
+  );
+}
+
+/** A section header with the title, optional copy and one action. */
+function SectionHeader({
+  id,
+  title,
+  description,
+  action,
+}: {
+  id: string;
+  title: string;
+  description?: ReactNode;
+  action?: ReactNode;
+}) {
+  return (
+    <div className="flex flex-col gap-2">
+      <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-2">
+        <div className="flex min-w-0 flex-col gap-1">
+          <h2
+            id={id}
+            className="font-heading text-2xl font-extrabold tracking-tight sm:text-3xl"
+          >
+            {title}
+          </h2>
+          {description && (
+            <p className="max-w-[62ch] text-sm text-muted-foreground">
+              {description}
+            </p>
+          )}
+        </div>
+        {action && (
+          <div className="flex shrink-0 items-center gap-4">{action}</div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function SectionLink({ to, label }: { to: string; label: string }) {
+  return (
+    <Link
+      to={to}
+      prefetch="intent"
+      className="inline-flex items-center gap-1 text-sm font-semibold text-foreground hover:underline"
+    >
+      {label}
+      <ArrowRight className="size-3.5" aria-hidden="true" />
+    </Link>
+  );
+}
+
+/** The mark for a ROM card, inline where possible. */
+function RomIcon({ rom }: { rom: RomSummary }) {
+  const src = ROM_BOLD_MARKS[rom.id] ?? ROM_LOGOS[rom.id];
+  return (
+    <span className="flex size-10 items-center justify-center rounded-xl bg-muted text-foreground/80">
+      {hasRomMenuMark(rom.id) ? (
+        <RomMenuMark id={rom.id} />
+      ) : src ? (
+        <RomGlyph id={rom.id} src={src} className="size-5" />
+      ) : (
+        <span className="text-sm font-bold">{rom.name.charAt(0)}</span>
+      )}
+    </span>
   );
 }
 
@@ -316,7 +471,7 @@ function ExampleMapping({
       <div className="rounded-2xl border border-border bg-card p-5 sm:p-6">
         <div className="grid gap-6 md:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] md:gap-10">
           <div className="flex min-w-0 flex-col items-start">
-            <p className="text-xs font-semibold text-muted-foreground">
+            <p className="text-[0.7rem] font-semibold tracking-[0.14em] text-muted-foreground uppercase">
               Example mapping
             </p>
             <h2
@@ -375,30 +530,6 @@ function ExampleMapping({
             ))}
           </ul>
         </div>
-
-        <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-1 border-t border-border pt-3 text-sm font-medium">
-          <Link
-            to="/devices"
-            prefetch="intent"
-            className="py-1 text-muted-foreground hover:text-foreground hover:underline"
-          >
-            All devices
-          </Link>
-          <Link
-            to="/brands"
-            prefetch="intent"
-            className="py-1 text-muted-foreground hover:text-foreground hover:underline"
-          >
-            All brands
-          </Link>
-          <Link
-            to="/roms"
-            prefetch="intent"
-            className="py-1 text-muted-foreground hover:text-foreground hover:underline"
-          >
-            All ROMs
-          </Link>
-        </div>
       </div>
     </section>
   );
@@ -407,10 +538,10 @@ function ExampleMapping({
 /**
  * The hero visual: a phone running a custom ROM, not a screenshot of unrom.
  *
- * Two slides — the most-supported ROM and the privacy-focused one people ask
- * for by name — switch manually; nothing advances on its own. The phone itself
- * is decorative and hidden from assistive tech, while the buttons and the live
- * status are real controls.
+ * The slides switch by hand from controls inside the screen; nothing advances
+ * on its own, so the page's palette never moves while it is being read. The
+ * phone itself is decorative and hidden from assistive tech, while the dot
+ * buttons are real controls.
  */
 function HeroIllustration({
   slides,
@@ -421,63 +552,8 @@ function HeroIllustration({
   index: number;
   onSelect: (position: number) => void;
 }) {
-  const slide = slides[index] ?? slides[0];
-  const reducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)");
-  // Autoplay belongs to the large illustration. The phone below `lg` is
-  // stepped by hand, so the palette never changes on its own there.
-  const visible = useMediaQuery("(min-width: 64rem)");
-  // null follows the system preference; a toggle overrides it either way.
-  const [auto, setAuto] = useState<boolean | null>(null);
-  const autoplay = auto ?? !reducedMotion;
-  const [hovered, setHovered] = useState(false);
-  const [focused, setFocused] = useState(false);
-  const [hidden, setHidden] = useState(false);
-
-  useEffect(() => {
-    const onVisibility = () => setHidden(document.hidden);
-    document.addEventListener("visibilitychange", onVisibility);
-    return () => document.removeEventListener("visibilitychange", onVisibility);
-  }, []);
-
-  // WCAG 2.2.2: a visible control exists, and the timer also yields to hover,
-  // keyboard focus and a hidden tab so nothing moves under the reader.
-  useEffect(() => {
-    if (
-      !visible ||
-      !autoplay ||
-      hovered ||
-      focused ||
-      hidden ||
-      slides.length < 2
-    )
-      return;
-    const timer = window.setInterval(() => {
-      onSelect((index + 1) % slides.length);
-    }, 7000);
-    return () => window.clearInterval(timer);
-  }, [
-    visible,
-    autoplay,
-    hovered,
-    focused,
-    hidden,
-    index,
-    slides.length,
-    onSelect,
-  ]);
-
   return (
-    <div
-      className="pointer-events-auto absolute right-8 -bottom-12 hidden lg:block xl:right-12"
-      onPointerEnter={() => setHovered(true)}
-      onPointerLeave={() => setHovered(false)}
-      onFocusCapture={() => setFocused(true)}
-      onBlurCapture={(event) => {
-        if (!event.currentTarget.contains(event.relatedTarget as Node)) {
-          setFocused(false);
-        }
-      }}
-    >
+    <div className="pointer-events-auto absolute right-8 -bottom-12 hidden lg:block xl:right-12">
       <div className="relative w-[14.5rem]">
         <RomPhone slides={slides} index={index} />
 
@@ -485,43 +561,15 @@ function HeroIllustration({
           <div
             role="group"
             aria-label="Slideshow controls"
-            className="pointer-events-auto absolute bottom-16 -left-32 flex items-center gap-1.5"
+            className="absolute bottom-24 left-1/2 flex -translate-x-1/2 items-center"
           >
             <SlideDots
               slides={slides}
               index={index}
-              onSelect={(position) => {
-                setAuto(false);
-                onSelect(position);
-              }}
+              onSelect={onSelect}
+              tone="screen"
             />
-            <button
-              type="button"
-              onClick={() => {
-                // Starting it is an explicit request, so let it run even while
-                // this button keeps keyboard focus.
-                setFocused(false);
-                setAuto(!autoplay);
-              }}
-              aria-label={
-                autoplay ? "Pause the slideshow" : "Play the slideshow"
-              }
-              title={autoplay ? "Pause the slideshow" : "Play the slideshow"}
-              className="ml-2 flex size-6 items-center justify-center rounded-full text-panel-foreground/60 outline-none hover:text-panel-foreground/80 focus-visible:ring-3 focus-visible:ring-ring/50"
-            >
-              {autoplay ? (
-                <Pause className="size-3.5" aria-hidden="true" />
-              ) : (
-                <Play className="size-3.5" aria-hidden="true" />
-              )}
-            </button>
           </div>
-        )}
-
-        {!autoplay && (
-          <span role="status" aria-live="polite" className="sr-only">
-            {slide.name}
-          </span>
         )}
       </div>
     </div>
@@ -531,8 +579,8 @@ function HeroIllustration({
 /**
  * The hero below `lg`: the same phone, smaller and below the copy, cropped by
  * the panel exactly like the large illustration. The negative bottom margin is
- * what lets the panel clip it; the dots step the slide by hand, so the palette
- * never moves on its own there.
+ * what lets the panel clip it; the dots step the slide by hand, while the page
+ * palette stays on the single CalyxOS accent.
  */
 function HeroPhoneBelow({
   slides,
@@ -544,8 +592,8 @@ function HeroPhoneBelow({
   onSelect: (position: number) => void;
 }) {
   return (
-    <div className="relative mx-auto mt-8 -mb-[5.5rem] h-[16.5rem] w-32 sm:-mb-24 lg:hidden">
-      <div className="origin-top-left scale-[0.55]">
+    <div className="relative mx-auto mt-8 -mb-[4.5rem] h-[13.5rem] w-32 sm:-mb-[5.5rem] sm:h-[16.5rem] lg:hidden">
+      <div className="origin-top-left scale-[0.5] sm:scale-[0.55]">
         <RomPhone slides={slides} index={index} />
       </div>
       {slides.length > 1 && (

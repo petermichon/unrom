@@ -78,13 +78,15 @@ test("the hero search finds a catalogue-only ROM", async ({ page }) => {
 test("home links to the three directories", async ({ page }) => {
   await page.goto("/");
 
-  const browse = page.locator("section[aria-labelledby='example-device']");
-  for (const [label, href] of [
-    ["All devices", "/devices"],
-    ["All brands", "/brands"],
-    ["All ROMs", "/roms"],
-  ]) {
-    const link = browse.getByRole("link", { name: label, exact: true });
+  const sections = [
+    ["browse-brands", /All [\d,]+ brands/, "/brands"],
+    ["browse-roms", /All [\d,]+ ROMs/, "/roms"],
+    ["top-devices", "All devices", "/devices"],
+  ] as const;
+  for (const [id, label, href] of sections) {
+    const link = page
+      .locator(`section[aria-labelledby='${id}']`)
+      .getByRole("link", { name: label });
     await expect(link).toHaveAttribute("href", href);
   }
 });
@@ -125,12 +127,14 @@ test("an example opens the search dialog already searching", async ({
   page,
 }) => {
   await page.goto("/");
-  await page.getByRole("button", { name: "Search for sweet" }).click();
+  await page
+    .getByRole("button", { name: "Search for Redmi Note 10 Pro" })
+    .click();
 
   const field = page
     .getByRole("dialog")
     .getByPlaceholder("Devices, brands, ROMs");
-  await expect(field).toHaveValue("sweet");
+  await expect(field).toHaveValue("Redmi Note 10 Pro");
   await expect(
     page.getByRole("option", { name: /Redmi Note 10 Pro/ }).first(),
   ).toBeVisible();
@@ -222,12 +226,14 @@ test.describe("one search on a phone", () => {
     page,
   }) => {
     await page.goto("/");
-    await page.getByRole("button", { name: "Search for sweet" }).tap();
+    await page
+      .getByRole("button", { name: "Search for Redmi Note 10 Pro" })
+      .tap();
 
     const input = page
       .getByRole("dialog")
       .getByPlaceholder("Devices, brands, ROMs");
-    await expect(input).toHaveValue("sweet");
+    await expect(input).toHaveValue("Redmi Note 10 Pro");
     await expect(page.getByRole("option").first()).toBeVisible();
   });
 
