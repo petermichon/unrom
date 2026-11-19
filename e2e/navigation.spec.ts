@@ -369,9 +369,9 @@ test("the devices directory leads with the most-supported devices", async ({
 }) => {
   await page.goto("/devices");
 
-  const first = page.locator("main ul.index-frame > li").first();
+  const first = page.locator("main .index-frame ul > li").first();
   await expect(first).toContainText("POCO M2 Pro");
-  await expect(first).toContainText("36 ROMs");
+  await expect(first).toContainText("36");
 });
 
 test("the directory shows only devices with ROM data", async ({ page }) => {
@@ -381,7 +381,7 @@ test("the directory shows only devices with ROM data", async ({ page }) => {
     page.getByRole("link", { name: "With ROM data" }),
   ).toHaveAttribute("aria-current", "page");
   await expect(page.locator("a.device-row").first()).toBeVisible();
-  await expect(page.getByText(/^0 ROMs$/)).toHaveCount(0);
+  await expect(page.getByText("ROMs: 0")).toHaveCount(0);
 });
 
 test("a brand page paginates its devices", async ({ page }) => {
@@ -465,7 +465,9 @@ test("the updated filter opens the recently built devices", async ({
 
   const toggle = page.getByRole("link", { name: "Recently updated" });
   await expect(toggle).toHaveAttribute("aria-current", "page");
-  await expect(page.getByRole("status")).toHaveText(/\d[\d,]* devices/);
+  await expect(page.getByRole("status")).toHaveText(
+    /Showing [\d,]+–[\d,]+ of [\d,]+ matching devices/,
+  );
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
     "content",
     "noindex",

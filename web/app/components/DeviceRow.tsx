@@ -24,8 +24,9 @@ export default function DeviceRow({ device, showBrand = true }: Props) {
             <span className="font-mono">({device.codename})</span>
           </span>
         </span>
-        <span className="shrink-0 text-xs text-muted-foreground tabular-nums">
-          {count} {count === 1 ? "ROM" : "ROMs"}
+        <span className="shrink-0 font-mono text-xs text-muted-foreground tabular-nums">
+          <span className="sr-only">{count === 1 ? "ROM: " : "ROMs: "}</span>
+          {count}
         </span>
       </Link>
       {device.match.length > 0 && (

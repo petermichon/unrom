@@ -1,7 +1,7 @@
 import { Link, redirect, useLoaderData } from "react-router";
 import { BootloaderPolicyCard } from "@/components/BootloaderPolicyCard";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import DeviceRow from "@/components/DeviceRow";
+import DeviceDirectoryList from "@/components/DeviceDirectoryList";
 import { PageHeader } from "@/components/PageHeader";
 import {
   BrandPicker,
@@ -185,16 +185,6 @@ export default function VendorRoute() {
       <PageHeader
         title={vendorName}
         description={`${formatNumber(total)} ${vendorName} device${total === 1 ? "" : "s"}. Search within the brand or show only devices with ROM data.`}
-        endpoint={(() => {
-          const params = new URLSearchParams();
-          params.set("vendor", vendor);
-          if (q) params.set("q", q);
-          if (roms) params.set("hasRoms", "true");
-          params.set("sort", "coverage");
-          params.set("limit", String(PAGE_SIZE));
-          if (page > 1) params.set("offset", String((page - 1) * PAGE_SIZE));
-          return `/api/devices?${params}`;
-        })()}
       />
 
       {bootloaderPolicy && <BootloaderPolicyCard policy={bootloaderPolicy} />}
@@ -245,13 +235,7 @@ export default function VendorRoute() {
           </p>
         </div>
       ) : (
-        <ul className="index-frame">
-          {devices.map((device) => (
-            <li key={`${device.vendor}/${device.codename}`}>
-              <DeviceRow device={device} showBrand={false} />
-            </li>
-          ))}
-        </ul>
+        <DeviceDirectoryList devices={devices} showBrand={false} />
       )}
 
       <DirectoryPager

@@ -51,7 +51,7 @@ export function BrandPicker({
         name="vendor"
         defaultValue={current ?? ""}
         onChange={(event) => event.currentTarget.form?.requestSubmit()}
-        className="h-9 rounded-full border border-border bg-card px-3 text-sm font-medium text-foreground outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
+        className="h-8 rounded-full border border-border bg-card px-3 text-sm font-medium text-foreground outline-none focus-visible:ring-3 focus-visible:ring-ring/50"
       >
         <option value="">All brands</option>
         {brands.map((brand) => (
@@ -65,13 +65,6 @@ export function BrandPicker({
           Go
         </Button>
       </noscript>
-      <Link
-        to="/brands"
-        prefetch="intent"
-        className="text-sm font-medium text-foreground hover:underline"
-      >
-        All brands
-      </Link>
     </Form>
   );
 }
@@ -79,7 +72,7 @@ export function BrandPicker({
 export function DirectorySearch({
   action,
   q,
-  placeholder = "Search by device name, codename, or brand…",
+  placeholder = "Search name, codename or brand",
   hidden = {},
 }: {
   action: string;
@@ -109,12 +102,6 @@ export function DirectorySearch({
           aria-label="Search devices"
         />
       </InputGroup>
-      <Button
-        type="submit"
-        className="bg-accent text-accent-foreground hover:bg-accent/90"
-      >
-        Search
-      </Button>
     </Form>
   );
 }
@@ -130,14 +117,14 @@ export function CoverageToggle({
 }) {
   const item = (active: boolean) =>
     cn(
-      "rounded-full px-3 py-1 text-sm font-semibold outline-none transition-colors focus-visible:ring-3 focus-visible:ring-ring/50",
+      "inline-flex h-7 items-center rounded-full px-3 text-sm font-semibold outline-none transition-colors focus-visible:ring-3 focus-visible:ring-ring/50",
       active
         ? "bg-accent text-accent-foreground"
         : "text-muted-foreground hover:text-foreground",
     );
 
   return (
-    <div className="inline-flex items-center gap-1 rounded-full border border-border bg-card p-1">
+    <div className="inline-flex items-center gap-1 rounded-full border border-border bg-card p-px">
       <Link
         to={allHref}
         prefetch="intent"
@@ -162,18 +149,22 @@ export function FilterToggle({
   href,
   active,
   label,
+  hint,
 }: {
   href: string;
   active: boolean;
   label: string;
+  /** What the filter means, shown on hover and to assistive tech. */
+  hint?: string;
 }) {
   return (
     <Link
       to={href}
       prefetch="intent"
       aria-current={active ? "page" : undefined}
+      title={hint}
       className={cn(
-        "rounded-full border px-3 py-1 text-sm font-semibold outline-none transition-colors focus-visible:ring-3 focus-visible:ring-ring/50",
+        "inline-flex h-8 items-center rounded-full border px-3 text-sm font-semibold outline-none transition-colors focus-visible:ring-3 focus-visible:ring-ring/50",
         active
           ? "border-accent bg-accent text-accent-foreground hover:bg-accent/90"
           : "border-border bg-card text-muted-foreground hover:text-foreground",
@@ -181,6 +172,50 @@ export function FilterToggle({
     >
       {label}
     </Link>
+  );
+}
+
+/** Two orders, rendered as links so the URL stays the source of truth. */
+export function SortToggle({
+  romsHref,
+  nameHref,
+  sort,
+}: {
+  romsHref: string;
+  nameHref: string;
+  sort: "roms" | "name";
+}) {
+  const item = (active: boolean) =>
+    cn(
+      "inline-flex h-7 items-center rounded-full px-3 text-sm font-semibold outline-none transition-colors focus-visible:ring-3 focus-visible:ring-ring/50",
+      active
+        ? "bg-accent text-accent-foreground"
+        : "text-muted-foreground hover:text-foreground",
+    );
+
+  return (
+    <div
+      role="group"
+      aria-label="Sort devices"
+      className="inline-flex items-center gap-1 rounded-full border border-border bg-card p-px"
+    >
+      <Link
+        to={romsHref}
+        prefetch="intent"
+        aria-current={sort === "roms" ? "page" : undefined}
+        className={item(sort === "roms")}
+      >
+        Most ROMs
+      </Link>
+      <Link
+        to={nameHref}
+        prefetch="intent"
+        aria-current={sort === "name" ? "page" : undefined}
+        className={item(sort === "name")}
+      >
+        A–Z
+      </Link>
+    </div>
   );
 }
 
@@ -198,7 +233,7 @@ export function DirectoryPager({
   if (pages <= 1) return null;
 
   const className =
-    "rounded-full border border-border bg-card px-3.5 py-1.5 text-sm font-semibold outline-none transition-colors hover:border-foreground/30 hover:bg-muted focus-visible:ring-3 focus-visible:ring-ring/50";
+    "inline-flex h-8 items-center rounded-full px-3 text-sm font-semibold text-foreground outline-none transition-colors hover:underline focus-visible:ring-3 focus-visible:ring-ring/50";
 
   return (
     <nav
@@ -210,7 +245,7 @@ export function DirectoryPager({
           Previous
         </Link>
       ) : (
-        <span className="px-3.5 py-1.5 text-sm text-muted-foreground">
+        <span className="inline-flex h-8 items-center px-3 text-sm text-muted-foreground">
           Previous
         </span>
       )}
@@ -222,7 +257,7 @@ export function DirectoryPager({
           Next
         </Link>
       ) : (
-        <span className="px-3.5 py-1.5 text-sm text-muted-foreground">
+        <span className="inline-flex h-8 items-center px-3 text-sm text-muted-foreground">
           Next
         </span>
       )}

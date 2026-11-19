@@ -1,4 +1,5 @@
 import {
+  DIRECTORY_PAGE_SIZE,
   fetchBrands,
   fetchDevicesPage,
   fetchRoms,
@@ -66,7 +67,11 @@ export const NAV_PRELOADS: Record<string, () => Promise<unknown>> = {
     Promise.all([
       fetchSummary(),
       fetchBrands(),
-      fetchDevicesPage({ sort: "roms", limit: 200, offset: 0 }),
+      fetchDevicesPage({
+        sort: "roms",
+        limit: DIRECTORY_PAGE_SIZE,
+        offset: 0,
+      }),
     ]),
   "/brands": () => fetchBrands(),
   "/roms": () => Promise.all([fetchRoms(), fetchRomSummaries()]),

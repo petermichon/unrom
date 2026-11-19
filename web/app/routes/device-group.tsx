@@ -1,6 +1,6 @@
 import { Link, useLoaderData } from "react-router";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import DeviceRow from "@/components/DeviceRow";
+import DeviceDirectoryList from "@/components/DeviceDirectoryList";
 import { PageHeader } from "@/components/PageHeader";
 import {
   DirectoryPager,
@@ -12,7 +12,6 @@ import {
   DEVICE_GROUPS,
   GROUP_PAGE_SIZE,
   deviceGroup,
-  groupApiHref,
   groupHref,
 } from "@/lib/device-groups";
 import {
@@ -118,11 +117,7 @@ export default function DeviceGroupRoute() {
         ]}
       />
 
-      <PageHeader
-        title={group.heading}
-        description={group.description}
-        endpoint={groupApiHref(group, { q: q || undefined, page })}
-      />
+      <PageHeader title={group.heading} description={group.description} />
 
       <div className="flex flex-col gap-4">
         <DirectorySearch action={group.path} q={q} />
@@ -172,13 +167,7 @@ export default function DeviceGroupRoute() {
           </p>
         </div>
       ) : (
-        <ul className="index-frame">
-          {devices.map((device) => (
-            <li key={`${device.vendor}/${device.codename}`}>
-              <DeviceRow device={device} />
-            </li>
-          ))}
-        </ul>
+        <DeviceDirectoryList devices={devices} />
       )}
 
       <DirectoryPager

@@ -1,6 +1,8 @@
-import { Link, redirect, useLoaderData } from "react-router";
+import { useEffect, useRef } from "react";
+import { Link, redirect, useLoaderData, useLocation } from "react-router";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
-import DeviceRow from "@/components/DeviceRow";
+import DeviceDirectoryList from "@/components/DeviceDirectoryList";
+import { DirectoryFilterBar } from "@/components/DirectoryFilterBar";
 import { PageHeader } from "@/components/PageHeader";
 import {
   BrandPicker,
@@ -8,8 +10,9 @@ import {
   DirectoryPager,
   DirectorySearch,
   FilterToggle,
+  SortToggle,
 } from "@/components/directory";
-import { fetchBrands, fetchDevicesPage, fetchSummary } from "@/lib/data";
+import { DIRECTORY_PAGE_SIZE, fetchBrands, fetchDevicesPage } from "@/lib/data";
 import {
   errorMeta,
   itemListLd,
@@ -21,9 +24,9 @@ import { bySortKey } from "@/lib/sort";
 import { formatNumber } from "@/lib/utils";
 import type { Route } from "./+types/devices";
 
-const PAGE_SIZE = 200;
-
 const UPDATED_DAYS = 90;
+
+type SortKey = "roms" | "name";
 
 function directoryHref({
   q,
@@ -31,6 +34,7 @@ function directoryHref({
   relock,
   updated,
   hardened,
+  sort,
   page,
 }: {
   q?: string;
@@ -38,6 +42,7 @@ function directoryHref({
   relock?: boolean;
   updated?: boolean;
   hardened?: boolean;
+  sort?: SortKey;
   page?: number;
 }): string {
   const params = new URLSearchParams();
@@ -46,6 +51,7 @@ function directoryHref({
   if (relock) params.set("relock", "supported");
   if (updated) params.set("updated", String(UPDATED_DAYS));
   if (hardened) params.set("hardened", "1");
+  if (sort === "name") params.set("sort", "name");
   if (page && page > 1) params.set("page", String(page));
   const search = params.toString();
   return search ? `/devices?${search}` : "/devices";
@@ -91,6 +97,8 @@ async function load(request: URL) {
   const relock = relockRaw === "supported";
   const updated = Number(request.searchParams.get("updated")) === UPDATED_DAYS;
   const hardened = request.searchParams.get("hardened") === "1";
+  const sortRaw = request.searchParams.get("sort");
+  const sort: SortKey = sortRaw === "name" ? "name" : "roms";
   const page = Math.max(
     1,
     Math.trunc(Number(request.searchParams.get("page")) || 1),
@@ -102,13 +110,16 @@ async function load(request: URL) {
   if (request.searchParams.has("updated") && !updated) {
     throw new Response("Not found", { status: 404 });
   }
+  if (sortRaw !== null && sortRaw !== "roms" && sortRaw !== "name") {
+    throw new Response("Not found", { status: 404 });
+  }
 
   // Letter pages and the old ?vendor= filter now live on the brand pages.
   if (request.searchParams.has("letter")) {
     throw redirect("/devices", 301);
   }
 
-  const [summary, brands] = await Promise.all([fetchSummary(), fetchBrands()]);
+  const brands = await fetchBrands();
 
   if (rawVendor) {
     const brand = brands.find(
@@ -121,6 +132,7 @@ async function load(request: URL) {
     if (relock) params.set("relock", "supported");
     if (updated) params.set("updated", String(UPDATED_DAYS));
     if (hardened) params.set("hardened", "1");
+    if (sort === "name") params.set("sort", "name");
     if (page > 1) params.set("page", String(page));
     const search = params.toString();
     throw redirect(
@@ -135,12 +147,12 @@ async function load(request: URL) {
     relock: relock ? "supported" : undefined,
     updatedWithinDays: updated ? UPDATED_DAYS : undefined,
     hardened: hardened || undefined,
-    sort: "roms",
-    limit: PAGE_SIZE,
-    offset: (page - 1) * PAGE_SIZE,
+    sort,
+    limit: DIRECTORY_PAGE_SIZE,
+    offset: (page - 1) * DIRECTORY_PAGE_SIZE,
   });
 
-  const pages = Math.max(1, Math.ceil(total / PAGE_SIZE));
+  const pages = Math.max(1, Math.ceil(total / DIRECTORY_PAGE_SIZE));
   if (page > pages) throw new Response("Not found", { status: 404 });
 
   const href = directoryHref({
@@ -149,6 +161,7 @@ async function load(request: URL) {
     relock,
     updated,
     hardened,
+    sort,
     page,
   });
 
@@ -158,16 +171,23 @@ async function load(request: URL) {
     relock,
     updated,
     hardened,
+    sort,
     page,
     pages,
     total,
-    catalogueTotal: summary.deviceCount,
     devices,
     href,
     brands: [...brands].sort(
       (a, b) => bySortKey(a.vendorName, b.vendorName) || 0,
     ),
-    isIndexable: page === 1 && !roms && !relock && !updated && !hardened && !q,
+    isIndexable:
+      page === 1 &&
+      sort === "roms" &&
+      !roms &&
+      !relock &&
+      !updated &&
+      !hardened &&
+      !q,
   };
 }
 
@@ -186,13 +206,61 @@ export default function DevicesRoute() {
     relock,
     updated,
     hardened,
+    sort,
     page,
     pages,
     total,
-    catalogueTotal,
     devices,
     brands,
   } = useLoaderData<typeof loader>();
+  const location = useLocation();
+  const resultsRef = useRef<HTMLParagraphElement>(null);
+  const initialSearch = useRef(location.search);
+
+  // A filter or search changes the list in place; move focus to the new count
+  // so keyboard and screen-reader users land on the result, not the old link.
+  useEffect(() => {
+    if (location.search === initialSearch.current) return;
+    resultsRef.current?.focus();
+  }, [location.search]);
+
+  const hasFilters = roms || relock || updated || hardened;
+  const activeFilterCount = [roms, relock, updated, hardened].filter(
+    Boolean,
+  ).length;
+  const first = total === 0 ? 0 : (page - 1) * DIRECTORY_PAGE_SIZE + 1;
+  const last = total === 0 ? 0 : first + devices.length - 1;
+  const clearLabel =
+    q && hasFilters
+      ? "Clear search and filters"
+      : q
+        ? "Clear search"
+        : "Clear filters";
+
+  const prevHref =
+    page > 1
+      ? directoryHref({
+          q: q || undefined,
+          roms,
+          relock,
+          updated,
+          hardened,
+          sort,
+          page: page - 1,
+        })
+      : null;
+  const nextHref =
+    page < pages
+      ? directoryHref({
+          q: q || undefined,
+          roms,
+          relock,
+          updated,
+          hardened,
+          sort,
+          page: page + 1,
+        })
+      : null;
 
   return (
     <div className="flex flex-col gap-6">
@@ -200,19 +268,7 @@ export default function DevicesRoute() {
 
       <PageHeader
         title="Devices"
-        description={`${formatNumber(catalogueTotal)} devices. Search by name or codename, filter by brand, or show only devices with ROM data.`}
-        endpoint={(() => {
-          const params = new URLSearchParams();
-          if (q) params.set("q", q);
-          if (roms) params.set("hasRoms", "true");
-          if (relock) params.set("relock", "supported");
-          if (updated) params.set("updated", String(UPDATED_DAYS));
-          if (hardened) params.set("hardened", "1");
-          params.set("sort", "roms");
-          params.set("limit", String(PAGE_SIZE));
-          if (page > 1) params.set("offset", String((page - 1) * PAGE_SIZE));
-          return `/api/devices?${params}`;
-        })()}
+        description="Find your device to see which custom ROMs support it."
       />
 
       <div className="flex flex-col gap-4">
@@ -224,141 +280,188 @@ export default function DevicesRoute() {
             relock: relock ? "supported" : undefined,
             updated: updated ? String(UPDATED_DAYS) : undefined,
             hardened: hardened ? "1" : undefined,
+            sort: sort === "name" ? "name" : undefined,
           }}
         />
 
+        <DirectoryFilterBar activeCount={activeFilterCount}>
+          <BrandPicker
+            brands={brands}
+            q={q}
+            roms={roms}
+            relock={relock}
+            updated={updated}
+            hardened={hardened}
+          />
+          <CoverageToggle
+            allHref={directoryHref({
+              q: q || undefined,
+              relock,
+              updated,
+              hardened,
+              sort,
+            })}
+            romsHref={directoryHref({
+              q: q || undefined,
+              roms: true,
+              relock,
+              updated,
+              hardened,
+              sort,
+            })}
+            roms={roms}
+          />
+          <FilterToggle
+            href={directoryHref({
+              q: q || undefined,
+              roms,
+              relock,
+              updated,
+              hardened: !hardened,
+              sort,
+            })}
+            active={hardened}
+            label="Hardened"
+            hint="A ROM documents security patches, exploit mitigations and relock support"
+          />
+          <FilterToggle
+            href={directoryHref({
+              q: q || undefined,
+              roms,
+              relock,
+              updated: !updated,
+              hardened,
+              sort,
+            })}
+            active={updated}
+            label="Recently updated"
+            hint="A ROM build published in the last 90 days"
+          />
+          <FilterToggle
+            href={directoryHref({
+              q: q || undefined,
+              roms,
+              relock: !relock,
+              updated,
+              hardened,
+              sort,
+            })}
+            active={relock}
+            label="Relock supported"
+            hint="A ROM documents a bootloader relock path"
+          />
+        </DirectoryFilterBar>
+
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="flex flex-wrap items-center gap-3">
-            <BrandPicker
-              brands={brands}
-              q={q}
-              roms={roms}
-              relock={relock}
-              updated={updated}
-              hardened={hardened}
-            />
-            <CoverageToggle
-              allHref={directoryHref({
-                q: q || undefined,
-                relock,
-                updated,
-                hardened,
-              })}
-              romsHref={directoryHref({
-                q: q || undefined,
-                roms: true,
-                relock,
-                updated,
-                hardened,
-              })}
-              roms={roms}
-            />
-            <FilterToggle
-              href={directoryHref({
-                q: q || undefined,
-                roms,
-                relock,
-                updated,
-                hardened: !hardened,
-              })}
-              active={hardened}
-              label="Hardened"
-            />
-            <FilterToggle
-              href={directoryHref({
-                q: q || undefined,
-                roms,
-                relock,
-                updated: !updated,
-                hardened,
-              })}
-              active={updated}
-              label="Recently updated"
-            />
-            <FilterToggle
-              href={directoryHref({
-                q: q || undefined,
-                roms,
-                relock: !relock,
-                updated,
-                hardened,
-              })}
-              active={relock}
-              label="Relock supported"
-            />
-            <Link
-              to="/device-groups"
-              prefetch="intent"
-              className="text-sm font-semibold text-foreground hover:underline"
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+            <p
+              ref={resultsRef}
+              role="status"
+              aria-live="polite"
+              tabIndex={-1}
+              className="text-sm text-muted-foreground tabular-nums outline-none"
             >
-              Device groups
-            </Link>
+              {total === 0 ? (
+                "0 devices"
+              ) : (
+                <>
+                  Showing{" "}
+                  <span className="font-mono">
+                    {formatNumber(first)}–{formatNumber(last)}
+                  </span>{" "}
+                  of <span className="font-mono">{formatNumber(total)}</span>
+                  {hasFilters || q ? " matching" : ""} devices
+                </>
+              )}
+            </p>
+            {(q || hasFilters) && (
+              <Link
+                to="/devices"
+                className="text-sm font-medium text-foreground hover:underline"
+              >
+                {clearLabel}
+              </Link>
+            )}
           </div>
 
-          <p
-            role="status"
-            aria-live="polite"
-            className="text-sm text-muted-foreground tabular-nums"
-          >
-            {formatNumber(total)} {total === 1 ? "device" : "devices"}
-            {page > 1 && ` · page ${page} of ${pages}`}
-          </p>
+          <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
+            <span className="text-sm font-medium text-muted-foreground">
+              Sort
+            </span>
+            <SortToggle
+              romsHref={directoryHref({
+                q: q || undefined,
+                roms,
+                relock,
+                updated,
+                hardened,
+              })}
+              nameHref={directoryHref({
+                q: q || undefined,
+                roms,
+                relock,
+                updated,
+                hardened,
+                sort: "name",
+              })}
+              sort={sort}
+            />
+            {pages > 1 && (
+              <span className="flex items-center gap-2 text-sm text-muted-foreground tabular-nums">
+                Page {page} of {pages}
+                {prevHref && (
+                  <Link
+                    to={prevHref}
+                    prefetch="intent"
+                    aria-label="Previous page"
+                    className="inline-flex h-8 items-center font-semibold text-foreground hover:underline"
+                  >
+                    Prev
+                  </Link>
+                )}
+                {nextHref && (
+                  <Link
+                    to={nextHref}
+                    prefetch="intent"
+                    aria-label="Next page"
+                    className="inline-flex h-8 items-center font-semibold text-foreground hover:underline"
+                  >
+                    Next
+                  </Link>
+                )}
+              </span>
+            )}
+          </div>
         </div>
       </div>
 
       {devices.length === 0 ? (
-        <div className="index-frame px-6 py-16 text-center">
+        <div className="rounded-2xl border border-border bg-card px-6 py-16 text-center">
           <p className="font-heading text-lg font-bold">No devices match</p>
           <p className="mt-1 text-sm text-muted-foreground">
             {q
-              ? `Nothing in the directory matches “${q}”.`
+              ? `Nothing in the directory matches “${q}”${
+                  hasFilters ? " with these filters" : ""
+                }.`
               : "No device matches these filters."}{" "}
             <Link
               to="/devices"
               className="font-medium text-foreground hover:underline"
             >
-              Clear the filters
+              {clearLabel}
             </Link>
             .
           </p>
         </div>
       ) : (
-        <ul className="index-frame">
-          {devices.map((device) => (
-            <li key={`${device.vendor}/${device.codename}`}>
-              <DeviceRow device={device} />
-            </li>
-          ))}
-        </ul>
+        <DeviceDirectoryList devices={devices} />
       )}
 
       <DirectoryPager
         page={page}
         pages={pages}
-        prevHref={
-          page > 1
-            ? directoryHref({
-                q: q || undefined,
-                roms,
-                relock,
-                updated,
-                hardened,
-                page: page - 1,
-              })
-            : null
-        }
-        nextHref={
-          page < pages
-            ? directoryHref({
-                q: q || undefined,
-                roms,
-                relock,
-                updated,
-                hardened,
-                page: page + 1,
-              })
-            : null
-        }
+        prevHref={prevHref}
+        nextHref={nextHref}
       />
     </div>
   );

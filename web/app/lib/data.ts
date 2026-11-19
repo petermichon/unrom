@@ -10,6 +10,9 @@ import type {
   Summary,
 } from "@/lib/types";
 
+/** Rows per page in the device directory, shared by the page and its preload. */
+export const DIRECTORY_PAGE_SIZE = 50;
+
 // Server-side loaders reach the API directly; in the browser the app is
 // same-origin (Caddy proxies /api), so a relative path is used.
 function apiBase(): string {
