@@ -1,3 +1,5 @@
+import { RomGlyph } from "@/components/RomMark";
+
 export interface RomPhoneSlide {
   id: string;
   name: string;
@@ -69,14 +71,20 @@ export function RomPhone({
                 position === index ? "opacity-100" : "opacity-0"
               }`}
             >
-              {ROM_LOGOS[rom.id] && (
-                <img src={ROM_LOGOS[rom.id]} alt="" className="h-10 w-auto" />
-              )}
+              {ROM_LOGOS[rom.id] &&
+                (rom.id === "eos" ? (
+                  // /e/OS ships a colour mark; mask it so the screen stays
+                  // monochrome like the other slides.
+                  <RomGlyph
+                    id={rom.id}
+                    src={ROM_LOGOS[rom.id]}
+                    className="size-10"
+                  />
+                ) : (
+                  <img src={ROM_LOGOS[rom.id]} alt="" className="h-10 w-auto" />
+                ))}
               <span className="max-w-[85%] text-center font-heading text-[26px] leading-[1.05] font-bold tracking-[-0.03em]">
                 {rom.name}
-              </span>
-              <span className="h-[3px] w-28 overflow-hidden rounded-full bg-white/15">
-                <span className="block h-full w-10 rounded-full bg-[var(--hero-accent)]" />
               </span>
             </div>
           ))}
