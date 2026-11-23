@@ -58,14 +58,14 @@ Out of scope: recoveries, root tools, GSIs and repacks, OEM stock skins.
 - ❌ CAF Extended
 - 🟢 CalyxOS
 - 🟢 CandyRoms
-- ❌ Carbon ROM
+- 🟢 Carbon ROM
 - 🟢 CatalystOS
 - ❌ Cesium OS
 - chaoticOS
 - CharaROM
 - CharlieOS
 - 🟢 CherishOS
-- ❌ CipherOS
+- 🟢 CipherOS
 - ❌ Citrus CAF
 - 🟢 Clover
 - ❌ ClownUI
@@ -271,7 +271,7 @@ Out of scope: recoveries, root tools, GSIs and repacks, OEM stock skins.
 - ❌ Validus OS
 - ❌ Viper OS
 - ❌ VoidUI
-- ❌ Voltage OS
+- 🟢 Voltage OS
 - ❌ Watchdogs ROM
 - 🟢 WaveOS
 - ❌ Weeb Projekt

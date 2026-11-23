@@ -29,7 +29,7 @@ date so the staleness is visible.
   re-check of stale evaluations, not first-time discovery.
 
 Progress: Tier 1, three of the four Tier 2 ROMs and all of Tier 3 are
-implemented, taking the catalogue from 40 to 63 ROMs with device data. Project
+implemented, taking the catalogue from 40 to 66 ROMs with device data. Project
 404 was skipped; see Tier 2.
 
 ## Tier 1 — active, one clean JSON file
@@ -105,14 +105,17 @@ No static file: the site renders the list itself or asks an endpoint. These
 need a parser per site (or a network trace to find the endpoint) and are more
 fragile than the tiers above.
 
-- CarbonROM — `get.carbonrom.org` serves a DataTables page over the build index.
-- halogenOS — `halogenos.org/devices`.
-- CipherOS — `cipheros.org.in/devices`.
-- LMODroid — site did not resolve during the scan; check `lmodroid.org`.
-- StatiXOS — site did not resolve; `StatiXOS/releases` only holds a workflow.
-- VoltageOS — `Website-Resource` is images only; the site is a JS app.
+- CarbonROM — implemented from the build index at `get.carbonrom.org`, which
+  lists every published build and links a page per device.
+- CipherOS — implemented from the schema.org `ItemList` the devices page
+  publishes for crawlers.
+- VoltageOS — implemented from `VoltageOS/android_vendor_voltageota`, one build
+  document per device at the repository root (the 2026-11 scan missed it).
+- halogenOS — `halogenos.org/devices` is server-rendered; two devices, so left
+  for when the roster is worth a parser.
+- LMODroid, StatiXOS — sites did not resolve during the scan.
 - Halcyon, Project Elixir, Miku-UI, The XPerience Project, Xdroid, EuclidOS —
-  org exists but no roster-shaped file was found.
+  org exists but no roster-shaped file was found; their sites are JS apps.
 
 ## Not rosters (avoid)
 
@@ -137,7 +140,8 @@ PenguinOS, The Parasite Project, xiaomi.eu.
 3. Tier 3 (all 15 ROMs) — done. The 2021-and-older rosters are in as
    last-known support; each project is marked discontinued in the catalogue,
    so the pages state that the list is historical.
-4. Tier 4 only where a stable endpoint exists; do not scrape a JS-only site.
+4. Tier 4 — CarbonROM, CipherOS and VoltageOS are in (80 mappings). Add the
+   rest only where a stable endpoint exists; do not scrape a JS-only site.
 5. Leave Tier 5 alone unless a link turns up from another source.
 
 `ROM_COVERAGE.md` still marks several of these ❌. Update it as each ROM is
