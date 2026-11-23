@@ -268,7 +268,7 @@ export default function DevicesRoute() {
 
       <PageHeader
         title="Devices"
-        description="Find your device to see which custom ROMs support it."
+        description="Find your device to see which custom ROMs support it. A ROM listing is not a claim that the bootloader can be unlocked: that is the vendor's decision, shown on the device page where a vendor publishes a policy."
       />
 
       <div className="flex flex-col gap-4">
