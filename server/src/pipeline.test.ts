@@ -57,6 +57,34 @@ test("every raw data file has a normalizer", async () => {
   );
 });
 
+test("sources that publish a build timestamp date their records", async () => {
+  const records = await parseAllSources();
+  const romIds = [
+    "candyroms",
+    "derpfest",
+    "evolutionx",
+    "pixelos",
+    "pixelextended",
+    "projectpixelage",
+    "superioros",
+    "witaqua",
+  ];
+
+  for (const romId of romIds) {
+    const built = records.filter(
+      (record) => record.romId === romId && record.hasBuild,
+    );
+    assert.ok(built.length > 0, `${romId} has no build records`);
+    assert.deepEqual(
+      built
+        .filter((record) => record.buildDate === null)
+        .map((r) => r.codename),
+      [],
+      `${romId} records without a build date`,
+    );
+  }
+});
+
 test("build produces a consistent dataset", async () => {
   const records = await parseAllSources();
   assert.ok(records.length > 0, "no records parsed");

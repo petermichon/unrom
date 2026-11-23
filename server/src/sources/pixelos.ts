@@ -10,6 +10,39 @@ interface RawPixelOSDevice {
   vendor?: unknown;
   model?: unknown;
   download_link?: unknown;
+  last_updated?: unknown;
+}
+
+const MONTHS: Record<string, string> = {
+  january: "01",
+  february: "02",
+  march: "03",
+  april: "04",
+  may: "05",
+  june: "06",
+  july: "07",
+  august: "08",
+  september: "09",
+  october: "10",
+  november: "11",
+  december: "12",
+};
+
+/**
+ * The build's date, from the dated filename first and the human `last_updated`
+ * second. The filename is unambiguous; `21 August 2024` has no timezone, so it
+ * is read by pattern rather than through `Date`, which would shift the day.
+ */
+function buildDateFor(device: RawPixelOSDevice): string | null {
+  const link = str(device.download_link);
+  const stamp = link?.match(/[_-](\d{4})(\d{2})(\d{2})-/);
+  if (stamp) return `${stamp[1]}-${stamp[2]}-${stamp[3]}`;
+
+  const updated = str(device.last_updated)?.toLowerCase();
+  const parts = updated?.match(/^(\d{1,2}) ([a-z]+) (\d{4})$/);
+  const month = parts ? MONTHS[parts[2]!] : undefined;
+  if (!parts || !month) return null;
+  return `${parts[3]}-${month}-${parts[1]!.padStart(2, "0")}`;
 }
 
 export function parsePixelOS(raw: string): NormalizedRomDevice[] {
@@ -43,6 +76,7 @@ export function parsePixelOS(raw: string): NormalizedRomDevice[] {
         referenceUrl: `https://pixelos.net/download/${codename}`,
         referenceKind: "derived",
         hasBuild,
+        buildDate: hasBuild ? buildDateFor(device) : null,
       }),
     );
   }

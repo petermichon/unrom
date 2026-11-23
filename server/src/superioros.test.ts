@@ -9,7 +9,11 @@ test("SuperiorOS parses the aggregated per-device OTA snapshot", () => {
       devices: [
         {
           file: "sweet.json",
-          raw: { response: [{ device_name: "Xiaomi Redmi Note 10 Pro" }] },
+          raw: {
+            response: [
+              { device_name: "Xiaomi Redmi Note 10 Pro", datetime: 1666222664 },
+            ],
+          },
         },
         {
           file: "nested/nope.json",
@@ -25,6 +29,7 @@ test("SuperiorOS parses the aggregated per-device OTA snapshot", () => {
     ["sweet"],
   );
   assert.equal(records[0]?.name, "Xiaomi Redmi Note 10 Pro");
+  assert.equal(records[0]?.buildDate, "2022-10-19");
   assert.equal(
     records[0]?.referenceUrl,
     "https://github.com/SuperiorOS-Devices/official_devices/blob/fourteen/sweet.json",

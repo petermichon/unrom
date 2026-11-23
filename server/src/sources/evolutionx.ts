@@ -1,4 +1,4 @@
-import { buildRecord, isCitation, str } from "./adapter.ts";
+import { buildRecord, isCitation, normalizeDate, str } from "./adapter.ts";
 import type { NormalizedRomDevice } from "../normalized.ts";
 
 const ROM_ID = "evolutionx";
@@ -42,6 +42,7 @@ export function parseEvolutionX(raw: string): NormalizedRomDevice[] {
         brand: str(entry.oem),
         referenceUrl,
         referenceKind: derived ? "derived" : "observed",
+        buildDate: normalizeDate(entry.timestamp),
       }),
     );
   }

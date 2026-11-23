@@ -99,6 +99,7 @@ const configs: DeviceSource[] = [
     referenceUrl: ["xda_thread"],
     referencePage:
       "https://github.com/CandyRoms/official_devices/blob/c11/devices.json",
+    buildDate: ["datetime"],
   },
   {
     id: "cherishos",
@@ -155,6 +156,7 @@ const configs: DeviceSource[] = [
     referenceUrl: ["reference"],
     referencePage: "https://derpfest.org/devices-index.json",
     referenceKind: "derived",
+    buildDate: ["latest.datetime"],
     // DerpFest's override data mislabels `lunaa` as "Motorola Moto G9"; the
     // codename is the Realme GT Master Edition (Moto G9 is `guamp`).
     nameCorrections: { lunaa: "Realme GT Master Edition" },
@@ -224,6 +226,7 @@ const configs: DeviceSource[] = [
     select: selectors.array,
     name: ["device_name"],
     referenceUrl: ["forum_url", "xda_thread", "sourceUrl"],
+    buildDate: ["datetime"],
   },
   {
     id: "pixysos",
@@ -250,6 +253,7 @@ const configs: DeviceSource[] = [
     select: selectors.array,
     referencePage:
       "https://sourceforge.net/projects/projectpixelage/files/{codename}/",
+    buildDate: ["datetime"],
   },
   {
     id: "2by2-project",
@@ -289,6 +293,7 @@ const configs: DeviceSource[] = [
     brand: ["brand"],
     referencePage:
       "https://github.com/WitAqua/WitAquaOTA/blob/main/data/devices.json",
+    buildDate: ["datetime"],
   },
   {
     id: "genesisos",
