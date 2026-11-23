@@ -33,15 +33,13 @@
       legacy (support ended) and official builds stay blocked by the data item
       above. Each group is a property of the device–ROM pair, so a pair may
       appear in several.
-- [ ] Record a source URL per ROM, and later whether its builds are
-      reproducible. The dataset says which devices a ROM supports but not where
-      its code lives or whether anyone can verify the binaries, so "can I check
-      this" has no answer yet. Both facts are checkable per project (the org
-      plus manifest, e.g. `github.com/DerpFest-AOSP/android_manifest`;
-      reproducible builds, which GrapheneOS publishes and most projects do
-      not), so they belong in the data rather than in an argument. Source URLs
-      cover most of the 277 ROMs and would be a `contract/` addition; the
-      verification flag can wait until there is something to record.
+- [ ] Record whether a ROM's builds are reproducible. A source host is now
+      recorded for the ROMs whose code host is verified (`rom-sources.ts`, shown
+      as "Project source" on the ROM page); the remaining projects have no
+      source URL yet, mostly the ones whose roster is a website. Reproducibility
+      is the other half of "can I check this": GrapheneOS publishes it, most
+      projects do not, so add the flag when there is a way to state it per
+      project rather than a project-wide assumption.
 - [ ] Separate official from unofficial builds per device–ROM mapping. Some
       sources publish it (DerpFest's `romtype`), most do not; where it exists it
       answers whether a device runs the project's own build or a maintainer's.
