@@ -59,6 +59,3 @@
 - [ ] Publish a diff between builds: what changed since the last one. The
       content hash already changes; humans cannot see why. Needs build history,
       which the pipeline does not keep today.
-- [ ] Add a CI workflow for `check`, `test` and the e2e suite. Actions currently
-      only publish images, so a data or contract regression reaches `main`
-      whenever the local `verify` is skipped.
