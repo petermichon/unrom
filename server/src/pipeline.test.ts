@@ -1280,6 +1280,49 @@ test("the registry exposes every curated entry", async () => {
   }
 });
 
+test("a source naming the manufacturer keeps the curated vendor", () => {
+  const dir = mkdtempSync(join(tmpdir(), "unrom-test-"));
+  try {
+    const dbPath = join(dir, "unrom.sqlite");
+    const records = [
+      // Huawei built the Nexus 6P; Google is the device's brand.
+      buildRecord({
+        romId: "test-rom",
+        romName: "Test ROM",
+        codename: "angler",
+        brand: "Huawei",
+        name: "Nexus 6P",
+      }),
+      // A codename shared with a different device must keep its own vendor.
+      buildRecord({
+        romId: "test-rom",
+        romName: "Test ROM",
+        codename: "sirius",
+        brand: "Xiaomi",
+        name: "Mi 8 SE",
+      }),
+    ];
+    buildDatabase(records, dbPath);
+
+    const db = new Database(dbPath, { readonly: true });
+    const vendors = (codename: string) =>
+      (
+        db
+          .prepare("select vendor from devices where codename = ?")
+          .all(codename) as Array<{ vendor: string }>
+      ).map((row) => row.vendor);
+
+    assert.deepEqual(vendors("angler"), ["google"]);
+    // The registry's `sirius` is an Xperia, so the Mi 8 SE name does not match
+    // it: the record keeps Xiaomi's own `xmsirius` device instead.
+    assert.deepEqual(vendors("sirius"), ["sony"]);
+    assert.deepEqual(vendors("xmsirius"), ["xiaomi"]);
+    db.close();
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 test("cross-vendor collisions resolve to distinct devices", async () => {
   const records = await parseAllSources();
   const dir = mkdtempSync(join(tmpdir(), "unrom-test-"));

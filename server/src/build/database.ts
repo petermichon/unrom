@@ -22,7 +22,11 @@ import {
   vendorForName,
   vendorName,
 } from "../data/identity.ts";
-import { DEVICE_NAMES, deviceNames } from "../data/registry.ts";
+import {
+  DEVICE_NAMES,
+  curatedEntriesForCodename,
+  deviceNames,
+} from "../data/registry.ts";
 import { RELOCK_RULES, relockFor } from "../data/relock.ts";
 import { ROMS } from "../data/roms.ts";
 import type { RomCatalogEntry } from "../data/roms.ts";
@@ -251,6 +255,28 @@ function normalizeName(value: string): string {
   return value.trim().replace(/\s+/g, " ").toLowerCase();
 }
 
+/** Letters and digits only, so "Nexus 7(2013)" and "Nexus 7 (2013)" agree. */
+function comparableName(value: string | null): string {
+  return (value ?? "").replace(/[^a-z0-9]+/gi, "").toLowerCase();
+}
+
+/**
+ * The vendor the registry assigns to a codename when the source's model name is
+ * one of the curated names for it. Only an exact model match counts: a codename
+ * shared by two devices keeps the vendor its source reported.
+ */
+function curatedVendorForName(
+  codename: string,
+  name: string | null,
+): string | null {
+  const key = comparableName(name);
+  if (!key) return null;
+  const matches = curatedEntriesForCodename(codename).filter((entry) =>
+    entry.names.some((entryName) => comparableName(entryName) === key),
+  );
+  return matches.length === 1 ? matches[0].vendor : null;
+}
+
 // How well the source rosters back a curated entry's names.
 function registryProvenance(
   names: string[],
@@ -477,13 +503,21 @@ export function buildDatabase(
   const prepared: Prepared[] = [];
   const vendorsByCodename = new Map<string, Set<string>>();
   for (const record of records) {
-    const reportedVendor =
-      vendorForBrand(record.brand) ?? vendorForName(record.name);
     for (const part of expandCodename(record.codename)) {
       // Emulator images and unified build targets are not devices.
       if (isExcludedCodename(part)) continue;
       if (!isValidCodename(part)) continue;
       const canonical = canonicalCasing(part);
+      // A source that names the manufacturer (LG built the Nexus 5) or the
+      // parent company (OPPO listing a Realme) still describes the same device.
+      // When its model name matches the curated entry under another vendor,
+      // that vendor wins, so one phone does not become two. A codename shared
+      // by different devices (sirius is both an Xperia and a Mi 8 SE) keeps
+      // the reported vendor because the names differ.
+      const reportedVendor =
+        curatedVendorForName(canonical, record.name) ??
+        vendorForBrand(record.brand) ??
+        vendorForName(record.name);
       prepared.push({ record, part, canonical, vendor: reportedVendor });
       if (reportedVendor) {
         const vendors = vendorsByCodename.get(canonical) ?? new Set<string>();

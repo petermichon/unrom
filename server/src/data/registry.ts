@@ -1061,3 +1061,21 @@ export const DEVICE_NAMES: Record<string, string[]> = {
 export function deviceNames(vendor: string, codename: string): string[] | null {
   return DEVICE_NAMES[`${vendor}\0${codename}`] ?? null;
 }
+
+// The curated entries grouped by codename, for deciding whether a source that
+// reports a different brand still describes the same device.
+const CURATED_ENTRIES_BY_CODENAME = (() => {
+  const map = new Map<string, { vendor: string; names: string[] }[]>();
+  for (const [key, names] of Object.entries(DEVICE_NAMES)) {
+    const [vendor, codename] = key.split("\0");
+    const lower = codename.toLowerCase();
+    map.set(lower, [...(map.get(lower) ?? []), { vendor, names }]);
+  }
+  return map;
+})();
+
+export function curatedEntriesForCodename(
+  codename: string,
+): { vendor: string; names: string[] }[] {
+  return CURATED_ENTRIES_BY_CODENAME.get(codename.toLowerCase()) ?? [];
+}
