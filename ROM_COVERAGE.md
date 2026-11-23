@@ -12,7 +12,6 @@ Out of scope: recoveries, root tools, GSIs and repacks, OEM stock skins.
 - Abhix MIUI
 - AetheriaOS
 - AetherOS
-- ❌ Afterlife Project
 - 🟢 AfterlifeOS
 - 🟢 AICP
 - 🟢 AIM ROM
@@ -28,7 +27,6 @@ Out of scope: recoveries, root tools, GSIs and repacks, OEM stock skins.
 - ❌ AOSDP
 - 🟢 AOSiP
 - 🟢 AOSP Extended
-- aospa-shadedark
 - ❌ Aquari OS
 - AquariumUI
 - ❌ ArfoxOS
@@ -75,7 +73,6 @@ Out of scope: recoveries, root tools, GSIs and repacks, OEM stock skins.
 - 🟢 CorvusOS
 - ❌ Cosmic OS
 - 🟢 crDroid
-- crDroid X
 - ❌ CyanogenMod
 - ❌ Cygnus ROM
 - ❌ Cypher OS
