@@ -15,7 +15,7 @@ Out of scope: recoveries, root tools, GSIs and repacks, OEM stock skins.
 - ❌ Afterlife Project
 - 🟢 AfterlifeOS
 - 🟢 AICP
-- ❌ AIM ROM
+- 🟢 AIM ROM
 - Alch3myOS
 - 🟢 AlphaDroid
 - ❌ AlrightOS
@@ -26,7 +26,7 @@ Out of scope: recoveries, root tools, GSIs and repacks, OEM stock skins.
 - Androidfuckery
 - ❌ AOKP
 - ❌ AOSDP
-- ❌ AOSiP
+- 🟢 AOSiP
 - 🟢 AOSP Extended
 - aospa-shadedark
 - ❌ Aquari OS
@@ -107,7 +107,7 @@ Out of scope: recoveries, root tools, GSIs and repacks, OEM stock skins.
 - ❌ Fluid OS
 - ❌ Fork LineageOS
 - ❌ fortuneOS
-- ❌ Freaky OS
+- 🟢 Freaky OS
 - Frosty
 - Fundamental OS
 - ❌ Fusion OS
@@ -226,7 +226,7 @@ Out of scope: recoveries, root tools, GSIs and repacks, OEM stock skins.
 - Pulse-OS
 - Raven AOSP
 - RealizeUI
-- ❌ ReloadedOS
+- 🟢 ReloadedOS
 - ❌ Replicant
 - ❌ Resurrection Remix OS
 - ❌ ResurrectionRemix-Revived
@@ -242,7 +242,7 @@ Out of scope: recoveries, root tools, GSIs and repacks, OEM stock skins.
 - ❌ ShapeShift OS
 - ❌ SigmaDroid
 - ❌ SkyLineUI
-- ❌ SlimRoms
+- 🟢 SlimRoms
 - 🟢 SomethingOS
 - ❌ SoniUI
 - ❌ SonyAOSP (SODP)
@@ -273,7 +273,7 @@ Out of scope: recoveries, root tools, GSIs and repacks, OEM stock skins.
 - ❌ VoidUI
 - ❌ Voltage OS
 - ❌ Watchdogs ROM
-- ❌ WaveOS
+- 🟢 WaveOS
 - ❌ Weeb Projekt
 - 🟢 WitAqua
 - ❌ Xdroid CAF
@@ -284,4 +284,4 @@ Out of scope: recoveries, root tools, GSIs and repacks, OEM stock skins.
 - 🟢 YAAP AOSP
 - YAAPex
 - ❌ Yukina Supremacy
-- ❌ ZeusOS
+- 🟢 ZeusOS

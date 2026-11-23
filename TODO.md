@@ -1,9 +1,10 @@
 # TODO
 
 - [ ] Grow indexable content by adding source-backed device data for ROMs that
-      currently have none. Tiers 1, 2 and the recent half of Tier 3 are
-      implemented (56 of 277 ROMs now have data; Project 404 was skipped as
-      stale). Next are the 2021-and-older rosters in `ROM_TRIAGE.md`.
+      currently have none. Tiers 1, 2 and 3 are implemented (63 of 277 ROMs now
+      have data; Project 404 was skipped as stale). What remains is Tier 4,
+      where the roster only exists in HTML or a site API, and Tier 5, which has
+      no public link; see `ROM_TRIAGE.md`.
 - [ ] Record bootloader-unlock status per device. The demand is logged in
       `USER_EVIDENCE.md` (2026-11-12 and 2026-11-14): two independent
       recommendations name the site and then point readers to bootloader-unlock
