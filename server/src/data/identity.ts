@@ -84,6 +84,7 @@ const VENDOR_BY_BRAND: Record<string, string> = {
   pocophone: "xiaomi",
   "planet computers": "planetcomputers",
   qualcomm: "qualcomm",
+  rabbit: "rabbit",
   radxa: "radxa",
   rakuten: "rakuten",
   "rakuten / tinno": "rakuten",
@@ -186,11 +187,14 @@ export function vendorForCodename(codename: string): string | null {
   return VENDOR_BY_CODENAME[codename.toLowerCase()] ?? null;
 }
 
-// Build targets that are not real devices: emulator images. Dropping them keeps
+// Build targets that are not real devices: emulator images and the system
+// images a project publishes for any Treble device. Dropping them keeps
 // phantom rows out of `devices`.
 export const EXCLUDED_CODENAMES = new Set<string>([
   "sdk_phone_x86_64",
   "opkona",
+  // CipherOS's "Cipher Single System Image".
+  "cssi",
 ]);
 
 // Generic System Images run on any Project Treble device, so they are build
