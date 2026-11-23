@@ -4,6 +4,7 @@ import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ROM_LOGOS, ROM_MARKS } from "@/components/RomPhone";
 import { RomMark } from "@/components/RomMark";
 import { StatusPill } from "@/components/StatusPill";
+import { Badge } from "@/components/ui/badge";
 import { useRomPalette } from "@/lib/use-rom-palette";
 import { keepLoaderDataOnSearchChange } from "@/lib/revalidate";
 import RomDevicesTable from "@/components/RomDevicesTable";
@@ -16,6 +17,7 @@ import {
   pageMeta,
   updatedAtFromMatches,
 } from "@/lib/seo";
+import { staleBuildLabel } from "@/lib/freshness";
 import { formatNumber } from "@/lib/utils";
 import { formatDate } from "@/lib/dates";
 import type { RomDetail } from "@/lib/types";
@@ -130,6 +132,7 @@ export default function RomRoute() {
 
   const description = romDescription(rom);
   const build = buildSummary(rom);
+  const stale = staleBuildLabel(rom.build?.newest, rom.status);
   const mark = ROM_MARKS[rom.id] ?? ROM_LOGOS[rom.id];
   useRomPalette(rom.id);
 
@@ -197,7 +200,12 @@ export default function RomRoute() {
             </>
           )}
         </p>
-        <div className="ml-auto flex items-center gap-3">
+        <div className="ml-auto flex flex-wrap items-center gap-2">
+          {stale && (
+            <Badge variant="outline" className="text-xs font-normal">
+              {stale}
+            </Badge>
+          )}
           <StatusPill status={rom.status} />
         </div>
       </div>
