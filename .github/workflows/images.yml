@@ -1,7 +1,7 @@
 name: Images
 
-# Tests and typechecks run locally (`npm run verify` / `npm run verify:all`);
-# GitHub Actions only builds and publishes the deploy images.
+# Tests and typechecks run in `ci.yml`; this workflow only builds and publishes
+# the deploy images.
 on:
   push:
     branches: [main]

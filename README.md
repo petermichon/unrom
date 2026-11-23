@@ -96,8 +96,9 @@ npm run registry:suggest -- asus    # paste-ready entries for one vendor
 - **Images** (`.github/workflows/images.yml`): on pushes to `main` (docs-only
   changes are skipped) and manual runs, builds and publishes
   `ghcr.io/<owner>/unrom-api` and `unrom-web` tagged with the commit SHA and
-  `latest`. Tests and typechecks are local: `npm run verify`; use
-  `npm run verify:all` to include e2e.
+  `latest`. Tests and typechecks run in CI (`.github/workflows/ci.yml`); run
+  `npm run verify` locally, or `npm run verify:all` to include the browser
+  suite.
 - **Deploy is pull-based**: the server runs [freshdock](https://github.com/Turbootzz/freshdock)
   (`--profile deploy`), which recreates `api`/`web` when a new image is
   published. No SSH credentials or inbound access; healthchecks gate updates and

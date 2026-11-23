@@ -58,8 +58,9 @@ have the right to submit the contribution under the project's licenses.
 
 ## Before pushing
 
-GitHub Actions only publishes images; tests and typechecks run locally. Enable
-the repository's pre-push hook once per clone:
+CI runs `npm run verify` and the browser suite on every push and pull request
+(`.github/workflows/ci.yml`). Run the same commands locally before opening a
+pull request, and enable the repository's pre-push hook once per clone:
 
 ```sh
 npm run hooks
