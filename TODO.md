@@ -59,3 +59,16 @@
 - [ ] Publish a diff between builds: what changed since the last one. The
       content hash already changes; humans cannot see why. Needs build history,
       which the pipeline does not keep today.
+- [ ] Check click depth across the site, as a UX and as a crawl: every page
+      should be at most three links from the home page, and no indexable page
+      should need a search to reach. Start from `/`, follow the links the
+      sitemap lists and record the depth per route; fix the deepest ones in the
+      navigation or the hubs (devices, brands, ROMs, groups, data, methodology)
+      rather than by adding links to every page. Device and ROM pages are the
+      long tail and may sit one hop further than their hub.
+- [ ] Find the queries the site receives impressions for without a page that
+      answers them. Export Search Console queries with impressions and no
+      matching URL, group them by intent (a device model, a ROM, a task such as
+      installing a custom ROM), and record each gap. A gap that needs data goes
+      to the coverage list; one an existing page already answers becomes a
+      title or copy fix, not a new page.
