@@ -4,6 +4,7 @@ import { ROM_LOGOS, ROM_MARKS } from "@/components/RomPhone";
 import { RomMark } from "@/components/RomMark";
 import { StatusPill } from "@/components/StatusPill";
 import { useRomPalette } from "@/lib/use-rom-palette";
+import { keepLoaderDataOnSearchChange } from "@/lib/revalidate";
 import RomDevicesTable from "@/components/RomDevicesTable";
 import { fetchRom } from "@/lib/data";
 import {
@@ -71,6 +72,10 @@ export async function loader({ params }: Route.LoaderArgs) {
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   return { rom: await fetchRom(params.id) };
 }
+
+// The device table's sort and column state live in the query string; the ROM
+// payload does not depend on it.
+export const shouldRevalidate = keepLoaderDataOnSearchChange;
 
 export const meta: Route.MetaFunction = ({ loaderData, matches, error }) => {
   const rom = loaderData?.rom;

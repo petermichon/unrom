@@ -20,6 +20,7 @@ import {
   updatedAtFromMatches,
 } from "@/lib/seo";
 import type { DeviceDetail, RomStatus, RomSummary } from "@/lib/types";
+import { keepLoaderDataOnSearchChange } from "@/lib/revalidate";
 import type { Route } from "./+types/device";
 
 // An alternate codename (alias) resolves to the canonical device; redirect so
@@ -48,6 +49,10 @@ export async function loader({ params }: Route.LoaderArgs) {
 export async function clientLoader({ params }: Route.ClientLoaderArgs) {
   return loadDevice(params);
 }
+
+// The table's sort and column state live in the query string; the device
+// payload does not depend on it.
+export const shouldRevalidate = keepLoaderDataOnSearchChange;
 
 /** Every listed ROM belongs to a project that stopped shipping builds. */
 function allRomsDiscontinued(

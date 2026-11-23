@@ -1,5 +1,9 @@
 import { useMemo } from "react";
-import type { ColumnDef } from "@tanstack/react-table";
+import type {
+  ColumnDef,
+  SortingState,
+  VisibilityState,
+} from "@tanstack/react-table";
 import { ExternalLink, PackageOpen } from "lucide-react";
 import { Link } from "react-router";
 import { DataTable } from "@/components/data-table/data-table";
@@ -18,11 +22,18 @@ import { StatusPill } from "@/components/StatusPill";
 import { Button } from "@/components/ui/button";
 import { formatDate, formatMonth } from "@/lib/dates";
 import { bySortKey, referenceLabel } from "@/lib/sort";
+import { useTableUrlState } from "@/lib/use-table-url-state";
 import type { RomStatus, RomSupport } from "@/lib/types";
 
 const MOBILE_HIDDEN = new Set(["referenceUrl"]);
 const columnClassName = (id: string) =>
   MOBILE_HIDDEN.has(id) ? "hidden md:table-cell" : undefined;
+
+// Module-level so the table state keeps its identity between renders.
+const DEFAULT_SORTING: SortingState = [{ id: "name", desc: false }];
+const SORTABLE = ["name", "status", "build"] as const;
+const HIDEABLE = ["name", "status", "build", "referenceUrl"] as const;
+const ALWAYS_HIDDEN: VisibilityState = { search: false };
 
 interface Props {
   roms: RomSupport[];
@@ -31,6 +42,18 @@ interface Props {
 }
 
 export default function DeviceRomsTable({ roms, statuses = {} }: Props) {
+  const {
+    sorting,
+    onSortingChange,
+    columnVisibility,
+    onColumnVisibilityChange,
+  } = useTableUrlState({
+    sortable: SORTABLE,
+    hideable: HIDEABLE,
+    defaultSorting: DEFAULT_SORTING,
+    alwaysHidden: ALWAYS_HIDDEN,
+  });
+
   const columns = useMemo<ColumnDef<RomSupport>[]>(
     () => [
       {
@@ -164,10 +187,10 @@ export default function DeviceRomsTable({ roms, statuses = {} }: Props) {
       }}
       paginate={false}
       tableClassName="md:min-w-[36rem]"
-      initialState={{
-        columnVisibility: { search: false },
-        sorting: [{ id: "name", desc: false }],
-      }}
+      sorting={sorting}
+      onSortingChange={onSortingChange}
+      columnVisibility={columnVisibility}
+      onColumnVisibilityChange={onColumnVisibilityChange}
       toolbar={(table) => (
         <DataTableToolbar>
           <SearchInput

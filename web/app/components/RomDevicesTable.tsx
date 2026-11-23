@@ -1,5 +1,9 @@
 import { useMemo } from "react";
-import type { ColumnDef } from "@tanstack/react-table";
+import type {
+  ColumnDef,
+  SortingState,
+  VisibilityState,
+} from "@tanstack/react-table";
 import { Link } from "react-router";
 import { DataTable } from "@/components/data-table/data-table";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
@@ -15,17 +19,36 @@ import {
   EmptyTitle,
 } from "@/components/ui/empty";
 import type { DeviceSummary } from "@/lib/types";
+import { useTableUrlState } from "@/lib/use-table-url-state";
 import { PackageOpen } from "lucide-react";
 
 const MOBILE_HIDDEN = new Set(["codename"]);
 const columnClassName = (id: string) =>
   MOBILE_HIDDEN.has(id) ? "hidden md:table-cell" : undefined;
 
+// Module-level so the table state keeps its identity between renders.
+const DEFAULT_SORTING: SortingState = [{ id: "name", desc: false }];
+const SORTABLE = ["name", "codename"] as const;
+const HIDEABLE = ["name", "codename"] as const;
+const ALWAYS_HIDDEN: VisibilityState = { search: false };
+
 interface Props {
   devices: DeviceSummary[];
 }
 
 export default function RomDevicesTable({ devices }: Props) {
+  const {
+    sorting,
+    onSortingChange,
+    columnVisibility,
+    onColumnVisibilityChange,
+  } = useTableUrlState({
+    sortable: SORTABLE,
+    hideable: HIDEABLE,
+    defaultSorting: DEFAULT_SORTING,
+    alwaysHidden: ALWAYS_HIDDEN,
+  });
+
   const columns = useMemo<ColumnDef<DeviceSummary>[]>(
     () => [
       {
@@ -108,10 +131,10 @@ export default function RomDevicesTable({ devices }: Props) {
       columnWidths={{ name: "md:w-[62%]", codename: "md:w-[38%]" }}
       paginate={false}
       tableClassName="md:min-w-[36rem]"
-      initialState={{
-        columnVisibility: { search: false },
-        sorting: [{ id: "name", desc: false }],
-      }}
+      sorting={sorting}
+      onSortingChange={onSortingChange}
+      columnVisibility={columnVisibility}
+      onColumnVisibilityChange={onColumnVisibilityChange}
       toolbar={(table) => (
         <DataTableToolbar>
           <SearchInput

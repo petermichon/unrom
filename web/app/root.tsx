@@ -20,6 +20,7 @@ import AppShell from "@/components/AppShell";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Button } from "@/components/ui/button";
 import { fetchMeta, syncContentHash } from "@/lib/data";
+import { keepLoaderDataOnSearchChange } from "@/lib/revalidate";
 
 export async function loader() {
   const meta = await fetchMeta();
@@ -48,6 +49,11 @@ export async function clientLoader() {
   syncContentHash(meta.contentHash);
   return { updatedAt: meta.generatedAt };
 }
+
+// Table state and directory filters live in the query string. The shell's
+// payload is the dataset meta, which they cannot change, so a query-only
+// navigation must not refetch it.
+export const shouldRevalidate = keepLoaderDataOnSearchChange;
 
 // Propagate the loader's validators to every document response.
 export const headers: Route.HeadersFunction = ({ loaderHeaders }) =>
