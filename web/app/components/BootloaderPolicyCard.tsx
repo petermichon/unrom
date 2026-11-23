@@ -20,10 +20,36 @@ export function BootloaderPolicyCard({
   policy,
   relock = [],
 }: {
-  policy: BootloaderPolicy;
+  /** Null when the vendor publishes no policy we can cite. */
+  policy: BootloaderPolicy | null;
   /** ROMs that document relocking after installation on this device. */
   relock?: Array<{ id: string; name: string; sourceUrl: string }>;
 }) {
+  // Silence is not evidence: with no vendor policy the answer is unknown, and
+  // saying so is the point of the card.
+  if (!policy) {
+    return (
+      <section
+        aria-labelledby="bootloader-policy"
+        className="rounded-2xl border border-border bg-card p-5"
+      >
+        <div className="flex flex-wrap items-center gap-2">
+          <h2
+            id="bootloader-policy"
+            className="font-heading text-base font-bold"
+          >
+            Bootloader unlock
+          </h2>
+          <Badge variant="outline">Unknown</Badge>
+        </div>
+        <p className="mt-2 text-sm text-muted-foreground">
+          No vendor policy on unlocking is recorded, so unrom has no answer
+          here. That is not a statement that this bootloader cannot be unlocked.
+        </p>
+      </section>
+    );
+  }
+
   return (
     <section
       aria-labelledby="bootloader-policy"

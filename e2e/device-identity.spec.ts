@@ -45,6 +45,21 @@ test("device pages say when every ROM is discontinued", async ({ page }) => {
   ).toBeVisible();
 });
 
+test("device pages say when no bootloader policy is recorded", async ({
+  page,
+}) => {
+  await page.goto("/devices/samsung/beyond2lte");
+
+  const policy = page.getByRole("region", { name: "Bootloader unlock" });
+  await expect(policy).toBeVisible();
+  await expect(policy.getByText("Unknown", { exact: true })).toBeVisible();
+  await expect(policy).toContainText(
+    "No vendor policy on unlocking is recorded",
+  );
+  // Silence is not a "no": the card must not claim the bootloader is locked.
+  await expect(policy).not.toContainText("Not supported");
+});
+
 test("device pages show the vendor bootloader policy", async ({ page }) => {
   await page.goto("/devices/fairphone/FP5");
 
