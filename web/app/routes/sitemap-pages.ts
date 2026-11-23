@@ -9,6 +9,7 @@ export async function loader() {
       "/",
       "/data",
       "/legal",
+      "/methodology",
       "/devices",
       "/brands",
       "/roms",

@@ -234,6 +234,13 @@ export default function AppShell({ updatedAt, updatedAtIso, children }: Props) {
                     Data & API
                   </Link>
                   <Link
+                    to="/methodology"
+                    prefetch="intent"
+                    className="inline-flex min-h-11 items-center hover:text-foreground hover:underline sm:min-h-0 sm:py-1"
+                  >
+                    Methodology
+                  </Link>
+                  <Link
                     to="/legal"
                     prefetch="intent"
                     className="inline-flex min-h-11 items-center hover:text-foreground hover:underline sm:min-h-0 sm:py-1"

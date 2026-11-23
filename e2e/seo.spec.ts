@@ -4,6 +4,7 @@ const PAGES = [
   "/",
   "/data",
   "/legal",
+  "/methodology",
   "/brands",
   "/device-groups",
   "/device-groups/hardened",

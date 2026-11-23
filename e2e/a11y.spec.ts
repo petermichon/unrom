@@ -18,6 +18,7 @@ const PATHS = [
   "/brands",
   "/device-groups",
   "/device-groups/hardened",
+  "/methodology",
   "/devices",
   "/devices/xiaomi",
   "/roms",

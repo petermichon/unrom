@@ -131,24 +131,36 @@ export default function DeviceRomsTable({ roms, statuses = {} }: Props) {
           <DataTableColumnHeader column={column} title="Reference" />
         ),
         enableSorting: false,
-        cell: ({ row }) =>
-          row.original.referenceUrl ? (
-            <a
-              href={row.original.referenceUrl}
-              target="_blank"
-              rel="noopener"
-              title={row.original.referenceUrl}
-              aria-label={`Open reference: ${row.original.referenceUrl}`}
-              className="inline-flex max-w-full items-center gap-1 text-xs text-muted-foreground underline underline-offset-4 hover:text-foreground"
-            >
-              <span className="truncate">
-                {referenceLabel(row.original.referenceUrl)}
-              </span>
-              <ExternalLink className="size-3 shrink-0" aria-hidden="true" />
-            </a>
-          ) : (
-            <span className="text-muted-foreground">None</span>
-          ),
+        cell: ({ row }) => (
+          <span className="flex max-w-full items-center gap-1.5">
+            {row.original.referenceUrl ? (
+              <a
+                href={row.original.referenceUrl}
+                target="_blank"
+                rel="noopener"
+                title={row.original.referenceUrl}
+                aria-label={`Open reference: ${row.original.referenceUrl}`}
+                className="inline-flex max-w-full items-center gap-1 text-xs text-muted-foreground underline underline-offset-4 hover:text-foreground"
+              >
+                <span className="truncate">
+                  {referenceLabel(row.original.referenceUrl)}
+                </span>
+                <ExternalLink className="size-3 shrink-0" aria-hidden="true" />
+              </a>
+            ) : (
+              <span className="text-xs text-muted-foreground">None</span>
+            )}
+            {row.original.referenceKind === "derived" && (
+              <Link
+                to="/methodology"
+                aria-label="Derived citation: how this works"
+                className="shrink-0 rounded-full bg-muted px-1.5 py-0.5 text-[0.65rem] font-medium text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/50"
+              >
+                derived
+              </Link>
+            )}
+          </span>
+        ),
       },
     ],
     [statuses],

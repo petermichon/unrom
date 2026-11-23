@@ -258,6 +258,14 @@ function DeviceIdentity({ device }: { device: DeviceDetail }) {
           )}
         </dd>
       </dl>
+      <p className="mt-3 text-xs text-muted-foreground">
+        <Link
+          to="/methodology"
+          className="underline underline-offset-4 hover:text-foreground"
+        >
+          How names and citations are checked
+        </Link>
+      </p>
     </section>
   );
 }

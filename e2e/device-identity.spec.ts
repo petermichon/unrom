@@ -45,6 +45,25 @@ test("device pages say when every ROM is discontinued", async ({ page }) => {
   ).toBeVisible();
 });
 
+test("device rows mark a citation the pipeline derived", async ({ page }) => {
+  await page.goto("/devices/xiaomi/peridot");
+
+  const marker = (row: import("@playwright/test").Locator) =>
+    row.getByRole("link", { name: "Derived citation: how this works" });
+
+  // PixelOS publishes no per-device page, so its link is built from the
+  // codename; crDroid publishes one.
+  const derived = page
+    .getByRole("row")
+    .filter({ has: page.getByRole("link", { name: "PixelOS", exact: true }) });
+  await expect(marker(derived)).toBeVisible();
+
+  const observed = page
+    .getByRole("row")
+    .filter({ has: page.getByRole("link", { name: "crDroid", exact: true }) });
+  await expect(marker(observed)).toHaveCount(0);
+});
+
 test("device pages say when no bootloader policy is recorded", async ({
   page,
 }) => {
