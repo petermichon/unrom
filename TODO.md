@@ -4,10 +4,6 @@
       currently have none. Tiers 1, 2 and the recent half of Tier 3 are
       implemented (56 of 277 ROMs now have data; Project 404 was skipped as
       stale). Next are the 2021-and-older rosters in `ROM_TRIAGE.md`.
-- [ ] Put the rest of table state in the URL. Filters and page already are
-      (`q`, `roms`, `relock`, `updated`, `hardened`, `page`); sort is hardcoded
-      to `roms` and column visibility is not persisted, so a sorted or trimmed
-      view cannot be shared and does not survive back/forward navigation.
 - [ ] Record bootloader-unlock status per device. The demand is logged in
       `USER_EVIDENCE.md` (2026-11-12 and 2026-11-14): two independent
       recommendations name the site and then point readers to bootloader-unlock
