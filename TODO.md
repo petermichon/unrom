@@ -2,7 +2,7 @@
 
 - [ ] Grow indexable content by adding source-backed device data for ROMs that
       currently have none. Tiers 1–3 are implemented and three Tier 4 rosters
-      are in (66 of 277 ROMs now have data; Project 404 was skipped as stale).
+      are in (66 of 274 ROMs now have data; Project 404 was skipped as stale).
       What remains is the rest of Tier 4, where the roster only exists in HTML
       or a JS app, and Tier 5, which has no public link; see `ROM_TRIAGE.md`.
 - [ ] Record bootloader-unlock status per device. The demand is logged in
@@ -59,16 +59,8 @@
 - [ ] Record the Android version per device–ROM pair. `os_sdk_level` and the
       release string sit in the same OTA metadata as the build date, which is
       now recorded; the version is not.
-- [ ] Write a methodology page for the confidence model: verified, inferred,
-      manual and unverified names, observed versus derived references, what
-      "verified" covers, and what is refreshed when.
-- [ ] Show `referenceKind` on device rows once the methodology page explains it.
-      Most mappings are derived; the API knows which and the page does not say.
 - [ ] Check `observed` reference URLs on a schedule. Derived ones already run in
       `check:references`; a sampled observed link (DerpFest/sunfish) was dead and
       nothing noticed. A dead citation is a false claim.
 - [ ] Publish a diff between builds: what changed since the last one. The
       content hash already changes; humans cannot see why.
-- [ ] Merge duplicate ROM identities (AfterlifeOS and Afterlife Project, AOSPA
-      and Paranoid Android, crDroid and crDroid X). Deduplication is part of
-      data quality, not polish.
