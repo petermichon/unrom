@@ -24,6 +24,8 @@ export const DEVICE_NAMES: Record<string, string[]> = {
   "asus\0sake": ["Asus ZenFone 8"],
   "asus\0X00P": ["Asus Zenfone Max M1"],
   "asus\0X00QD": ["Asus ZenFone 5"],
+  "asus\0X00R": ["Asus Zenfone Lite L1"],
+  "asus\0X00T": ["Asus Zenfone Max Pro M1"],
   "asus\0X00TD": ["Asus Zenfone Max Pro M1"],
   "asus\0X01AD": ["Asus Zenfone Max M2"],
   "asus\0X01BD": ["Asus Zenfone Max Pro M2"],
@@ -62,6 +64,8 @@ export const DEVICE_NAMES: Record<string, string[]> = {
   "bq\0zangyapro": ["Aquaris X2 Pro"],
 
   "brax\0brax3": ["Brax3"],
+
+  "daylight\0jagar": ["Daylight DC-1"],
 
   "droidlogic\0ohm": ["DroidLogic Developer Kit (S905X4-B/K)"],
 
@@ -162,6 +166,7 @@ export const DEVICE_NAMES: Record<string, string[]> = {
   "htc\0m7vzw": ["HTC One (Verizon)"],
   "htc\0m8": ["HTC One M8"],
   "htc\0m8d": ["HTC One M8 Dual SIM"],
+  "htc\0ocn": ["HTC U11"],
   "htc\0pme": ["HTC 10"],
   "htc\0t6": ["HTC One Max (GSM)"],
   "htc\0t6vzw": ["HTC One Max (Verizon)"],
@@ -429,6 +434,7 @@ export const DEVICE_NAMES: Record<string, string[]> = {
   "oneplus\0dodge": ["OnePlus 13"],
   "oneplus\0dre": ["OnePlus Nord N200 5G"],
   "oneplus\0dumpling": ["OnePlus 5T"],
+  "oneplus\0ebba": ["OnePlus Nord CE 5G"],
   "oneplus\0enchilada": ["OnePlus 6"],
   "oneplus\0erhai": ["OnePlus Pad 3"],
   "oneplus\0fairlady": ["OnePlus 15T"],
@@ -497,6 +503,8 @@ export const DEVICE_NAMES: Record<string, string[]> = {
   "qualcomm\0lahaina": ["Qualcomm QRD SM8350"],
   "qualcomm\0lito": ["Qualcomm QRD SM72xx"],
 
+  "rabbit\0r1": ["rabbit r1"],
+
   "radxa\0radxa0": ["Radxa Zero (S905Y2, eMMC only) (Android TV)"],
   "radxa\0radxa0_tab": ["Radxa Zero (S905Y2, eMMC only) (Tablet)"],
   "radxa\0radxa02": ["Radxa Zero 2 (S905D3, eMMC only) (Android TV)"],
@@ -551,6 +559,7 @@ export const DEVICE_NAMES: Record<string, string[]> = {
   "realme\0RMX2020": ["Realme C3", "Realme Narzo 10A"],
   "realme\0RMX2061": ["Realme 6 Pro"],
   "realme\0RMX2081": ["Realme X3"],
+  "realme\0RMX2117": ["Realme Narzo 30 Pro 5G"],
   "realme\0RMX2151": ["Realme 7"],
   "realme\0RMX2170": ["Realme 7 Pro"],
   "realme\0RMX3461": ["Realme 9 5G Speed Edition", "Realme Q3s"],
@@ -783,6 +792,7 @@ export const DEVICE_NAMES: Record<string, string[]> = {
   "sony\0pioneer": ["Xperia XA2"],
   "sony\0pollux": ["Xperia Tablet Z LTE"],
   "sony\0pollux_windy": ["Xperia Tablet Z Wi-Fi"],
+  "sony\0poplar": ["Xperia XZ1"],
   "sony\0poplar_dsds": ["Xperia XZ1 (Dual SIM)"],
   "sony\0seine": ["Xperia 10 II"],
   "sony\0sirius": ["Xperia Z2"],
