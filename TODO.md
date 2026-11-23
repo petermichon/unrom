@@ -1,15 +1,5 @@
 # TODO
 
-- [ ] Collapse duplicate device rows. A codename can exist twice when the Play
-      catalogue brands a device by its maker (asus/flo) and a ROM roster brands
-      it by the vendor (google/flo): 69 rows carry no ROMs and shadow a mapped
-      device. Merge them when the codename matches and the names agree, leaving
-      the vendor the registry curates; a codename shared by different models
-      (sirius) stays split.
-- [ ] Curate names for the devices the data cannot name. Eleven devices with
-      ROMs have no name, so their pages show only the codename; the registry
-      report lists 83 name gaps and 32 source-named entries ready to review.
-      Work it down from `registry-report.json`, largest exposure first.
 - [ ] Record bootloader-unlock status per device. The demand is logged in
       `USER_EVIDENCE.md` (2026-11-12 and 2026-11-14): two independent
       recommendations name the site and then point readers to bootloader-unlock
@@ -60,11 +50,6 @@
       labelled. The last commit needs a repository URL per project, not just the
       organisation `rom-sources.ts` holds, and GitHub allows 60 unauthenticated
       API requests an hour, so it needs a token or a committed snapshot.
-- [ ] Audit the rosters that publish no build timestamp (LineageOS for microG
-      438, /e/OS 295, PixelExperience 148, Kali NetHunter 125, Project
-      Infinity X 102). Where the snapshot carries a date under another field,
-      wire it like the eight sources already wired; where it does not, record
-      that so the gap is known rather than assumed.
 - [ ] Record the Android version per device–ROM pair. `os_sdk_level` and the
       release string sit in the same OTA metadata as the build date, which is
       now recorded; the version is not, and it covers only 135 mappings today.
