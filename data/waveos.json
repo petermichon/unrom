@@ -1,0 +1,44 @@
+[
+    {
+        "name": "Lenovo Z5s",
+        "brand": "Lenovo",
+        "codename": "jd2019",
+        "latest_version": "Android 11",
+        "maintainer_name": "victor10520"
+    },
+    {
+        "name": "Redmi 9",
+        "brand": "Xiaomi",
+        "codename": "lancelot",
+        "latest_version": "Android 11",
+        "maintainer_name": "Jamie Ho"
+    },
+    {
+        "name": "Realme 2 Pro",
+        "brand": "OPPO",
+        "codename": "RMX1801",
+        "latest_version": "Android 11",
+        "maintainer_name": "Aditya Singh"
+    },
+    {
+        "name": "Redmi Note 7 Pro",
+        "brand": "Xiaomi",
+        "codename": "violet",
+        "latest_version": "Android 11",
+        "maintainer_name": "raghavt20"
+    },
+    {
+        "name": "Redmi Note K20 Pro/Mi 9T Pro",
+        "brand": "Xiaomi",
+        "codename": "raphael",
+        "latest_version": "Android 11",
+        "maintainer_name": "Pavan Parmeshwar"
+    },
+    {
+        "name": "Redmi Note 7",
+        "brand": "Xiaomi",
+        "codename": "lavender",
+        "latest_version": "Android 11",
+        "maintainer_name": "z3nitsu"
+    }
+]

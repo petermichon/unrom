@@ -1,0 +1,40 @@
+[
+    {
+    "imageSrc": "",
+  
+    "device": "K20 pro",
+    "content": "content",
+    "maintainer": "Iron GFly",
+    "codename": "Raphael",
+    "all": "K20 pro Raphael",
+    "url": "https://www.pling.com/p/1451903/"
+  },
+  { "imageSrc": "",
+   
+    "device": "POCO X2/REDMI K30",
+    "content": "",
+    "maintainer": "Chiranth Chiru",
+    "codename": "phoenix",
+    "all": "POCO X2 REDMI K30 phoenix",
+    "url": "https://www.pling.com/p/1444623/#files-panel"
+  },
+  { "imageSrc": "",
+   
+    "device": "mi a3",
+    "content":  "",
+    "maintainer": "Sanjheevi",
+    "codename": "laurel_sprout",
+    "all": "mi a3 laurel_sprout",
+    "url": "https://www.pling.com/p/1452342/"
+  },
+  {
+    "imageSrc": "",
+   
+    "device": "poco x3 NFC",
+    "content": "content",
+    "maintainer": "Agung Pratama",
+    "codename": "Surya",
+    "all":"Surya poco x3 NFC",
+    "url": "https://www.pling.com/p/1459978/"
+  }
+]

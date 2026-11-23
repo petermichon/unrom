@@ -371,7 +371,7 @@ test("the devices directory leads with the most-supported devices", async ({
 
   const first = page.locator("main .index-frame ul > li").first();
   await expect(first).toContainText("POCO M2 Pro");
-  await expect(first).toContainText("36");
+  await expect(first).toContainText("38");
 });
 
 test("the directory shows only devices with ROM data", async ({ page }) => {

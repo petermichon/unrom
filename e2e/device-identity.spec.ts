@@ -33,7 +33,7 @@ test("device pages say when every ROM is discontinued", async ({ page }) => {
   await page.goto("/devices/lenovo/jd2019");
   await expect(
     page.getByText(
-      "Supported by 3 custom ROMs, all marked discontinued upstream.",
+      "Supported by 4 custom ROMs, all marked discontinued upstream.",
     ),
   ).toBeVisible();
 

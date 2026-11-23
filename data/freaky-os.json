@@ -1,0 +1,177 @@
+{
+    "response": [
+        {
+            "name": "Samsung A7 (A710XX)",
+            "brand": "Samsung",
+            "codename": "a7xelte",
+            "maintainer": "bunnyy",
+            "image": "https://raw.githubusercontent.com/LineageOS/lineage_wiki/master/images/devices/a3xelte.png"
+        },
+        {
+            "name": "Samsung A5 (A510XX)",
+            "brand": "Samsung",
+            "codename": "a5xelte",
+            "maintainer": "bunnyy",
+            "image": "https://raw.githubusercontent.com/LineageOS/lineage_wiki/master/images/devices/a5xelte.png"
+        },
+        {
+            "name": "Samsung A3 (A310XX)",
+            "brand": "Samsung",
+            "codename": "a3xelte",
+            "maintainer": "bunnyy",
+            "image": "https://raw.githubusercontent.com/LineageOS/lineage_wiki/master/images/devices/a3xelte.png"
+        },
+        {
+            "name": "Xiaomi Redmi Note 6 Pro",
+            "brand": "Xiaomi",
+            "codename": "tulip",
+            "maintainer": "Niteshkumar",
+            "image": "https://raw.githubusercontent.com/LineageOS/lineage_wiki/master/images/devices/twolip.png"
+        },
+        {
+            "name": "Pocophone F1",
+            "brand": "Xiaomi",
+            "codename": "beryllium",
+            "maintainer": "P Sambit",
+            "image": "https://raw.githubusercontent.com/LineageOS/lineage_wiki/master/images/devices/beryllium.png"
+        },
+        {
+            "name": "Xiaomi Redmi Note 7 Pro",
+            "brand": "Xiaomi",
+            "codename": "violet",
+            "maintainer": "Jeivardan",
+            "image": "https://raw.githubusercontent.com/PixelExperience/official_devices/master/images/violet.png"
+        },
+        {
+            "name": "Xiaomi Redmi 4",
+            "brand": "Xiaomi",
+            "codename": "santoni",
+            "maintainer": "Amith Acharya",
+            "image": "https://raw.githubusercontent.com/PixelExperience/official_devices/master/images/santoni.png",
+            "xda_link": "https://forum.xda-developers.com/member.php?u=10601659",
+            "telegram_link": "https://t.me/amith_acharya",
+            "github_link": "https://github.com/amith07"
+        },
+        {
+            "name": "Xiaomi Redmi Note 8",
+            "brand": "Xiaomi",
+            "codename": "ginkgo",
+            "maintainer": "Amith Acharya",
+            "image": "https://raw.githubusercontent.com/PixelExperience/official_devices/master/images/ginkgo.png",
+            "xda_link": "https://forum.xda-developers.com/member.php?u=10601659",
+            "telegram_link": "https://t.me/amith_acharya",
+            "github_link": "https://github.com/amith07"
+        },
+        {
+            "name": "Xiaomi Redmi Y2",
+            "brand": "Xiaomi",
+            "codename": "ysl",
+            "maintainer": "Amith Acharya",
+            "image": "https://global.appmifile.com/v1/MI_18455B3E4DA706226CF7535A58E875F0267/pms_1528356164.70662753.jpg",
+            "xda_link": "https://forum.xda-developers.com/member.php?u=10601659",
+            "telegram_link": "https://t.me/amith_acharya",
+            "github_link": "https://github.com/amith07"
+        },
+        {
+            "name": "Asus Zenfone Max M1",
+            "brand": "Asus",
+            "codename": "X00P",
+            "maintainer": "INDER",
+            "image": "https://www.asus.com/media/IN/products/Av2HDWl1WLs1j7bm/P_setting_xxx_0_90_end_300.png",
+            "xda_link": "https://forum.xda-developers.com/member.php?u=9423214",
+            "telegram_link": "https://t.me/ishant86",
+            "github_link": "https://github.com/inder864"
+	},
+	{
+            "name": "Xiaomi Redmi Note 8 Pro",
+            "brand": "Xiaomi",
+            "codename": "begonia",
+            "maintainer": "Itachi Uchiha",
+            "image": "https://raw.githubusercontent.com/PixelExperience/official_devices/master/images/begonia.png",
+            "xda_link": "https://forum.xda-developers.com/member.php?u=10920239",
+            "telegram_link": "https://t.me/KonohaHokage",
+            "github_link": "https://github.com/iitachiuchiha"
+        },
+        {
+            "name": "Asus Zenfone Lite L1",
+            "brand": "Asus",
+            "codename": "X00R",
+            "maintainer": "INDER",
+            "image": "https://cdn2.gsmarena.com/vv/pics/asus/asus-zenfone-lite-l1-za551kl-4g022in-2.jpg",
+            "xda_link": "https://forum.xda-developers.com/member.php?u=9423214",
+            "telegram_link": "https://t.me/ishant86",
+            "github_link": "https://github.com/inder864"
+        },
+        {
+            "name": "Realme 5 Pro",
+            "brand": "Realme",
+            "codename": "RMX1971",
+            "maintainer": "TestoBuzz",
+            "image": "https://fdn2.gsmarena.com/vv/pics/realme/realme-5-pro-rmx1971-2.jpg",
+            "xda_link": "https://forum.xda-developers.com/member.php?u=9247195",
+            "telegram_link": "https://t.me/TestoBuzz",
+            "github_link": "https://github.com/testobuzz"
+        },
+	{
+            "name": "Xiaomi Redmi Note 5 AI/Pro",
+            "brand": "Xiaomi",
+            "codename": "whyred",
+            "maintainer": "Jhonse02",
+            "image": "https://raw.githubusercontent.com/LineageOS/lineage_wiki/master/images/devices/whyred.png"
+        },
+        {
+            "name": "Xiaomi Redmi Note 9S/9 Pro/9 Global/Poco M2 Pro",
+            "brand": "Xiaomi",
+            "codename": "miatoll",
+            "maintainer": "Shakil",
+            "image": "https://raw.githubusercontent.com/PixelExperience/official_devices/master/images/curtana.png"
+        }, 
+        {
+            "name": "Xiaomi Mi 9 lite",
+            "brand": "Xiaomi",
+            "codename": "pyxis",
+            "maintainer": "Czar Superstar",
+            "image": "https://fdn2.gsmarena.com/vv/pics/xiaomi/xiaomi-mi-cc9-2.jpg"
+        },
+	{
+            "name": "LeEco Le 2",
+            "brand": "LeEco",
+            "codename": "s2",
+            "maintainer": "P Sambit",
+            "image": "http://cdn2.gsmarena.com/vv/pics/leeco/le-eco-le2.jpg",
+            "telegram_link": "https://t.me/thepsambit",
+            "github_link": "https://github.com/thepsambit"
+        },
+        {
+            "name": "ZenFone Max Pro M1",
+            "brand": "Asus",
+            "codename": "X00TD",
+            "maintainer": "pkm774",
+            "image": "https://i-cdn.phonearena.com/images/articles/320775-image/Asus-ZenFone-Max-Pro-M1.jpg",
+            "xda_link": "https://forum.xda-developers.com/member.php?u=10600757",
+            "telegram_link": "https://t.me/pkm774",
+            "github_link": "https://github.com/mprabhat774"
+        },
+        {
+            "name": "Realme 2 Pro",
+            "brand": "Realme",
+            "codename": "RMX1801",
+            "maintainer": "Inder",
+            "image": "https://static.realme.net/page/realme2pro/images/sec-banner-phone-02c8a9576e.png",
+            "xda_link": "https://forum.xda-developers.com/member.php?u=9423214",
+            "telegram_link": "https://t.me/ishant86",
+            "github_link": "https://github.com/inder864"
+        },
+        {
+            "name": "Xiaomi Mi A2",
+            "brand": "Xiaomi",
+            "codename": "jasmine_sprout",
+            "maintainer": "Immanuel Raj",
+            "image": "https://raw.githubusercontent.com/PixelExperience/official_devices/master/images/jasmine_sprout.png",
+            "xda_link": "https://forum.xda-developers.com/member.php?u=9376270",
+            "telegram_link": "https://t.me/Immanuel_Raj",
+            "github_link": "https://github.com/IMMANUEL44"
+        }
+    ]
+}
+

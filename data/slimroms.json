@@ -1,0 +1,326 @@
+[
+    {
+        "manufacturer":"Asus",
+        "devicename":"flo",
+        "description":"Nexus 7(2013)",
+        "img":"images/phone/flo.png"
+    },
+    {
+        "manufacturer":"Asus",
+        "devicename":"Z008",
+        "description":"Zenfone 2 ZE550ML Z008",
+        "img":"images/phone/Z008.png"
+    },
+    {
+        "manufacturer":"Asus",
+        "devicename":"Z00A",
+        "description":"Zenfone 2 ZE551ML Z00A",
+        "img":"images/phone/Z00A.png"
+    },
+    {
+        "manufacturer":"HTC",
+        "devicename":"flounder",
+        "description":"Nexus 9",
+        "img":"images/phone/flounder.png"
+    },
+    {
+        "manufacturer":"HTC",
+        "devicename":"flounder_lte",
+        "description":"Nexus 9 LTE",
+        "img":"images/phone/flounder_lte.png"
+    },
+    {
+        "manufacturer":"HTC",
+        "devicename":"himaul",
+        "description":"One M9(GSM)",
+        "img":"images/phone/himaul.png"
+    },
+    {
+        "manufacturer":"HTC",
+        "devicename":"m7",
+        "description":"One M7",
+        "img":"images/phone/m7.png"
+    },
+    {
+        "manufacturer":"HTC",
+        "devicename":"m8",
+        "description":"One M8",
+        "img":"images/phone/m8.png"
+    },
+    {
+        "manufacturer":"HTC",
+        "devicename":"ocn",
+        "description":"u11(UHL/WHL)",
+        "img":"images/phone/ocn.png"
+    },
+    {
+        "manufacturer":"Huawei",
+        "devicename":"angler",
+        "description":"Nexus 6P",
+        "img":"images/phone/angler.png"
+    },
+    {
+        "manufacturer":"LG",
+        "devicename":"bullhead",
+        "description":"Nexus 5X",
+        "img":"images/phone/bullhead.png"
+    },
+    {
+        "manufacturer":"LG",
+        "devicename":"d801",
+        "description":"G2 (T-Mobile)",
+        "img":"images/phone/d801.png"
+    },
+    {
+        "manufacturer":"LG",
+        "devicename":"hammerhead",
+        "description":"Nexus 5",
+        "img":"images/phone/hammerhead.png"
+    },
+    {
+        "manufacturer":"LG",
+        "devicename":"mako",
+        "description":"Nexus 4",
+        "img":"images/phone/mako.png"
+    },
+    {
+        "manufacturer":"LG",
+        "devicename":"w7",
+        "description":"L90",
+        "img":"images/phone/w7.png"
+    },
+    {
+        "manufacturer":"Motorola",
+        "devicename":"athene",
+        "description":"Moto G 4th Generation",
+        "img":"images/phone/athene.png"
+    },
+    {
+        "manufacturer":"Motorola",
+        "devicename":"clark",
+        "description":"Moto X Style",
+        "img":"images/phone/clark.png"
+    },
+    {
+        "manufacturer":"Motorola",
+        "devicename":"falcon",
+        "description":"Moto G",
+        "img":"images/phone/falcon.png"
+    },
+    {
+        "manufacturer":"Motorola",
+        "devicename":"osprey",
+        "description":"Moto G third gen",
+        "img":"images/phone/osprey.png"
+    },
+    {
+        "manufacturer":"Motorola",
+        "devicename":"potter",
+        "description":"Moto G fifth gen Plus",
+        "img":"images/phone/potter.png"
+    },
+    {
+        "manufacturer":"Motorola",
+        "devicename":"shamu",
+        "description":"Nexus 6",
+        "img":"images/phone/shamu.png"
+    },
+    {
+        "manufacturer":"Motorola",
+        "devicename":"surnia",
+        "description":"Moto E LTE second gen",
+        "img":"images/phone/surnia.png"
+    },
+    {
+        "manufacturer":"Nextbit",
+        "devicename":"ether",
+        "description":"Nextbit Robin",
+        "img":"images/phone/ether.png"
+    },
+    {
+        "manufacturer":"OnePlus",
+        "devicename":"bacon",
+        "description":"OnePlus One",
+        "img":"images/phone/bacon.png"
+    },
+    {
+        "manufacturer":"OnePlus",
+        "devicename":"oneplus2",
+        "description":"OnePlus 2",
+        "img":"images/phone/oneplus2.png"
+    },
+    {
+        "manufacturer":"OnePlus",
+        "devicename":"oneplus3",
+        "description":"OnePlus 3/3t",
+        "img":"images/phone/oneplus3.png"
+    },
+    {
+        "manufacturer":"OnePlus",
+        "devicename":"cheeseburger",
+        "description":"OnePlus 5",
+        "img":"images/phone/cheeseburger.png"
+    },
+    {
+        "manufacturer":"OnePlus",
+        "devicename":"onyx",
+        "description":"OnePlus X",
+        "img":"images/phone/onyx.png"
+    },
+    {
+        "manufacturer":"Samsung",
+        "devicename":"d2att",
+        "description":"Galaxy S III AT&T variant",
+        "img":"images/phone/d2att.png"
+    },
+    {
+        "manufacturer":"Samsung",
+        "devicename":"d2spr",
+        "description":"Galaxy S III Sprint variant",
+        "img":"images/phone/d2spr.png"
+    },
+    {
+        "manufacturer":"Samsung",
+        "devicename":"d2tmo",
+        "description":"Galaxy S III T-Mobile variant",
+        "img":"images/phone/d2tmo.png"
+    },
+    {
+        "manufacturer":"Samsung",
+        "devicename":"d2vzw",
+        "description":"Galaxy S III Verizon variant",
+        "img":"images/phone/d2vzw.png"
+    },
+    {
+        "manufacturer":"Samsung",
+        "devicename":"espresso3g",
+        "description":"Galaxy Tab 2 unified (P3100, P5100)",
+        "img":"images/phone/espresso3g.png"
+    },
+    {
+        "manufacturer":"Samsung",
+        "devicename":"espressowifi",
+        "description":"Galaxy Tab 2 unified (P3110,P3113,P5110,P5113)",
+        "img":"images/phone/espressowifi.png"
+    },
+    {
+        "manufacturer":"Samsung",
+        "devicename":"jflteatt",
+        "description":"Galaxy S4 AT&T variant",
+        "img":"images/phone/jflteatt.png"
+    },
+    {
+        "manufacturer":"Samsung",
+        "devicename":"jfltespr",
+        "description":"Galaxy S4 Sprint variant",
+        "img":"images/phone/jfltespr.png"
+    },
+    {
+        "manufacturer":"Samsung",
+        "devicename":"jfltetmo",
+        "description":"Galaxy S4 T-Mobile variant",
+        "img":"images/phone/jfltetmo.png"
+    },
+    {
+        "manufacturer":"Samsung",
+        "devicename":"jfltevzw",
+        "description":"Galaxy S4 Verizon variant",
+        "img":"images/phone/jfltevzw.png"
+    },
+    {
+        "manufacturer":"Samsung",
+        "devicename":"jfltexx",
+        "description":"International (QCOM) LTE Galaxy S4",
+        "img":"images/phone/jfltexx.png"
+    },
+    {
+        "manufacturer":"Samsung",
+        "devicename":"herolte",
+        "description":"Exynos Galaxy S7",
+        "img":"images/phone/herolte.png"
+    },
+    {
+        "manufacturer":"Samsung",
+        "devicename":"hero2lte",
+        "description":"Exynos Galaxy S7 Edge",
+        "img":"images/phone/hero2lte.png"
+    },
+    {
+        "manufacturer":"Samsung",
+        "devicename":"klte",
+        "description":"QCOM Galaxy S5(GSM)",
+        "img":"images/phone/klte.png"
+    },
+    {
+        "manufacturer":"Samsung",
+        "devicename":"kltespr",
+        "description":"Galaxy S5 Sprint variant",
+        "img":"images/phone/kltespr.png"
+    },
+    {
+        "manufacturer":"Samsung",
+        "devicename":"kltevzw",
+        "description":"Galaxy S5 Verizon variant",
+        "img":"images/phone/kltevzw.png"
+    },
+    {
+        "manufacturer":"Samsung",
+        "devicename":"mondrianwifi",
+        "description":"Galaxy Tab Pro 8.4",
+        "img":"images/phone/mondrianwifi.png"
+    },
+    {
+        "manufacturer":"Samsung",
+        "devicename":"tuna",
+        "description":"Galaxy Nexus unified (maguro,toro,toroplus)",
+        "img":"images/phone/tuna.png"
+    },
+    {
+        "manufacturer":"Xiaomi",
+        "devicename":"armani",
+        "description":"Redmi 1S",
+        "img":"images/phone/armani.png"
+    },
+    {
+        "manufacturer":"Xiaomi",
+        "devicename":"cancro",
+        "description":"Mi 3",
+        "img":"images/phone/cancro.png"
+    },
+    {
+        "manufacturer":"Xiaomi",
+        "devicename":"gemini",
+        "description":"Mi 5",
+        "img":"images/phone/gemini.png"
+    },
+    {
+        "manufacturer":"Xiaomi",
+        "devicename":"hydrogen",
+        "description":"Mi Max",
+        "img":"images/phone/hydrogen.png"
+    },
+    {
+        "manufacturer":"Xiaomi",
+        "devicename":"kenzo",
+        "description":"Redmi Note 3",
+        "img":"images/phone/kenzo.png"
+    },
+    {
+        "manufacturer":"Xiaomi",
+        "devicename":"mido",
+        "description":"Redmi Note 4",
+        "img":"images/phone/mido.png"
+    },
+    {
+        "manufacturer":"Yu",
+        "devicename":"lettuce",
+        "description":"Yuphoria",
+        "img":"images/phone/lettuce.png"
+    },
+    {
+        "manufacturer":"Yu",
+        "devicename":"tomato",
+        "description":"Yureka",
+        "img":"images/phone/tomato.png"
+    }
+]

@@ -366,6 +366,83 @@ const configs: DeviceSource[] = [
     referencePage:
       "https://github.com/catalyst-android/OTA/blob/13/devices.json",
   },
+  // 2021-and-older rosters, kept as last-known support for discontinued
+  // projects. The file dates are recorded in ROM_TRIAGE.md.
+  {
+    id: "aosip",
+    romName: "AOSiP",
+    file: "aosip.json",
+    select: selectors.array,
+    name: ["device"],
+    // The roster has no brand field and names this one after its maker, which
+    // would put the Nexus 5X under LG instead of Google.
+    brandCorrections: { bullhead: "Google" },
+    referencePage: "https://github.com/AOSiP/api/blob/master/devices.json",
+  },
+  {
+    id: "slimroms",
+    romName: "SlimRoms",
+    file: "slimroms.json",
+    select: selectors.array,
+    codename: ["devicename"],
+    name: ["description"],
+    brand: ["manufacturer"],
+    // The roster omits the variant suffix the registry uses to tell the
+    // Wi-Fi tablet from its LTE sibling.
+    nameCorrections: { flounder: "Nexus 9 (Wi-Fi)" },
+    referencePage:
+      "https://github.com/slimroms/slimroms.github.io/blob/master/data/devices.json",
+  },
+  {
+    id: "reloadedos",
+    romName: "ReloadedOS",
+    file: "reloadedos.json",
+    select: selectors.array,
+    name: ["name"],
+    brand: ["brand"],
+    referencePage:
+      "https://github.com/ReloadedOS/official_devices/blob/master/device.json",
+  },
+  {
+    id: "zeusos",
+    romName: "ZeusOS",
+    file: "zeusos.json",
+    select: selectors.array,
+    name: ["device"],
+    referencePage:
+      "https://github.com/Zeus-OS/website_data/blob/main/devices.json",
+  },
+  {
+    id: "waveos",
+    romName: "WaveOS",
+    file: "waveos.json",
+    select: selectors.array,
+    name: ["name"],
+    brand: ["brand"],
+    referencePage:
+      "https://github.com/Wave-Project/website-api/blob/main/devices.json",
+  },
+  {
+    id: "aim-rom",
+    romName: "AIM ROM",
+    file: "aim-rom.json",
+    select: selectors.array,
+    // The roster carries no model names, only the codename it repeats.
+    codename: ["devicename"],
+    brand: ["manufacturer"],
+    referencePage:
+      "https://github.com/AIMROM/aimrom.github.io/blob/master/json/devices.json",
+  },
+  {
+    id: "freaky-os",
+    romName: "Freaky OS",
+    file: "freaky-os.json",
+    select: selectors.devices("response"),
+    name: ["name"],
+    brand: ["brand"],
+    referencePage:
+      "https://github.com/FreakyOS/ota_config/blob/still_alive/devices.json",
+  },
 ];
 
 // Sources whose raw shape does not fit the config adapter.

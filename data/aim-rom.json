@@ -1,0 +1,17 @@
+[
+    {
+        "devicename": "Beryllium",
+        "manufacturer": "Xiaomi",
+        "aimversion": "4.0",
+        "maintainer": "Ninad Patil (REIGNZ)",
+        "forumlink": "https://forum.xda-developers.com/poco-f1/development/rom-aim-rom-v4-0-t4074063",
+        "download": "https://sourceforge.net/projects/aim-rom-ten/files/beryllium/"
+    },
+    {
+        "devicename": "mido",
+        "manufacturer": "Xiaomi",
+        "aimversion": "4.0",
+        "maintainer": "Albert I (krasCGQ)",
+        "download": "https://sourceforge.net/projects/aim-rom-ten/files/mido/"
+    }
+]

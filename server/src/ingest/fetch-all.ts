@@ -31,6 +31,13 @@ import { listDevices as listPixelStar } from "./fetch/pixelstar.ts";
 import { listDevices as listProjectBlaze } from "./fetch/project-blaze.ts";
 import { listDevices as listSomethingOS } from "./fetch/somethingos.ts";
 import { listDevices as listTequila } from "./fetch/tequila.ts";
+import { listDevices as listAimRom } from "./fetch/aim-rom.ts";
+import { listDevices as listAosip } from "./fetch/aosip.ts";
+import { listDevices as listFreakyOs } from "./fetch/freaky-os.ts";
+import { listDevices as listReloadedOs } from "./fetch/reloadedos.ts";
+import { listDevices as listSlimRoms } from "./fetch/slimroms.ts";
+import { listDevices as listWaveOs } from "./fetch/waveos.ts";
+import { listDevices as listZeusOs } from "./fetch/zeusos.ts";
 import { listDevices as listSparkOS } from "./fetch/sparkos.ts";
 import { listDevices as listYaap } from "./fetch/yaap.ts";
 import {
@@ -109,6 +116,13 @@ const sources: Source[] = [
   { id: "project-blaze", file: "projectblaze.json", fetch: listProjectBlaze },
   { id: "pixelstar", file: "pixelstar.json", fetch: listPixelStar },
   { id: "tequila-os", file: "tequila.json", fetch: listTequila },
+  { id: "aim-rom", file: "aim-rom.json", fetch: listAimRom },
+  { id: "aosip", file: "aosip.json", fetch: listAosip },
+  { id: "freaky-os", file: "freaky-os.json", fetch: listFreakyOs },
+  { id: "reloadedos", file: "reloadedos.json", fetch: listReloadedOs },
+  { id: "slimroms", file: "slimroms.json", fetch: listSlimRoms },
+  { id: "waveos", file: "waveos.json", fetch: listWaveOs },
+  { id: "zeusos", file: "zeusos.json", fetch: listZeusOs },
   { id: "somethingos", file: "somethingos.json", fetch: listSomethingOS },
   { id: "the-kraken-project", file: "kraken.json", fetch: listKraken },
   { id: "project-lighthouse", file: "lighthouse.json", fetch: listLighthouse },

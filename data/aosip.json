@@ -1,0 +1,206 @@
+[
+    {
+        "codename": "alioth",
+        "device": "POCO F3 / Redmi K40 / Mi 11X",
+        "maintainer": "Nick van Bokhorst (GtrCraft)",
+        "xda": "https://forum.xda-developers.com/t/rom-11-android-open-source-illusion-project-alioth-unified.4308097/"
+    },
+    {
+        "codename": "berkeley",
+        "device": "Honor View 10",
+        "maintainer": "Juan Ramírez",
+        "xda": "https://forum.xda-developers.com/honor-view-10/development/rom-android-source-illusion-project-t3900355"
+    },
+    {
+        "codename": "beryllium",
+        "device": "Poco F1",
+        "maintainer": "Akhil Narang",
+        "xda": "https://forum.xda-developers.com/poco-f1/development/rom-aosip-pie-beta-t3877255"
+    },
+    {
+        "codename": "bonito",
+        "device": "Google Pixel 3a XL",
+        "maintainer": "Rhyse Simpson (Skittles9823)",
+        "xda": "https://forum.xda-developers.com/pixel-3a-xl/development/rom-android-source-illusion-project-t4045337"
+    },
+    {
+        "codename": "bullhead",
+        "device": "LG Nexus 5X",
+        "maintainer": "Anirudh Gupta",
+        "xda": "https://forum.xda-developers.com/nexus-5x/development/rom-android-source-illusion-project-t3763682"
+    },
+    {
+        "codename": "charlotte",
+        "device": "Huawei P20 Pro",
+        "maintainer": "Juan Ramírez",
+        "xda": "https://forum.xda-developers.com/huawei-p20-pro/development/rom-android-source-illusion-project-t3941944"
+    },
+    {
+        "codename": "cheeseburger",
+        "device": "OnePlus 5",
+        "maintainer": "Omkar Chandorkar",
+        "xda": "https://forum.xda-developers.com/oneplus-5/oneplus-5--5t-cross-device-development/rom-android-source-illusion-project-t4117189"
+    },
+    {
+        "codename": "coral",
+        "device": "Google Pixel 4 XL",
+        "maintainer": "Josh Fox (xlxfoxxlx)",
+        "xda": "https://forum.xda-developers.com/pixel-4-xl/development/rom-android-source-illusion-project-t4050135"
+    },
+    {
+        "codename": "curtana",
+        "device": "Redmi Note 9S, Redmi Note 9 Pro (India), POCO M2 Pro",
+        "maintainer": "Subhajeet Muhuri",
+        "xda": "https://forum.xda-developers.com/redmi-note-9-pro/development/rom-android-source-illusion-project-t4146513"
+    },
+    {
+        "codename": "dipper",
+        "device": "MI 8",
+        "maintainer": "Arseniy Graur",
+        "xda": "https://forum.xda-developers.com/mi-8/development/rom-android-source-illusion-project-t3858987"
+    },
+    {
+        "codename": "dumpling",
+        "device": "OnePlus 5T",
+        "maintainer": "Omkar Chandorkar",
+        "xda": "https://forum.xda-developers.com/oneplus-5/oneplus-5--5t-cross-device-development/rom-android-source-illusion-project-t4117189"
+    },
+    {
+        "codename": "enchilada",
+        "device": "OnePlus 6",
+        "maintainer": "Anirudh Gupta",
+        "xda": "https://forum.xda-developers.com/oneplus-6/development/rom-android-source-illusion-project-t3970789"
+    },
+    {
+        "codename": "fajita",
+        "device": "OnePlus 6T",
+        "maintainer": "Adrian M (edi194)",
+        "xda": "https://forum.xda-developers.com/oneplus-6t/development/rom-android-source-illusion-project-t3878204"
+    },
+    {
+        "codename": "flame",
+        "device": "Google Pixel 4",
+        "maintainer": "Josh Fox (xlxfoxxlx)",
+        "xda": "https://forum.xda-developers.com/pixel-4-xl/development/rom-android-source-illusion-project-t4050135"
+    },
+    {
+        "codename": "guacamole",
+        "device": "OnePlus 7 Pro",
+        "maintainer": "Josh Fox",
+        "xda": "https://forum.xda-developers.com/oneplus-7-pro/development/rom-aosip-9-0-t3942361"
+    },
+    {
+        "codename": "hotdogb",
+        "device": "OnePlus 7T",
+        "maintainer": "Anirudh Gupta",
+        "xda": "https://forum.xda-developers.com/oneplus-7t/development/rom-android-source-illusion-project-t4019581"
+    },
+    {
+        "codename": "jasmine_sprout",
+        "device": "Xiaomi Mi A2",
+        "maintainer": "Subhajeet Muhuri",
+        "xda": "https://forum.xda-developers.com/mi-a2/development/rom-android-source-illusion-project-t4035779"
+    },
+    {
+        "codename": "kiwi",
+        "device": "Honor 5x",
+        "maintainer": "Joel Hans",
+        "xda": "https://forum.xda-developers.com/honor-5x/development/rom-aosip-9-0-pie-official-honor-5x-kiwi-t3898887"
+    },
+    {
+        "codename": "mata",
+        "device": "Essential PH-1",
+        "maintainer": "Vlad Adumitroaie",
+        "xda": "https://forum.xda-developers.com/essential-phone/development/aosip-8-1-official-t3735143"
+    },
+    {
+        "codename": "mido",
+        "device": "Redmi Note 4",
+        "maintainer": "Adesh Ikhar",
+        "xda": "https://forum.xda-developers.com/redmi-note-4/xiaomi-redmi-note-4-snapdragon-roms-kernels-recoveries--other-development/rom-android-source-illusion-project-t3929008"
+    },
+    {
+        "codename": "oneplus3",
+        "device": "OnePlus 3/3T",
+        "maintainer": "Ujwal P",
+        "xda": "https://forum.xda-developers.com/oneplus-3/oneplus-3--3t-cross-device-development/rom-aosip-pie-t3850374"
+    },
+    {
+        "codename": "perseus",
+        "device": "Xiaomi Mi Mix 3",
+        "maintainer": "Matt Evangelisti",
+        "xda": "https://forum.xda-developers.com/mi-mix-3/development/rom-android-source-illusion-project-t4096503"
+    },
+    {
+        "codename": "phoenix",
+        "device": "Redmi K30 / POCO X2",
+        "maintainer": "Akhil Narang",
+        "xda": "https://forum.xda-developers.com/poco-x2/development/rom-aosip-10-t4076125"
+    },
+    {
+        "codename": "platina",
+        "device": "Mi 8 Lite",
+        "maintainer": "nysadev (Jago Gardiner)",
+        "xda": "https://forum.xda-developers.com/mi-8-Lite/development/9-0-aosip-t3927749/"
+    },
+    {
+        "codename": "potter",
+        "device": "Moto G5 Plus",
+        "maintainer": "Nick van Bokhorst (GtrCraft)",
+        "xda": "https://forum.xda-developers.com/g5-plus/development/rom-android-source-illusion-project-t3873179"
+    },
+    {
+        "codename": "raphael",
+        "device": "Xiaomi Redmi K20 Pro / Mi 9T Pro",
+        "maintainer": "Abdulwahab Isam",
+        "xda": "https://forum.xda-developers.com/k20-pro/development/rom-aosip-t4035755"
+    },
+    {
+        "codename": "surya",
+        "device": "POCO X3 (NFC)",
+        "maintainer": "Nick van Bokhorst (GtrCraft)",
+        "xda": "https://forum.xda-developers.com/t/rom-11-android-open-source-illusion-project-surya-unified.4307397/"
+    },
+    {
+        "codename": "taimen",
+        "device": "Google Pixel 2 XL",
+        "maintainer": "Eamon Powell (Eamo5)",
+        "xda": "https://forum.xda-developers.com/pixel-2-xl/development/rom-aosip-10-0-t4040545"
+    },
+    {
+        "codename": "walleye",
+        "device": "Google Pixel 2",
+        "maintainer": "Eamon Powell (Eamo5)",
+        "xda": "https://forum.xda-developers.com/pixel-2-xl/development/rom-aosip-10-0-t4040545"
+    },
+    {
+        "codename": "wayne",
+        "device": "Xiaomi Mi 6X",
+        "maintainer": "Subhajeet Muhuri",
+        "xda": "https://forum.xda-developers.com/mi-a2/xiaomi-6x-wayne/rom-android-source-illusion-project-t4032371"
+    },
+    {
+        "codename": "whyred",
+        "device": "Redmi Note 5/AI/Pro",
+        "maintainer": "Anunay Maheshwari",
+        "xda": "https://forum.xda-developers.com/redmi-note-5-pro/development/rom-aosp-pie-t3829052"
+    },
+    {
+        "codename": "x2",
+        "device": "LeEco Le Max 2",
+        "maintainer": "Juan Ramírez and Agustin Lorenzo",
+        "xda": "https://forum.xda-developers.com/le-max-2/development/rom-aosip-q-t4057635"
+    },
+    {
+        "codename": "z2_plus",
+        "device": "Lenovo ZUK Z2 (Plus)",
+        "maintainer": "Agustin Lorenzo",
+        "xda": "https://forum.xda-developers.com/lenovo-zuk-z2/development/aosip-pie-beta-t3870101"
+    },
+    {
+        "codename": "zl1",
+        "device": "Leeco Le Pro 3 (X72X)",
+        "maintainer": "Agustin Lorenzo",
+        "xda": "https://forum.xda-developers.com/le-pro3/development/rom-aosip-q-t4047871"
+    }
+]

@@ -1,0 +1,86 @@
+[
+    {
+        "name": "Zenfone Max Pro M1",
+        "brand": "Asus",
+        "codename": "X00T",
+        "xda_link": "https://forum.xda-developers.com/asus-zenfone-max-pro-m1/development/rom-reloaded-caf-t3892168",
+        "maintainer": "Solienatic"
+    },
+    {
+        "name": "Zenfone Max Pro M2",
+        "brand": "Asus",
+        "codename": "X01BD",
+        "xda_link": "https://forum.xda-developers.com/max-pro-m2/development/official-reloaded-caf-t3943410",
+        "maintainer": "Jayant Deshmukh"
+    },
+    {
+        "name": "Mi A3",
+        "brand": "Xiaomi",
+        "codename": "laurel_sprout",
+        "xda_link": "https://forum.xda-developers.com/mi-a3/development/rom-reloadedos-t4032635",
+        "maintainer": "Prakash"
+    },
+    {
+        "name": "Poco F1",
+        "brand": "Xiaomi",
+        "codename": "beryllium",
+        "xda_link": "https://forum.xda-developers.com/poco-f1/development/rom-reloadedos-t4015027",
+        "maintainer": "Ritesh Saxena"
+    },
+    {
+        "name": "Redmi 3S/3X",
+        "brand": "Xiaomi",
+        "codename": "land",
+        "xda_link": "https://forum.xda-developers.com/xiaomi-redmi-3s/development/rom-reloaded-caf-t3891208",
+        "maintainer": "Ritesh Saxena"
+    },
+    {
+        "name": "Redmi 4A",
+        "brand": "Xiaomi",
+        "codename": "rolex",
+        "xda_link": "https://forum.xda-developers.com/redmi-4a/development/rom-reloadedos-t4153381",
+        "maintainer": "Foxtrot47"
+    },
+    {
+        "name": "Redmi 5",
+        "brand": "Xiaomi",
+        "codename": "rosy",
+        "xda_link": "https://forum.xda-developers.com/redmi-5/development/romofficial-reloaded-caf-xiaomi-redmi-5-t3934432",
+        "maintainer": "Muralidharan"
+    },
+    { 
+        "name": "Redmi 5A",
+        "brand": "Xiaomi",
+        "codename": "riva",
+        "xda_link": "https://forum.xda-developers.com/xiaomi-redmi-5a/development/rom-reloadedos-t4135301",
+        "maintainer": "Angga Alfian" 
+    },
+    {
+        "name": "Redmi Note 6 Pro",
+        "brand": "Xiaomi",
+        "codename": "tulip",
+        "xda_link": "https://forum.xda-developers.com/redmi-note-6-pro/development/rom-reloaded-caf-t3935560",
+        "maintainer": "Pavan Patel"
+    },
+    {
+        "name": "Redmi Note 7",
+        "brand": "Xiaomi",
+        "codename": "lavender",
+        "xda_link": "https://forum.xda-developers.com/redmi-note-7/development/rom-reloadedos-t4140791",
+        "maintainer": "Aryaman Srivastava"
+    },
+    {
+        "name": "Redmi Note 7 Pro",
+        "brand": "Xiaomi",
+        "codename": "violet",
+        "xda_link": "https://forum.xda-developers.com/redmi-note-7-pro/development/reloaded-os-caf-t4075631",
+        "maintainer": "Aftab Ashrafi"
+    },
+    {
+        "name": "Redmi Note 8",
+        "brand": "Xiaomi",
+        "codename": "ginkgo",
+        "xda_link": "https://forum.xda-developers.com/redmi-note-8/development/rom-reloadedos-t4162027",
+        "maintainer": "Aryaman Srivastava"
+    }
+]
