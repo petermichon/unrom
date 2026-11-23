@@ -27,7 +27,7 @@ are not ROMs with their own device rosters.
 | ArrowOS              | AOSP | ❌ Discontinued | ✅ GitHub               | Last GitHub push March 2024; device data and code both frozen                                                                                                |
 | AwakenOS             | AOSP | ✅ Active       | ✅ GitHub               | Single devices.json file with 15 devices across Xiaomi, Redmi, OnePlus, realme, Motorola                                                                     |
 | AxionOS              | AOSP | ✅ Active       | ✅ GitHub               | `api/downloads.json` from `AxionAOSP/official_devices`; 64 active devices                                                                                    |
-| AXP.OS               | AOSP | ✅ Active       | ⚠️ Website              | Sitemap lists one page per supported device (24 device pages); DivestOS successor                                                                            |
+| AXP.OS               | AOSP | ✅ Active       | ⚠️ Website              | Sitemap lists one page per supported device (24 device pages); DivestOS successor; `axpos.org` down since 2026-11-23 (DNS delegation failure)                |
 | Black Iron Project   | AOSP | ✅ Active       | ✅ GitHub               | One `builds/<codename>.json` per device on `z16`; 11 active devices. Two files are malformed JSON and parsed from their raw text                             |
 | BlissROMs            | AOSP | ✅ Active       | ✅ GitHub               |                                                                                                                                                              |
 | CatalystOS           | AOSP | ❌ Discontinued | ✅ GitHub               | `devices.json` on branch 13; 3 active devices                                                                                                                |
@@ -261,9 +261,10 @@ headline: a raw URL is used only when it is itself a good citation.
   record it here as an exception.
 
 Class B is checked by `npm run check:references --workspace server` (part of
-`npm run refresh`). It probes every `derived` URL; **404/410 means dead** and
-the build drops the citation, because an unverifiable citation is worse than
-none. 403/429/5xx/timeouts are unknown and never demote. Results are committed
+`bash scripts/refresh-data.sh`, which commits the result). It probes every
+`derived` URL; **404/410 means dead** and the build drops the citation, because
+an unverifiable citation is worse than none. 403/429/5xx/timeouts are unknown
+and never demote. Results are committed
 in `server/reference-overrides.json`; the build consumes them offline. A URL the
 source published (`observed`) is evidence on its own and is not re-probed
 per URL.
