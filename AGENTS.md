@@ -85,3 +85,15 @@ affects both layouts. Reuse an existing script before writing a new one, and
 never build a test harness for a one-line change. Do not run the full suite
 “to be safe”. If speed matters more than certainty, say so and cut to the
 minimum.
+
+## Local development
+
+The maintainer runs `npm run dev:host` (web on 5200, API on 5201) and keeps it
+themselves. Do not start a second dev server; reuse the one that is running if a
+task needs to look at a page, and never stop a process you did not start.
+
+Temporary servers are fine when a task strictly needs one. Start them on a port
+that is free, record the PID, and stop that PID — never `pkill -f`, which also
+matches other sessions' `dev:host`. The Playwright config starts its own pair on
+3100/3101 and builds into `node_modules/.cache/unrom-e2e`, so a test run leaves
+`server/dist` (the dataset your dev API is serving) untouched.
