@@ -7,6 +7,8 @@ import { parseAxpOs } from "./axp-os.ts";
 import { parseAxionOs } from "./axionos.ts";
 import { parseBlackIron } from "./blackiron.ts";
 import { parseCalyxOS } from "./calyxos.ts";
+import { parseCarbonRom } from "./carbon.ts";
+import { parseCipheros } from "./cipheros.ts";
 import { parseArrowOS } from "./arrowos.ts";
 import { createEosParser, parseEos } from "./eos.ts";
 import { parseEvolutionX } from "./evolutionx.ts";
@@ -24,6 +26,7 @@ import { parseRisingOS } from "./risingos.ts";
 import { parseSparkOS } from "./sparkos.ts";
 import { parseSuperiorOS } from "./superioros.ts";
 import { parseTequilaOS } from "./tequila.ts";
+import { parseVoltageOS } from "./voltageos.ts";
 import { parseYaap } from "./yaap.ts";
 
 export interface SourceAdapter {
@@ -623,6 +626,26 @@ const specialSources: SourceAdapter[] = [
     romName: "Tequila OS",
     file: "tequila.json",
     parse: parseTequilaOS,
+  },
+  // Tier 4 rosters that only exist on the project's own site, read from static
+  // server-rendered markup or a documented JSON-LD list.
+  {
+    id: "carbon-rom",
+    romName: "Carbon ROM",
+    file: "carbon.html",
+    parse: parseCarbonRom,
+  },
+  {
+    id: "cipheros",
+    romName: "CipherOS",
+    file: "cipheros.html",
+    parse: parseCipheros,
+  },
+  {
+    id: "voltageos",
+    romName: "VoltageOS",
+    file: "voltageos.json",
+    parse: parseVoltageOS,
   },
 ];
 

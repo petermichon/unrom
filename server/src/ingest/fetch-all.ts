@@ -24,6 +24,9 @@ import { listDevices as listDotOS } from "./fetch/dotos.ts";
 import { listDevices as listDroidXUI } from "./fetch/droidxui.ts";
 import { listDevices as listBlackIron } from "./fetch/blackiron.ts";
 import { listDevices as listCatalyst } from "./fetch/catalyst.ts";
+import { listDevices as listCarbon } from "./fetch/carbon.ts";
+import { listDevices as listCipheros } from "./fetch/cipheros.ts";
+import { listDevices as listVoltageOs } from "./fetch/voltageos.ts";
 import { listDevices as listKraken } from "./fetch/kraken.ts";
 import { listDevices as listLighthouse } from "./fetch/lighthouse.ts";
 import { listDevices as listPalladium } from "./fetch/palladium.ts";
@@ -128,6 +131,9 @@ const sources: Source[] = [
   { id: "project-lighthouse", file: "lighthouse.json", fetch: listLighthouse },
   { id: "palladiumos", file: "palladium.json", fetch: listPalladium },
   { id: "catalystos", file: "catalyst.json", fetch: listCatalyst },
+  { id: "carbon-rom", file: "carbon.html", fetch: listCarbon },
+  { id: "cipheros", file: "cipheros.html", fetch: listCipheros },
+  { id: "voltageos", file: "voltageos.json", fetch: listVoltageOs },
   { id: "2by2-project", file: "2by2.json", fetch: list2by2 },
   { id: "2by2-project", file: "2by2-legacy.json", fetch: list2by2Legacy },
   { id: "etherealos", file: "etherealos.json", fetch: listEtherealOS },
