@@ -246,12 +246,18 @@
   }
 }
 
-/* Content palette. Each ROM supplies its own hue, tint strength and accent;
-   the roles themselves are derived from those three values so a new project is
-   one block, not six colours per theme. Light panels sit at OKLCH L .925 and
-   dark at .238, which is the band the hand-picked palettes settled on. */
+/* Content palette. The roles are derived in OKLCH from three values: hue, tint
+   strength and accent. Light panels sit at L .925 and dark at .238, the band
+   the hand-picked palettes settled on.
+
+   One identity is the rule: a project without a block of its own keeps the
+   brand's hue, so no page is left unthemed. The blocks below are legacy —
+   projects with a strong, well-known colour — and a new ROM does not get one. */
 .rom-page[data-rom],
 :root[data-rom] {
+  --rom-hue: 264;
+  --rom-chroma: 0.02;
+  --rom-accent: #3049e0;
   --panel: oklch(0.925 var(--rom-chroma) var(--rom-hue));
   --panel-foreground: oklch(0.19 0.015 var(--rom-hue));
   --hero-accent: var(--rom-accent);

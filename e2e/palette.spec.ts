@@ -17,6 +17,8 @@ const ROMS = [
   "pixelos",
   "alphadroid",
   "projectinfinityx",
+  // No palette block of its own: the brand fallback must clear the same bars.
+  "tequila-os",
 ];
 
 type Colours = {
