@@ -247,7 +247,7 @@ export default function Home() {
           <SectionHeader
             id="browse"
             title="Browse the catalogue"
-            description="Jump straight to a brand's devices, or to a project's builds."
+            description="Brands and projects, with the number of devices each covers."
           />
 
           <div className="flex flex-col gap-8">
@@ -262,27 +262,20 @@ export default function Home() {
                     label={`All ${formatNumber(counts.brands)} brands`}
                   />
                 </div>
-                <ul className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+                <ul className="flex flex-wrap gap-2">
                   {featuredBrands.map((brand) => (
                     <li key={brand.vendor}>
                       <Link
                         to={`/devices/${brand.vendor}`}
                         prefetch="intent"
-                        className="group flex h-full flex-col gap-4 rounded-2xl border border-border bg-card p-4 outline-none transition-colors hover:border-foreground/20 focus-visible:ring-3 focus-visible:ring-ring/50"
+                        className="group flex min-h-11 items-center gap-2 rounded-full border border-border bg-card px-4 outline-none transition-colors hover:border-foreground/20 focus-visible:ring-3 focus-visible:ring-ring/50"
                       >
-                        <span
-                          aria-hidden="true"
-                          className="flex size-10 items-center justify-center rounded-xl bg-muted font-heading text-lg font-extrabold"
-                        >
-                          {brand.vendorName.charAt(0)}
+                        <span className="font-semibold group-hover:underline">
+                          {brand.vendorName}
                         </span>
-                        <span className="min-w-0">
-                          <span className="block truncate font-semibold group-hover:underline">
-                            {brand.vendorName}
-                          </span>
-                          <span className="mt-0.5 block text-xs text-muted-foreground tabular-nums">
-                            {formatNumber(brand.deviceCount)} devices
-                          </span>
+                        <span className="text-xs text-muted-foreground tabular-nums">
+                          {formatNumber(brand.deviceCount)}
+                          <span className="sr-only"> devices</span>
                         </span>
                       </Link>
                     </li>
