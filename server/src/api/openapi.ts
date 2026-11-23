@@ -321,6 +321,7 @@ const romDetailSchema = {
     "name",
     "status",
     "tagline",
+    "sourceUrl",
     "deviceCount",
     "devices",
     "build",
@@ -337,6 +338,11 @@ const romDetailSchema = {
       ...nullableString,
       description:
         "A few words describing what the project is for. Static copy, null when none is curated.",
+    },
+    sourceUrl: {
+      ...nullableString,
+      description:
+        "The project's source host, where its builds can be checked, or null when none is recorded.",
     },
     deviceCount: {
       type: "integer",

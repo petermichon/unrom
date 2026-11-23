@@ -10,10 +10,9 @@ test("ROM pages state the newest build when every device reports one", async ({
   await expect(
     page.getByText(new RegExp(`Newest build ${DATE.source}`)),
   ).toBeVisible();
-  await expect(page.getByRole("link", { name: "Source" })).toHaveAttribute(
-    "href",
-    "https://grapheneos.org/releases",
-  );
+  await expect(
+    page.getByRole("link", { name: "Source", exact: true }),
+  ).toHaveAttribute("href", "https://grapheneos.org/releases");
 });
 
 test("ROM pages say how many devices report a build", async ({ page }) => {
@@ -26,8 +25,7 @@ test("ROM pages say how many devices report a build", async ({ page }) => {
       ),
     ),
   ).toBeVisible();
-  await expect(page.getByRole("link", { name: "Source" })).toHaveAttribute(
-    "href",
-    "https://download.lineageos.org/",
-  );
+  await expect(
+    page.getByRole("link", { name: "Source", exact: true }),
+  ).toHaveAttribute("href", "https://download.lineageos.org/");
 });

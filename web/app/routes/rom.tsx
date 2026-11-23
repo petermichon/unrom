@@ -1,3 +1,4 @@
+import { ExternalLink } from "lucide-react";
 import { useLoaderData } from "react-router";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ROM_LOGOS, ROM_MARKS } from "@/components/RomPhone";
@@ -152,6 +153,18 @@ export default function RomRoute() {
               <p className="max-w-[62ch] text-sm leading-relaxed text-panel-foreground/75">
                 {rom.tagline}
               </p>
+            )}
+            {rom.sourceUrl && (
+              <a
+                href={rom.sourceUrl}
+                target="_blank"
+                rel="noopener"
+                className="inline-flex w-fit items-center gap-1.5 text-sm font-semibold text-panel-foreground underline underline-offset-4 outline-none hover:no-underline focus-visible:ring-3 focus-visible:ring-panel-foreground"
+              >
+                Project source
+                <ExternalLink className="size-3.5" aria-hidden="true" />
+                <span className="sr-only"> (opens in a new tab)</span>
+              </a>
             )}
           </div>
         </div>

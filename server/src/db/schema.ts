@@ -13,6 +13,9 @@ export const roms = sqliteTable("roms", {
   status: text("status").notNull(),
   // Static project copy, not a data fact; null when none is curated.
   tagline: text("tagline"),
+  // The project's own code host, where a reader can check its builds; null when
+  // none is recorded.
+  sourceUrl: text("source_url"),
 });
 
 export const devices = sqliteTable(

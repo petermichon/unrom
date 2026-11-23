@@ -1,0 +1,63 @@
+/**
+ * Where each project publishes its source, as its own GitHub or GitLab page.
+ *
+ * The link is the project's organisation or repository we already read its
+ * roster from, so it is a fact a reader can open: it answers "where can I check
+ * this project" for ROMs whose code host is known. Only verified hosts are
+ * listed; a ROM without an entry has no recorded source rather than a guessed
+ * one (`ROM_COVERAGE.md` tracks the gap).
+ */
+export const ROM_SOURCE_URLS: Record<string, string> = {
+  "2by2-project": "https://github.com/2by2-Project",
+  afterlifeos: "https://github.com/AfterlifeOS",
+  aicp: "https://github.com/AICP",
+  "aim-rom": "https://github.com/AIMROM",
+  aosip: "https://github.com/AOSiP",
+  aospextended: "https://github.com/AospExtended",
+  arrowos: "https://github.com/ArrowOS",
+  awakenos: "https://github.com/Project-Awaken",
+  axionaosp: "https://github.com/AxionAOSP",
+  "black-iron-project": "https://github.com/Black-Iron-Project",
+  calyxos: "https://gitlab.com/CalyxOS",
+  candyroms: "https://github.com/CandyRoms",
+  "carbon-rom": "https://github.com/CarbonROM",
+  catalystos: "https://github.com/catalyst-android",
+  cipheros: "https://github.com/CipherOS",
+  clover: "https://github.com/The-Clover-Project",
+  crdroid: "https://github.com/crdroidandroid",
+  derpfest: "https://github.com/DerpFest-AOSP",
+  dotos: "https://github.com/DotOS",
+  eos: "https://gitlab.e.foundation/e",
+  etherealos: "https://github.com/Ethereal-OS",
+  evolutionx: "https://github.com/Evolution-X",
+  "freaky-os": "https://github.com/FreakyOS",
+  genesisos: "https://github.com/GenesisOS",
+  grapheneos: "https://github.com/GrapheneOS",
+  havocos: "https://github.com/Havoc-OS",
+  iode: "https://gitlab.com/iode",
+  kenvyra: "https://github.com/Kenvyra",
+  lineageos: "https://github.com/LineageOS",
+  lunaris: "https://github.com/Lunaris-AOSP",
+  palladiumos: "https://github.com/Palladium-OS",
+  paranoidandroid: "https://github.com/ParanoidAndroid",
+  pixelexperience: "https://github.com/PixelExperience",
+  pixelextended: "https://github.com/PixelExtended",
+  pixelos: "https://github.com/PixelOS-AOSP",
+  pixelstar: "https://github.com/Project-PixelStar",
+  pixysos: "https://github.com/PixysOS",
+  "project-blaze": "https://github.com/ProjectBlaze",
+  "project-lighthouse": "https://github.com/lighthouse-os",
+  "project-sakura": "https://github.com/ProjectSakura",
+  projectinfinityx: "https://github.com/ProjectInfinity-X",
+  projectpixelage: "https://github.com/ProjectPixelage",
+  reloadedos: "https://github.com/ReloadedOS",
+  risingos: "https://github.com/RisingOS-Revived",
+  slimroms: "https://github.com/slimroms",
+  somethingos: "https://github.com/SomethingOS",
+  "tequila-os": "https://github.com/tequilaOS",
+  voltageos: "https://github.com/VoltageOS",
+  waveos: "https://github.com/Wave-Project",
+  witaqua: "https://github.com/WitAqua",
+  "yaap-aosp": "https://github.com/yaap",
+  zeusos: "https://github.com/Zeus-OS",
+};

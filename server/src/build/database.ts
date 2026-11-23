@@ -28,6 +28,7 @@ import {
   deviceNames,
 } from "../data/registry.ts";
 import { RELOCK_RULES, relockFor } from "../data/relock.ts";
+import { ROM_SOURCE_URLS } from "../data/rom-sources.ts";
 import { ROMS } from "../data/roms.ts";
 import type { RomCatalogEntry } from "../data/roms.ts";
 import { generateDdl } from "../db/ddl.ts";
@@ -192,7 +193,9 @@ function contentHash(
   const key = (vendor: string, codename: string) => `${vendor}\0${codename}`;
 
   for (const [id, rom] of [...romMap].sort(([a], [b]) => a.localeCompare(b))) {
-    hash.update(`r\0${id}\0${rom.name}\0${rom.status}\0${rom.tagline ?? ""}\n`);
+    hash.update(
+      `r\0${id}\0${rom.name}\0${rom.status}\0${rom.tagline ?? ""}\0${ROM_SOURCE_URLS[id] ?? ""}\n`,
+    );
   }
   for (const device of [...deviceMap.values()].sort((a, b) =>
     key(a.vendor, a.codename).localeCompare(key(b.vendor, b.codename)),
@@ -924,6 +927,7 @@ export function buildDatabase(
           name: rom.name,
           status: rom.status,
           tagline: rom.tagline ?? null,
+          sourceUrl: ROM_SOURCE_URLS[id] ?? null,
         })
         .run();
     }

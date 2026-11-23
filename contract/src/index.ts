@@ -211,6 +211,8 @@ export interface SearchResponse {
 export interface RomDetail extends RomSummary {
   /** A static description of the project; null when none is curated. */
   tagline: string | null;
+  /** The project's source host (its GitHub/GitLab page); null when none is recorded. */
+  sourceUrl: string | null;
   devices: DeviceSummary[];
   /** Null when no device of this ROM reports build metadata. */
   build: RomBuildSummary | null;

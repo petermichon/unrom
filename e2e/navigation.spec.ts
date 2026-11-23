@@ -416,6 +416,21 @@ test("uppercase brand filters redirect to lowercase", async ({ page }) => {
   ).toBeVisible();
 });
 
+test("the ROM page links the project source when one is recorded", async ({
+  page,
+}) => {
+  await page.goto("/roms/lineageos");
+  await expect(
+    page.getByRole("link", { name: "Project source" }),
+  ).toHaveAttribute("href", "https://github.com/LineageOS");
+
+  // A ROM without a recorded source shows no link rather than a guessed one.
+  await page.goto("/roms/yaapex");
+  await expect(page.getByRole("link", { name: "Project source" })).toHaveCount(
+    0,
+  );
+});
+
 test("the ROMs index separates covered from catalogue", async ({ page }) => {
   await page.goto("/roms");
 

@@ -611,6 +611,7 @@ test("a ROM summarises how current its builds are", () => {
 
     const rom = api.getRom("grapheneos");
     assert.equal(rom?.deviceCount, 2);
+    assert.equal(rom?.sourceUrl, "https://github.com/GrapheneOS");
     assert.deepEqual(rom?.build, {
       newest: "2026-06-01",
       devicesWithBuild: 1,

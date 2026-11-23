@@ -765,6 +765,7 @@ export function createApi(dbPath: string) {
       name: rom.name,
       status: rom.status as RomStatus,
       tagline: rom.tagline,
+      sourceUrl: rom.sourceUrl,
       deviceCount: devices.length,
       devices,
       build: newest
