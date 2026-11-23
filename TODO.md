@@ -12,10 +12,13 @@
       is coverage, not discovery. Open questions: one field or a
       tri-state (unlockable / locked / unknown); an authoritative per-vendor
       source for each; whether it belongs in `contract/` (a versioning
-      decision); and how to validate 9,103 devices rather than assume them.
-      Interim: state on the devices page what the directory does and does not
-      claim. Vendor-level policies cover seven vendors; add one only when it
-      publishes a policy (Samsung and ASUS next, then regional variants).
+      decision); and how to validate the whole catalogue rather than assume it.
+      Interim: the devices page now says that a ROM listing is not a claim that
+      the bootloader can be unlocked. Vendor-level policies cover seven
+      vendors, and Samsung and ASUS cannot be added: neither publishes a policy
+      page. Samsung removed unlocking from One UI 8 with no public statement,
+      and ASUS's unlock-tool FAQ returns 404. The next step is the per-device
+      field, which needs the contract decision above.
 - [ ] Record the per-device facts a "which build for this device" filter needs,
       each with a source: relock / verified-boot support (a different question
       from whether the vendor allows unlocking), vendor support end date (which
