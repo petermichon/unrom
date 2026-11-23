@@ -264,6 +264,14 @@ function comparableName(value: string | null): string {
 }
 
 /**
+ * The model name without a trailing variant qualifier, so "Nexus 9" agrees with
+ * "Nexus 9 (Wi-Fi)" and "Nexus 7 (2013)" with "Nexus 7 (2013, LTE)".
+ */
+function baseName(value: string | null): string {
+  return comparableName((value ?? "").replace(/\([^)]*\)/g, " "));
+}
+
+/**
  * The vendor the registry assigns to a codename when the source's model name is
  * one of the curated names for it. Only an exact model match counts: a codename
  * shared by two devices keeps the vendor its source reported.
@@ -569,6 +577,42 @@ export function buildDatabase(
   // Curated catalogue devices not reported by any ROM roster. Their names are
   // source-named rather than curated, so they stay outside the registry report.
   const catalogKeys = new Set<string>();
+  const keysByCodename = new Map<string, string[]>();
+  for (const [key, device] of deviceMap) {
+    const codename = device.codename.toLowerCase();
+    const keys = keysByCodename.get(codename) ?? [];
+    keys.push(key);
+    keysByCodename.set(codename, keys);
+  }
+  // Devices a ROM actually reports, plus the key's own row: a catalogue entry
+  // for a catalogue-only device (a TV box with a generic name) is left alone.
+  const keysWithEdges = new Set<string>();
+  for (const edgeKey of edgeMap.keys()) {
+    keysWithEdges.add(edgeKey.slice(edgeKey.indexOf("\0") + 1));
+  }
+
+  // Play brands a device by its maker (asus/flo) while a roster or the registry
+  // brands it by the vendor (google/flo). When the codename and the model name
+  // agree, the catalogue row is the same device and is dropped; a codename
+  // shared by different models keeps both rows.
+  const sameDeviceUnderAnotherVendor = (
+    vendor: string,
+    codename: string,
+    names: readonly string[],
+  ): boolean => {
+    const wanted = new Set(names.map(baseName).filter(Boolean));
+    if (wanted.size === 0) return false;
+    for (const key of keysByCodename.get(codename.toLowerCase()) ?? []) {
+      const existing = deviceMap.get(key);
+      if (!existing || existing.vendor === vendor) continue;
+      const curated = deviceNames(existing.vendor, existing.codename) !== null;
+      if (!curated && !keysWithEdges.has(key)) continue;
+      const existingNames = existing.names ?? [];
+      if (existingNames.some((name) => wanted.has(baseName(name)))) return true;
+    }
+    return false;
+  };
+
   for (const device of catalog) {
     // Play's catalogue includes emulator and SDK images; they are not devices.
     if (isExcludedCodename(device.codename)) continue;
@@ -576,6 +620,13 @@ export function buildDatabase(
       device.vendor,
       canonicalCasing(device.codename),
     );
+    const ownKey = `${device.vendor}\0${canonical}`;
+    if (
+      !keysWithEdges.has(ownKey) &&
+      sameDeviceUnderAnotherVendor(device.vendor, canonical, device.names)
+    ) {
+      continue;
+    }
     ensureDevice(device.vendor, canonical);
     const key = `${device.vendor}\0${canonical}`;
     const existing = deviceMap.get(key);
@@ -587,6 +638,12 @@ export function buildDatabase(
       }
     }
     catalogKeys.add(key);
+    const codename = canonical.toLowerCase();
+    const keys = keysByCodename.get(codename) ?? [];
+    if (!keys.includes(key)) {
+      keys.push(key);
+      keysByCodename.set(codename, keys);
+    }
   }
 
   // Union-find over device keys to build compatibility groups: the sets of

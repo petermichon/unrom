@@ -7,6 +7,7 @@ import { test } from "node:test";
 import Database from "better-sqlite3";
 
 import { buildDatabase } from "./build/database.ts";
+import type { DeviceSeed } from "./build/database.ts";
 import { createApi } from "./data/queries.ts";
 import {
   EXCLUDED_CODENAMES,
@@ -1304,6 +1305,61 @@ test("the registry exposes every curated entry", async () => {
     );
 
     api.close();
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("a catalogue row merges into the same device under another vendor", () => {
+  const dir = mkdtempSync(join(tmpdir(), "unrom-test-"));
+  try {
+    const dbPath = join(dir, "unrom.sqlite");
+    const records = [
+      // Google brands the Nexus 7; the catalogue lists Asus, which built it.
+      buildRecord({
+        romId: "test-rom",
+        romName: "Test ROM",
+        codename: "flo",
+        brand: "Google",
+        name: "Nexus 7 (2013)",
+      }),
+      // A codename shared by two different models stays split.
+      buildRecord({
+        romId: "test-rom",
+        romName: "Test ROM",
+        codename: "apollo",
+        brand: "Xiaomi",
+        name: "Mi 10T",
+      }),
+    ];
+    const catalog: DeviceSeed[] = [
+      { vendor: "asus", codename: "flo", names: ["Nexus 7 (2013)"] },
+      { vendor: "zte", codename: "apollo", names: ["N9101"] },
+      // A catalogue-only device with a generic name has no mapped row to
+      // merge into, so it stays.
+      { vendor: "nokia", codename: "redwood", names: ["Smart TV"] },
+    ];
+    buildDatabase(records, dbPath, catalog);
+
+    const db = new Database(dbPath, { readonly: true });
+    const vendors = (codename: string) =>
+      (
+        db
+          .prepare(
+            "select vendor from devices where codename = ? order by vendor",
+          )
+          .all(codename) as Array<{ vendor: string }>
+      ).map((row) => row.vendor);
+
+    assert.deepEqual(vendors("flo"), ["google"]);
+    const apollo = vendors("apollo");
+    assert.ok(
+      apollo.includes("xiaomi") && apollo.includes("zte"),
+      apollo.join(","),
+    );
+    // A catalogue-only row with no mapped match is left in place.
+    assert.ok(vendors("redwood").includes("nokia"));
+    db.close();
   } finally {
     rmSync(dir, { recursive: true, force: true });
   }
