@@ -78,16 +78,15 @@ test("the hero search finds a catalogue-only ROM", async ({ page }) => {
 test("home links to the three directories", async ({ page }) => {
   await page.goto("/");
 
-  const sections = [
-    ["browse-brands", /All [\d,]+ brands/, "/brands"],
-    ["browse-roms", /All [\d,]+ ROMs/, "/roms"],
-    ["top-devices", "All devices", "/devices"],
+  const links = [
+    [/All [\d,]+ brands/, "/brands"],
+    [/All [\d,]+ ROMs/, "/roms"],
+    ["All devices", "/devices"],
   ] as const;
-  for (const [id, label, href] of sections) {
-    const link = page
-      .locator(`section[aria-labelledby='${id}']`)
-      .getByRole("link", { name: label });
-    await expect(link).toHaveAttribute("href", href);
+  for (const [name, href] of links) {
+    await expect(
+      page.locator("main").getByRole("link", { name }),
+    ).toHaveAttribute("href", href);
   }
 });
 

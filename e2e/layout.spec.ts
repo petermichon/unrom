@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("phone below the copy", () => {
-  test.use({ viewport: { width: 390, height: 844 } });
+  test.use({ viewport: { width: 700, height: 900 } });
 
   test("shows the phone below the copy and steps it by hand", async ({
     page,
@@ -27,6 +27,21 @@ test.describe("phone below the copy", () => {
     // The page keeps one palette; stepping the phone does not re-theme it.
     await expect(page.locator("html")).toHaveAttribute("data-rom", "calyxos");
   });
+});
+
+test("the smallest screens show the copy without the decorative phone", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/");
+
+  const hero = page.locator(".hero-panel");
+  expect(
+    await hero.locator('img[src="/brand/lineageos.png"]:visible').count(),
+  ).toBe(0);
+  await expect(
+    hero.getByRole("link", { name: "Search devices, brands, and ROMs" }),
+  ).toBeVisible();
 });
 
 test("opening a menu does not lock page scroll", async ({ page }) => {

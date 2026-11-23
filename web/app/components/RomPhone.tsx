@@ -46,13 +46,18 @@ export const ROM_MARKS: Record<string, string> = {
 export function RomPhone({
   slides,
   index,
+  label,
 }: {
   slides: RomPhoneSlide[];
   index: number;
+  /** When the phone is the content (a slide picker steps it), name it. */
+  label?: string;
 }) {
   return (
     <div
-      aria-hidden="true"
+      role={label ? "img" : undefined}
+      aria-label={label}
+      aria-hidden={label ? undefined : true}
       className="relative w-[14.5rem] shrink-0 select-none"
     >
       <span className="absolute -bottom-5 left-1/2 h-10 w-[82%] -translate-x-1/2 rounded-full bg-black/20 blur-xl dark:bg-black/70" />

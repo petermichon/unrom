@@ -140,6 +140,26 @@ export async function clientLoader() {
 
 const EXAMPLES = ["Pixel 7", "Redmi Note 10 Pro", "LineageOS"];
 
+// The three facts behind the catalogue, in the order a reader needs them:
+// where a mapping comes from, how sure it is, and how fresh the build is.
+const PROVENANCE = [
+  {
+    step: "01",
+    title: "Each mapping links its source",
+    body: "Every device–ROM pair points at the page that reports it. Links built from a codename are checked before they are published.",
+  },
+  {
+    step: "02",
+    title: "Confidence is labelled",
+    body: "Curated device names carry a confidence: verified, inferred, manual or unverified, shown on the device page with the ROMs that back it.",
+  },
+  {
+    step: "03",
+    title: "Rebuilt from the sources",
+    body: "The catalogue is rebuilt from each project's snapshots, and the last build date is in the footer.",
+  },
+];
+
 export default function Home() {
   const {
     counts,
@@ -158,7 +178,10 @@ export default function Home() {
   useRomPalette("calyxos");
 
   return (
-    <section data-rom="calyxos" className="rom-page flex flex-col gap-16">
+    <section
+      data-rom="calyxos"
+      className="rom-page flex flex-col gap-12 lg:gap-16"
+    >
       <div
         data-motion
         className="hero-panel relative overflow-hidden rounded-4xl bg-panel px-6 py-10 text-panel-foreground ring-1 ring-black/[0.03] transition-colors sm:px-10 sm:py-12 lg:px-12 lg:py-14 dark:ring-white/[0.08]"
@@ -187,13 +210,13 @@ export default function Home() {
               </span>{" "}
               brands ·{" "}
               <span className="font-mono text-panel-foreground">
-                {formatNumber(counts.roms)}
-              </span>{" "}
-              ROMs ·{" "}
-              <span className="font-mono text-panel-foreground">
                 {formatNumber(counts.coveredRoms)}
               </span>{" "}
-              with device data
+              of{" "}
+              <span className="font-mono text-panel-foreground">
+                {formatNumber(counts.roms)}
+              </span>{" "}
+              ROMs with device data
             </p>
           </div>
 
@@ -216,87 +239,116 @@ export default function Home() {
         )}
       </div>
 
-      {featuredBrands.length > 0 && (
-        <section
-          aria-labelledby="browse-brands"
-          className="flex flex-col gap-5"
-        >
-          <SectionHeader
-            id="browse-brands"
-            title="Browse by brand"
-            description="Jump straight to a brand's device list."
-            action={
-              <SectionLink
-                to="/brands"
-                label={`All ${formatNumber(counts.brands)} brands`}
-              />
-            }
-          />
-          <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-            {featuredBrands.map((brand) => (
-              <li key={brand.vendor}>
-                <Link
-                  to={`/devices/${brand.vendor}`}
-                  prefetch="intent"
-                  className="group flex h-full flex-col gap-4 rounded-2xl border border-border bg-card p-4 outline-none transition-colors hover:border-foreground/20 focus-visible:ring-3 focus-visible:ring-ring/50"
-                >
-                  <span className="flex size-10 items-center justify-center rounded-xl bg-muted font-heading text-lg font-extrabold">
-                    {brand.vendorName.charAt(0)}
-                  </span>
-                  <span className="min-w-0">
-                    <span className="block truncate font-semibold group-hover:underline">
-                      {brand.vendorName}
-                    </span>
-                    <span className="mt-0.5 block text-xs text-muted-foreground tabular-nums">
-                      {formatNumber(brand.deviceCount)} devices
-                    </span>
-                  </span>
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
+      {/* The one real mapping, directly under the promise it proves. */}
+      {example && <ExampleMapping device={example} roms={exampleRoms} />}
 
-      {roms.length > 0 && (
-        <section aria-labelledby="browse-roms" className="flex flex-col gap-5">
+      {(featuredBrands.length > 0 || roms.length > 0) && (
+        <section aria-labelledby="browse" className="flex flex-col gap-5">
           <SectionHeader
-            id="browse-roms"
-            title="Browse by ROM"
-            description="Projects with published builds, and how many devices each one covers."
-            action={
-              <SectionLink
-                to="/roms"
-                label={`All ${formatNumber(counts.roms)} ROMs`}
-              />
-            }
+            id="browse"
+            title="Browse the catalogue"
+            description="Jump straight to a brand's devices, or to a project's builds."
           />
-          <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
-            {roms.map((rom) => (
-              <li key={rom.id}>
-                <Link
-                  to={`/roms/${rom.id}`}
-                  prefetch="intent"
-                  className="group flex h-full flex-col gap-4 rounded-2xl border border-border bg-card p-4 outline-none transition-colors hover:border-foreground/20 focus-visible:ring-3 focus-visible:ring-ring/50"
-                >
-                  <span className="flex items-start justify-between gap-2">
-                    <RomIcon rom={rom} />
-                    {rom.status !== "active" && (
-                      <StatusPill status={rom.status} />
-                    )}
-                  </span>
-                  <span className="min-w-0">
-                    <span className="line-clamp-2 font-semibold group-hover:underline">
-                      {rom.name}
-                    </span>
-                    <span className="mt-0.5 block text-xs text-muted-foreground tabular-nums">
-                      {formatNumber(rom.deviceCount)} devices
-                    </span>
-                  </span>
-                </Link>
-              </li>
-            ))}
-          </ul>
+
+          <div className="flex flex-col gap-8">
+            {featuredBrands.length > 0 && (
+              <div className="flex flex-col gap-4">
+                <div className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
+                  <h3 className="font-heading text-lg font-bold tracking-tight">
+                    Brands
+                  </h3>
+                  <SectionLink
+                    to="/brands"
+                    label={`All ${formatNumber(counts.brands)} brands`}
+                  />
+                </div>
+                <ul className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+                  {featuredBrands.map((brand) => (
+                    <li key={brand.vendor}>
+                      <Link
+                        to={`/devices/${brand.vendor}`}
+                        prefetch="intent"
+                        className="group flex h-full flex-col gap-4 rounded-2xl border border-border bg-card p-4 outline-none transition-colors hover:border-foreground/20 focus-visible:ring-3 focus-visible:ring-ring/50"
+                      >
+                        <span
+                          aria-hidden="true"
+                          className="flex size-10 items-center justify-center rounded-xl bg-muted font-heading text-lg font-extrabold"
+                        >
+                          {brand.vendorName.charAt(0)}
+                        </span>
+                        <span className="min-w-0">
+                          <span className="block truncate font-semibold group-hover:underline">
+                            {brand.vendorName}
+                          </span>
+                          <span className="mt-0.5 block text-xs text-muted-foreground tabular-nums">
+                            {formatNumber(brand.deviceCount)} devices
+                          </span>
+                        </span>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {roms.length > 0 && (
+              <div className="flex flex-col gap-4">
+                <h3 className="font-heading text-lg font-bold tracking-tight">
+                  Custom ROMs
+                </h3>
+                <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                  {roms.map((rom) => (
+                    <li key={rom.id}>
+                      <Link
+                        to={`/roms/${rom.id}`}
+                        prefetch="intent"
+                        className="group flex h-full flex-col gap-4 rounded-2xl border border-border bg-card p-4 outline-none transition-colors hover:border-foreground/20 focus-visible:ring-3 focus-visible:ring-ring/50"
+                      >
+                        <span className="flex items-start justify-between gap-2">
+                          <RomIcon rom={rom} />
+                          {rom.status !== "active" && (
+                            <StatusPill status={rom.status} />
+                          )}
+                        </span>
+                        <span className="min-w-0">
+                          <span className="line-clamp-2 font-semibold group-hover:underline">
+                            {rom.name}
+                          </span>
+                          <span className="mt-0.5 block text-xs text-muted-foreground tabular-nums">
+                            {formatNumber(rom.deviceCount)} devices
+                          </span>
+                        </span>
+                      </Link>
+                    </li>
+                  ))}
+                  {/* The sixth tile fills the grid and is the section's link to
+                      the full index, so the list does not end in half a row. */}
+                  <li>
+                    <Link
+                      to="/roms"
+                      prefetch="intent"
+                      className="group flex h-full flex-col justify-between gap-4 rounded-2xl border border-border bg-card p-4 outline-none transition-colors hover:border-foreground/20 focus-visible:ring-3 focus-visible:ring-ring/50"
+                    >
+                      <span
+                        aria-hidden="true"
+                        className="flex size-10 items-center justify-center rounded-xl bg-muted text-foreground/70"
+                      >
+                        <ArrowRight className="size-4" />
+                      </span>
+                      <span className="min-w-0">
+                        <span className="block font-semibold group-hover:underline">
+                          All {formatNumber(counts.roms)} ROMs
+                        </span>
+                        <span className="mt-0.5 block text-xs text-muted-foreground">
+                          Every project in the catalogue
+                        </span>
+                      </span>
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+            )}
+          </div>
         </section>
       )}
 
@@ -322,44 +374,27 @@ export default function Home() {
         <DeviceDirectoryList devices={topDevices} />
       </section>
 
-      {example && <ExampleMapping device={example} roms={exampleRoms} />}
-
       <section aria-labelledby="provenance" className="flex flex-col gap-5">
         <SectionHeader
           id="provenance"
           title="Where this data comes from"
           description="Every mapping is source-linked, and confidence is labelled."
         />
-        <div className="grid gap-3 md:grid-cols-3">
-          <div className="rounded-2xl border border-border bg-card p-5">
-            <h3 className="font-semibold">Each mapping links its source</h3>
-            <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
-              Every device–ROM pair points at the page that reports it. Links
-              built from a codename are checked before they are published.
-            </p>
-          </div>
-          <div className="rounded-2xl border border-border bg-card p-5">
-            <h3 className="font-semibold">Confidence is labelled</h3>
-            <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
-              Curated device names carry a confidence: verified, inferred,
-              manual or unverified. Device pages show which one applies and
-              which ROMs back it.
-            </p>
-          </div>
-          <div className="rounded-2xl border border-border bg-card p-5">
-            <h3 className="font-semibold">Take the data with you</h3>
-            <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
-              The whole dataset downloads as JSON or SQLite. See the{" "}
-              <Link
-                to="/data"
-                prefetch="intent"
-                className="font-medium text-foreground hover:underline"
+        <div className="grid divide-y divide-border overflow-hidden rounded-2xl border border-border bg-card sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+          {PROVENANCE.map((item) => (
+            <div key={item.step} className="flex flex-col gap-1.5 p-5">
+              <span
+                aria-hidden="true"
+                className="font-mono text-xs text-muted-foreground"
               >
-                data page
-              </Link>
-              .
-            </p>
-          </div>
+                {item.step}
+              </span>
+              <h3 className="font-semibold">{item.title}</h3>
+              <p className="text-sm leading-relaxed text-muted-foreground">
+                {item.body}
+              </p>
+            </div>
+          ))}
         </div>
       </section>
 
@@ -428,7 +463,7 @@ function SectionLink({ to, label }: { to: string; label: string }) {
     <Link
       to={to}
       prefetch="intent"
-      className="inline-flex items-center gap-1 text-sm font-semibold text-foreground hover:underline"
+      className="-my-1 inline-flex items-center gap-1 py-1 text-sm font-semibold text-foreground hover:underline"
     >
       {label}
       <ArrowRight className="size-3.5" aria-hidden="true" />
@@ -440,7 +475,10 @@ function SectionLink({ to, label }: { to: string; label: string }) {
 function RomIcon({ rom }: { rom: RomSummary }) {
   const src = ROM_BOLD_MARKS[rom.id] ?? ROM_LOGOS[rom.id];
   return (
-    <span className="flex size-10 items-center justify-center rounded-xl bg-muted text-foreground/80">
+    <span
+      aria-hidden="true"
+      className="flex size-10 items-center justify-center rounded-xl bg-muted text-foreground/80"
+    >
       {hasRomMenuMark(rom.id) ? (
         <RomMenuMark id={rom.id} />
       ) : src ? (
@@ -471,14 +509,13 @@ function ExampleMapping({
       <div className="rounded-2xl border border-border bg-card p-5 sm:p-6">
         <div className="grid gap-6 md:grid-cols-[minmax(0,1fr)_minmax(0,1.5fr)] md:gap-10">
           <div className="flex min-w-0 flex-col items-start">
-            <p className="text-[0.7rem] font-semibold tracking-[0.14em] text-muted-foreground uppercase">
-              Example mapping
-            </p>
-            <h2
-              id="example-device"
-              className="mt-1 font-heading text-2xl font-bold tracking-tight"
-            >
-              {deviceName(device)}
+            <h2 id="example-device" className="mt-1">
+              <span className="block text-[0.7rem] font-semibold tracking-[0.14em] text-muted-foreground uppercase">
+                Example mapping
+              </span>
+              <span className="font-heading text-2xl font-bold tracking-tight">
+                {deviceName(device)}
+              </span>
             </h2>
             <p className="mt-1 text-sm text-muted-foreground">
               {device.vendorName} ·{" "}
@@ -488,7 +525,7 @@ function ExampleMapping({
             <Link
               to={`/devices/${device.vendor}/${device.codename}`}
               prefetch="intent"
-              className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-foreground outline-none hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
+              className="mt-2 inline-flex items-center gap-1 py-1 text-sm font-semibold text-foreground outline-none hover:underline focus-visible:ring-3 focus-visible:ring-ring/50"
             >
               See all {formatNumber(total)} {total === 1 ? "ROM" : "ROMs"}
               <ArrowRight className="size-3.5" aria-hidden="true" />
@@ -497,7 +534,7 @@ function ExampleMapping({
 
           <ul className="flex min-w-0 flex-col divide-y divide-border border-t border-border md:border-t-0 md:border-l md:pl-8">
             {roms.map((rom) => (
-              <li key={rom.id} className="flex min-w-0 flex-col gap-0.5 py-2.5">
+              <li key={rom.id} className="flex min-w-0 flex-col gap-1 py-2.5">
                 <Link
                   to={`/roms/${rom.id}`}
                   prefetch="intent"
@@ -511,7 +548,7 @@ function ExampleMapping({
                     target="_blank"
                     rel="noopener"
                     title={rom.referenceUrl}
-                    className="inline-flex max-w-full items-center gap-1 text-xs text-muted-foreground underline underline-offset-4 hover:text-foreground"
+                    className="inline-flex max-w-full items-center gap-1 py-1 text-xs text-muted-foreground underline underline-offset-4 hover:text-foreground"
                   >
                     <span className="truncate">
                       {referenceLabel(rom.referenceUrl)}
@@ -520,6 +557,7 @@ function ExampleMapping({
                       className="size-3 shrink-0"
                       aria-hidden="true"
                     />
+                    <span className="sr-only"> (opens in a new tab)</span>
                   </a>
                 ) : (
                   <span className="text-xs text-muted-foreground">
@@ -555,7 +593,11 @@ function HeroIllustration({
   return (
     <div className="pointer-events-auto absolute right-8 -bottom-12 hidden lg:block xl:right-12">
       <div className="relative w-[14.5rem]">
-        <RomPhone slides={slides} index={index} />
+        <RomPhone
+          slides={slides}
+          index={index}
+          label={`${slides[index]?.name ?? "Custom ROM"} home screen`}
+        />
 
         {slides.length > 1 && (
           <div
@@ -581,6 +623,9 @@ function HeroIllustration({
  * the panel exactly like the large illustration. The negative bottom margin is
  * what lets the panel clip it; the dots step the slide by hand, while the page
  * palette stays on the single CalyxOS accent.
+ *
+ * Phones keep the copy and the search alone: at 390px the illustration added a
+ * full extra screen of green before the first mapping, and it carries no data.
  */
 function HeroPhoneBelow({
   slides,
@@ -592,9 +637,13 @@ function HeroPhoneBelow({
   onSelect: (position: number) => void;
 }) {
   return (
-    <div className="relative mx-auto mt-8 -mb-[4.5rem] h-[13.5rem] w-32 sm:-mb-[5.5rem] sm:h-[16.5rem] lg:hidden">
+    <div className="relative mx-auto mt-8 -mb-[4.5rem] hidden h-[13.5rem] w-32 sm:-mb-[5.5rem] sm:block sm:h-[16.5rem] lg:hidden">
       <div className="origin-top-left scale-[0.5] sm:scale-[0.55]">
-        <RomPhone slides={slides} index={index} />
+        <RomPhone
+          slides={slides}
+          index={index}
+          label={`${slides[index]?.name ?? "Custom ROM"} home screen`}
+        />
       </div>
       {slides.length > 1 && (
         <div
