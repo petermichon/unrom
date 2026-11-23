@@ -49,13 +49,10 @@
       Coverage headlines currently mix both.
 - [ ] Record build freshness per ROM: last build date and last commit, with a
       stale flag (6/12/24 months). `status` only says whether a project ships
-      anything at all; AOSPA is "active" on an Android 14 build. The build date
-      and the patch level that build reports are now on the mapping for the five
-      sources that publish them (784 of 3702 mappings have a date, 484 a patch
-      level). Still open: the last commit per project, the stale flag, and the
-      sources whose snapshots already carry timestamps but are not wired up
-      (Evolution X, DerpFest, PixelOS, SuperiorOS, WitAqua, PixelExtended,
-      Project PixelAge, CandyRoms).
+      anything at all; AOSPA is "active" on an Android 14 build. Every mapping
+      whose roster publishes a timestamp now carries its build date (1,295 of
+      3,922, 490 with a patch level too). Still open: the last commit per
+      project and the stale flag derived from it.
 - [ ] Record the Android version per device–ROM pair. `os_sdk_level` and the
       release string sit in the same OTA metadata as the build date, which is
       now recorded; the version is not.
