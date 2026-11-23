@@ -51,8 +51,11 @@
       stale flag (6/12/24 months). `status` only says whether a project ships
       anything at all; AOSPA is "active" on an Android 14 build. Every mapping
       whose roster publishes a timestamp now carries its build date (1,295 of
-      3,922, 490 with a patch level too). Still open: the last commit per
-      project and the stale flag derived from it.
+      3,922, 490 with a patch level too), and a ROM page labels an active
+      project whose newest build is over a year old. Still open: the last
+      commit per project. That needs a repo-level URL per project, not just the
+      organisation `rom-sources.ts` holds, and GitHub allows 60 unauthenticated
+      API requests an hour, so it needs a token or a committed snapshot.
 - [ ] Record the Android version per device–ROM pair. `os_sdk_level` and the
       release string sit in the same OTA metadata as the build date, which is
       now recorded; the version is not.
