@@ -1,10 +1,15 @@
 # TODO
 
-- [ ] Grow indexable content by adding source-backed device data for ROMs that
-      currently have none. Tiers 1–3 are implemented and three Tier 4 rosters
-      are in (66 of 274 ROMs now have data; Project 404 was skipped as stale).
-      What remains is the rest of Tier 4, where the roster only exists in HTML
-      or a JS app, and Tier 5, which has no public link; see `ROM_TRIAGE.md`.
+- [ ] Collapse duplicate device rows. A codename can exist twice when the Play
+      catalogue brands a device by its maker (asus/flo) and a ROM roster brands
+      it by the vendor (google/flo): 69 rows carry no ROMs and shadow a mapped
+      device. Merge them when the codename matches and the names agree, leaving
+      the vendor the registry curates; a codename shared by different models
+      (sirius) stays split.
+- [ ] Curate names for the devices the data cannot name. Eleven devices with
+      ROMs have no name, so their pages show only the codename; the registry
+      report lists 83 name gaps and 32 source-named entries ready to review.
+      Work it down from `registry-report.json`, largest exposure first.
 - [ ] Record bootloader-unlock status per device. The demand is logged in
       `USER_EVIDENCE.md` (2026-11-12 and 2026-11-14): two independent
       recommendations name the site and then point readers to bootloader-unlock
@@ -14,53 +19,61 @@
       source for each; whether it belongs in `contract/` (a versioning
       decision); and how to validate the whole catalogue rather than assume it.
       Interim: the devices page now says that a ROM listing is not a claim that
-      the bootloader can be unlocked. Vendor-level policies cover seven
-      vendors, and Samsung and ASUS cannot be added: neither publishes a policy
-      page. Samsung removed unlocking from One UI 8 with no public statement,
-      and ASUS's unlock-tool FAQ returns 404. The next step is the per-device
-      field, which needs the contract decision above.
+      the bootloader can be unlocked, and a device page with no vendor policy
+      shows an explicit Unknown instead of nothing. Vendor-level policies cover
+      seven vendors, and Samsung and ASUS cannot be added: neither publishes a
+      policy page. Samsung removed unlocking from One UI 8 with no public
+      statement, and ASUS's unlock-tool FAQ returns 404. The next step is the
+      per-device field, which needs the contract decision above.
+- [ ] Record vendor support end dates per device, with a source. This is the
+      one fact that unlocks the two remaining groups (long support: end date
+      five years out; legacy: support ended). `endoflife.date` has dates for
+      Pixel, OnePlus, Motorola and Fairphone, but not for Samsung phones or
+      Xiaomi, so the coverage decision comes first: ship a labelled partial
+      set, or wait for vendor-level data.
 - [ ] Record the per-device facts a "which build for this device" filter needs,
       each with a source: relock / verified-boot support (a different question
-      from whether the vendor allows unlocking), vendor support end date (which
-      also gives EOL / legacy), and official versus unofficial build (see the
-      item below). Relock is recorded per pair from project statements, and the
-      newest build date and patch level from five sources. Collect the support
-      end date and the build kind before `/devices`
-      offers these as filters; then the devices menu can link to a few presets
-      instead of listing seven groups. "Hardened" is not a facet until it is
+      from whether the vendor allows unlocking). Relock is recorded per pair
+      from project statements, and the newest build date and patch level from
+      every roster that publishes them. "Hardened" is not a facet until it is
       defined as checkable predicates — patch level, relock, support end — not a
       label.
-- [ ] Add the remaining device groups. Hardened, relock supported, recently
-      updated and with ROMs have dedicated pages under `/device-groups`, and
-      the menu links to them. Long support (vendor support end five years out),
-      legacy (support ended) and official builds stay blocked by the data item
-      above. Each group is a property of the device–ROM pair, so a pair may
-      appear in several.
-- [ ] Record whether a ROM's builds are reproducible. A source host is now
-      recorded for the ROMs whose code host is verified (`rom-sources.ts`, shown
-      as "Project source" on the ROM page); the remaining projects have no
-      source URL yet, mostly the ones whose roster is a website. Reproducibility
-      is the other half of "can I check this": GrapheneOS publishes it, most
-      projects do not, so add the flag when there is a way to state it per
-      project rather than a project-wide assumption.
 - [ ] Separate official from unofficial builds per device–ROM mapping. Some
       sources publish it (DerpFest's `romtype`), most do not; where it exists it
       answers whether a device runs the project's own build or a maintainer's.
-      Coverage headlines currently mix both.
-- [ ] Record build freshness per ROM: last build date and last commit, with a
-      stale flag (6/12/24 months). `status` only says whether a project ships
-      anything at all; AOSPA is "active" on an Android 14 build. Every mapping
-      whose roster publishes a timestamp now carries its build date (1,295 of
-      3,922, 490 with a patch level too), and a ROM page labels an active
-      project whose newest build is over a year old. Still open: the last
-      commit per project. That needs a repo-level URL per project, not just the
+      Coverage headlines currently mix both, and the third blocked group needs
+      it.
+- [ ] Add the remaining device groups. Hardened, relock supported, recently
+      updated and with ROMs have dedicated pages under `/device-groups`, and
+      the menu links to them. Long support, legacy and official builds stay
+      blocked by the two data items above. Each group is a property of the
+      device–ROM pair, so a pair may appear in several.
+- [ ] Record whether a ROM's builds are reproducible. A source host is now
+      recorded for 52 of the 274 ROMs (`rom-sources.ts`, shown as "Project
+      source" on the ROM page); the rest are mostly projects whose roster is a
+      website. Reproducibility is the other half of "can I check this":
+      GrapheneOS publishes it, most projects do not, so add the flag when it can
+      be stated per project rather than assumed.
+- [ ] Record the last commit per project, completing the freshness picture.
+      The build date is now on every mapping whose roster publishes a
+      timestamp, and an active project whose newest build is over a year old is
+      labelled. The last commit needs a repository URL per project, not just the
       organisation `rom-sources.ts` holds, and GitHub allows 60 unauthenticated
       API requests an hour, so it needs a token or a committed snapshot.
+- [ ] Audit the rosters that publish no build timestamp (LineageOS for microG
+      438, /e/OS 295, PixelExperience 148, Kali NetHunter 125, Project
+      Infinity X 102). Where the snapshot carries a date under another field,
+      wire it like the eight sources already wired; where it does not, record
+      that so the gap is known rather than assumed.
 - [ ] Record the Android version per device–ROM pair. `os_sdk_level` and the
       release string sit in the same OTA metadata as the build date, which is
-      now recorded; the version is not.
-- [ ] Check `observed` reference URLs on a schedule. Derived ones already run in
-      `check:references`; a sampled observed link (DerpFest/sunfish) was dead and
-      nothing noticed. A dead citation is a false claim.
+      now recorded; the version is not, and it covers only 135 mappings today.
+- [ ] Check `observed` reference URLs on a schedule. Derived ones already run
+      in `check:references`; a sampled observed link (DerpFest/sunfish) was dead
+      and nothing noticed. A dead citation is a false claim.
 - [ ] Publish a diff between builds: what changed since the last one. The
-      content hash already changes; humans cannot see why.
+      content hash already changes; humans cannot see why. Needs build history,
+      which the pipeline does not keep today.
+- [ ] Add a CI workflow for `check`, `test` and the e2e suite. Actions currently
+      only publish images, so a data or contract regression reaches `main`
+      whenever the local `verify` is skipped.
