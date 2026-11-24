@@ -47,35 +47,119 @@ export function parseSupportedDevices(html: string): SupportedDevice[] {
 }
 
 /**
- * The fetcher stores the FAQ page plus each device's newest release, as the
- * release host reports it (`<version> <unix timestamp> <codename> <channel>`).
- * The release carries no security patch level.
+ * The releases page stores the FAQ plus each device's newest release, as the
+ * release host reports it (`<version> <unix timestamp> <codename> <channel>`),
+ * and the changelog, which names the Android security patch level of each
+ * release. A release can freeze a device's patch level when the vendor stops
+ * shipping firmware, so the freeze is applied over the release-wide level.
  */
+export interface ReleaseNote {
+  version: string;
+  /** The `full YYYY-MM-DD Pixel security patch level` bullet of the release. */
+  patchLevel: string | null;
+  /** Devices whose patch level this release froze, by product name. */
+  frozen: { names: string[]; date: string }[];
+}
+
+const ARTICLES = /<article id=(\d{10})>([\s\S]*?)<\/article>/g;
+
+export function parseReleaseNotes(html: string): Map<string, ReleaseNote> {
+  const notes = new Map<string, ReleaseNote>();
+  for (const article of html.matchAll(ARTICLES)) {
+    const version = article[1];
+    const body = article[2];
+    const text = decode(body);
+    const patchLevel =
+      /full (\d{4}-\d{2}-\d{2}) Pixel security patch level/.exec(text)?.[1] ??
+      null;
+
+    const frozen: ReleaseNote["frozen"] = [];
+    const freeze = /patch level has been frozen at (\d{4}-\d{2}-\d{2})/i.exec(
+      text,
+    );
+    if (freeze) {
+      // The affected products are named in the same paragraph, before the
+      // sentence that explains they no longer receive updates.
+      const paragraph = [...body.matchAll(/<p>([\s\S]*?)<\/p>/g)]
+        .map((entry) => decode(entry[1]))
+        .find((entry) => /patch level has been frozen at/i.test(entry));
+      const named = paragraph
+        ? /^(.+?) no longer receive updates/i.exec(paragraph)?.[1]
+        : undefined;
+      const names = named
+        ? named
+            .split(/\s*,\s*|\s+and\s+/)
+            .map((name) => name.trim())
+            .filter(Boolean)
+        : [];
+      // Without the product names there is no way to apply the freeze, so the
+      // release-wide level stays and the gap is visible rather than invented.
+      if (names.length) frozen.push({ names, date: freeze[1] });
+    }
+
+    notes.set(version, { version, patchLevel, frozen });
+  }
+  return notes;
+}
+
+function patchLevelFor(
+  note: ReleaseNote | undefined,
+  name: string | null,
+): string | null {
+  if (!note) return null;
+  if (name) {
+    const frozen = note.frozen.find((entry) => entry.names.includes(name));
+    if (frozen) return frozen.date;
+  }
+  return note.patchLevel;
+}
+
 export function parseGrapheneOS(raw: string): NormalizedRomDevice[] {
   const data: unknown = JSON.parse(raw);
   if (typeof data !== "object" || data === null) return [];
 
-  const snapshot = data as { page?: unknown; builds?: unknown };
+  const snapshot = data as {
+    page?: unknown;
+    releases?: unknown;
+    builds?: unknown;
+  };
   if (typeof snapshot.page !== "string") return [];
 
-  const builds = new Map<string, string>();
+  const notes =
+    typeof snapshot.releases === "string"
+      ? parseReleaseNotes(snapshot.releases)
+      : new Map<string, ReleaseNote>();
+
+  const builds = new Map<string, { version: string; date: string }>();
   for (const build of Array.isArray(snapshot.builds) ? snapshot.builds : []) {
     if (!build || typeof build !== "object") continue;
-    const entry = build as { codename?: unknown; date?: unknown };
+    const entry = build as {
+      codename?: unknown;
+      version?: unknown;
+      date?: unknown;
+    };
     const codename = str(entry.codename);
+    const version = str(entry.version);
     const date = normalizeDate(entry.date);
-    if (codename && date) builds.set(codename, date);
+    if (codename && version && /^\d{10}$/.test(version) && date) {
+      builds.set(codename, { version, date });
+    }
   }
 
-  return parseSupportedDevices(snapshot.page).map((device) =>
-    buildRecord({
+  return parseSupportedDevices(snapshot.page).map((device) => {
+    const build = builds.get(device.codename);
+    return buildRecord({
       romId: ROM_ID,
       romName: ROM_NAME,
       codename: device.codename,
       name: device.name,
       brand: BRAND,
       referenceUrl: REFERENCE,
-      buildDate: builds.get(device.codename) ?? null,
-    }),
-  );
+      buildDate: build?.date ?? null,
+      securityPatch: patchLevelFor(
+        build ? notes.get(build.version) : undefined,
+        device.name,
+      ),
+    });
+  });
 }

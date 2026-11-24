@@ -132,7 +132,7 @@ are not ROMs with their own device rosters.
 | Freaky OS                   | AOSP      | ❌ Discontinued | ❌ No data  | Manifest last commit Dec 2020 (Android R); site last touched Apr 2023; no device list.                                                   |
 | Fusion OS                   | AOSP      | ❌ Discontinued | ⚠️ Website  | Source last updated Feb 2024; official_devices offers only a human-readable devices.md list.                                             |
 | GhostOS                     | AOSP      | ❌ Discontinued | ❌ No data  | AOSP/PixelExperience fork; GitHub org tagged "(EOL)", repos last updated Jul 2022.                                                       |
-| GrapheneOS                  | AOSP      | ✅ Active       | ⚠️ Website  | Device list from the FAQ page; each device's newest release from `releases.grapheneos.org/<codename>-stable` (timestamp, no patch level) |
+| GrapheneOS                  | AOSP      | ✅ Active       | ⚠️ Website  | Official device list; newest build per codename from `releases.grapheneos.org`; patch level from the `grapheneos.org/releases` changelog |
 | Halcyon                     | AOSP      | ✅ Active       | ⚠️ Website  | AOSP; commits Sep 2026, Android 16 Bloom (16.2 in dev); devices documented only on wiki.                                                 |
 | Halogen OS                  | AOSP      | ✅ Active       | ⚠️ Website  | AOSP; XOS-16.2 releases Jun 2026 for Nothing Pong/Spacewar; no device-list JSON.                                                         |
 | HentaiOS                    | AOSP      | ⚠️ Unclear      | ⚠️ GitHub   | AOSP/helluvaOS; last A15 "Vallhound"; officialDevices TOML last commit Jun 2025.                                                         |
