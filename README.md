@@ -1,13 +1,10 @@
 # unrom
 
-Find the custom Android ROMs that run on your device, and the source behind
-every mapping.
+Find the custom Android ROMs that run on your device.
 
-The list is the point of the project. A list nobody can read is not worth much,
-though, so the same data ships three ways: a site you can browse, an API you can
-query and a pair of exports you can take with you. That is the product: access,
-in whichever shape you need it. Every mapping links to the page it came from, so
-you can check a claim instead of taking it on faith.
+unrom is a searchable index of 9,000+ devices and 270+ custom ROMs, and every
+mapping links the page it came from, so an answer can be checked. The data
+itself is open: JSON, SQLite and an API.
 
 ![hero](web/public/og.png)
 
