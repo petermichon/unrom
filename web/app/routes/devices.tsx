@@ -12,7 +12,12 @@ import {
   FilterGroup,
   FilterToggle,
 } from "@/components/directory";
-import { DIRECTORY_PAGE_SIZE, fetchBrands, fetchDevicesPage } from "@/lib/data";
+import {
+  DIRECTORY_PAGE_SIZE,
+  fetchBrands,
+  fetchDevicesPage,
+  fetchSearch,
+} from "@/lib/data";
 import {
   errorMeta,
   itemListLd,
@@ -143,7 +148,7 @@ async function load(request: URL) {
 
   const showCoverage = !q && !roms && !relock && !updated && !hardened;
 
-  const [{ devices, total }, coverage] = await Promise.all([
+  const [{ devices, total }, coverage, search] = await Promise.all([
     fetchDevicesPage({
       q: q || undefined,
       hasRoms: roms || undefined,
@@ -157,6 +162,7 @@ async function load(request: URL) {
     showCoverage
       ? fetchDevicesPage({ hasRoms: true, sort, limit: 1, offset: 0 })
       : Promise.resolve(null),
+    q ? fetchSearch(q) : Promise.resolve(null),
   ]);
 
   const pages = Math.max(1, Math.ceil(total / DIRECTORY_PAGE_SIZE));
@@ -180,6 +186,7 @@ async function load(request: URL) {
     hardened,
     sort,
     withRomsTotal: coverage?.total ?? null,
+    romMatches: search?.roms.slice(0, 3) ?? [],
     page,
     pages,
     total,
@@ -221,6 +228,7 @@ export default function DevicesRoute() {
     devices,
     brands,
     withRomsTotal,
+    romMatches,
   } = useLoaderData<typeof loader>();
   const location = useLocation();
   const resultsRef = useRef<HTMLParagraphElement>(null);
@@ -324,11 +332,7 @@ export default function DevicesRoute() {
 
       <PageHeader
         title={
-          q
-            ? `Devices matching “${q}”`
-            : hasFilters
-              ? "Filtered devices"
-              : "Devices"
+          q ? `Results for “${q}”` : hasFilters ? "Filtered devices" : "Devices"
         }
         description={
           isSearching
@@ -453,7 +457,28 @@ export default function DevicesRoute() {
         </div>
       </div>
 
-      {devices.length === 0 ? (
+      {q && romMatches.length > 0 ? (
+        <p className="text-sm text-muted-foreground">
+          ROMs matching “{q}”:{" "}
+          {romMatches.map((rom, index) => (
+            <span key={rom.id}>
+              {index > 0 && " · "}
+              <Link
+                to={`/roms/${rom.id}`}
+                prefetch="intent"
+                className="font-medium text-foreground underline decoration-muted-foreground/40 underline-offset-2 hover:decoration-foreground"
+              >
+                {rom.name}
+              </Link>{" "}
+              <span className="tabular-nums">
+                ({formatNumber(rom.deviceCount)})
+              </span>
+            </span>
+          ))}
+        </p>
+      ) : null}
+
+      {devices.length === 0 && romMatches.length === 0 ? (
         <div className="rounded-2xl border border-border bg-card px-6 py-16 text-center">
           <p className="font-heading text-lg font-bold">No devices match</p>
           <p className="mt-1 text-sm text-muted-foreground">

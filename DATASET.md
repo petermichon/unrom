@@ -128,16 +128,6 @@ Decided against, so it is not proposed again: a Play Integrity / banking status
 page. The fact is not ours to verify, it decays within weeks, and a stale answer
 is exactly the false claim the project refuses to publish.
 
-- [ ] Finish the device-directory rework. Step 1 shipped: the filter row is
-      grouped into Brand, Coverage and Properties, every active filter is a chip
-      that removes only itself, and the directory says that 951 of 9,099 devices
-      have a ROM. Remaining: (a) 56px rows with the codename inline and ROMs as a
-      sortable column header; (b) a pager that is not Next-only, with 182 pages
-      today; (c) typeahead on the page field reusing `/api/search`, so typing a
-      ROM name returns the ROM instead of "no devices match"; (d) group pages
-      lose the duplicate switcher and paginate at 50 like the directory; (e) the
-      bootloader note moves off the first mobile screen.
-
 ## Coverage
 
 Index of Android ROM projects from

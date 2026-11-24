@@ -7,6 +7,7 @@ import type {
   Meta,
   RomDetail,
   RomSummary,
+  SearchResponse,
   Summary,
 } from "@/lib/types";
 
@@ -86,6 +87,10 @@ async function get<T>(
 
 export function fetchAllDevices(): Promise<BrowseDevice[]> {
   return get<BrowseDevice[]>("/api/devices?all=true");
+}
+
+export function fetchSearch(q: string): Promise<SearchResponse> {
+  return fetchJson<SearchResponse>(`/api/search?q=${encodeURIComponent(q)}`);
 }
 
 export function fetchSummary(): Promise<Summary> {

@@ -26,7 +26,7 @@ export interface DeviceGroup {
   filters: DeviceGroupFilters;
 }
 
-export const GROUP_PAGE_SIZE = 200;
+export const GROUP_PAGE_SIZE = 50;
 
 export const DEVICE_GROUPS: readonly DeviceGroup[] = [
   {

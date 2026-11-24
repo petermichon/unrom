@@ -1,19 +1,11 @@
 import { Link, useLoaderData } from "react-router";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import DeviceDirectoryList from "@/components/DeviceDirectoryList";
+import { DirectoryChips } from "@/components/DirectoryChips";
 import { PageHeader } from "@/components/PageHeader";
-import {
-  DirectoryPager,
-  DirectorySearch,
-  FilterToggle,
-} from "@/components/directory";
+import { DirectoryPager, DirectorySearch } from "@/components/directory";
 import { fetchDevicesPage } from "@/lib/data";
-import {
-  DEVICE_GROUPS,
-  GROUP_PAGE_SIZE,
-  deviceGroup,
-  groupHref,
-} from "@/lib/device-groups";
+import { GROUP_PAGE_SIZE, deviceGroup, groupHref } from "@/lib/device-groups";
 import {
   errorMeta,
   itemListLd,
@@ -123,21 +115,9 @@ export default function DeviceGroupRoute() {
         <DirectorySearch action={group.path} q={q} />
 
         <div className="flex flex-wrap items-center justify-between gap-3">
-          <div className="flex flex-wrap items-center gap-2">
-            <FilterToggle
-              href={allDevicesHref}
-              active={false}
-              label="All devices"
-            />
-            {DEVICE_GROUPS.map((item) => (
-              <FilterToggle
-                key={item.id}
-                href={groupHref(item, { q: q || undefined })}
-                active={item.id === group.id}
-                label={item.name}
-              />
-            ))}
-          </div>
+          <DirectoryChips
+            chips={[{ label: group.name, href: allDevicesHref }]}
+          />
 
           <p
             role="status"

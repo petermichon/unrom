@@ -8,7 +8,7 @@ test("a query turns the directory into a results page", async ({ page }) => {
   await page.goto("/devices?q=pixel");
 
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
-    "Devices matching “pixel”",
+    "Results for “pixel”",
   );
   await expect(page.getByRole("status")).toContainText(
     /Showing 1–\d+ of [\d,]+/,
@@ -94,4 +94,29 @@ test("the column labels sort the list", async ({ page }) => {
 
   await page.getByRole("link", { name: /sort by ROM count/i }).click();
   await expect(page).not.toHaveURL(/sort=name/);
+});
+
+test("a ROM name finds the ROM, not just an empty device list", async ({
+  page,
+}) => {
+  await page.goto("/devices?q=lineageos");
+
+  await expect(page.getByText(/ROMs matching/)).toBeVisible();
+  await expect(
+    page.getByRole("link", { name: "LineageOS", exact: true }),
+  ).toHaveAttribute("href", "/roms/lineageos");
+});
+
+test("a group page carries its property as one removable chip", async ({
+  page,
+}) => {
+  await page.goto("/device-groups/hardened");
+
+  await expect(
+    page.getByRole("link", { name: "Remove filter: Hardened" }),
+  ).toHaveAttribute("href", "/devices");
+  // The duplicate switcher between groups is gone.
+  await expect(
+    page.getByRole("link", { name: "Relock supported", exact: true }),
+  ).toHaveCount(0);
 });
