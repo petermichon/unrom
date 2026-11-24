@@ -72,3 +72,11 @@
       installing a custom ROM), and record each gap. A gap that needs data goes
       to the coverage list; one an existing page already answers becomes a
       title or copy fix, not a new page.
+- [ ] Publish source freshness, not only build dates. `ingest` now records when
+      each source was last reached and why the last attempt failed
+      (`server/source-health.json`), and `check:sources` fails a refresh while a
+      source is stale or unreachable. The record stops at the pipeline: a reader
+      cannot tell that a ROM's roster has not been reachable for a week, so
+      "no new builds" still has two meanings. Exposing the last success per
+      source on the API and the ROM page needs a contract decision (a field on
+      the ROM or a separate source-health resource).

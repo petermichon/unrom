@@ -13,9 +13,12 @@ Node API that turns the raw ROM data in `../data` into a device → ROM index.
 
 ## Pipeline
 
-1. **Ingest**: fetchers in `src/ingest/fetch/` write raw, per-ROM files to
-   `../data` (override with `DATA_DIR`). Raw data is the source of truth and is
-   never rewritten by the build.
+1. **Ingest**: fetchers in `src/ingest/fetch/`, registered in
+   `src/ingest/sources.ts`, write raw, per-ROM files to `../data` (override with
+   `DATA_DIR`). Raw data is the source of truth and is never rewritten by the
+   build. Each run also records per-source fetch health in
+   `server/source-health.json`, because a snapshot says what a source last said,
+   not whether the pipeline can still reach it.
 2. **Normalize**: adapters in `src/sources/` parse each source's own shape into
    the canonical `NormalizedRomDevice` records (validated with Zod), written to
    `dist/normalized.ndjson`.
@@ -35,6 +38,7 @@ npm run ingest                       # fetch every source (from repo root)
 npm run ingest -- arrowos havocos    # fetch specific sources only
 npm run build:data                   # normalize + build SQLite + export JSON
 npm run check:references             # record dead derived references
+npm run check:sources                # fail on a source that stopped refreshing
 npm run test                         # source coverage + dataset invariants
 ```
 
@@ -47,6 +51,13 @@ host. A 404/410 is recorded as dead and the build drops that citation; blocked
 or timed-out requests stay unverified and are left in place. Results are written
 to `server/reference-overrides.json`. A dead host is reported because every
 citation from it needs review.
+
+`check:sources` reads `server/source-health.json` and fails when a source's last
+attempt failed, when it has never returned data, or when its last success is
+older than `SOURCE_MAX_AGE_DAYS` (7 by default). It fetches nothing: `ingest`
+writes the record, and the scheduled refresh runs the check after the ingest
+that produced it. A source that has been down for a week therefore fails the run
+instead of looking like a project that stopped shipping builds.
 
 `dist/` is a derived artifact and is gitignored; `../data` remains the immutable
 source of truth.

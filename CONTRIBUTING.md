@@ -1,7 +1,9 @@
 # Contributing
 
 Thanks for helping make unrom the most accurate device ↔ ROM compatibility
-source. Data and API come first; the frontend is a neutral access layer.
+source — and the easiest one to reach. The product is access to the data, so a
+change is welcome when it makes the data more trustworthy or more reachable,
+whether it lands in the pipeline, the API, the web app or an export.
 
 ## Licensing of contributions
 
@@ -30,7 +32,7 @@ have the right to submit the contribution under the project's licenses.
 ## Adding or fixing a source
 
 1. **Raw data** lives in `data/`, one file per source, written by a fetcher in
-   `server/src/ingest/fetch/` and registered in `server/src/ingest/fetch-all.ts`.
+   `server/src/ingest/fetch/` and registered in `server/src/ingest/sources.ts`.
 2. **Normalizers** in `server/src/sources/` map a source's shape into the
    canonical `NormalizedRomDevice` record; register them in the source registry.
 3. Keep `data/` immutable: never hand-edit it; change the fetcher instead.

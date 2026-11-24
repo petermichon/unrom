@@ -29,3 +29,7 @@ export const REFERENCE_OVERRIDES_PATH = join(
 );
 export const REGISTRY_REPORT_PATH = join(DIST_DIR, "registry-report.json");
 export const CATALOG_REPORT_PATH = join(DIST_DIR, "catalog-report.json");
+// Per-source fetch health: when each source last answered and the last error.
+// Committed with the snapshots so `check:sources` can name a source that has
+// gone quiet instead of letting its snapshot age silently.
+export const SOURCE_HEALTH_PATH = join(SERVER_ROOT, "source-health.json");

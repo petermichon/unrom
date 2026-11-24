@@ -3,7 +3,7 @@
 This file tracks the data collection status for various custom Android ROMs.
 
 > Status here is a research snapshot. The **authoritative** list is
-> `server/src/ingest/fetch-all.ts` (fetchers) and `server/src/sources/registry.ts`
+> `server/src/ingest/sources.ts` (fetchers) and `server/src/sources/registry.ts`
 > (normalizers); upstream attribution lives in `ATTRIBUTION.md`.
 
 ## Inclusion Criteria

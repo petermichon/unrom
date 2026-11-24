@@ -2,11 +2,12 @@
 
 Open database for device–ROM compatibility.
 
-unrom tracks which custom Android ROMs support which devices, and makes that
-data available through an API and a web app. It is judged by two things only:
-**data quality** (accurate, complete, current, deduplicated, with provenance)
-and **data accessibility** (available via the API, viewable in the web app, and
-exportable).
+unrom tracks which custom Android ROMs support which devices. **The product is
+access to that data**, through an API, a web app and exports — and through any
+other surface that carries it further. It is judged on two things: whether the
+data is **trustworthy** (accurate, complete, current, deduplicated, with
+provenance) and whether access to it is **broad and usable** (via the API, in the
+web app, exportable).
 
 ## Repository
 
@@ -43,14 +44,21 @@ See `deploy/Caddyfile` for the routes (`/api/*` → API, everything else → web
 ### Refreshing the data
 
 Normal flow: fetch, rebuild and validate locally, then review and commit the
-snapshot diff. Nothing is committed automatically.
+snapshot diff. `npm run refresh` runs the same wrapper the scheduler uses, with
+commit and push turned off, so there is one refresh implementation.
 
 ```sh
-npm run refresh        # ingest → build → verify → prints changed data files
+npm run refresh        # ingest → build → verify → check sources → prints changed files
 git diff --stat data/  # review what the sources changed
-git add data/ && git commit -s -m "chore(data): refresh source snapshots"
+git add data/ server/reference-overrides.json server/source-health.json
+git commit -s -m "chore(data): refresh source snapshots"
 git push               # images.yml builds and freshdock deploys
 ```
+
+It exits non-zero while a source is stale or unreachable, even though everything
+that did refresh was built and validated. The finding names the source, the last
+success and the last error, so a source that has been down for a week cannot pass
+for a project that stopped shipping builds.
 
 Or rebuild from the existing snapshots without touching the network:
 
@@ -66,13 +74,21 @@ job. Nothing installs it; schedule it yourself:
 ```sh
 bash scripts/refresh-data.sh             # pull, ingest, build, verify, commit, push
 bash scripts/refresh-data.sh --no-push   # commit locally only
+bash scripts/refresh-data.sh --no-commit # refresh and report, touch no git state
 ```
 
-It refuses a dirty tracked tree, tolerates partial source failures, commits only
-`data/`, and skips commit/push when nothing changed. Partial ingest still has to
-pass the build and `npm run verify` before anything is committed. Pushes must
-come from `main`, and git identity must be configured because commits are
-signed off.
+It refuses a dirty tracked tree unless `--no-commit` is given, tolerates partial
+source failures, and commits only `data/`, `server/reference-overrides.json` and
+`server/source-health.json`. Partial ingest still has to pass the build and
+`npm run verify` before anything is committed. Pushes must come from `main`, and
+git identity must be configured because commits are signed off.
+
+`check:sources` runs after `verify` and compares `server/source-health.json` with
+the registry: a source whose last attempt failed, or whose last success is older
+than `SOURCE_MAX_AGE_DAYS` (7 by default), makes the run exit non-zero after the
+commit and push. A dead host is therefore reported on the next scheduled run
+instead of being discovered weeks later, while the data that did refresh still
+ships.
 
 Example schedule (not installed by the repo):
 
