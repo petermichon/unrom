@@ -7,12 +7,10 @@ import { DirectoryFilterBar } from "@/components/DirectoryFilterBar";
 import { PageHeader } from "@/components/PageHeader";
 import {
   BrandPicker,
-  CoverageToggle,
   DirectoryPager,
   DirectorySearch,
   FilterGroup,
   FilterToggle,
-  SortToggle,
 } from "@/components/directory";
 import { DIRECTORY_PAGE_SIZE, fetchBrands, fetchDevicesPage } from "@/lib/data";
 import {
@@ -320,31 +318,6 @@ export default function DevicesRoute() {
 
   const isSearching = Boolean(q) || hasFilters;
 
-  const prevHref =
-    page > 1
-      ? directoryHref({
-          q: q || undefined,
-          roms,
-          relock,
-          updated,
-          hardened,
-          sort,
-          page: page - 1,
-        })
-      : null;
-  const nextHref =
-    page < pages
-      ? directoryHref({
-          q: q || undefined,
-          roms,
-          relock,
-          updated,
-          hardened,
-          sort,
-          page: page + 1,
-        })
-      : null;
-
   return (
     <div className="flex flex-col gap-6">
       <Breadcrumbs items={[{ label: "Home", to: "/" }, { label: "Devices" }]} />
@@ -360,7 +333,7 @@ export default function DevicesRoute() {
         description={
           isSearching
             ? undefined
-            : "Find your device to see which custom ROMs support it. A ROM listing is not a claim that the bootloader can be unlocked: that is the vendor's decision, shown on the device page where a vendor publishes a policy."
+            : "Find your device, then see which custom ROMs support it. A ROM listing is not a bootloader-unlock claim."
         }
       />
 
@@ -390,26 +363,6 @@ export default function DevicesRoute() {
               relock={relock}
               updated={updated}
               hardened={hardened}
-            />
-          </FilterGroup>
-          <FilterGroup label="Coverage">
-            <CoverageToggle
-              allHref={directoryHref({
-                q: q || undefined,
-                relock,
-                updated,
-                hardened,
-                sort,
-              })}
-              romsHref={directoryHref({
-                q: q || undefined,
-                roms: true,
-                relock,
-                updated,
-                hardened,
-                sort,
-              })}
-              roms={roms}
             />
           </FilterGroup>
           <FilterGroup label="Properties">
@@ -473,13 +426,13 @@ export default function DevicesRoute() {
                     {formatNumber(first)}–{formatNumber(last)}
                   </span>{" "}
                   of <span className="font-mono">{formatNumber(total)}</span>
-                  {hasFilters || q ? " matching" : ""} devices
+                  {q ? null : <>{hasFilters ? " matching" : ""} devices</>}
                   {!isSearching && withRomsTotal !== null ? (
                     <>
                       {" · "}
                       <Link
                         to={directoryHref({ roms: true, sort })}
-                        className="font-medium text-foreground underline-offset-2 hover:underline"
+                        className="font-medium text-foreground underline decoration-muted-foreground/40 underline-offset-2 hover:decoration-foreground"
                       >
                         {formatNumber(withRomsTotal)} with ROMs
                       </Link>
@@ -495,55 +448,6 @@ export default function DevicesRoute() {
               >
                 {clearLabel}
               </Link>
-            )}
-          </div>
-
-          <div className="flex flex-wrap items-center gap-x-3 gap-y-1">
-            <span className="text-sm font-medium text-muted-foreground">
-              Sort
-            </span>
-            <SortToggle
-              romsHref={directoryHref({
-                q: q || undefined,
-                roms,
-                relock,
-                updated,
-                hardened,
-              })}
-              nameHref={directoryHref({
-                q: q || undefined,
-                roms,
-                relock,
-                updated,
-                hardened,
-                sort: "name",
-              })}
-              sort={sort}
-            />
-            {pages > 1 && (
-              <span className="flex items-center gap-2 text-sm text-muted-foreground tabular-nums">
-                Page {page} of {pages}
-                {prevHref && (
-                  <Link
-                    to={prevHref}
-                    prefetch="intent"
-                    aria-label="Previous page"
-                    className="inline-flex h-8 items-center font-semibold text-foreground hover:underline"
-                  >
-                    Prev
-                  </Link>
-                )}
-                {nextHref && (
-                  <Link
-                    to={nextHref}
-                    prefetch="intent"
-                    aria-label="Next page"
-                    className="inline-flex h-8 items-center font-semibold text-foreground hover:underline"
-                  >
-                    Next
-                  </Link>
-                )}
-              </span>
             )}
           </div>
         </div>
@@ -588,14 +492,41 @@ export default function DevicesRoute() {
           </p>
         </div>
       ) : (
-        <DeviceDirectoryList devices={devices} />
+        <DeviceDirectoryList
+          devices={devices}
+          sort={sort}
+          nameHref={directoryHref({
+            q: q || undefined,
+            roms,
+            relock,
+            updated,
+            hardened,
+            sort: "name",
+          })}
+          romsHref={directoryHref({
+            q: q || undefined,
+            roms,
+            relock,
+            updated,
+            hardened,
+          })}
+        />
       )}
 
       <DirectoryPager
         page={page}
         pages={pages}
-        prevHref={prevHref}
-        nextHref={nextHref}
+        hrefForPage={(target) =>
+          directoryHref({
+            q: q || undefined,
+            roms,
+            relock,
+            updated,
+            hardened,
+            sort,
+            page: target,
+          })
+        }
       />
     </div>
   );

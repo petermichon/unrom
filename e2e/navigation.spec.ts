@@ -378,20 +378,26 @@ test("the directory shows only devices with ROM data", async ({ page }) => {
   await page.goto("/devices?roms=1");
 
   await expect(
-    page.getByRole("link", { name: "With ROMs" }),
-  ).toHaveAttribute("aria-current", "page");
+    page.getByRole("link", { name: "Remove filter: Has ROMs" }),
+  ).toBeVisible();
   await expect(page.locator("a.device-row").first()).toBeVisible();
   await expect(page.getByText("ROMs: 0")).toHaveCount(0);
 });
 
 test("a brand page paginates its devices", async ({ page }) => {
   await page.goto("/devices/xiaomi");
-  await expect(page.getByText(/Page 1 of \d+/)).toBeVisible();
+  await expect(page.getByRole("link", { name: "Page 1" })).toHaveAttribute(
+    "aria-current",
+    "page",
+  );
   await expect(page.locator("a.device-row")).toHaveCount(200);
 
   await page.getByRole("link", { name: "Next" }).click();
   await expect(page).toHaveURL(/\/devices\/xiaomi\?page=2$/);
-  await expect(page.getByText(/Page 2 of \d+/)).toBeVisible();
+  await expect(page.getByRole("link", { name: "Page 2" })).toHaveAttribute(
+    "aria-current",
+    "page",
+  );
   await expect(page.locator("a.device-row")).toHaveCount(200);
 });
 

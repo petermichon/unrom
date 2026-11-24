@@ -203,88 +203,81 @@ export function FilterToggle({
 }
 
 /** Two orders, rendered as links so the URL stays the source of truth. */
-export function SortToggle({
-  romsHref,
-  nameHref,
-  sort,
-}: {
-  romsHref: string;
-  nameHref: string;
-  sort: "roms" | "name";
-}) {
-  const item = (active: boolean) =>
-    cn(
-      "inline-flex h-7 items-center rounded-full px-3 text-sm font-semibold outline-none transition-colors focus-visible:ring-3 focus-visible:ring-ring/50",
-      active
-        ? "bg-accent text-accent-foreground"
-        : "text-muted-foreground hover:text-foreground",
-    );
+/** Page numbers with a gap on each side of the current page. */
+function pageWindow(page: number, pages: number): (number | null)[] {
+  if (pages <= 7) return Array.from({ length: pages }, (_, i) => i + 1);
 
-  return (
-    <div
-      role="group"
-      aria-label="Sort devices"
-      className="inline-flex items-center gap-1 rounded-full border border-border bg-card p-px"
-    >
-      <Link
-        to={romsHref}
-        prefetch="intent"
-        aria-current={sort === "roms" ? "page" : undefined}
-        className={item(sort === "roms")}
-      >
-        Most ROMs
-      </Link>
-      <Link
-        to={nameHref}
-        prefetch="intent"
-        aria-current={sort === "name" ? "page" : undefined}
-        className={item(sort === "name")}
-      >
-        A–Z
-      </Link>
-    </div>
-  );
+  const numbers = [...new Set([1, pages, page - 1, page, page + 1])]
+    .filter((n) => n >= 1 && n <= pages)
+    .sort((a, b) => a - b);
+
+  const out: (number | null)[] = [];
+  for (const [index, number] of numbers.entries()) {
+    if (index > 0 && number - numbers[index - 1] > 1) out.push(null);
+    out.push(number);
+  }
+  return out;
 }
 
 export function DirectoryPager({
   page,
   pages,
-  prevHref,
-  nextHref,
+  hrefForPage,
 }: {
   page: number;
   pages: number;
-  prevHref: string | null;
-  nextHref: string | null;
+  hrefForPage: (page: number) => string;
 }) {
   if (pages <= 1) return null;
 
-  const className =
-    "inline-flex h-8 items-center rounded-full px-3 text-sm font-semibold text-foreground outline-none transition-colors hover:underline focus-visible:ring-3 focus-visible:ring-ring/50";
+  const link =
+    "inline-flex h-8 min-w-8 items-center justify-center rounded-full px-2.5 text-sm font-semibold outline-none transition-colors hover:bg-muted focus-visible:ring-3 focus-visible:ring-ring/50";
 
   return (
     <nav
       aria-label="Pagination"
-      className="flex flex-wrap items-center justify-between gap-3 border-t border-border pt-4"
+      className="flex flex-wrap items-center justify-center gap-1 border-t border-border pt-4"
     >
-      {prevHref ? (
-        <Link to={prevHref} prefetch="intent" className={className}>
+      {page > 1 ? (
+        <Link to={hrefForPage(page - 1)} prefetch="intent" className={link}>
           Previous
         </Link>
       ) : (
-        <span className="inline-flex h-8 items-center px-3 text-sm text-muted-foreground">
+        <span className="inline-flex h-8 items-center px-2.5 text-sm text-muted-foreground">
           Previous
         </span>
       )}
-      <span className="text-sm text-muted-foreground tabular-nums">
-        Page {page} of {pages}
-      </span>
-      {nextHref ? (
-        <Link to={nextHref} prefetch="intent" className={className}>
+      {pageWindow(page, pages).map((number, index) =>
+        number === null ? (
+          <span
+            key={`gap-${index}`}
+            aria-hidden="true"
+            className="px-1 text-sm text-muted-foreground"
+          >
+            …
+          </span>
+        ) : (
+          <Link
+            key={number}
+            to={hrefForPage(number)}
+            prefetch="intent"
+            aria-label={`Page ${number}`}
+            aria-current={number === page ? "page" : undefined}
+            className={cn(
+              link,
+              number === page && "bg-accent text-accent-foreground",
+            )}
+          >
+            {number}
+          </Link>
+        ),
+      )}
+      {page < pages ? (
+        <Link to={hrefForPage(page + 1)} prefetch="intent" className={link}>
           Next
         </Link>
       ) : (
-        <span className="inline-flex h-8 items-center px-3 text-sm text-muted-foreground">
+        <span className="inline-flex h-8 items-center px-2.5 text-sm text-muted-foreground">
           Next
         </span>
       )}

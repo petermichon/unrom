@@ -10,9 +10,11 @@ test("a query turns the directory into a results page", async ({ page }) => {
   await expect(page.getByRole("heading", { level: 1 })).toHaveText(
     "Devices matching “pixel”",
   );
-  await expect(page.getByRole("status")).toContainText(/matching devices/);
+  await expect(page.getByRole("status")).toContainText(
+    /Showing 1–\d+ of [\d,]+/,
+  );
   // The standing note about bootloaders belongs to the directory, not results.
-  await expect(page.getByText(/bootloader can be unlocked/)).toHaveCount(0);
+  await expect(page.getByText(/bootloader/i)).toHaveCount(0);
 });
 
 test("the unfiltered directory keeps its explanatory note", async ({
@@ -21,7 +23,7 @@ test("the unfiltered directory keeps its explanatory note", async ({
   await page.goto("/devices");
 
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Devices");
-  await expect(page.getByText(/bootloader can be unlocked/)).toBeVisible();
+  await expect(page.getByText(/bootloader/i)).toBeVisible();
 });
 
 test("each active filter is a chip that removes only itself", async ({
@@ -72,10 +74,24 @@ test("the unfiltered directory states how many devices have ROMs", async ({
   );
 });
 
-test("the filter row names the three kinds of filter", async ({ page }) => {
+test("the filter row names what each control does", async ({ page }) => {
   await page.goto("/devices");
 
   await expect(page.getByText("Brand", { exact: true })).toBeVisible();
-  await expect(page.getByText("Coverage", { exact: true })).toBeVisible();
   await expect(page.getByText("Properties", { exact: true })).toBeVisible();
+  // Coverage is the count line, not a third control.
+  await expect(page.getByText("Coverage", { exact: true })).toHaveCount(0);
+});
+
+test("the column labels sort the list", async ({ page }) => {
+  await page.goto("/devices");
+
+  await page.getByRole("link", { name: /sort by name/i }).click();
+  await expect(page).toHaveURL(/sort=name/);
+  await expect(
+    page.getByRole("link", { name: /sorted by name/i }),
+  ).toHaveAttribute("aria-current", "page");
+
+  await page.getByRole("link", { name: /sort by ROM count/i }).click();
+  await expect(page).not.toHaveURL(/sort=name/);
 });

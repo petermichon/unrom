@@ -173,15 +173,8 @@ export default function DeviceGroupRoute() {
       <DirectoryPager
         page={page}
         pages={pages}
-        prevHref={
-          page > 1
-            ? groupHref(group, { q: q || undefined, page: page - 1 })
-            : null
-        }
-        nextHref={
-          page < pages
-            ? groupHref(group, { q: q || undefined, page: page + 1 })
-            : null
+        hrefForPage={(target) =>
+          groupHref(group, { q: q || undefined, page: target })
         }
       />
     </div>

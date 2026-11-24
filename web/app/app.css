@@ -190,7 +190,7 @@
 
 @layer components {
   .device-row {
-    @apply flex items-center justify-between gap-3 rounded-xl px-3 py-3 outline-none transition-colors hover:bg-muted/70 focus-visible:ring-3 focus-visible:ring-ring/50;
+    @apply flex items-center justify-between gap-3 rounded-xl px-3 py-2.5 outline-none transition-colors hover:bg-muted/70 focus-visible:ring-3 focus-visible:ring-ring/50;
   }
   .directory-row {
     @apply flex items-baseline justify-between gap-3 rounded-xl border border-border bg-card px-4 py-3.5 outline-none transition-colors hover:border-brand/40 focus-visible:ring-3 focus-visible:ring-ring/50;

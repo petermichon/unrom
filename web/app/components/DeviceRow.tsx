@@ -17,10 +17,10 @@ export default function DeviceRow({ device, showBrand = true }: Props) {
         prefetch="intent"
         className="device-row"
       >
-        <span className="flex min-w-0 flex-col">
+        <span className="flex min-w-0 flex-1 items-baseline gap-2">
           <span className="truncate font-semibold">{deviceName(device)}</span>
           <span className="truncate text-xs text-muted-foreground">
-            {showBrand && <span className="mr-1.5">{device.vendorName}</span>}
+            {showBrand && <>{device.vendorName} </>}
             <span className="font-mono">({device.codename})</span>
           </span>
         </span>

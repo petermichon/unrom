@@ -1,25 +1,61 @@
+import { Link } from "react-router";
 import DeviceRow from "@/components/DeviceRow";
 import type { BrowseDevice } from "@/lib/types";
 
 /**
  * The directory's device list: one framed surface with a single row of column
  * labels, so the ROM count is stated once at the top instead of 50 times.
+ * When the caller can offer sorting, the labels are the control.
  */
 export default function DeviceDirectoryList({
   devices,
   showBrand = true,
+  sort,
+  nameHref,
+  romsHref,
 }: {
   devices: BrowseDevice[];
   showBrand?: boolean;
+  sort?: "roms" | "name";
+  nameHref?: string;
+  romsHref?: string;
 }) {
+  const label = (text: string) => (
+    <span className="text-[0.7rem] font-semibold tracking-[0.08em] uppercase">
+      {text}
+    </span>
+  );
+
+  const sortable = (
+    text: string,
+    href: string | undefined,
+    active: boolean,
+    description: string,
+  ) =>
+    href ? (
+      <Link
+        to={href}
+        prefetch="intent"
+        aria-current={active ? "page" : undefined}
+        className="inline-flex items-center gap-1 rounded-sm text-[0.7rem] font-semibold tracking-[0.08em] uppercase outline-none hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50"
+      >
+        {text}
+        <span aria-hidden="true">
+          {active ? (sort === "name" ? "↑" : "↓") : ""}
+        </span>
+        <span className="sr-only">
+          {active ? `, sorted by ${description}` : `, sort by ${description}`}
+        </span>
+      </Link>
+    ) : (
+      label(text)
+    );
+
   return (
     <div className="index-frame">
-      <div
-        aria-hidden="true"
-        className="flex items-center justify-between px-4 py-2 text-[0.7rem] font-semibold tracking-[0.08em] text-muted-foreground uppercase"
-      >
-        <span>Device</span>
-        <span>ROMs</span>
+      <div className="flex items-center justify-between px-3 py-2 text-muted-foreground">
+        {sortable("Device", nameHref, sort === "name", "name")}
+        {sortable("ROMs", romsHref, sort === "roms", "ROM count")}
       </div>
       <ul className="divide-y divide-border">
         {devices.map((device) => (

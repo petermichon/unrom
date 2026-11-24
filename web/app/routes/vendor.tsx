@@ -241,15 +241,8 @@ export default function VendorRoute() {
       <DirectoryPager
         page={page}
         pages={pages}
-        prevHref={
-          page > 1
-            ? vendorHref(vendor, { q: q || undefined, roms, page: page - 1 })
-            : null
-        }
-        nextHref={
-          page < pages
-            ? vendorHref(vendor, { q: q || undefined, roms, page: page + 1 })
-            : null
+        hrefForPage={(target) =>
+          vendorHref(vendor, { q: q || undefined, roms, page: target })
         }
       />
     </div>
