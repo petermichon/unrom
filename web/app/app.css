@@ -149,40 +149,41 @@
 
 .dark {
   color-scheme: dark;
-  --background: #101010;
-  --foreground: #f0f0f0;
-  --card: #202020;
-  --card-foreground: #f0f0f0;
-  --popover: #202020;
-  --popover-foreground: #f0f0f0;
-  --primary: #f0f0f0;
-  --primary-foreground: #101010;
-  --secondary: #242424;
-  --secondary-foreground: #f0f0f0;
-  --muted: #232323;
-  --muted-foreground: #a3a3a3;
-  /* The light accent's counterpart: same periwinkle family, inverted for a dark
-     surface, so selected pills and buttons stay the brand tint instead of grey. */
-  --accent: #263052;
-  --accent-foreground: #dfe4ff;
-  --destructive: #f0786a;
-  --border: #3a3a3a;
-  --input: #2a2a2a;
-  --ring: #8d9cff;
-  --brand: #a9b6ff;
-  --brand-foreground: #101010;
-  /* A low-chroma brand tint on the one statement surface. Everything else
-     stays neutral, so the periwinkle reads as the brand, not as a coloured UI. */
-  --panel: #1a1d27;
-  --panel-foreground: #f0f0f0;
+  /* Same structure as the light theme, lifted and tinted: a warm-neutral page,
+     surfaces that step up in lightness rather than by shadow (shadows vanish
+     on a dark ground), and one indigo family for text, selection and panels. */
+  --background: #131316;
+  --foreground: #e4e4ea;
+  --card: #26262c;
+  --card-foreground: #e4e4ea;
+  --popover: #2b2b33;
+  --popover-foreground: #e4e4ea;
+  --primary: #e4e4ea;
+  --primary-foreground: #131316;
+  --secondary: #30303a;
+  --secondary-foreground: #e4e4ea;
+  --muted: #30303a;
+  --muted-foreground: #a9a9b4;
+  /* A wash, not a slab: selected surfaces stay in the indigo family and sit
+     clearly above the card, so "selected" does not read as "pressed". */
+  --accent: #2e3559;
+  --accent-foreground: #e4e8ff;
+  --destructive: #f08074;
+  --border: #3f3f4a;
+  --input: #43434f;
+  --ring: #93a1ff;
+  --brand: #b3bfff;
+  --brand-foreground: #131316;
+  --panel: #1c1f2a;
+  --panel-foreground: #e4e4ea;
   --chart-1: #c7d2fe;
   --chart-2: #818cf8;
   --chart-3: #4f46e5;
   --chart-4: #3730a3;
   --chart-5: #1e1b4b;
-  --sidebar: #191919;
-  --sidebar-foreground: #f0f0f0;
-  --sidebar-accent: #242424;
+  --sidebar: #17171b;
+  --sidebar-foreground: #e4e4ea;
+  --sidebar-accent: #30303a;
   --sidebar-accent-foreground: #f0f0f0;
   --sidebar-border: #343434;
   --sidebar-ring: #a3a3a3;
@@ -247,8 +248,8 @@
 }
 
 /* Content palette. The roles are derived in OKLCH from three values: hue, tint
-   strength and accent. Light panels sit at L .925 and dark at .238, the band
-   the hand-picked palettes settled on.
+   strength and accent. Light panels sit at L .925 and dark at .265, where a
+   project hue reads as a tint rather than a colour block.
 
    One identity is the rule: a project without a block of its own keeps the
    brand's hue, so no page is left unthemed. The blocks below are legacy —
@@ -267,8 +268,10 @@
 }
 .dark .rom-page[data-rom],
 :root.dark[data-rom] {
-  --panel: oklch(0.238 min(calc(var(--rom-chroma) * 1.2), 0.03) var(--rom-hue));
-  --panel-foreground: oklch(0.97 0.01 var(--rom-hue));
+  --panel: oklch(
+    0.265 min(calc(var(--rom-chroma) * 0.3), 0.006) var(--rom-hue)
+  );
+  --panel-foreground: oklch(0.95 0.008 var(--rom-hue));
   --hero-accent: var(--rom-accent);
   --brand: oklch(0.8 calc(var(--rom-chroma) * 3) var(--rom-hue));
   --accent: var(--panel);
