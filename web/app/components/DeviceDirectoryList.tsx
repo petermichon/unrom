@@ -1,4 +1,5 @@
 import { Link } from "react-router";
+import { ArrowDown, ArrowUp, ArrowUpDown } from "lucide-react";
 import DeviceRow from "@/components/DeviceRow";
 import type { BrowseDevice } from "@/lib/types";
 
@@ -37,12 +38,26 @@ export default function DeviceDirectoryList({
         to={href}
         prefetch="intent"
         aria-current={active ? "page" : undefined}
-        className="inline-flex items-center gap-1 rounded-sm text-[0.7rem] font-semibold tracking-[0.08em] uppercase outline-none hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50"
+        className="group inline-flex items-center gap-1 rounded-sm text-[0.7rem] font-semibold tracking-[0.08em] uppercase outline-none hover:text-foreground focus-visible:ring-3 focus-visible:ring-ring/50"
       >
         {text}
-        <span aria-hidden="true">
-          {active ? (sort === "name" ? "↑" : "↓") : ""}
-        </span>
+        {active ? (
+          sort === "name" ? (
+            <ArrowUp aria-hidden="true" className="size-3" strokeWidth={2.5} />
+          ) : (
+            <ArrowDown
+              aria-hidden="true"
+              className="size-3"
+              strokeWidth={2.5}
+            />
+          )
+        ) : (
+          <ArrowUpDown
+            aria-hidden="true"
+            className="size-3 text-muted-foreground/60 transition-colors group-hover:text-foreground"
+            strokeWidth={2.5}
+          />
+        )}
         <span className="sr-only">
           {active ? `, sorted by ${description}` : `, sort by ${description}`}
         </span>
