@@ -2,19 +2,33 @@
 
 ## Rule
 
-**unrom exists for exactly two things: data quality and data accessibility.**
+**The product is access to the data.** unrom collects device–ROM facts and exists
+to make them reachable: findable, comparable, usable, exportable. The data is the
+substance; each surface that carries it — the web app today, an app, an export or
+an integration tomorrow — competes on how far it carries it and how well it
+holds up.
 
-- **Data quality**: accurate, complete, current, correct, deduplicated, with provenance and validation.
-- **Data accessibility**: currently available via the API (complete, stable, fast, exportable) and viewable via the frontend. This is the current state, not a boundary. **Any channel that makes the data more available or consumable is in scope** (formats, bulk exports, integrations, discovery).
+Two things make access worth having, and neither is second:
+
+- **Data quality**: accurate, complete, current, correct, deduplicated, with
+  provenance and validation. Quality is the moat: a surface that publishes wrong
+  facts loses the visitor and the recommendation, however good the surface.
+- **Data accessibility**: the reach and usability of access. Available via the
+  API (complete, stable, fast, exportable), through the web app, and **any
+  channel that makes the data more available or consumable is in scope**
+  (formats, bulk exports, integrations, discovery). This is the current state,
+  not a boundary.
 
 Roles:
 
-- **Backend** exists to make the data **available through an API**.
-- **Frontend** exists to make the data **viewable**.
+- **Backend** makes the data **available**: ingest, normalize, contract, API.
+- **Frontend** makes it **viewable and usable** for a person. It is the primary
+  access surface today, not a decoration on the data.
 
-**Every decision is judged against this rule.** A change earns its place only if it
-improves **data quality** or **data accessibility**. Anything that doesn't is out of
-scope. No features, polish, or infrastructure for their own sake.
+**Every decision is judged against this rule.** A change earns its place only if
+it improves **data quality** or the **reach and trustworthiness of access** to it.
+Anything that doesn't is out of scope. No features, polish, or infrastructure for
+their own sake.
 
 ## Neutrality
 
@@ -37,9 +51,17 @@ Two consequences, because they are the ones that come up:
 
 ## Product priority
 
-- The **data + API is the product**. The frontend is a neutral access layer whose job is to make the data viewable and usable.
-- The **backend data and API must remain fully independent** of the frontend and are the **priority**.
-- The **frontend is always second**: it must never become a dependency of the data pipeline, and work on it should not block or reshape the data/API.
+- The **product is access to the data**; the data is what makes it worth
+  accessing. Neither the database nor the web app is an end in itself.
+- **Access surfaces are plural.** The web app is the primary one today, and the
+  API and exports are already surfaces of their own. Another surface is added
+  whenever it carries the data further.
+- **The pipeline stays surface-agnostic.** The data and API must not depend on
+  the web app, because the next surface must not be held hostage to this one.
+  Independence is portability, not a ranking.
+- **Frontend work is product work.** A page or interaction earns its place by
+  making the data more reachable, more usable or more trustworthy — not merely by
+  existing or by being clean.
 
 ## Beta policy
 
