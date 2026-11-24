@@ -1,7 +1,7 @@
 # Contributing
 
 Thanks for helping make unrom the most accurate device ↔ ROM compatibility
-source — and the easiest one to reach. The product is access to the data, so a
+source, and the easiest one to reach. The product is access to the data, so a
 change is welcome when it makes the data more trustworthy or more reachable,
 whether it lands in the pipeline, the API, the web app or an export.
 
@@ -103,7 +103,7 @@ dev-tunnel
 ```
 
 Open the same `http://unrom.localhost:7357` on the phone. `adb reverse` carries
-it over the cable — the phone's `localhost` is this machine's loopback, so no
+it over the cable: the phone's `localhost` is this machine's loopback, so no
 Wi-Fi, LAN address or firewall rule is involved, and relative `/api` requests
 keep working. `dev-tunnel --watch` re-applies the mapping after a reconnect.
 Chrome on Android resolves `*.localhost` itself; tools that use the Android

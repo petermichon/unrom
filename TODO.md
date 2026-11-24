@@ -26,7 +26,7 @@
       from whether the vendor allows unlocking). Relock is recorded per pair
       from project statements, and the newest build date and patch level from
       every roster that publishes them. "Hardened" is not a facet until it is
-      defined as checkable predicates — patch level, relock, support end — not a
+      defined as checkable predicates (patch level, relock, support end), not a
       label.
 - [ ] Separate official from unofficial builds per device–ROM mapping. Some
       sources publish it (DerpFest's `romtype`), most do not; where it exists it
@@ -52,8 +52,8 @@
 - [ ] Own the device-agnostic install query. The SEO audit found no
       authoritative page for "how to install a custom rom": the lowest
       cross-engine agreement of the set (J=0.07), no official project docs in
-      three of four engines. The page that fits this dataset is a router — pick
-      the device, then follow that ROM's own instructions — never invented
+      three of four engines. The page that fits this dataset is a router: pick
+      the device, then follow that ROM's own instructions. Never invented
       steps. Write the "router, never steps" rule before building it.
 - [ ] Add ROM-vs-ROM comparison pages only where the data supports one.
       "GrapheneOS vs CalyxOS" is answered by shops, blogs and Reddit because no

@@ -4,8 +4,8 @@
 
 **The product is access to the data.** unrom collects device–ROM facts and exists
 to make them reachable: findable, comparable, usable, exportable. The data is the
-substance; each surface that carries it — the web app today, an app, an export or
-an integration tomorrow — competes on how far it carries it and how well it
+substance; each surface that carries it (the web app today, an app, an export
+or an integration tomorrow) competes on how far it carries it and how well it
 holds up.
 
 Two things make access worth having, and neither is second:
@@ -32,11 +32,11 @@ their own sake.
 
 ## Neutrality
 
-Describe the software, not the people. A record carries facts a reader can check
-— a source URL, a build status, a device count — and never a judgement about a
-project's ethics, its maintainers, or their standing in other communities. A
-concern earns a place only with technical evidence: a commit, a missing
-licence, a build that cannot be reproduced. "Banned", "notorious",
+Describe the software, not the people. A record carries facts a reader can
+check (a source URL, a build status, a device count) and never a judgement
+about a project's ethics, its maintainers, or their standing in other
+communities. A concern earns a place only with technical evidence: a commit, a
+missing licence, a build that cannot be reproduced. "Banned", "notorious",
 "trustworthy" and their relatives are out, however true someone believes them
 to be.
 
@@ -60,7 +60,7 @@ Two consequences, because they are the ones that come up:
   the web app, because the next surface must not be held hostage to this one.
   Independence is portability, not a ranking.
 - **Frontend work is product work.** A page or interaction earns its place by
-  making the data more reachable, more usable or more trustworthy — not merely by
+  making the data more reachable, more usable or more trustworthy, not merely by
   existing or by being clean.
 
 ## Beta policy
@@ -82,22 +82,22 @@ Three things are exceptions, because they were never compatibility:
 ## Verification
 
 Match verification to the change. The full suite is for changes that can alter
-the dataset, the API contract or the build — not for polish.
+the dataset, the API contract or the build, not for polish.
 
-**Trivial** — copy, CSS class or colour, a logo/data map entry, a one- or
+**Trivial**: copy, CSS class or colour, a logo/data map entry, a one- or
 two-line edit:
 
 - `npm run format:check` and `npm run lint`.
 - One screenshot at the affected viewport if the change is visual.
 - Do **not** run `npm run check`, the server tests or the e2e suite.
 
-**Normal** — component behaviour, a new UI state, route logic, an API query or
+**Normal**: component behaviour, a new UI state, route logic, an API query or
 response whose shape is unchanged, a test change:
 
 - The trivial checks, plus `npm run check` and the affected e2e spec
   (`npx playwright test e2e/<name>.spec.ts`).
 
-**Risky** — ingest, normalize, build, database schema, `contract/` shapes,
+**Risky**: ingest, normalize, build, database schema, `contract/` shapes,
 deploy:
 
 - `npm run check`, `npm run test` and the full `npx playwright test`.
@@ -115,7 +115,7 @@ themselves. Do not start a second dev server; reuse the one that is running if a
 task needs to look at a page, and never stop a process you did not start.
 
 Temporary servers are fine when a task strictly needs one. Start them on a port
-that is free, record the PID, and stop that PID — never `pkill -f`, which also
+that is free, record the PID, and stop that PID; never `pkill -f`, which also
 matches other sessions' `dev:host`. The Playwright config starts its own pair on
 3100/3101 and builds into `node_modules/.cache/unrom-e2e`, so a test run leaves
 `server/dist` (the dataset your dev API is serving) untouched.
