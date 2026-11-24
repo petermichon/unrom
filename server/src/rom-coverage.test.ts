@@ -4,10 +4,16 @@ import { test } from "node:test";
 
 import { sources } from "./sources/registry.ts";
 
-const markdown = readFileSync(
-  new URL("../../ROM_COVERAGE.md", import.meta.url),
+// The coverage list is one section of DATASET.md, so read only that slice: the
+// backlog and the evidence log also use `- ` bullets.
+const document = readFileSync(
+  new URL("../../DATASET.md", import.meta.url),
   "utf8",
 );
+const from = document.indexOf("\n## Coverage\n");
+const to = document.indexOf("\n## Sources\n");
+assert.ok(from !== -1 && to > from, "DATASET.md has no Coverage section");
+const markdown = document.slice(from, to);
 
 // Coverage names follow upstream lists; our rom names follow the ROM itself.
 // Comparing case- and punctuation-insensitively keeps the check about presence,
@@ -26,16 +32,16 @@ function marked(emoji: string): Set<string> {
   );
 }
 
-test("every implemented ROM is marked implemented in ROM_COVERAGE.md", () => {
+test("every implemented ROM is marked implemented in the coverage list", () => {
   const implemented = marked("🟢");
   const missing = sources
     .map((source) => source.romName)
     .filter((name) => !implemented.has(normalize(name)));
 
-  assert.deepEqual(missing, [], "mark these 🟢 in ROM_COVERAGE.md");
+  assert.deepEqual(missing, [], "mark these 🟢 in DATASET.md");
 });
 
-test("ROM_COVERAGE.md marks nothing implemented that has no source", () => {
+test("the coverage list marks nothing implemented that has no source", () => {
   const implemented = new Set(sources.map((s) => normalize(s.romName)));
   const stale = [...marked("🟢")].filter((name) => !implemented.has(name));
 

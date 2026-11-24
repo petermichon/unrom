@@ -402,7 +402,7 @@ const configs: DeviceSource[] = [
       "https://github.com/catalyst-android/OTA/blob/13/devices.json",
   },
   // 2021-and-older rosters, kept as last-known support for discontinued
-  // projects. The file dates are recorded in ROM_TRIAGE.md.
+  // projects. The file dates are recorded in DATASET.md.
   {
     id: "aosip",
     romName: "AOSiP",

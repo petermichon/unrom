@@ -5,7 +5,7 @@
  * roster from, so it is a fact a reader can open: it answers "where can I check
  * this project" for ROMs whose code host is known. Only verified hosts are
  * listed; a ROM without an entry has no recorded source rather than a guessed
- * one (`ROM_COVERAGE.md` tracks the gap).
+ * one (`DATASET.md` tracks the gap).
  */
 export const ROM_SOURCE_URLS: Record<string, string> = {
   "2by2-project": "https://github.com/2by2-Project",

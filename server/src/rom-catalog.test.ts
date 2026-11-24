@@ -19,11 +19,17 @@ test("catalog ids are lowercase slugs", () => {
   }
 });
 
-test("ROM_COVERAGE.md and the catalog name the same ROMs", () => {
-  const coverage = readFileSync(
-    new URL("../../ROM_COVERAGE.md", import.meta.url),
+test("the coverage list and the catalog name the same ROMs", () => {
+  const document = readFileSync(
+    new URL("../../DATASET.md", import.meta.url),
     "utf8",
-  )
+  );
+  const from = document.indexOf("\n## Coverage\n");
+  const to = document.indexOf("\n## Sources\n");
+  assert.ok(from !== -1 && to > from, "DATASET.md has no Coverage section");
+
+  const coverage = document
+    .slice(from, to)
     .split("\n")
     .filter((line) => line.startsWith("- "))
     .map((line) =>

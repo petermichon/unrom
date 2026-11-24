@@ -14,7 +14,7 @@ import {
 } from "./probe.ts";
 
 // Reference gate. Citations the pipeline *builds* from a codename (class B in
-// ROM_DATA_SOURCES.md) are guesses until someone opens them. Probe those URLs
+// DATASET.md) are guesses until someone opens them. Probe those URLs
 // and record the dead ones in `server/reference-overrides.json`; the build
 // drops them, because an unverifiable citation is worse than none.
 //

@@ -16,6 +16,7 @@ you can check a claim instead of taking it on faith.
 - **Site**: https://unrom.com
 - **Data, exports and the API**: https://unrom.com/data
 - **Pipeline, schema and endpoints**: [server/README.md](./server/README.md)
+- **Coverage, sources and backlog**: [DATASET.md](./DATASET.md)
 - **Self-hosting, refreshing and deploying**: [SELF_HOSTING.md](./SELF_HOSTING.md)
 
 ## Contributing

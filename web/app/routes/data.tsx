@@ -366,7 +366,7 @@ export default function DataRoute() {
           </li>
           <li>
             <a
-              href={`${REPO_URL}/blob/main/ROM_DATA_SOURCES.md`}
+              href={`${REPO_URL}/blob/main/DATASET.md`}
               target="_blank"
               rel="noopener"
               className="text-muted-foreground hover:text-foreground hover:underline"
