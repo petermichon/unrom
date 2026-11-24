@@ -38,6 +38,7 @@ npm run ingest                       # fetch every source (from repo root)
 npm run ingest -- arrowos havocos    # fetch specific sources only
 npm run build:data                   # normalize + build SQLite + export JSON
 npm run check:references             # record dead derived references
+npm run check:observed               # probe a rotating window of observed URLs
 npm run check:sources                # fail on a source that stopped refreshing
 npm run test                         # source coverage + dataset invariants
 ```
@@ -51,6 +52,14 @@ host. A 404/410 is recorded as dead and the build drops that citation; blocked
 or timed-out requests stay unverified and are left in place. Results are written
 to `server/reference-overrides.json`. A dead host is reported because every
 citation from it needs review.
+
+`check:observed` re-probes a window of the URLs the sources published themselves.
+It checks `OBSERVED_SAMPLE` URLs per run (100 by default) and rotates the window
+by UTC day, so every observed citation is revisited within a few weeks without
+probing thousands of upstream pages at once. A 404/410 fails the run and names
+the ROM and codename; blocked or timed-out requests stay unverified. It writes
+nothing, because dropping a project's own citation would remove evidence rather
+than correct it.
 
 `check:sources` reads `server/source-health.json` and fails when a source's last
 attempt failed, when it has never returned data, or when its last success is

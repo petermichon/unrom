@@ -12,6 +12,7 @@
     "normalize": "node --disable-warning=ExperimentalWarning src/build/normalize.ts",
     "build:db": "node --disable-warning=ExperimentalWarning src/build/build-db.ts",
     "check:references": "node --disable-warning=ExperimentalWarning src/build/check-references.ts",
+    "check:observed": "node --disable-warning=ExperimentalWarning src/build/check-observed.ts",
     "check:sources": "node --disable-warning=ExperimentalWarning src/build/check-sources.ts",
     "registry:suggest": "node --disable-warning=ExperimentalWarning src/build/registry-suggest.ts",
     "export:json": "node --disable-warning=ExperimentalWarning src/build/export-json.ts",

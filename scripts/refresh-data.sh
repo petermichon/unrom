@@ -109,13 +109,23 @@ fi
 
 log "checking derived reference URLs"
 references_log="$(mktemp "${TMPDIR:-/tmp}/unrom-references.XXXXXX")"
-trap 'rm -f "$ingest_log" "$references_log"' EXIT
+observed_log="$(mktemp "${TMPDIR:-/tmp}/unrom-observed.XXXXXX")"
+trap 'rm -f "$ingest_log" "$references_log" "$observed_log"' EXIT
 set +e
 npm run check:references --workspace server 2>&1 | tee "$references_log"
 references_status=${PIPESTATUS[0]}
 set -e
 if [ "$references_status" -ne 0 ]; then
   log "reference check failed; keeping the previous overrides"
+fi
+
+log "checking a window of observed reference URLs"
+set +e
+npm run check:observed --workspace server 2>&1 | tee "$observed_log"
+observed_status=${PIPESTATUS[0]}
+set -e
+if [ "$observed_status" -ne 0 ]; then
+  log "observed reference check failed; a citation no longer resolves"
 fi
 # Keep the committed reports Prettier-clean for `npm run verify`.
 for report in server/reference-overrides.json server/source-health.json; do
@@ -139,16 +149,23 @@ if [ "$health_status" -ne 0 ]; then
   log "source health check failed; the snapshots that refreshed are still published"
 fi
 
+# A dead citation and a quiet source are both failures worth a non-zero exit, so
+# the scheduler can tell a complete refresh from one that published bad claims.
+refresh_status=$health_status
+if [ "$observed_status" -ne 0 ]; then
+  refresh_status=$observed_status
+fi
+
 if [ -z "$(git status --porcelain -- data/ server/reference-overrides.json server/source-health.json)" ]; then
   log "no snapshot changes; nothing to commit"
-  exit "$health_status"
+  exit "$refresh_status"
 fi
 
 if [ "$do_commit" = 0 ]; then
   log "changed files"
   git status --short -- data/ server/reference-overrides.json server/source-health.json
   log "refresh complete; nothing committed (--no-commit)"
-  exit "$health_status"
+  exit "$refresh_status"
 fi
 
 log "committing data changes"
@@ -166,4 +183,7 @@ fi
 if [ "$health_status" -ne 0 ]; then
   log "published, but at least one source is stale or unreachable (see above)"
 fi
-exit "$health_status"
+if [ "$observed_status" -ne 0 ]; then
+  log "published, but at least one observed citation no longer resolves (see above)"
+fi
+exit "$refresh_status"

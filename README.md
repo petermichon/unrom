@@ -48,7 +48,7 @@ snapshot diff. `npm run refresh` runs the same wrapper the scheduler uses, with
 commit and push turned off, so there is one refresh implementation.
 
 ```sh
-npm run refresh        # ingest → build → verify → check sources → prints changed files
+npm run refresh        # ingest → checks → build → verify → prints changed files
 git diff --stat data/  # review what the sources changed
 git add data/ server/reference-overrides.json server/source-health.json
 git commit -s -m "chore(data): refresh source snapshots"
@@ -89,6 +89,13 @@ than `SOURCE_MAX_AGE_DAYS` (7 by default), makes the run exit non-zero after the
 commit and push. A dead host is therefore reported on the next scheduled run
 instead of being discovered weeks later, while the data that did refresh still
 ships.
+
+`check:observed` runs before the build and re-probes a rotating window of the
+citations the sources published themselves (100 per run, advancing daily). A
+404/410 fails the run and names the ROM and codename, because a dead citation is
+a false claim. It does not block publishing: the refresh commits what it built
+and exits non-zero, so the scheduler can tell a complete refresh from one that
+needs a citation fixed.
 
 Example schedule (not installed by the repo):
 

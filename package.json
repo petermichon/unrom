@@ -19,6 +19,7 @@
     "check": "npm run typecheck --workspace web && npm run check --workspace server && npm run check --workspace contract && npm run check:scripts",
     "check:scripts": "tsc -p scripts",
     "check:sources": "npm run check:sources --workspace server",
+    "check:observed": "npm run check:observed --workspace server",
     "lint": "npm run lint --workspace web",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
