@@ -1,5 +1,5 @@
 import { Form, Link } from "react-router";
-import type { Ref } from "react";
+import type { ReactNode, Ref } from "react";
 import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -24,9 +24,12 @@ export function BrandPicker({
   relock,
   updated,
   hardened,
+  hideLabel = false,
 }: {
   action?: string;
   brands: BrandSummary[];
+  /** The surrounding filter group already names the control. */
+  hideLabel?: boolean;
   current?: string | null;
   q?: string;
   roms?: boolean;
@@ -41,14 +44,17 @@ export function BrandPicker({
       {relock && <input type="hidden" name="relock" value="supported" />}
       {updated && <input type="hidden" name="updated" value="90" />}
       {hardened && <input type="hidden" name="hardened" value="1" />}
-      <label
-        htmlFor="brand-picker"
-        className="text-sm font-medium text-muted-foreground"
-      >
-        Brand
-      </label>
+      {hideLabel ? null : (
+        <label
+          htmlFor="brand-picker"
+          className="text-sm font-medium text-muted-foreground"
+        >
+          Brand
+        </label>
+      )}
       <select
         id="brand-picker"
+        aria-label={hideLabel ? "Brand" : undefined}
         name="vendor"
         defaultValue={current ?? ""}
         onChange={(event) => event.currentTarget.form?.requestSubmit()}
@@ -143,8 +149,25 @@ export function CoverageToggle({
         aria-current={roms ? "page" : undefined}
         className={item(roms)}
       >
-        With ROM data
+        With ROMs
       </Link>
+    </div>
+  );
+}
+
+export function FilterGroup({
+  label,
+  children,
+}: {
+  label: string;
+  children: ReactNode;
+}) {
+  return (
+    <div className="flex items-center gap-2">
+      <span className="text-[0.7rem] font-semibold tracking-[0.08em] text-muted-foreground uppercase">
+        {label}
+      </span>
+      <div className="flex flex-wrap items-center gap-2">{children}</div>
     </div>
   );
 }

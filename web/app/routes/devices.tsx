@@ -10,6 +10,7 @@ import {
   CoverageToggle,
   DirectoryPager,
   DirectorySearch,
+  FilterGroup,
   FilterToggle,
   SortToggle,
 } from "@/components/directory";
@@ -142,16 +143,23 @@ async function load(request: URL) {
     );
   }
 
-  const { devices, total } = await fetchDevicesPage({
-    q: q || undefined,
-    hasRoms: roms || undefined,
-    relock: relock ? "supported" : undefined,
-    updatedWithinDays: updated ? UPDATED_DAYS : undefined,
-    hardened: hardened || undefined,
-    sort,
-    limit: DIRECTORY_PAGE_SIZE,
-    offset: (page - 1) * DIRECTORY_PAGE_SIZE,
-  });
+  const showCoverage = !q && !roms && !relock && !updated && !hardened;
+
+  const [{ devices, total }, coverage] = await Promise.all([
+    fetchDevicesPage({
+      q: q || undefined,
+      hasRoms: roms || undefined,
+      relock: relock ? "supported" : undefined,
+      updatedWithinDays: updated ? UPDATED_DAYS : undefined,
+      hardened: hardened || undefined,
+      sort,
+      limit: DIRECTORY_PAGE_SIZE,
+      offset: (page - 1) * DIRECTORY_PAGE_SIZE,
+    }),
+    showCoverage
+      ? fetchDevicesPage({ hasRoms: true, sort, limit: 1, offset: 0 })
+      : Promise.resolve(null),
+  ]);
 
   const pages = Math.max(1, Math.ceil(total / DIRECTORY_PAGE_SIZE));
   if (page > pages) throw new Response("Not found", { status: 404 });
@@ -173,6 +181,7 @@ async function load(request: URL) {
     updated,
     hardened,
     sort,
+    withRomsTotal: coverage?.total ?? null,
     page,
     pages,
     total,
@@ -213,6 +222,7 @@ export default function DevicesRoute() {
     total,
     devices,
     brands,
+    withRomsTotal,
   } = useLoaderData<typeof loader>();
   const location = useLocation();
   const resultsRef = useRef<HTMLParagraphElement>(null);
@@ -371,71 +381,78 @@ export default function DevicesRoute() {
         <DirectoryChips chips={chips} />
 
         <DirectoryFilterBar activeCount={activeFilterCount}>
-          <BrandPicker
-            brands={brands}
-            q={q}
-            roms={roms}
-            relock={relock}
-            updated={updated}
-            hardened={hardened}
-          />
-          <CoverageToggle
-            allHref={directoryHref({
-              q: q || undefined,
-              relock,
-              updated,
-              hardened,
-              sort,
-            })}
-            romsHref={directoryHref({
-              q: q || undefined,
-              roms: true,
-              relock,
-              updated,
-              hardened,
-              sort,
-            })}
-            roms={roms}
-          />
-          <FilterToggle
-            href={directoryHref({
-              q: q || undefined,
-              roms,
-              relock,
-              updated,
-              hardened: !hardened,
-              sort,
-            })}
-            active={hardened}
-            label="Hardened"
-            hint="A ROM documents security patches, exploit mitigations and relock support"
-          />
-          <FilterToggle
-            href={directoryHref({
-              q: q || undefined,
-              roms,
-              relock,
-              updated: !updated,
-              hardened,
-              sort,
-            })}
-            active={updated}
-            label="Recently updated"
-            hint="A ROM build published in the last 90 days"
-          />
-          <FilterToggle
-            href={directoryHref({
-              q: q || undefined,
-              roms,
-              relock: !relock,
-              updated,
-              hardened,
-              sort,
-            })}
-            active={relock}
-            label="Relock supported"
-            hint="A ROM documents a bootloader relock path"
-          />
+          <FilterGroup label="Brand">
+            <BrandPicker
+              brands={brands}
+              hideLabel
+              q={q}
+              roms={roms}
+              relock={relock}
+              updated={updated}
+              hardened={hardened}
+            />
+          </FilterGroup>
+          <FilterGroup label="Coverage">
+            <CoverageToggle
+              allHref={directoryHref({
+                q: q || undefined,
+                relock,
+                updated,
+                hardened,
+                sort,
+              })}
+              romsHref={directoryHref({
+                q: q || undefined,
+                roms: true,
+                relock,
+                updated,
+                hardened,
+                sort,
+              })}
+              roms={roms}
+            />
+          </FilterGroup>
+          <FilterGroup label="Properties">
+            <FilterToggle
+              href={directoryHref({
+                q: q || undefined,
+                roms,
+                relock,
+                updated,
+                hardened: !hardened,
+                sort,
+              })}
+              active={hardened}
+              label="Hardened"
+              hint="A ROM documents security patches, exploit mitigations and relock support"
+            />
+            <FilterToggle
+              href={directoryHref({
+                q: q || undefined,
+                roms,
+                relock,
+                updated: !updated,
+                hardened,
+                sort,
+              })}
+              active={updated}
+              label="Recently updated"
+              hint="A ROM build published in the last 90 days"
+            />
+            <FilterToggle
+              href={directoryHref({
+                q: q || undefined,
+                roms,
+                relock: !relock,
+                updated,
+                hardened,
+                sort,
+              })}
+              active={relock}
+              label="Relock supported"
+              hint="A ROM documents a bootloader relock path"
+            />
+          </FilterGroup>
         </DirectoryFilterBar>
 
         <div className="flex flex-wrap items-center justify-between gap-3">
@@ -457,6 +474,17 @@ export default function DevicesRoute() {
                   </span>{" "}
                   of <span className="font-mono">{formatNumber(total)}</span>
                   {hasFilters || q ? " matching" : ""} devices
+                  {!isSearching && withRomsTotal !== null ? (
+                    <>
+                      {" · "}
+                      <Link
+                        to={directoryHref({ roms: true, sort })}
+                        className="font-medium text-foreground underline-offset-2 hover:underline"
+                      >
+                        {formatNumber(withRomsTotal)} with ROMs
+                      </Link>
+                    </>
+                  ) : null}
                 </>
               )}
             </p>

@@ -378,7 +378,7 @@ test("the directory shows only devices with ROM data", async ({ page }) => {
   await page.goto("/devices?roms=1");
 
   await expect(
-    page.getByRole("link", { name: "With ROM data" }),
+    page.getByRole("link", { name: "With ROMs" }),
   ).toHaveAttribute("aria-current", "page");
   await expect(page.locator("a.device-row").first()).toBeVisible();
   await expect(page.getByText("ROMs: 0")).toHaveCount(0);

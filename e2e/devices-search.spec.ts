@@ -58,3 +58,24 @@ test("an empty query result suggests a codename and a way back", async ({
     page.getByRole("link", { name: "browse every device" }),
   ).toBeVisible();
 });
+
+test("the unfiltered directory states how many devices have ROMs", async ({
+  page,
+}) => {
+  await page.goto("/devices");
+
+  const status = page.getByRole("status");
+  await expect(status).toContainText(/with ROMs/);
+  await expect(status.getByRole("link")).toHaveAttribute(
+    "href",
+    "/devices?roms=1",
+  );
+});
+
+test("the filter row names the three kinds of filter", async ({ page }) => {
+  await page.goto("/devices");
+
+  await expect(page.getByText("Brand", { exact: true })).toBeVisible();
+  await expect(page.getByText("Coverage", { exact: true })).toBeVisible();
+  await expect(page.getByText("Properties", { exact: true })).toBeVisible();
+});
