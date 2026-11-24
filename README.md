@@ -1,6 +1,7 @@
 # unrom
 
-unrom knows which custom Android ROMs run on which devices.
+Find the custom Android ROMs that run on your device, and the source behind
+every mapping.
 
 The list is the point of the project. A list nobody can read is not worth much,
 though, so the same data ships three ways: a site you can browse, an API you can
