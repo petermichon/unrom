@@ -45,7 +45,10 @@ npm run test                         # source coverage + dataset invariants
 
 `normalize` fails if any source parses to zero records (unless listed in
 `ALLOWED_EMPTY_FILES`), so a changed upstream shape breaks the build instead of
-silently dropping data.
+silently dropping data. The tests apply the same rule per field: every fact
+declared in `EXPECTED_FIELDS` (`buildDate`, `securityPatch`) must still parse
+from its snapshot, so a moved field or reworded sentence fails the run instead of
+turning that column into `null` everywhere.
 
 `check:references` probes every derived reference URL plus one sample URL per
 host. A 404/410 is recorded as dead and the build drops that citation; blocked

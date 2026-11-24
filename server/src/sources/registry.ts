@@ -40,6 +40,33 @@ export interface SourceAdapter {
 // Everything else failing to parse is treated as breakage.
 export const ALLOWED_EMPTY_FILES = new Set<string>();
 
+// Facts each snapshot is known to carry. A parser that stops finding one is
+// breakage, not a quiet gap: the source shape changed, or the wording the
+// parser keys on did. The dataset test fails instead of the field silently
+// turning into `null` for every record. A source that genuinely stops
+// publishing a fact is removed here in the same change that accepts the loss.
+export const EXPECTED_FIELDS: Record<
+  string,
+  { buildDate?: boolean; securityPatch?: boolean }
+> = {
+  "alphadroid.json": { buildDate: true, securityPatch: true },
+  "calyxos.html": { buildDate: true },
+  "candyroms.json": { buildDate: true },
+  "carbon.html": { buildDate: true },
+  "crdroid.json": { buildDate: true, securityPatch: true },
+  "derpfest.json": { buildDate: true },
+  "evolutionx.json": { buildDate: true },
+  "grapheneos.json": { buildDate: true, securityPatch: true },
+  "lineageos.json": { buildDate: true, securityPatch: true },
+  "lunaris.json": { buildDate: true, securityPatch: true },
+  "pixelextended.json": { buildDate: true },
+  "pixelos.json": { buildDate: true },
+  "projectpixelage.json": { buildDate: true },
+  "superioros.json": { buildDate: true },
+  "voltageos.json": { buildDate: true },
+  "witaqua.json": { buildDate: true },
+};
+
 const configs: DeviceSource[] = [
   {
     id: "pixelexperience",
