@@ -1,9 +1,12 @@
 # unrom
 
-An open database of device–ROM compatibility — which custom Android ROMs support
-which devices — with provenance for every fact. **The product is access to that
-data**, so it ships as a site, an API and exports rather than as a catalogue
-only.
+unrom knows which custom Android ROMs run on which devices.
+
+The list is the point of the project. A list nobody can read is not worth much,
+though, so the same data ships three ways — a site you can browse, an API you
+can query and a pair of exports you can take with you. That is the product:
+access, in whichever shape you need it. Every mapping links to the page it came
+from, so you can check a claim instead of taking it on faith.
 
 ![hero](web/public/og.png)
 
@@ -16,7 +19,8 @@ only.
 
 ## Contributing
 
-Please read the [contributing guide](./CONTRIBUTING.md).
+Read the [contributing guide](./CONTRIBUTING.md) before you send a change. It
+covers the sign-off and the licence terms.
 
 ## License
 
