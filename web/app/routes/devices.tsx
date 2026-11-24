@@ -335,9 +335,17 @@ export default function DevicesRoute() {
           q ? `Results for “${q}”` : hasFilters ? "Filtered devices" : "Devices"
         }
         description={
-          isSearching
-            ? undefined
-            : "Find your device, then see which custom ROMs support it. A ROM listing is not a bootloader-unlock claim."
+          isSearching ? undefined : (
+            <>
+              Find your device, then see which custom ROMs support it.{" "}
+              <Link
+                to="/methodology#not-claimed"
+                className="underline decoration-muted-foreground/40 underline-offset-2 hover:decoration-foreground"
+              >
+                What a listing means
+              </Link>
+            </>
+          )
         }
       />
 

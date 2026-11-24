@@ -23,7 +23,9 @@ test("the unfiltered directory keeps its explanatory note", async ({
   await page.goto("/devices");
 
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("Devices");
-  await expect(page.getByText(/bootloader/i)).toBeVisible();
+  await expect(
+    page.getByRole("link", { name: "What a listing means" }),
+  ).toHaveAttribute("href", "/methodology#not-claimed");
 });
 
 test("each active filter is a chip that removes only itself", async ({
