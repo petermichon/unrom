@@ -247,6 +247,22 @@
   }
 }
 
+/* Manrope's 700–800 looks heavier on a dark ground than the same weight on
+   white, because light strokes spread on a dark field. One step down keeps the
+   hierarchy without the glow. Unlayered on purpose: the weight is set by utility
+   classes, which a base-layer rule would not override. */
+.dark h1 {
+  font-weight: 700;
+}
+
+.dark h2 {
+  font-weight: 650;
+}
+
+.dark h3 {
+  font-weight: 600;
+}
+
 /* Content palette. The roles are derived in OKLCH from three values: hue, tint
    strength and accent. Light panels sit at L .925 and dark at .265, where a
    project hue reads as a tint rather than a colour block.

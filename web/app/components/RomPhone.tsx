@@ -60,9 +60,9 @@ export function RomPhone({
       aria-hidden={label ? undefined : true}
       className="relative w-[14.5rem] shrink-0 select-none"
     >
-      <span className="absolute -bottom-5 left-1/2 h-10 w-[82%] -translate-x-1/2 rounded-full bg-black/20 blur-xl dark:bg-black/70" />
+      <span className="absolute -bottom-5 left-1/2 h-10 w-[82%] -translate-x-1/2 rounded-full bg-black/20 blur-xl dark:bg-black/40" />
 
-      <div className="relative flex h-[30rem] w-full flex-col overflow-hidden rounded-4xl bg-[#101318] p-[6px] shadow-[0_28px_50px_-28px_rgba(13,16,36,0.55)] ring-1 ring-black/15 dark:bg-[#0b0e15] dark:ring-white/20">
+      <div className="relative flex h-[30rem] w-full flex-col overflow-hidden rounded-4xl bg-[#101318] p-[6px] shadow-[0_28px_50px_-28px_rgba(13,16,36,0.55)] ring-1 ring-black/15 dark:bg-[#1a1d25] dark:ring-white/20">
         <span className="absolute top-20 -left-px h-8 w-[2px] rounded-l-full bg-white/25" />
         <span className="absolute top-32 -left-px h-12 w-[2px] rounded-l-full bg-white/25" />
         <span className="absolute top-24 -right-px h-14 w-[2px] rounded-r-full bg-white/25" />
