@@ -460,7 +460,10 @@ test("the relock filter opens the documented devices", async ({ page }) => {
   await page.goto("/devices?relock=supported");
   await page.waitForLoadState("networkidle");
 
-  const toggle = page.getByRole("link", { name: "Relock supported" });
+  const toggle = page.getByRole("link", {
+    name: "Relock supported",
+    exact: true,
+  });
   await expect(toggle).toHaveAttribute("aria-current", "page");
   await expect(
     page.getByRole("link", { name: /Pixel 9/ }).first(),

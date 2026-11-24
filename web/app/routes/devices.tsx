@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { Link, redirect, useLoaderData, useLocation } from "react-router";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import DeviceDirectoryList from "@/components/DeviceDirectoryList";
+import { DirectoryChips } from "@/components/DirectoryChips";
 import { DirectoryFilterBar } from "@/components/DirectoryFilterBar";
 import { PageHeader } from "@/components/PageHeader";
 import {
@@ -215,7 +216,17 @@ export default function DevicesRoute() {
   } = useLoaderData<typeof loader>();
   const location = useLocation();
   const resultsRef = useRef<HTMLParagraphElement>(null);
+  const searchRef = useRef<HTMLInputElement>(null);
   const initialSearch = useRef(location.search);
+
+  // On a desktop, arriving with a query means the reader came to type. On a
+  // touch screen the keyboard would cover the results, so leave it be.
+  useEffect(() => {
+    if (!q) return;
+    if (!window.matchMedia("(hover: hover) and (pointer: fine)").matches)
+      return;
+    searchRef.current?.focus({ preventScroll: true });
+  }, [q]);
 
   // A filter or search changes the list in place; move focus to the new count
   // so keyboard and screen-reader users land on the result, not the old link.
@@ -236,6 +247,68 @@ export default function DevicesRoute() {
       : q
         ? "Clear search"
         : "Clear filters";
+
+  // A result page says what is narrowing it, and each chip is the same page
+  // without that one thing. Chips carry the sort so removing a filter does not
+  // silently reorder the list.
+  const chips = [
+    q
+      ? {
+          label: `“${q}”`,
+          href: directoryHref({ roms, relock, updated, hardened, sort }),
+        }
+      : null,
+    roms
+      ? {
+          label: "Has ROMs",
+          href: directoryHref({
+            q: q || undefined,
+            relock,
+            updated,
+            hardened,
+            sort,
+          }),
+        }
+      : null,
+    relock
+      ? {
+          label: "Relock supported",
+          href: directoryHref({
+            q: q || undefined,
+            roms,
+            updated,
+            hardened,
+            sort,
+          }),
+        }
+      : null,
+    updated
+      ? {
+          label: "Updated in 90 days",
+          href: directoryHref({
+            q: q || undefined,
+            roms,
+            relock,
+            hardened,
+            sort,
+          }),
+        }
+      : null,
+    hardened
+      ? {
+          label: "Hardened",
+          href: directoryHref({
+            q: q || undefined,
+            roms,
+            relock,
+            updated,
+            sort,
+          }),
+        }
+      : null,
+  ].filter((chip): chip is { label: string; href: string } => chip !== null);
+
+  const isSearching = Boolean(q) || hasFilters;
 
   const prevHref =
     page > 1
@@ -267,12 +340,23 @@ export default function DevicesRoute() {
       <Breadcrumbs items={[{ label: "Home", to: "/" }, { label: "Devices" }]} />
 
       <PageHeader
-        title="Devices"
-        description="Find your device to see which custom ROMs support it. A ROM listing is not a claim that the bootloader can be unlocked: that is the vendor's decision, shown on the device page where a vendor publishes a policy."
+        title={
+          q
+            ? `Devices matching “${q}”`
+            : hasFilters
+              ? "Filtered devices"
+              : "Devices"
+        }
+        description={
+          isSearching
+            ? undefined
+            : "Find your device to see which custom ROMs support it. A ROM listing is not a claim that the bootloader can be unlocked: that is the vendor's decision, shown on the device page where a vendor publishes a policy."
+        }
       />
 
       <div className="flex flex-col gap-4">
         <DirectorySearch
+          inputRef={searchRef}
           action="/devices"
           q={q}
           hidden={{
@@ -283,6 +367,8 @@ export default function DevicesRoute() {
             sort: sort === "name" ? "name" : undefined,
           }}
         />
+
+        <DirectoryChips chips={chips} />
 
         <DirectoryFilterBar activeCount={activeFilterCount}>
           <BrandPicker
@@ -439,18 +525,38 @@ export default function DevicesRoute() {
         <div className="rounded-2xl border border-border bg-card px-6 py-16 text-center">
           <p className="font-heading text-lg font-bold">No devices match</p>
           <p className="mt-1 text-sm text-muted-foreground">
-            {q
-              ? `Nothing in the directory matches “${q}”${
-                  hasFilters ? " with these filters" : ""
-                }.`
-              : "No device matches these filters."}{" "}
-            <Link
-              to="/devices"
-              className="font-medium text-foreground hover:underline"
-            >
-              {clearLabel}
-            </Link>
-            .
+            {q ? (
+              <>
+                Nothing in the directory matches “{q}”
+                {hasFilters ? " with these filters" : ""}. Try a codename such
+                as{" "}
+                <Link
+                  to="/devices?q=shiba"
+                  className="font-medium text-foreground hover:underline"
+                >
+                  shiba
+                </Link>
+                , or{" "}
+                <Link
+                  to="/devices"
+                  className="font-medium text-foreground hover:underline"
+                >
+                  browse every device
+                </Link>
+                .
+              </>
+            ) : (
+              <>
+                No device matches these filters.{" "}
+                <Link
+                  to="/devices"
+                  className="font-medium text-foreground hover:underline"
+                >
+                  {clearLabel}
+                </Link>
+                .
+              </>
+            )}
           </p>
         </div>
       ) : (

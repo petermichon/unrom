@@ -1,4 +1,5 @@
 import { Form, Link } from "react-router";
+import type { Ref } from "react";
 import { Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -74,11 +75,13 @@ export function DirectorySearch({
   q,
   placeholder = "Search name, codename or brand",
   hidden = {},
+  inputRef,
 }: {
   action: string;
   q: string;
   placeholder?: string;
   hidden?: Record<string, string | undefined>;
+  inputRef?: Ref<HTMLInputElement>;
 }) {
   return (
     <Form method="get" action={action} className="flex gap-2">
@@ -93,6 +96,7 @@ export function DirectorySearch({
         </InputGroupAddon>
         <InputGroupInput
           key={q}
+          ref={inputRef}
           name="q"
           type="search"
           autoComplete="off"
