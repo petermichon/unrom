@@ -328,6 +328,55 @@ test("shared raw references fall through to the reference page", () => {
   );
 });
 
+test("a reference path that maps over a list keeps one citation per device", () => {
+  const parse = createParser({
+    id: "test",
+    romName: "Test",
+    file: "test.json",
+    select: selectors.array,
+    referenceUrl: ["bases[].thread"],
+    referencePage: "https://example.com/{codename}",
+  });
+
+  const records = parse(
+    JSON.stringify([
+      {
+        codename: "own",
+        bases: [
+          { thread: "https://xdaforums.com/t/own.1/" },
+          { thread: "https://xdaforums.com/t/legacy.9/" },
+        ],
+      },
+      {
+        codename: "other",
+        bases: [
+          { thread: "https://xdaforums.com/t/other.2/" },
+          { thread: "https://xdaforums.com/t/legacy.9/" },
+        ],
+      },
+      {
+        codename: "shared-only",
+        bases: [
+          { thread: "https://xdaforums.com/t/legacy.9/" },
+          { thread: "https://xdaforums.com/t/legacy.9/" },
+        ],
+      },
+    ]),
+  );
+
+  const byCodename = new Map(
+    records.map((record) => [record.codename, record.referenceUrl]),
+  );
+  // The device's own thread wins; a legacy thread shared by two devices is
+  // not device-specific, and a joined pair is never published as a citation.
+  assert.equal(byCodename.get("own"), "https://xdaforums.com/t/own.1/");
+  assert.equal(byCodename.get("other"), "https://xdaforums.com/t/other.2/");
+  assert.equal(
+    byCodename.get("shared-only"),
+    "https://example.com/shared-only",
+  );
+});
+
 test("retired roster entries are dropped", () => {
   const parse = createParser({
     id: "test",

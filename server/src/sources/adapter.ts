@@ -125,6 +125,19 @@ export function isCitation(url: string | null): url is string {
   return true;
 }
 
+/**
+ * Every URL a reference path yields. A path that maps over a list can produce
+ * several citations (PixysOS publishes one thread per supported base); each is
+ * kept separate, because a joined list is not a URL a reader can open. Keeping
+ * them apart also lets the shared-reference rule drop a URL that names several
+ * devices instead of pinning it to one.
+ */
+function referenceUrls(value: unknown): string[] {
+  if (Array.isArray(value)) return value.flatMap((item) => referenceUrls(item));
+  const url = str(value);
+  return url ? [url] : [];
+}
+
 export function str(value: unknown): string | null {
   if (typeof value === "string") {
     const trimmed = value.trim();
@@ -266,7 +279,7 @@ export function createParser(
           references: [
             ...new Set(
               (source.referenceUrl ?? [])
-                .map((key) => str(pluck(entry.device, key)))
+                .flatMap((key) => referenceUrls(pluck(entry.device, key)))
                 .filter(isCitation),
             ),
           ],
