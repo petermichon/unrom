@@ -274,6 +274,7 @@ test("reference gate rejects non-citation URLs", () => {
     "https://telegram.me/somegroup",
     "https://discord.gg/invite",
     "https://example.com/build/rom.zip",
+    "https://github.com/CherishOS/releases/download/poco-x6pro",
     "https://www.pling.com/p/1234567/",
     "#",
     "not a url",

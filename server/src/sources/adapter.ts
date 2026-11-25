@@ -115,6 +115,9 @@ export function isCitation(url: string | null): url is string {
     if (host === blocked || host.endsWith(`.${blocked}`)) return false;
   }
   if (parsed.pathname.toLowerCase().endsWith(".zip")) return false;
+  // A release asset is a download, not a page that names the device: GitHub
+  // answers `releases/download/<tag>` with 404 unless the file exists.
+  if (parsed.pathname.includes("/releases/download/")) return false;
   if (
     (host === "pling.com" || host === "www.pling.com") &&
     parsed.pathname.startsWith("/p/")
