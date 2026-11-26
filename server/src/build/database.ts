@@ -27,6 +27,10 @@ import {
   curatedEntriesForCodename,
   deviceNames,
 } from "../data/registry.ts";
+import {
+  isBlockedHost,
+  type BlockedHost,
+} from "../data/reference-blocklist.ts";
 import { RELOCK_RULES, relockFor } from "../data/relock.ts";
 import { ROM_SOURCE_URLS } from "../data/rom-sources.ts";
 import { ROMS } from "../data/roms.ts";
@@ -43,6 +47,7 @@ import {
   roms,
 } from "../db/schema.ts";
 import type { NormalizedRomDevice } from "../normalized.ts";
+import { hostOf } from "./probe.ts";
 
 export interface DeviceSeed {
   vendor: string;
@@ -483,6 +488,7 @@ export function buildDatabase(
   catalog: readonly DeviceSeed[] = [],
   deadReferences: ReadonlySet<string> = new Set(),
   generatedAt?: string,
+  blockedHosts: readonly BlockedHost[] = [],
 ): BuildResult {
   for (const suffix of ["", "-wal", "-shm"]) {
     rmSync(dbPath + suffix, { force: true });
@@ -820,11 +826,13 @@ export function buildDatabase(
     }
     // A derived URL is a guess until the reference check confirms the page.
     // A dead one is dropped rather than published: an unverifiable citation is
-    // worse than none.
+    // worse than none. A host that no longer resolves never answers 404, so it
+    // is curated in `reference-blocklist.json` and treated the same way.
     const referenceUrl =
       record.referenceUrl &&
       record.referenceKind === "derived" &&
-      deadReferences.has(record.referenceUrl)
+      (deadReferences.has(record.referenceUrl) ||
+        isBlockedHost(hostOf(record.referenceUrl), blockedHosts))
         ? null
         : record.referenceUrl;
     if (edge.referenceUrl === null && referenceUrl) {

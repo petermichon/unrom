@@ -475,6 +475,79 @@ test("dead derived citations are dropped, observed ones kept", () => {
   }
 });
 
+test("a blocked host drops its derived citations, not observed ones", () => {
+  const dir = mkdtempSync(join(tmpdir(), "unrom-test-"));
+  const dbPath = join(dir, "unrom.sqlite");
+
+  try {
+    buildDatabase(
+      [
+        buildRecord({
+          romId: "r1",
+          romName: "R1",
+          codename: "phone",
+          referenceUrl: "https://axpos.example/devices/phone/",
+          referenceKind: "derived",
+        }),
+        buildRecord({
+          romId: "r2",
+          romName: "R2",
+          codename: "tablet",
+          referenceUrl: "https://axpos.example/tablet",
+          referenceKind: "observed",
+        }),
+        buildRecord({
+          romId: "r3",
+          romName: "R3",
+          codename: "watch",
+          referenceUrl: "https://dev.axpos.example/watch",
+          referenceKind: "derived",
+        }),
+        buildRecord({
+          romId: "r4",
+          romName: "R4",
+          codename: "tv",
+          referenceUrl: "https://live.example/tv",
+          referenceKind: "derived",
+        }),
+      ],
+      dbPath,
+      [],
+      new Set(),
+      undefined,
+      [
+        {
+          host: "axpos.example",
+          added: "2026-11-26",
+          reason: "domain does not resolve",
+        },
+      ],
+    );
+
+    const db = new Database(dbPath, { readonly: true });
+    const row = (romId: string) =>
+      db
+        .prepare(
+          "select reference_url url, reference_kind kind from rom_devices where rom_id = ?",
+        )
+        .get(romId) as { url: string | null; kind: string };
+
+    assert.deepEqual(row("r1"), { url: null, kind: "derived" });
+    assert.deepEqual(row("r2"), {
+      url: "https://axpos.example/tablet",
+      kind: "observed",
+    });
+    assert.deepEqual(row("r3"), { url: null, kind: "derived" });
+    assert.deepEqual(row("r4"), {
+      url: "https://live.example/tv",
+      kind: "derived",
+    });
+    db.close();
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 test("build metadata follows the newest entry for a device", () => {
   const parse = createParser({
     id: "test",

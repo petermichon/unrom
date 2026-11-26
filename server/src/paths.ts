@@ -27,6 +27,12 @@ export const REFERENCE_OVERRIDES_PATH = join(
   SERVER_ROOT,
   "reference-overrides.json",
 );
+// Hand-curated hosts whose citations must not be published: a domain the
+// probe can only see as "unknown" because it no longer resolves.
+export const REFERENCE_BLOCKLIST_PATH = join(
+  SERVER_ROOT,
+  "reference-blocklist.json",
+);
 export const REGISTRY_REPORT_PATH = join(DIST_DIR, "registry-report.json");
 export const CATALOG_REPORT_PATH = join(DIST_DIR, "catalog-report.json");
 // Per-source fetch health: when each source last answered and the last error.

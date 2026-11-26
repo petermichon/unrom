@@ -1,0 +1,9 @@
+{
+  "hosts": [
+    {
+      "host": "axpos.org",
+      "added": "2026-11-26",
+      "reason": "DNS delegation is broken: public resolvers return SERVFAIL (EDE 9, no DNSKEY matching the DS; EDE 22, no reachable authority), so the domain does not resolve. The last source snapshot is from 2026-11-17."
+    }
+  ]
+}

@@ -685,63 +685,72 @@ in `server/reference-overrides.json`; the build consumes them offline. A URL the
 source published (`observed`) is evidence on its own and is not re-probed
 per URL.
 
+A domain that stops resolving never answers 404, so its citations would stay
+forever with every probe reading as unknown. That case is curated, not
+automated: a transient resolver failure looks the same as a dead domain, and
+one automated verdict would drop every citation on the host at once. Add the
+host to `server/reference-blocklist.json` with the date and the DNS evidence.
+The build drops derived citations on that host and its subdomains exactly as it
+drops a dead URL. The file is edited by hand, so a refresh never rewrites it;
+delete the entry when the domain resolves again and the citations return.
+
 These rules are enforced globally by the adapter gate (`isCitation` in
 `server/src/sources/adapter.ts`): a raw reference is kept only when it passes
 the gate _and_ is unique to one device.
 
-| Source               | Class | Reference                                                                 |
-| -------------------- | ----- | ------------------------------------------------------------------------- |
-| LineageOS            | A     | `wiki.lineageos.org/devices/<codename>/`                                  |
-| LineageOS for microG | B     | `download.lineage.microg.org/<codename>/`                                 |
-| AlphaDroid           | B     | `alphadroid.org/#devices?codename=<codename>`                             |
-| AXP.OS               | B     | `axpos.org/devices/<vendor>/<codename>/`                                  |
-| AxionOS              | B     | `axionos.org/download/<codename>`                                         |
-| Nameless AOSP        | C     | SourceForge `files/<codename>/` (AOSP and CLO projects)                   |
-| Paranoid Android     | A/C   | `xda_thread`, else pinned `AOSPA/ota` devices file                        |
-| PixysOS              | A/B   | `supported_bases[].xda_thread`, else `pixysos.com/<codename>`             |
-| Evolution X          | B     | `evolution-x.org/device/<codename>`; `stone` → XDA thread                 |
-| BlissROMs            | A/B   | unique `support_thread` (XDA), else `blissroms.org/downloads/<codename>`  |
-| Project Infinity X   | B     | `projectinfinity-x.com/downloads/<codename>`                              |
-| CherishOS            | B     | `cherishos.com/devices/<codename>`                                        |
-| CorvusOS             | C     | pinned `CorvusRom-Devices/jenkins` devices.json (download host dead)      |
-| crDroid              | B     | `crdroid.net/<codename>/<major>` (site index), else pinned OTA JSON       |
-| DerpFest             | B     | SourceForge `files/<codename>/`, else pinned `devices-index.json`         |
-| Lunaris AOSP         | C     | pinned OTA `builds/<codename>.json` (unique thread when present)          |
-| PixelExtended        | A/C   | unique `forum_url`/`xda_thread`, else pinned OTA `builds/<codename>.json` |
-| Project PixelAge     | C     | SourceForge `files/<codename>/`                                           |
-| RisingOS             | C     | pinned `RisingOS-Revived/official_devices` devices.md                     |
-| PixelExperience      | B     | `download.pixelexperience.org/<codename>`                                 |
-| PixelOS              | B     | `pixelos.net/download/<codename>`                                         |
-| Clover               | B     | `thecloverproject.com/download/<codename>`                                |
-| dotOS                | B     | `www.droidontime.com/devices/<codename>`                                  |
-| /e/OS                | B     | `doc.e.foundation/devices/<codename>`                                     |
-| Kenvyra              | B     | `kenvyra.xyz/devices/<codename>/`                                         |
-| AICP                 | C     | pinned `vendor_jenkins/aicp-build-targets`                                |
-| ArrowOS              | C     | pinned `arrow_infrastructure_devices/arrow.devices`                       |
-| Havoc-OS             | C     | pinned `Havoc-OS/Devices` devices file                                    |
-| iodéOS               | C     | `iode.tech/iodeos-official-supported-devices` (index)                     |
-| Kali NetHunter       | C     | pinned `kali-nethunter-kernels` devices.yml                               |
-| AwakenOS             | B     | `awakenos.vercel.app/downloads/<codename>`                                |
-| DroidX-UI            | C     | pinned `DroidX-UI-Devices/vendor_droidxOTA` devices.json                  |
-| Matrixx              | C     | pinned `Matrixx-Devices/official_devices` devices.json                    |
-| AfterlifeOS          | C     | pinned `AfterlifeOS/device_afterlife_ota` devices.json                    |
-| MistOS               | C     | pinned `MistOS-Devices/official_devices` buildDevices.json                |
-| Black Iron Project   | C     | per-device `OTA/builds/<codename>.json` (z16)                             |
-| SparkOS              | C     | pinned `spark-os.tech/download` (`__NEXT_DATA__`)                         |
-| YAAP AOSP            | C     | per-device `device-info/<codename>/<codename>.json`                       |
-| CatalystOS           | C     | pinned `catalyst-android/OTA` devices.json (branch 13)                    |
-| PalladiumOS          | C     | pinned `Palladium-OS/official_devices` official_devices.json (12.1)       |
-| PixelStar            | C     | pinned `Project-PixelStar/official_devices` devices.json (branch 15)      |
-| Project Blaze        | C     | pinned `ProjectBlaze/official_devices` devices.json (branch 14)           |
-| Project Lighthouse   | C     | pinned `lighthouse-os/official_devices` official_devices.json             |
-| SomethingOS          | C     | pinned `SomethingOS/website_devices` devices.json                         |
-| Tequila OS           | C     | pinned `tequilaOS/tequila_ota` devices.json                               |
-| The Kraken Project   | C     | pinned `AOSPK/official_devices` devices.json                              |
-| 2by2 Project         | C     | pinned `android_vendor_2by2-ota` and `vendor_2by2-ota` devices.json       |
-| EtherealOS           | C     | pinned `Ethereal-Devices` A14 devices.json                                |
-| GenesisOS            | C     | pinned `Website-Data` devices/DeviceList.json                             |
-| Project Sakura       | C     | pinned `ProjectSakura/OTA` devices.json                                   |
-| WitAqua              | C     | pinned `WitAquaOTA` data/devices.json                                     |
+| Source               | Class | Reference                                                                   |
+| -------------------- | ----- | --------------------------------------------------------------------------- |
+| LineageOS            | A     | `wiki.lineageos.org/devices/<codename>/`                                    |
+| LineageOS for microG | B     | `download.lineage.microg.org/<codename>/`                                   |
+| AlphaDroid           | B     | `alphadroid.org/#devices?codename=<codename>`                               |
+| AXP.OS               | B     | `axpos.org/devices/<vendor>/<codename>/` (blocked: domain does not resolve) |
+| AxionOS              | B     | `axionos.org/download/<codename>`                                           |
+| Nameless AOSP        | C     | SourceForge `files/<codename>/` (AOSP and CLO projects)                     |
+| Paranoid Android     | A/C   | `xda_thread`, else pinned `AOSPA/ota` devices file                          |
+| PixysOS              | A/B   | `supported_bases[].xda_thread`, else `pixysos.com/<codename>`               |
+| Evolution X          | B     | `evolution-x.org/device/<codename>`; `stone` → XDA thread                   |
+| BlissROMs            | A/B   | unique `support_thread` (XDA), else `blissroms.org/downloads/<codename>`    |
+| Project Infinity X   | B     | `projectinfinity-x.com/downloads/<codename>`                                |
+| CherishOS            | B     | `cherishos.com/devices/<codename>`                                          |
+| CorvusOS             | C     | pinned `CorvusRom-Devices/jenkins` devices.json (download host dead)        |
+| crDroid              | B     | `crdroid.net/<codename>/<major>` (site index), else pinned OTA JSON         |
+| DerpFest             | B     | SourceForge `files/<codename>/`, else pinned `devices-index.json`           |
+| Lunaris AOSP         | C     | pinned OTA `builds/<codename>.json` (unique thread when present)            |
+| PixelExtended        | A/C   | unique `forum_url`/`xda_thread`, else pinned OTA `builds/<codename>.json`   |
+| Project PixelAge     | C     | SourceForge `files/<codename>/`                                             |
+| RisingOS             | C     | pinned `RisingOS-Revived/official_devices` devices.md                       |
+| PixelExperience      | B     | `download.pixelexperience.org/<codename>`                                   |
+| PixelOS              | B     | `pixelos.net/download/<codename>`                                           |
+| Clover               | B     | `thecloverproject.com/download/<codename>`                                  |
+| dotOS                | B     | `www.droidontime.com/devices/<codename>`                                    |
+| /e/OS                | B     | `doc.e.foundation/devices/<codename>`                                       |
+| Kenvyra              | B     | `kenvyra.xyz/devices/<codename>/`                                           |
+| AICP                 | C     | pinned `vendor_jenkins/aicp-build-targets`                                  |
+| ArrowOS              | C     | pinned `arrow_infrastructure_devices/arrow.devices`                         |
+| Havoc-OS             | C     | pinned `Havoc-OS/Devices` devices file                                      |
+| iodéOS               | C     | `iode.tech/iodeos-official-supported-devices` (index)                       |
+| Kali NetHunter       | C     | pinned `kali-nethunter-kernels` devices.yml                                 |
+| AwakenOS             | B     | `awakenos.vercel.app/downloads/<codename>`                                  |
+| DroidX-UI            | C     | pinned `DroidX-UI-Devices/vendor_droidxOTA` devices.json                    |
+| Matrixx              | C     | pinned `Matrixx-Devices/official_devices` devices.json                      |
+| AfterlifeOS          | C     | pinned `AfterlifeOS/device_afterlife_ota` devices.json                      |
+| MistOS               | C     | pinned `MistOS-Devices/official_devices` buildDevices.json                  |
+| Black Iron Project   | C     | per-device `OTA/builds/<codename>.json` (z16)                               |
+| SparkOS              | C     | pinned `spark-os.tech/download` (`__NEXT_DATA__`)                           |
+| YAAP AOSP            | C     | per-device `device-info/<codename>/<codename>.json`                         |
+| CatalystOS           | C     | pinned `catalyst-android/OTA` devices.json (branch 13)                      |
+| PalladiumOS          | C     | pinned `Palladium-OS/official_devices` official_devices.json (12.1)         |
+| PixelStar            | C     | pinned `Project-PixelStar/official_devices` devices.json (branch 15)        |
+| Project Blaze        | C     | pinned `ProjectBlaze/official_devices` devices.json (branch 14)             |
+| Project Lighthouse   | C     | pinned `lighthouse-os/official_devices` official_devices.json               |
+| SomethingOS          | C     | pinned `SomethingOS/website_devices` devices.json                           |
+| Tequila OS           | C     | pinned `tequilaOS/tequila_ota` devices.json                                 |
+| The Kraken Project   | C     | pinned `AOSPK/official_devices` devices.json                                |
+| 2by2 Project         | C     | pinned `android_vendor_2by2-ota` and `vendor_2by2-ota` devices.json         |
+| EtherealOS           | C     | pinned `Ethereal-Devices` A14 devices.json                                  |
+| GenesisOS            | C     | pinned `Website-Data` devices/DeviceList.json                               |
+| Project Sakura       | C     | pinned `ProjectSakura/OTA` devices.json                                     |
+| WitAqua              | C     | pinned `WitAquaOTA` data/devices.json                                       |
 
 ### Legend
 

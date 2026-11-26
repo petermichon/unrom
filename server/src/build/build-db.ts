@@ -12,10 +12,12 @@ import {
   DB_PATH,
   DIST_DIR,
   NDJSON_PATH,
+  REFERENCE_BLOCKLIST_PATH,
   REFERENCE_OVERRIDES_PATH,
   REGISTRY_REPORT_PATH,
   SCHEMA_SQL_PATH,
 } from "../paths.ts";
+import { readBlockedHosts } from "../data/reference-blocklist.ts";
 import { readDeadReferences } from "../data/reference-overrides.ts";
 import { selectCatalog } from "../sources/catalog.ts";
 import {
@@ -61,6 +63,7 @@ const result = buildDatabase(
   })),
   readDeadReferences(REFERENCE_OVERRIDES_PATH),
   generatedAt,
+  readBlockedHosts(REFERENCE_BLOCKLIST_PATH),
 );
 
 // Alias resolution is a generation-time normalization; the resolved mapping is
