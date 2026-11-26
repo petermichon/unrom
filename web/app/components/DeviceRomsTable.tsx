@@ -148,17 +148,20 @@ export default function DeviceRomsTable({ roms, statuses = {} }: Props) {
                 <ExternalLink className="size-3 shrink-0" aria-hidden="true" />
               </a>
             ) : (
-              <span className="text-xs text-muted-foreground">None</span>
+              <span className="text-xs text-muted-foreground">
+                No reference
+              </span>
             )}
-            {row.original.referenceKind === "derived" && (
-              <Link
-                to="/methodology"
-                aria-label="Derived citation: how this works"
-                className="shrink-0 rounded-full bg-muted px-1.5 py-0.5 text-[0.65rem] font-medium text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/50"
-              >
-                derived
-              </Link>
-            )}
+            {row.original.referenceUrl &&
+              row.original.referenceKind === "derived" && (
+                <Link
+                  to="/methodology"
+                  aria-label="Derived citation: how this works"
+                  className="shrink-0 rounded-full bg-muted px-1.5 py-0.5 text-[0.65rem] font-medium text-muted-foreground outline-none hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring/50"
+                >
+                  derived
+                </Link>
+              )}
           </span>
         ),
       },
