@@ -1,9 +1,0 @@
-{
-  "hosts": [
-    {
-      "host": "axpos.org",
-      "added": "2026-11-26",
-      "reason": "Authoritative nameservers ns1.i.sedi.one and ns2.i.sedi.one do not respond, so public resolvers return SERVFAIL (EDE 9, no DNSKEY matching the DS; EDE 22, no reachable authority). code.binbash.rocks, the project's source host, delegates to the same nameservers and fails the same way. The domain is registered until 2028-11-08. Last source snapshot: 2026-11-17."
-    }
-  ]
-}

@@ -434,59 +434,59 @@ are not ROMs with their own device rosters.
 
 #### Implemented
 
-| ROM                  | Base | Project Status  | Data Source             | Notes                                                                                                                                                        |
-| -------------------- | ---- | --------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| 2by2 Project         | AOSP | ✅ Active       | ✅ GitHub               | Android 16 `devices.json` unioned with the legacy vendor roster; 5 devices                                                                                   |
-| AICP                 | AOSP | ✅ Active       | ✅ GitHub               | Build targets file with device codenames; ~12 active devices on Android 16 (w16.0 branch)                                                                    |
-| AfterlifeOS          | AOSP | ✅ Active       | ✅ GitHub               | Single devices.json file with 20+ devices on Android 16                                                                                                      |
-| AlphaDroid           | AOSP | ✅ Active       | ⚠️ Website              | `data/devices.json` build index (75 devices) unioned with `devices.md`; 82 devices. Newer builds carry `timestamp` and `os_patch_level`                      |
-| ArrowOS              | AOSP | ❌ Discontinued | ✅ GitHub               | Last GitHub push March 2024; device data and code both frozen                                                                                                |
-| AwakenOS             | AOSP | ✅ Active       | ✅ GitHub               | Single devices.json file with 15 devices across Xiaomi, Redmi, OnePlus, realme, Motorola                                                                     |
-| AxionOS              | AOSP | ✅ Active       | ✅ GitHub               | `api/downloads.json` from `AxionAOSP/official_devices`; 64 active devices                                                                                    |
-| AXP.OS               | AOSP | ✅ Active       | ⚠️ Website              | Sitemap lists one page per supported device (24 device pages); DivestOS successor; `axpos.org` down since 2026-11-23 (DNS delegation failure)                |
-| Black Iron Project   | AOSP | ✅ Active       | ✅ GitHub               | One `builds/<codename>.json` per device on `z16`; 11 active devices. Two files are malformed JSON and parsed from their raw text                             |
-| BlissROMs            | AOSP | ✅ Active       | ✅ GitHub               |                                                                                                                                                              |
-| CatalystOS           | AOSP | ❌ Discontinued | ✅ GitHub               | `devices.json` on branch 13; 3 active devices                                                                                                                |
-| CherishOS            | AOSP | ✅ Active       | ✅ API                  | API endpoint with 16 devices, last updated Dec 2025; includes recent devices like Xiaomi 13, OnePlus 13                                                      |
-| Clover               | AOSP | ✅ Active       | ✅ GitHub               | Single `data/devices.json` file with 20 devices across Poco, Motorola, Nothing, Realme, Redmi, Xiaomi; on Android 16                                         |
-| CorvusOS             | AOSP | ❌ Discontinued | ✅ GitHub               | Single devices.json file with 15+ devices; last builds Nov 2022 (vT5.1, Android 13); org last pushed July 2023                                               |
-| crDroid              | AOSP | ✅ Active       | ✅ GitHub API           | Unions every version branch of the official OTA repo (Android 10–16); 302 devices matching crdroid.net. OTA JSON carries `timestamp` and `os_patch_level`    |
-| DerpFest             | AOSP | ✅ Active       | ✅ API                  | Device index `derpfest.org/devices-index.json` (134 devices) with display names + latest build; download hosts vary                                          |
-| DroidX-UI            | AOSP | ✅ Active       | ✅ GitHub               | Single devices.json file with 20+ devices across Xiaomi, Nothing, Google, Samsung; last updated July 2025                                                    |
-| dotOS                | AOSP | ❌ Discontinued | ✅ GitHub               | Last commit Sept 2022, stuck on Android 12; manifest last pushed Jan 2023; no activity since                                                                 |
-| /e/OS                | AOSP | ✅ Active       | ⚠️ Website + GitLab     | Official devices page is the live roster; frozen GitLab CI snapshots remain because that repo is no longer public                                            |
-| Evolution X          | AOSP | ✅ Active       | ✅ GitHub API           | Per-device JSON unioned across release branches (`cnb`/`bka`/`vic`/`udc`); 143 devices; site lists 3 more (`berlin`/`enchilada`/`fajita`) with no build JSON |
-| EtherealOS           | AOSP | ✅ Active       | ✅ GitHub               | A14 `devices.json` (an array); 2 devices. The A13 file is truncated upstream                                                                                 |
-| GenesisOS            | AOSP | ✅ Active       | ✅ GitHub               | `devices/DeviceList.json`; 15 maintained devices after dropping `isMaintained: false`                                                                        |
-| HavocOS              | AOSP | ❌ Discontinued | ✅ GitHub               | Data from Sept 2023; org last pushed Nov 2023; HavocOS Revived exists but has no device tracking                                                             |
-| iodéOS               | AOSP | ✅ Active       | ⚠️ Website + GitLab API | Official supported-devices table unioned with the GitLab release tree; the tree alone only lists devices with a current build                                |
-| Kali NetHunter       | AOSP | ✅ Active       | ✅ GitLab               | Device kernels YAML with detailed device information and Android versions                                                                                    |
-| Kenvyra              | AOSP | ❌ Discontinued | ✅ GitHub               | Device data in Markdown files with YAML frontmatter; 4 devices; org last pushed Feb 2024                                                                     |
-| LineageOS            | AOSP | ✅ Active       | ✅ GitHub API           | Device list via GitHub API; newest build per codename from `download.lineageos.org/api/v2/devices/<codename>/builds`, including `os_patch_level`             |
-| LineageOS for microG | AOSP | ✅ Active       | ⚠️ Website              | Official build-host directory index (430 devices); LineageOS rebuild with microG instead of Google apps                                                      |
-| Lunaris AOSP         | AOSP | ✅ Active       | ✅ GitHub               | Per-device OTA JSON in `builds/` (45 devices, Android 16.2); active, builds through Sept 2026; JSON carries `timestamp` and `os_patch_level`                 |
-| Matrixx              | AOSP | ❌ Discontinued | ✅ GitHub               | Single devices.json file with 30+ devices; org archived Sep 7, 2026                                                                                          |
-| MistOS               | AOSP | ✅ Active       | ✅ GitHub               | Single buildDevices.json file with 25+ devices on Android 16                                                                                                 |
-| Nameless AOSP        | AOSP | ❌ Discontinued | ⚠️ Website              | SourceForge file listings for Nameless-AOSP and Nameless-CLO; 34 build targets; rebranded as SunOS Project                                                   |
-| PalladiumOS          | AOSP | ❌ Discontinued | ✅ GitHub               | `official_devices.json` on branch 12.1; 13 devices                                                                                                           |
-| Paranoid Android     | AOSP | ✅ Active       | ✅ GitHub               |                                                                                                                                                              |
-| PixelExtended        | AOSP | ✅ Active       | ✅ GitHub               | Per-device OTA JSON in `builds/` (20 devices); maintainer list updated weekly (Nov 2026); device builds still Android 13                                     |
-| PixelExperience      | AOSP | ❌ Discontinued | ✅ GitHub               | Upstream shutdown April 2024; org last pushed Apr 2024; committed snapshot is the final state                                                                |
-| PixelOS              | AOSP | ✅ Active       | ✅ GitHub               | Android 17 branch (`seventeen`); one JSON per device under `API/devices/`; 82 devices, one listed with no build yet (`infiniti`)                             |
-| PixelStar            | AOSP | ❌ Discontinued | ✅ GitHub               | `devices.json` on branch 15; 15 active devices (branch 14 marks them inactive)                                                                               |
-| PixysOS              | AOSP | ✅ Active       | ✅ GitHub               | Updater pushed Nov 2026; `official_devices` still last updated Sept 2024, so the roster is stale                                                             |
-| Project Blaze        | AOSP | ❌ Discontinued | ✅ GitHub               | Brand groups in `devices.json` (branch 14); 58 codenames after splitting combined entries and deduplicating                                                  |
-| Project Infinity X   | AOSP | ✅ Active       | ✅ GitHub API           | Device JSON files from the Android 16 and 17 branches, unioned; 101 records                                                                                  |
-| Project Lighthouse   | AOSP | ❌ Discontinued | ✅ GitHub               | `official_devices.json` on branch sailboat; 25 devices                                                                                                       |
-| Project PixelAge     | AOSP | ✅ Active       | ✅ GitHub API           | Individual device JSON files via GitHub API; 15 devices on Android 15, A16 WIP                                                                               |
-| Project Sakura       | AOSP | ✅ Active       | ✅ GitHub               | OTA `devices.json` (Android 16); 2 active devices                                                                                                            |
-| RisingOS             | AOSP | ✅ Active       | ✅ GitHub               | Active upstream: RisingOS-Revived (95 repos, pushes Oct 2026); RisingTechOSS is an Android 14 backup mirror. Device list in official_devices devices.md      |
-| SomethingOS          | AOSP | ❌ Discontinued | ✅ GitHub               | `website_devices/devices.json`; 4 devices                                                                                                                    |
-| SparkOS              | AOSP | ✅ Active       | ✅ Website              | `spark-os.tech/download` embeds 20 active devices in `__NEXT_DATA__`; the GitHub roster stopped in 2022                                                      |
-| Tequila OS           | AOSP | ❌ Discontinued | ✅ GitHub               | `devices.json`; only 1 device is not marked discontinued                                                                                                     |
-| WitAqua              | AOSP | ✅ Active       | ✅ GitHub               | `data/devices.json`; 5 devices with download metadata                                                                                                        |
-| YAAP AOSP            | AOSP | ✅ Active       | ✅ GitHub               | `<codename>/<codename>.json` in `device-info`; 13 active devices                                                                                             |
-| The Kraken Project   | AOSP | ❌ Discontinued | ✅ GitHub               | `official_devices/devices.json`; 36 devices                                                                                                                  |
+| ROM                  | Base | Project Status  | Data Source             | Notes                                                                                                                                                                                                               |
+| -------------------- | ---- | --------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 2by2 Project         | AOSP | ✅ Active       | ✅ GitHub               | Android 16 `devices.json` unioned with the legacy vendor roster; 5 devices                                                                                                                                          |
+| AICP                 | AOSP | ✅ Active       | ✅ GitHub               | Build targets file with device codenames; ~12 active devices on Android 16 (w16.0 branch)                                                                                                                           |
+| AfterlifeOS          | AOSP | ✅ Active       | ✅ GitHub               | Single devices.json file with 20+ devices on Android 16                                                                                                                                                             |
+| AlphaDroid           | AOSP | ✅ Active       | ⚠️ Website              | `data/devices.json` build index (75 devices) unioned with `devices.md`; 82 devices. Newer builds carry `timestamp` and `os_patch_level`                                                                             |
+| ArrowOS              | AOSP | ❌ Discontinued | ✅ GitHub               | Last GitHub push March 2024; device data and code both frozen                                                                                                                                                       |
+| AwakenOS             | AOSP | ✅ Active       | ✅ GitHub               | Single devices.json file with 15 devices across Xiaomi, Redmi, OnePlus, realme, Motorola                                                                                                                            |
+| AxionOS              | AOSP | ✅ Active       | ✅ GitHub               | `api/downloads.json` from `AxionAOSP/official_devices`; 64 active devices                                                                                                                                           |
+| AXP.OS               | AOSP | ✅ Active       | ⚠️ Website              | Sitemap lists one page per supported device (24 device pages); DivestOS successor. `axpos.org` stopped resolving on 2026-11-23 (nameservers unresponsive), so citations point at the `AXP-OS/axpos-org` site mirror |
+| Black Iron Project   | AOSP | ✅ Active       | ✅ GitHub               | One `builds/<codename>.json` per device on `z16`; 11 active devices. Two files are malformed JSON and parsed from their raw text                                                                                    |
+| BlissROMs            | AOSP | ✅ Active       | ✅ GitHub               |                                                                                                                                                                                                                     |
+| CatalystOS           | AOSP | ❌ Discontinued | ✅ GitHub               | `devices.json` on branch 13; 3 active devices                                                                                                                                                                       |
+| CherishOS            | AOSP | ✅ Active       | ✅ API                  | API endpoint with 16 devices, last updated Dec 2025; includes recent devices like Xiaomi 13, OnePlus 13                                                                                                             |
+| Clover               | AOSP | ✅ Active       | ✅ GitHub               | Single `data/devices.json` file with 20 devices across Poco, Motorola, Nothing, Realme, Redmi, Xiaomi; on Android 16                                                                                                |
+| CorvusOS             | AOSP | ❌ Discontinued | ✅ GitHub               | Single devices.json file with 15+ devices; last builds Nov 2022 (vT5.1, Android 13); org last pushed July 2023                                                                                                      |
+| crDroid              | AOSP | ✅ Active       | ✅ GitHub API           | Unions every version branch of the official OTA repo (Android 10–16); 302 devices matching crdroid.net. OTA JSON carries `timestamp` and `os_patch_level`                                                           |
+| DerpFest             | AOSP | ✅ Active       | ✅ API                  | Device index `derpfest.org/devices-index.json` (134 devices) with display names + latest build; download hosts vary                                                                                                 |
+| DroidX-UI            | AOSP | ✅ Active       | ✅ GitHub               | Single devices.json file with 20+ devices across Xiaomi, Nothing, Google, Samsung; last updated July 2025                                                                                                           |
+| dotOS                | AOSP | ❌ Discontinued | ✅ GitHub               | Last commit Sept 2022, stuck on Android 12; manifest last pushed Jan 2023; no activity since                                                                                                                        |
+| /e/OS                | AOSP | ✅ Active       | ⚠️ Website + GitLab     | Official devices page is the live roster; frozen GitLab CI snapshots remain because that repo is no longer public                                                                                                   |
+| Evolution X          | AOSP | ✅ Active       | ✅ GitHub API           | Per-device JSON unioned across release branches (`cnb`/`bka`/`vic`/`udc`); 143 devices; site lists 3 more (`berlin`/`enchilada`/`fajita`) with no build JSON                                                        |
+| EtherealOS           | AOSP | ✅ Active       | ✅ GitHub               | A14 `devices.json` (an array); 2 devices. The A13 file is truncated upstream                                                                                                                                        |
+| GenesisOS            | AOSP | ✅ Active       | ✅ GitHub               | `devices/DeviceList.json`; 15 maintained devices after dropping `isMaintained: false`                                                                                                                               |
+| HavocOS              | AOSP | ❌ Discontinued | ✅ GitHub               | Data from Sept 2023; org last pushed Nov 2023; HavocOS Revived exists but has no device tracking                                                                                                                    |
+| iodéOS               | AOSP | ✅ Active       | ⚠️ Website + GitLab API | Official supported-devices table unioned with the GitLab release tree; the tree alone only lists devices with a current build                                                                                       |
+| Kali NetHunter       | AOSP | ✅ Active       | ✅ GitLab               | Device kernels YAML with detailed device information and Android versions                                                                                                                                           |
+| Kenvyra              | AOSP | ❌ Discontinued | ✅ GitHub               | Device data in Markdown files with YAML frontmatter; 4 devices; org last pushed Feb 2024                                                                                                                            |
+| LineageOS            | AOSP | ✅ Active       | ✅ GitHub API           | Device list via GitHub API; newest build per codename from `download.lineageos.org/api/v2/devices/<codename>/builds`, including `os_patch_level`                                                                    |
+| LineageOS for microG | AOSP | ✅ Active       | ⚠️ Website              | Official build-host directory index (430 devices); LineageOS rebuild with microG instead of Google apps                                                                                                             |
+| Lunaris AOSP         | AOSP | ✅ Active       | ✅ GitHub               | Per-device OTA JSON in `builds/` (45 devices, Android 16.2); active, builds through Sept 2026; JSON carries `timestamp` and `os_patch_level`                                                                        |
+| Matrixx              | AOSP | ❌ Discontinued | ✅ GitHub               | Single devices.json file with 30+ devices; org archived Sep 7, 2026                                                                                                                                                 |
+| MistOS               | AOSP | ✅ Active       | ✅ GitHub               | Single buildDevices.json file with 25+ devices on Android 16                                                                                                                                                        |
+| Nameless AOSP        | AOSP | ❌ Discontinued | ⚠️ Website              | SourceForge file listings for Nameless-AOSP and Nameless-CLO; 34 build targets; rebranded as SunOS Project                                                                                                          |
+| PalladiumOS          | AOSP | ❌ Discontinued | ✅ GitHub               | `official_devices.json` on branch 12.1; 13 devices                                                                                                                                                                  |
+| Paranoid Android     | AOSP | ✅ Active       | ✅ GitHub               |                                                                                                                                                                                                                     |
+| PixelExtended        | AOSP | ✅ Active       | ✅ GitHub               | Per-device OTA JSON in `builds/` (20 devices); maintainer list updated weekly (Nov 2026); device builds still Android 13                                                                                            |
+| PixelExperience      | AOSP | ❌ Discontinued | ✅ GitHub               | Upstream shutdown April 2024; org last pushed Apr 2024; committed snapshot is the final state                                                                                                                       |
+| PixelOS              | AOSP | ✅ Active       | ✅ GitHub               | Android 17 branch (`seventeen`); one JSON per device under `API/devices/`; 82 devices, one listed with no build yet (`infiniti`)                                                                                    |
+| PixelStar            | AOSP | ❌ Discontinued | ✅ GitHub               | `devices.json` on branch 15; 15 active devices (branch 14 marks them inactive)                                                                                                                                      |
+| PixysOS              | AOSP | ✅ Active       | ✅ GitHub               | Updater pushed Nov 2026; `official_devices` still last updated Sept 2024, so the roster is stale                                                                                                                    |
+| Project Blaze        | AOSP | ❌ Discontinued | ✅ GitHub               | Brand groups in `devices.json` (branch 14); 58 codenames after splitting combined entries and deduplicating                                                                                                         |
+| Project Infinity X   | AOSP | ✅ Active       | ✅ GitHub API           | Device JSON files from the Android 16 and 17 branches, unioned; 101 records                                                                                                                                         |
+| Project Lighthouse   | AOSP | ❌ Discontinued | ✅ GitHub               | `official_devices.json` on branch sailboat; 25 devices                                                                                                                                                              |
+| Project PixelAge     | AOSP | ✅ Active       | ✅ GitHub API           | Individual device JSON files via GitHub API; 15 devices on Android 15, A16 WIP                                                                                                                                      |
+| Project Sakura       | AOSP | ✅ Active       | ✅ GitHub               | OTA `devices.json` (Android 16); 2 active devices                                                                                                                                                                   |
+| RisingOS             | AOSP | ✅ Active       | ✅ GitHub               | Active upstream: RisingOS-Revived (95 repos, pushes Oct 2026); RisingTechOSS is an Android 14 backup mirror. Device list in official_devices devices.md                                                             |
+| SomethingOS          | AOSP | ❌ Discontinued | ✅ GitHub               | `website_devices/devices.json`; 4 devices                                                                                                                                                                           |
+| SparkOS              | AOSP | ✅ Active       | ✅ Website              | `spark-os.tech/download` embeds 20 active devices in `__NEXT_DATA__`; the GitHub roster stopped in 2022                                                                                                             |
+| Tequila OS           | AOSP | ❌ Discontinued | ✅ GitHub               | `devices.json`; only 1 device is not marked discontinued                                                                                                                                                            |
+| WitAqua              | AOSP | ✅ Active       | ✅ GitHub               | `data/devices.json`; 5 devices with download metadata                                                                                                                                                               |
+| YAAP AOSP            | AOSP | ✅ Active       | ✅ GitHub               | `<codename>/<codename>.json` in `device-info`; 13 active devices                                                                                                                                                    |
+| The Kraken Project   | AOSP | ❌ Discontinued | ✅ GitHub               | `official_devices/devices.json`; 36 devices                                                                                                                                                                         |
 
 #### Not Implemented
 
@@ -698,59 +698,59 @@ These rules are enforced globally by the adapter gate (`isCitation` in
 `server/src/sources/adapter.ts`): a raw reference is kept only when it passes
 the gate _and_ is unique to one device.
 
-| Source               | Class | Reference                                                                   |
-| -------------------- | ----- | --------------------------------------------------------------------------- |
-| LineageOS            | A     | `wiki.lineageos.org/devices/<codename>/`                                    |
-| LineageOS for microG | B     | `download.lineage.microg.org/<codename>/`                                   |
-| AlphaDroid           | B     | `alphadroid.org/#devices?codename=<codename>`                               |
-| AXP.OS               | B     | `axpos.org/devices/<vendor>/<codename>/` (blocked: domain does not resolve) |
-| AxionOS              | B     | `axionos.org/download/<codename>`                                           |
-| Nameless AOSP        | C     | SourceForge `files/<codename>/` (AOSP and CLO projects)                     |
-| Paranoid Android     | A/C   | `xda_thread`, else pinned `AOSPA/ota` devices file                          |
-| PixysOS              | A/B   | `supported_bases[].xda_thread`, else `pixysos.com/<codename>`               |
-| Evolution X          | B     | `evolution-x.org/device/<codename>`; `stone` → XDA thread                   |
-| BlissROMs            | A/B   | unique `support_thread` (XDA), else `blissroms.org/downloads/<codename>`    |
-| Project Infinity X   | B     | `projectinfinity-x.com/downloads/<codename>`                                |
-| CherishOS            | B     | `cherishos.com/devices/<codename>`                                          |
-| CorvusOS             | C     | pinned `CorvusRom-Devices/jenkins` devices.json (download host dead)        |
-| crDroid              | B     | `crdroid.net/<codename>/<major>` (site index), else pinned OTA JSON         |
-| DerpFest             | B     | SourceForge `files/<codename>/`, else pinned `devices-index.json`           |
-| Lunaris AOSP         | C     | pinned OTA `builds/<codename>.json` (unique thread when present)            |
-| PixelExtended        | A/C   | unique `forum_url`/`xda_thread`, else pinned OTA `builds/<codename>.json`   |
-| Project PixelAge     | C     | SourceForge `files/<codename>/`                                             |
-| RisingOS             | C     | pinned `RisingOS-Revived/official_devices` devices.md                       |
-| PixelExperience      | B     | `download.pixelexperience.org/<codename>`                                   |
-| PixelOS              | B     | `pixelos.net/download/<codename>`                                           |
-| Clover               | B     | `thecloverproject.com/download/<codename>`                                  |
-| dotOS                | B     | `www.droidontime.com/devices/<codename>`                                    |
-| /e/OS                | B     | `doc.e.foundation/devices/<codename>`                                       |
-| Kenvyra              | B     | `kenvyra.xyz/devices/<codename>/`                                           |
-| AICP                 | C     | pinned `vendor_jenkins/aicp-build-targets`                                  |
-| ArrowOS              | C     | pinned `arrow_infrastructure_devices/arrow.devices`                         |
-| Havoc-OS             | C     | pinned `Havoc-OS/Devices` devices file                                      |
-| iodéOS               | C     | `iode.tech/iodeos-official-supported-devices` (index)                       |
-| Kali NetHunter       | C     | pinned `kali-nethunter-kernels` devices.yml                                 |
-| AwakenOS             | B     | `awakenos.vercel.app/downloads/<codename>`                                  |
-| DroidX-UI            | C     | pinned `DroidX-UI-Devices/vendor_droidxOTA` devices.json                    |
-| Matrixx              | C     | pinned `Matrixx-Devices/official_devices` devices.json                      |
-| AfterlifeOS          | C     | pinned `AfterlifeOS/device_afterlife_ota` devices.json                      |
-| MistOS               | C     | pinned `MistOS-Devices/official_devices` buildDevices.json                  |
-| Black Iron Project   | C     | per-device `OTA/builds/<codename>.json` (z16)                               |
-| SparkOS              | C     | pinned `spark-os.tech/download` (`__NEXT_DATA__`)                           |
-| YAAP AOSP            | C     | per-device `device-info/<codename>/<codename>.json`                         |
-| CatalystOS           | C     | pinned `catalyst-android/OTA` devices.json (branch 13)                      |
-| PalladiumOS          | C     | pinned `Palladium-OS/official_devices` official_devices.json (12.1)         |
-| PixelStar            | C     | pinned `Project-PixelStar/official_devices` devices.json (branch 15)        |
-| Project Blaze        | C     | pinned `ProjectBlaze/official_devices` devices.json (branch 14)             |
-| Project Lighthouse   | C     | pinned `lighthouse-os/official_devices` official_devices.json               |
-| SomethingOS          | C     | pinned `SomethingOS/website_devices` devices.json                           |
-| Tequila OS           | C     | pinned `tequilaOS/tequila_ota` devices.json                                 |
-| The Kraken Project   | C     | pinned `AOSPK/official_devices` devices.json                                |
-| 2by2 Project         | C     | pinned `android_vendor_2by2-ota` and `vendor_2by2-ota` devices.json         |
-| EtherealOS           | C     | pinned `Ethereal-Devices` A14 devices.json                                  |
-| GenesisOS            | C     | pinned `Website-Data` devices/DeviceList.json                               |
-| Project Sakura       | C     | pinned `ProjectSakura/OTA` devices.json                                     |
-| WitAqua              | C     | pinned `WitAquaOTA` data/devices.json                                       |
+| Source               | Class | Reference                                                                 |
+| -------------------- | ----- | ------------------------------------------------------------------------- |
+| LineageOS            | A     | `wiki.lineageos.org/devices/<codename>/`                                  |
+| LineageOS for microG | B     | `download.lineage.microg.org/<codename>/`                                 |
+| AlphaDroid           | B     | `alphadroid.org/#devices?codename=<codename>`                             |
+| AXP.OS               | C     | `AXP-OS/axpos-org` `content/devices/<Brand>/<codename>.md`                |
+| AxionOS              | B     | `axionos.org/download/<codename>`                                         |
+| Nameless AOSP        | C     | SourceForge `files/<codename>/` (AOSP and CLO projects)                   |
+| Paranoid Android     | A/C   | `xda_thread`, else pinned `AOSPA/ota` devices file                        |
+| PixysOS              | A/B   | `supported_bases[].xda_thread`, else `pixysos.com/<codename>`             |
+| Evolution X          | B     | `evolution-x.org/device/<codename>`; `stone` → XDA thread                 |
+| BlissROMs            | A/B   | unique `support_thread` (XDA), else `blissroms.org/downloads/<codename>`  |
+| Project Infinity X   | B     | `projectinfinity-x.com/downloads/<codename>`                              |
+| CherishOS            | B     | `cherishos.com/devices/<codename>`                                        |
+| CorvusOS             | C     | pinned `CorvusRom-Devices/jenkins` devices.json (download host dead)      |
+| crDroid              | B     | `crdroid.net/<codename>/<major>` (site index), else pinned OTA JSON       |
+| DerpFest             | B     | SourceForge `files/<codename>/`, else pinned `devices-index.json`         |
+| Lunaris AOSP         | C     | pinned OTA `builds/<codename>.json` (unique thread when present)          |
+| PixelExtended        | A/C   | unique `forum_url`/`xda_thread`, else pinned OTA `builds/<codename>.json` |
+| Project PixelAge     | C     | SourceForge `files/<codename>/`                                           |
+| RisingOS             | C     | pinned `RisingOS-Revived/official_devices` devices.md                     |
+| PixelExperience      | B     | `download.pixelexperience.org/<codename>`                                 |
+| PixelOS              | B     | `pixelos.net/download/<codename>`                                         |
+| Clover               | B     | `thecloverproject.com/download/<codename>`                                |
+| dotOS                | B     | `www.droidontime.com/devices/<codename>`                                  |
+| /e/OS                | B     | `doc.e.foundation/devices/<codename>`                                     |
+| Kenvyra              | B     | `kenvyra.xyz/devices/<codename>/`                                         |
+| AICP                 | C     | pinned `vendor_jenkins/aicp-build-targets`                                |
+| ArrowOS              | C     | pinned `arrow_infrastructure_devices/arrow.devices`                       |
+| Havoc-OS             | C     | pinned `Havoc-OS/Devices` devices file                                    |
+| iodéOS               | C     | `iode.tech/iodeos-official-supported-devices` (index)                     |
+| Kali NetHunter       | C     | pinned `kali-nethunter-kernels` devices.yml                               |
+| AwakenOS             | B     | `awakenos.vercel.app/downloads/<codename>`                                |
+| DroidX-UI            | C     | pinned `DroidX-UI-Devices/vendor_droidxOTA` devices.json                  |
+| Matrixx              | C     | pinned `Matrixx-Devices/official_devices` devices.json                    |
+| AfterlifeOS          | C     | pinned `AfterlifeOS/device_afterlife_ota` devices.json                    |
+| MistOS               | C     | pinned `MistOS-Devices/official_devices` buildDevices.json                |
+| Black Iron Project   | C     | per-device `OTA/builds/<codename>.json` (z16)                             |
+| SparkOS              | C     | pinned `spark-os.tech/download` (`__NEXT_DATA__`)                         |
+| YAAP AOSP            | C     | per-device `device-info/<codename>/<codename>.json`                       |
+| CatalystOS           | C     | pinned `catalyst-android/OTA` devices.json (branch 13)                    |
+| PalladiumOS          | C     | pinned `Palladium-OS/official_devices` official_devices.json (12.1)       |
+| PixelStar            | C     | pinned `Project-PixelStar/official_devices` devices.json (branch 15)      |
+| Project Blaze        | C     | pinned `ProjectBlaze/official_devices` devices.json (branch 14)           |
+| Project Lighthouse   | C     | pinned `lighthouse-os/official_devices` official_devices.json             |
+| SomethingOS          | C     | pinned `SomethingOS/website_devices` devices.json                         |
+| Tequila OS           | C     | pinned `tequilaOS/tequila_ota` devices.json                               |
+| The Kraken Project   | C     | pinned `AOSPK/official_devices` devices.json                              |
+| 2by2 Project         | C     | pinned `android_vendor_2by2-ota` and `vendor_2by2-ota` devices.json       |
+| EtherealOS           | C     | pinned `Ethereal-Devices` A14 devices.json                                |
+| GenesisOS            | C     | pinned `Website-Data` devices/DeviceList.json                             |
+| Project Sakura       | C     | pinned `ProjectSakura/OTA` devices.json                                   |
+| WitAqua              | C     | pinned `WitAquaOTA` data/devices.json                                     |
 
 ### Legend
 

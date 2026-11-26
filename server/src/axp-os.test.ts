@@ -20,8 +20,22 @@ test("AXP.OS parses device pages from the sitemap", () => {
     records.map((record) => record.brand),
     ["fairphone", "google"],
   );
+  // The site page is gone, so cite the file the page was generated from. The
+  // mirror's paths are case-sensitive, so the curated spelling is used.
   assert.equal(
     records[0]?.referenceUrl,
-    "https://axpos.org/devices/fairphone/fp3/",
+    "https://github.com/AXP-OS/axpos-org/blob/hugo/content/devices/Fairphone/FP3.md",
   );
+  assert.equal(
+    records[1]?.referenceUrl,
+    "https://github.com/AXP-OS/axpos-org/blob/hugo/content/devices/Google/oriole.md",
+  );
+});
+
+test("AXP.OS leaves a device uncited when the mirror has no section for it", () => {
+  const records = parseAxpOs(
+    `<urlset><url><loc>https://axpos.org/devices/nothing/phone1/</loc></url></urlset>`,
+  );
+
+  assert.equal(records[0]?.referenceUrl, null);
 });
