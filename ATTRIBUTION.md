@@ -19,7 +19,7 @@ open an issue.
 | ArrowOS              | `arrow.devices`                    | https://github.com/ArrowOS/arrow_infrastructure_devices                     |
 | AwakenOS             | `devices.json`                     | https://github.com/Project-Awaken/official_devices                          |
 | AxionOS              | `api/downloads.json`               | https://github.com/AxionAOSP/official_devices                               |
-| AXP.OS               | sitemap                            | https://axpos.org/sitemap.xml                                               |
+| AXP.OS               | site tree `content/devices`        | https://github.com/AXP-OS/axpos-org                                         |
 | Black Iron Project   | `builds/*.json` (z16)              | https://github.com/Black-Iron-Project/OTA                                   |
 | BlissROMs            | `devices.json`                     | https://github.com/BlissRoms-Devices/official-devices                       |
 | CalyxOS              | install page                       | https://calyxos.org/install/                                                |

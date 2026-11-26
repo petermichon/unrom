@@ -492,7 +492,7 @@ const specialSources: SourceAdapter[] = [
   {
     id: "axp-os",
     romName: "AXP.OS",
-    file: "axp-os.xml",
+    file: "axp-os.json",
     parse: parseAxpOs,
   },
   {

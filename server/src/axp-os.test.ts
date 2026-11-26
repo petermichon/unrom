@@ -3,25 +3,31 @@ import { test } from "node:test";
 
 import { parseAxpOs } from "./sources/axp-os.ts";
 
-test("AXP.OS parses device pages from the sitemap", () => {
-  const records = parseAxpOs(`<?xml version="1.0" encoding="utf-8"?>
-<urlset>
-  <url><loc>https://axpos.org/devices/fairphone/fp3/</loc></url>
-  <url><loc>https://axpos.org/devices/google/oriole/</loc></url>
-  <url><loc>https://axpos.org/devices/changelogs/2026/</loc></url>
-  <url><loc>https://axpos.org/docs/overview/</loc></url>
-</urlset>`);
+const TREE = JSON.stringify({
+  tree: [
+    { type: "blob", path: "content/devices/Fairphone/FP3.md" },
+    { type: "blob", path: "content/devices/Fairphone/_index.md" },
+    { type: "blob", path: "content/devices/Google/oriole.md" },
+    { type: "blob", path: "content/devices/Sony/_index.md" },
+    { type: "blob", path: "content/devices/changelogs/2026.md" },
+    { type: "blob", path: "content/devices/fp_FP3_slim" },
+    { type: "blob", path: "content/devices/install_g4.guide" },
+    { type: "tree", path: "content/devices/Samsung" },
+    { type: "blob", path: "content/docs/overview.md" },
+  ],
+});
+
+test("AXP.OS reads one device per markdown file in the site mirror", () => {
+  const records = parseAxpOs(TREE);
 
   assert.deepEqual(
     records.map((record) => record.codename),
-    ["fp3", "oriole"],
+    ["FP3", "oriole"],
   );
   assert.deepEqual(
     records.map((record) => record.brand),
     ["fairphone", "google"],
   );
-  // The site page is gone, so cite the file the page was generated from. The
-  // mirror's paths are case-sensitive, so the curated spelling is used.
   assert.equal(
     records[0]?.referenceUrl,
     "https://github.com/AXP-OS/axpos-org/blob/hugo/content/devices/Fairphone/FP3.md",
@@ -32,10 +38,13 @@ test("AXP.OS parses device pages from the sitemap", () => {
   );
 });
 
-test("AXP.OS leaves a device uncited when the mirror has no section for it", () => {
-  const records = parseAxpOs(
-    `<urlset><url><loc>https://axpos.org/devices/nothing/phone1/</loc></url></urlset>`,
-  );
+test("AXP.OS ignores index pages, variant builds and guides", () => {
+  const records = parseAxpOs(TREE);
+  const codenames = new Set(records.map((record) => record.codename));
 
-  assert.equal(records[0]?.referenceUrl, null);
+  assert.equal(records.length, 2);
+  assert.equal(codenames.has("_index"), false);
+  assert.equal(codenames.has("2026"), false);
+  assert.equal(codenames.has("fp_FP3_slim"), false);
+  assert.equal(codenames.has("install_g4"), false);
 });

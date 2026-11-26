@@ -100,7 +100,7 @@ export const sources: Source[] = [
   { id: "arrowos", file: "arrowos.txt", fetch: listArrowOS },
   { id: "aospextended", file: "aospextended.json", fetch: listAospExtended },
   { id: "awakenos", file: "awakenos.json", fetch: listAwakenOS },
-  { id: "axp-os", file: "axp-os.xml", fetch: listAxpOs },
+  { id: "axp-os", file: "axp-os.json", fetch: listAxpOs },
   { id: "axionaosp", file: "axionos.json", fetch: listAxionOs },
   { id: "blissroms", file: "blissroms.json", fetch: listBlissROMs },
   { id: "candyroms", file: "candyroms.json", fetch: listCandyRoms },

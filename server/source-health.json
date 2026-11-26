@@ -74,9 +74,9 @@
     },
     {
       "id": "axp-os",
-      "file": "axp-os.xml",
-      "lastSuccessAt": null,
-      "lastError": "fetch failed"
+      "file": "axp-os.json",
+      "lastSuccessAt": "2026-11-26T19:03:12.970Z",
+      "lastError": null
     },
     {
       "id": "black-iron-project",
