@@ -102,6 +102,30 @@ code (`server/src/ingest/sources.ts` for fetchers,
       source on the API and the ROM page needs a contract decision (a field on
       the ROM or a separate source-health resource).
 
+- [ ] Cite the link the source publishes instead of building the URL. 2334 of
+      3929 mappings (59%) carry a derived citation, and the reference gate can
+      only say whether the guess happens to resolve. /e/OS is the clearest
+      case: its roster anchors each device to a page (`<a href=FP3/>`) but the
+      parser builds `doc.e.foundation/devices/<codename>`, so all 288 roster
+      citations are marked derived; the seven that 404 (PL2, chef, deadpool,
+      wade, DRG, evert, ocean) left the roster and their pages are gone. Where
+      a source names the URL, record it as observed; keep derived only for URLs
+      it does not name (LineageOS wiki, DerpFest folders). No contract change.
+- [ ] Date the frozen rosters, or stop treating them as current support.
+      `eos-v1-s/a14/a15/a16/v1-t.yml` are committed branch snapshots that
+      `ingest` no longer fetches, and they carry no date. The seven /e/OS
+      mappings above exist only in those files, have no build metadata, and
+      lost their only citation, so the dataset asserts support with no live
+      evidence behind it. Record the branch and freeze date, or drop a claim
+      that has neither a live page nor a build.
+- [ ] Let a refresh recover from snapshot divergence. `git pull --rebase`
+      conflicts whenever the checkout holds a local snapshot commit and origin
+      already has a newer refresh; the snapshots cannot be merged and the run
+      aborts (`refresh-data.sh` refuses to continue). If the local commits
+      touch only `data/` and the generated reports, take origin's snapshots
+      instead, then refresh again. The lock is per machine, so two schedulers
+      on different hosts can still race.
+
 ### Parked
 
 Revisit when the blocker changes, not before.
