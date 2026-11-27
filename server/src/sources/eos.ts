@@ -36,6 +36,15 @@ export function createEosParser(): (raw: string) => NormalizedRomDevice[] {
   };
 }
 
+function absoluteDeviceUrl(href: string): string | null {
+  try {
+    const url = new URL(href, "https://doc.e.foundation/devices/");
+    return url.protocol === "https:" ? url.toString() : null;
+  } catch {
+    return null;
+  }
+}
+
 function decode(value: string): string {
   return value
     .replace(/<[^>]+>/g, "")
@@ -66,9 +75,15 @@ export function parseEosHtml(raw: string): NormalizedRomDevice[] {
     const brandCell = body.match(
       /<td class=["']?brand["']?[^>]*>([\s\S]*?)<\/td>/,
     );
+    // The row links its own device page. Use that link rather than building it
+    // from the codename: a device can leave the roster and keep a live page, or
+    // stay listed with a page that is gone, and only the published link says
+    // which. The template is the fallback for a row that omits the anchor.
     const nameCell = body.match(
-      /<td[^>]*data-label=["']?Name["']?[^>]*>[\s\S]*?<a[^>]*>([^<]+)<\/a>/,
+      /<td[^>]*data-label=["']?Name["']?[^>]*>[\s\S]*?<a([^>]*)>([^<]+)<\/a>/,
     );
+    const hrefAttr = nameCell?.[1].match(/href=["']?([^"'\s>]+)/i)?.[1];
+    const href = hrefAttr ? absoluteDeviceUrl(hrefAttr) : null;
 
     seen.add(codename);
     records.push(
@@ -76,10 +91,10 @@ export function parseEosHtml(raw: string): NormalizedRomDevice[] {
         romId: ROM_ID,
         romName: ROM_NAME,
         codename,
-        name: nameCell ? decode(nameCell[1]) : null,
+        name: nameCell ? decode(nameCell[2]) : null,
         brand: brandCell ? decode(brandCell[1]) : null,
-        referenceUrl: `https://doc.e.foundation/devices/${codename}`,
-        referenceKind: "derived",
+        referenceUrl: href ?? `https://doc.e.foundation/devices/${codename}`,
+        referenceKind: href ? "observed" : "derived",
       }),
     );
   }

@@ -17,24 +17,36 @@ test("/e/OS parses the official devices table", () => {
   <td class=brand data-label=Brand>Google</td>
   <td data-label=Name><a href=oriole/>Pixel 6 duplicate</a><span class=chip>oriole</span></td>
 </tr>
+<tr data-device-type=phone>
+  <td class=brand data-label=Brand>Example</td>
+  <td data-label=Name><a>No link</a><span class=chip>nolink</span></td>
+</tr>
 `);
 
   assert.deepEqual(
     records.map((record) => record.codename),
-    ["monet", "oriole"],
+    ["monet", "oriole", "nolink"],
   );
   assert.deepEqual(
     records.map((record) => record.name),
-    ["Mi 10 Lite 5G", "Pixel 6"],
+    ["Mi 10 Lite 5G", "Pixel 6", "No link"],
   );
   assert.deepEqual(
     records.map((record) => record.brand),
-    ["Xiaomi", "Google"],
+    ["Xiaomi", "Google", "Example"],
   );
+  // The row publishes its page, so the citation is observed, not a template.
   assert.equal(
     records[0]?.referenceUrl,
-    "https://doc.e.foundation/devices/monet",
+    "https://doc.e.foundation/devices/monet/",
   );
+  assert.equal(records[0]?.referenceKind, "observed");
+  // Without an anchor there is nothing to cite but the codename's page.
+  assert.equal(
+    records[2]?.referenceUrl,
+    "https://doc.e.foundation/devices/nolink",
+  );
+  assert.equal(records[2]?.referenceKind, "derived");
 });
 
 test("/e/OS attaches each device page's relock statement", () => {
