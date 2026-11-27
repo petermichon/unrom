@@ -69,13 +69,16 @@ const deadHosts = [...hostStates]
   .map(([host]) => host)
   .sort();
 
+// Only a 404/410 is evidence, and only that is committed: the build drops the
+// citations it names. An `unknown` answer (bot wall, rate limit, timeout) is a
+// property of this run, not of the URL, so writing it out would churn the file
+// on every refresh without changing the dataset. The count is still reported.
 await writeFile(
   REFERENCE_OVERRIDES_PATH,
   JSON.stringify(
     {
       generatedAt: new Date().toISOString(),
       dead,
-      unverified,
       deadHosts,
     },
     null,
