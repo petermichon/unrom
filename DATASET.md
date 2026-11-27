@@ -111,13 +111,15 @@ code (`server/src/ingest/sources.ts` for fetchers,
       wade, DRG, evert, ocean) left the roster and their pages are gone. Where
       a source names the URL, record it as observed; keep derived only for URLs
       it does not name (LineageOS wiki, DerpFest folders). No contract change.
-- [ ] Date the frozen rosters, or stop treating them as current support.
+- [ ] Date the frozen rosters before their claims can count again.
       `eos-v1-s/a14/a15/a16/v1-t.yml` are committed branch snapshots that
-      `ingest` no longer fetches, and they carry no date. The seven /e/OS
-      mappings above exist only in those files, have no build metadata, and
-      lost their only citation, so the dataset asserts support with no live
-      evidence behind it. Record the branch and freeze date, or drop a claim
-      that has neither a live page nor a build.
+      `ingest` no longer fetches, and they carry no date. The build now drops a
+      claim whose only derived citation has died and which carries no build
+      date, so the seven /e/OS mappings that rested on these files (PL2, chef,
+      deadpool, wade, DRG, evert, ocean) are no longer published; the snapshots
+      stay as provenance. Bringing those devices back needs the branch and its
+      freeze date recorded as evidence — `v1-t`/`a14` say which release built
+      them, not when — rather than an assumption.
 - [ ] Let a refresh recover from snapshot divergence. `git pull --rebase`
       conflicts whenever the checkout holds a local snapshot commit and origin
       already has a newer refresh; the snapshots cannot be merged and the run

@@ -551,6 +551,9 @@ export function buildDatabase(
     Object.entries(ROMS).map(([id, rom]) => [id, rom]),
   );
   const edgeMap = new Map<string, Edge>();
+  // Edges backed by at least one checkable record: a live citation, a build
+  // date, or a relock statement.
+  const checkable = new Set<string>();
   const aliasMap = new Map<string, Alias>();
   const sourceNames: SourceNames = new Map();
   // Names reported by rosters that list several models for one codename. Used
@@ -828,13 +831,20 @@ export function buildDatabase(
     // A dead one is dropped rather than published: an unverifiable citation is
     // worse than none. A host that no longer resolves never answers 404, so it
     // is curated in `reference-blocklist.json` and treated the same way.
-    const referenceUrl =
+    const citationDropped = Boolean(
       record.referenceUrl &&
       record.referenceKind === "derived" &&
       (deadReferences.has(record.referenceUrl) ||
-        isBlockedHost(hostOf(record.referenceUrl), blockedHosts))
-        ? null
-        : record.referenceUrl;
+        isBlockedHost(hostOf(record.referenceUrl), blockedHosts)),
+    );
+    const referenceUrl = citationDropped ? null : record.referenceUrl;
+    if (
+      !citationDropped ||
+      record.buildDate !== null ||
+      record.relock !== null
+    ) {
+      checkable.add(key);
+    }
     if (edge.referenceUrl === null && referenceUrl) {
       edge.referenceUrl = referenceUrl;
       edge.referenceKind = record.referenceKind;
@@ -900,6 +910,17 @@ export function buildDatabase(
         });
       }
     }
+  }
+
+  // A claim needs something a reader can check. When the only citation is a
+  // derived URL the reference gate found dead, and the record carries no build
+  // date, nothing is left to verify (the /e/OS branch snapshots name devices
+  // the current roster no longer lists). The snapshot stays as provenance; the
+  // claim is not published. A device-scoped relock statement is evidence in its
+  // own right. Records the pipeline never cited are left alone: that is an
+  // adapter gap, not a dropped citation.
+  for (const key of edgeMap.keys()) {
+    if (!checkable.has(key)) edgeMap.delete(key);
   }
 
   const edges = [...edgeMap.values()];

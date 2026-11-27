@@ -429,7 +429,76 @@ test("built references are marked derived, published ones observed", () => {
   assert.equal(observed.referenceKind, "observed");
 });
 
-test("dead derived citations are dropped, observed ones kept", () => {
+test("a claim with neither a citation nor a build is not published", () => {
+  const dir = mkdtempSync(join(tmpdir(), "unrom-test-"));
+  const dbPath = join(dir, "unrom.sqlite");
+
+  try {
+    buildDatabase(
+      [
+        // Dead derived citation, no build date: nothing left to check.
+        buildRecord({
+          romId: "r1",
+          romName: "R1",
+          codename: "deadpool",
+          referenceUrl: "https://example.com/deadpool",
+          referenceKind: "derived",
+        }),
+        // Dead derived citation, but the build date still proves a build.
+        buildRecord({
+          romId: "r2",
+          romName: "R2",
+          codename: "olivewood",
+          referenceUrl: "https://example.com/olivewood",
+          referenceKind: "derived",
+          buildDate: "2022-01-26",
+        }),
+        // Observed citations are evidence and are never dropped.
+        buildRecord({
+          romId: "r3",
+          romName: "R3",
+          codename: "alpha",
+          referenceUrl: "https://example.com/alpha",
+          referenceKind: "observed",
+        }),
+      ],
+      dbPath,
+      [],
+      new Set([
+        "https://example.com/deadpool",
+        "https://example.com/olivewood",
+        "https://example.com/alpha",
+      ]),
+    );
+
+    const db = new Database(dbPath, { readonly: true });
+    const row = (romId: string) =>
+      db
+        .prepare(
+          "select reference_url url, reference_kind kind, build_date date from rom_devices where rom_id = ?",
+        )
+        .get(romId) as
+        | { url: string | null; kind: string; date: string | null }
+        | undefined;
+
+    assert.equal(row("r1"), undefined);
+    assert.deepEqual(row("r2"), {
+      url: null,
+      kind: "derived",
+      date: "2022-01-26",
+    });
+    assert.deepEqual(row("r3"), {
+      url: "https://example.com/alpha",
+      kind: "observed",
+      date: null,
+    });
+    db.close();
+  } finally {
+    rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test("a claim kept alive by a relock statement survives a dead citation", () => {
   const dir = mkdtempSync(join(tmpdir(), "unrom-test-"));
   const dbPath = join(dir, "unrom.sqlite");
 
@@ -439,36 +508,29 @@ test("dead derived citations are dropped, observed ones kept", () => {
         buildRecord({
           romId: "r1",
           romName: "R1",
-          codename: "deadpool",
-          referenceUrl: "https://example.com/deadpool",
+          codename: "relockonly",
+          referenceUrl: "https://example.com/relockonly",
           referenceKind: "derived",
-        }),
-        buildRecord({
-          romId: "r2",
-          romName: "R2",
-          codename: "alpha",
-          referenceUrl: "https://example.com/alpha",
-          referenceKind: "observed",
+          relock: {
+            status: "supported",
+            summary: "the project says this device can be relocked",
+            sourceUrl: "https://example.com/statement",
+            verifiedAt: "2026-11-15",
+          },
         }),
       ],
       dbPath,
       [],
-      new Set(["https://example.com/deadpool", "https://example.com/alpha"]),
+      new Set(["https://example.com/relockonly"]),
     );
 
     const db = new Database(dbPath, { readonly: true });
-    const row = (romId: string) =>
-      db
-        .prepare(
-          "select reference_url url, reference_kind kind from rom_devices where rom_id = ?",
-        )
-        .get(romId) as { url: string | null; kind: string };
-
-    assert.deepEqual(row("r1"), { url: null, kind: "derived" });
-    assert.deepEqual(row("r2"), {
-      url: "https://example.com/alpha",
-      kind: "observed",
-    });
+    const row = db
+      .prepare(
+        "select reference_url url from rom_devices where rom_id = ? and codename = ?",
+      )
+      .get("r1", "relockonly") as { url: string | null } | undefined;
+    assert.deepEqual(row, { url: null });
     db.close();
   } finally {
     rmSync(dir, { recursive: true, force: true });
@@ -488,6 +550,7 @@ test("a blocked host drops its derived citations, not observed ones", () => {
           codename: "phone",
           referenceUrl: "https://axpos.example/devices/phone/",
           referenceKind: "derived",
+          buildDate: "2026-01-01",
         }),
         buildRecord({
           romId: "r2",
@@ -502,6 +565,7 @@ test("a blocked host drops its derived citations, not observed ones", () => {
           codename: "watch",
           referenceUrl: "https://dev.axpos.example/watch",
           referenceKind: "derived",
+          buildDate: "2026-01-01",
         }),
         buildRecord({
           romId: "r4",
