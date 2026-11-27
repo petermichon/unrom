@@ -478,8 +478,7 @@ test("a claim with neither a citation nor a build is not published", () => {
           "select reference_url url, reference_kind kind, build_date date from rom_devices where rom_id = ?",
         )
         .get(romId) as
-        | { url: string | null; kind: string; date: string | null }
-        | undefined;
+        { url: string | null; kind: string; date: string | null } | undefined;
 
     assert.equal(row("r1"), undefined);
     assert.deepEqual(row("r2"), {
