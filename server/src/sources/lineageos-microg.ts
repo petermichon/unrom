@@ -10,17 +10,25 @@ const NON_DEVICE_DIRS = new Set(["builds", "iodeos", "lineageos"]);
 
 /**
  * The official download host is an Apache directory index; each supported
- * device is a top-level directory named by its codename.
+ * device is a top-level directory named by its codename. Each row also carries
+ * the directory's last-modified time, which is the newest build for that device.
  */
 export function parseLineageOSMicroG(raw: string): NormalizedRomDevice[] {
   const records: NormalizedRomDevice[] = [];
   const seen = new Set<string>();
 
-  for (const match of raw.matchAll(/href="\.\/([^"/]+)\/"/g)) {
-    const codename = match[1].trim();
+  for (const row of raw.matchAll(/<tr class="file">([\s\S]*?)<\/tr>/g)) {
+    const body = row[1];
+    const link = body.match(/href="\.\/([^"/]+)\/"/);
+    if (!link) continue;
+
+    const codename = link[1].trim();
     if (!codename || NON_DEVICE_DIRS.has(codename.toLowerCase())) continue;
     if (seen.has(codename)) continue;
     seen.add(codename);
+
+    const stamp = body.match(/<time[^>]*datetime="([^"]+)"/)?.[1];
+    const buildDate = stamp?.match(/^\d{4}-\d{2}-\d{2}/)?.[0] ?? null;
 
     records.push(
       buildRecord({
@@ -29,6 +37,7 @@ export function parseLineageOSMicroG(raw: string): NormalizedRomDevice[] {
         codename,
         referenceUrl: `${BASE_URL}/${codename}/`,
         referenceKind: "derived",
+        buildDate,
       }),
     );
   }
