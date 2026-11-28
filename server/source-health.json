@@ -3,427 +3,427 @@
     {
       "id": "2by2-project",
       "file": "2by2-legacy.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "2by2-project",
       "file": "2by2.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "afterlifeos",
       "file": "afterlifeos.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "aicp",
       "file": "aicp.txt",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "aim-rom",
       "file": "aim-rom.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "alphadroid",
       "file": "alphadroid.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "alphadroid",
       "file": "alphadroid.md",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "aosip",
       "file": "aosip.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "aospextended",
       "file": "aospextended.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "arrowos",
       "file": "arrowos.txt",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "awakenos",
       "file": "awakenos.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "axionaosp",
       "file": "axionos.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "axp-os",
       "file": "axp-os.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "black-iron-project",
       "file": "blackiron.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "blissroms",
       "file": "blissroms.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "calyxos",
       "file": "calyxos.html",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "candyroms",
       "file": "candyroms.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "carbon-rom",
       "file": "carbon.html",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "catalystos",
       "file": "catalyst.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "cherishos",
       "file": "cherishos.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "cipheros",
       "file": "cipheros.html",
       "lastSuccessAt": "2026-11-26T16:20:53.507Z",
-      "lastError": "Failed to fetch CipherOS devices: https://cipheros.org.in/devices: 403 "
+      "lastError": "Failed to fetch CipherOS devices: https://cipheros.org.in/devices: 403 Forbidden"
     },
     {
       "id": "clover",
       "file": "clover.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "corvusos",
       "file": "corvusos.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "crdroid",
       "file": "crdroid.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "derpfest",
       "file": "derpfest.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "dotos",
       "file": "dotos.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "droidxui",
       "file": "droidxui.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "eos",
       "file": "eos.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "etherealos",
       "file": "etherealos.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "evolutionx",
       "file": "evolutionx.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "freaky-os",
       "file": "freaky-os.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "genesisos",
       "file": "genesisos.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "grapheneos",
       "file": "grapheneos.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "havocos",
       "file": "havocos.txt",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "iode",
       "file": "iode.html",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "iode",
       "file": "iode.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "kali-nethunter",
       "file": "kali-nethunter.yml",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "kenvyra",
       "file": "kenvyra.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "the-kraken-project",
       "file": "kraken.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "project-lighthouse",
       "file": "lighthouse.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "lineageos-microg",
       "file": "lineageos-microg.html",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "lineageos",
       "file": "lineageos.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "lunaris",
       "file": "lunaris.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "matrixx",
       "file": "matrixx.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "mistos",
       "file": "mistos.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "nameless-aosp",
       "file": "nameless-aosp.html",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "nameless-aosp",
       "file": "nameless-clo.html",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "palladiumos",
       "file": "palladium.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "paranoidandroid",
       "file": "paranoidandroid.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "pixelexperience",
       "file": "pixelexperience.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "pixelextended",
       "file": "pixelextended.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "pixelos",
       "file": "pixelos.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "pixelstar",
       "file": "pixelstar.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "pixysos",
       "file": "pixysos.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "play-devices",
       "file": "play-devices.csv",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "project-blaze",
       "file": "projectblaze.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "projectinfinityx",
       "file": "projectinfinityx.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "projectpixelage",
       "file": "projectpixelage.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "reloadedos",
       "file": "reloadedos.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "risingos",
       "file": "risingos.md",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "project-sakura",
       "file": "sakura.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "slimroms",
       "file": "slimroms.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "somethingos",
       "file": "somethingos.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "sparkos",
       "file": "sparkos.html",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "superioros",
       "file": "superioros.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "tequila-os",
       "file": "tequila.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "voltageos",
       "file": "voltageos.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "waveos",
       "file": "waveos.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "witaqua",
       "file": "witaqua.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "yaap-aosp",
       "file": "yaap.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     },
     {
       "id": "zeusos",
       "file": "zeusos.json",
-      "lastSuccessAt": "2026-11-27T19:48:10.612Z",
+      "lastSuccessAt": "2026-11-28T11:18:49.002Z",
       "lastError": null
     }
   ]
